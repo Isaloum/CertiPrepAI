@@ -629,5 +629,303 @@ const flashcards = [
     front: "What is the principle of Least Privilege?",
     back: "Least Privilege: Grant only the minimum permissions needed to perform a task.\n\nBest practices:\n• Start with no permissions\n• Grant permissions as needed\n• Review permissions regularly\n• Use managed policies when possible\n• Avoid wildcard (*) permissions\n• Use IAM Access Analyzer to identify overly permissive policies",
     hint: "Minimum necessary permissions, nothing more"
+  },
+
+  // ── PRACTICE TEST #4 – MISSED QUESTIONS ──────────────────────────────────
+
+  // Q3 – API Gateway Caching
+  {
+    domain: "networking",
+    front: "How do you reduce Aurora DB costs for a read-heavy REST API?",
+    back: "Enable Amazon API Gateway Caching.\n\n• Caches endpoint responses at the API layer\n• Default TTL: 300s | Max TTL: 3600s | TTL=0 = disabled\n• Reduces calls to the backend/database entirely\n\nDo NOT confuse with:\n• Lambda (no native in-memory cache)\n• Aurora Read Replicas (increases cost)\n• ALB (no caching capability)",
+    hint: "Cache at the API Gateway level to stop hitting the DB at all"
+  },
+
+  // Q4 – Direct Connect Gateway for multi-region hybrid
+  {
+    domain: "networking",
+    front: "How do you connect multiple VPCs across regions AND on-premises DCs using Direct Connect?",
+    back: "Use a Direct Connect Gateway (DX Gateway).\n\n• Global resource — works across all AWS regions (except China)\n• Attach each region's Virtual Private Gateway (VGW) to the DX Gateway\n• Both Direct Connect links connect to the same DX Gateway\n• Enables transitive routing between VPCs and on-prem networks\n\nDo NOT use:\n• VPC Peering (not transitive, no on-prem routing)\n• EC2-based VPN mesh (high complexity)\n• Private VIFs to foreign-region VPCs (not supported)",
+    hint: "DX Gateway = global hub; attach VGWs from both regions to it"
+  },
+
+  // Q6 – Geoproximity vs Geolocation routing
+  {
+    domain: "networking",
+    front: "Which Route 53 policy lets you DYNAMICALLY RESIZE the geographic area routing traffic to a resource?",
+    back: "Geoproximity Routing (with bias).\n\n• Bias +1 to +99 → expand the geographic region (attract more traffic)\n• Bias -1 to -99 → shrink the geographic region (push traffic away)\n• Routes based on location of RESOURCES, not just users\n\nDo NOT confuse with:\n• Geolocation: routes by user's location, no bias/resize\n• Weighted: splits traffic by % weight\n• Latency: routes to lowest-latency region",
+    hint: "Geoproximity + bias = resize the catchment area for a resource"
+  },
+
+  // Q7 – CloudFormation for reusable best-practice infra
+  {
+    domain: "management",
+    front: "How do you enforce AWS best practices in a reusable infrastructure template for all users?",
+    back: "Use AWS CloudFormation.\n\n• Infrastructure as Code (IaC) — JSON or YAML templates\n• Bake best-practice configs directly into reusable templates\n• Anyone in the org runs the same vetted template\n\nDo NOT use:\n• Trusted Advisor: gives recommendations, no templates\n• Lambda email alerts: reactive, not preventive\n• IAM policy deny: prevents action but doesn't guide correct config",
+    hint: "CloudFormation = encode best practices once, reuse forever"
+  },
+
+  // Q8 – Amazon MQ for MQTT
+  {
+    domain: "integration",
+    front: "Which AWS service supports the MQTT protocol for migrating an existing message broker?",
+    back: "Amazon MQ.\n\n• Managed Apache ActiveMQ / RabbitMQ broker\n• Supports industry-standard protocols: JMS, AMQP, STOMP, MQTT, WebSocket\n• Lift-and-shift: no app code changes needed\n\nDo NOT use:\n• SQS / SNS / Kinesis: AWS-proprietary, no MQTT support",
+    hint: "Existing broker protocols (MQTT/AMQP/STOMP) → Amazon MQ"
+  },
+
+  // Q9 – Copying 1 PB between S3 regions
+  {
+    domain: "storage",
+    front: "What are the two ways to do a one-time copy of 1 PB from one S3 region to another?",
+    back: "1. aws s3 sync command\n   • Uses CopyObject API\n   • Copies only missing/changed objects\n   • Idempotent — safe to re-run\n\n2. S3 Batch Replication → then delete replication config\n   • Replicates existing objects cross-region\n   • Delete the config after the one-time job\n\nDo NOT use:\n• Snowball Edge: for on-prem → AWS, not region-to-region\n• S3 console copy-paste: not feasible at PB scale\n• S3 Transfer Acceleration: speeds up client → S3, not bucket-to-bucket",
+    hint: "Region-to-region: s3 sync OR batch replication (then delete config)"
+  },
+
+  // Q10 – Async image processing: SQS + Spot
+  {
+    domain: "compute",
+    front: "What combo minimises cost for async, retryable, burstable batch jobs?",
+    back: "Amazon SQS + EC2 Spot Instances.\n\n• SQS: buffers jobs, built-in retry, async decoupling\n• Spot Instances: up to 90% cheaper than On-Demand\n\nDo NOT use:\n• On-Demand: more expensive, no advantage here\n• Reserved Instances: requires 1-3 year commitment — wrong for variable load\n• SNS: push-based pub/sub, no retry queue behaviour",
+    hint: "Async + retry = SQS | Cheapest EC2 = Spot"
+  },
+
+  // Q16 – VPC Peering cheapest for same-account VPCs
+  {
+    domain: "networking",
+    front: "Most cost-effective way to connect 5 VPCs within the same AWS account?",
+    back: "VPC Peering.\n\n• Direct, private connection between two VPCs\n• No transitive routing (each pair needs its own peering)\n• Very low cost for small numbers of VPCs\n\nDo NOT use:\n• Direct Connect: for on-premises connectivity, overkill and expensive\n• NAT Gateway: for internet access from private subnets\n• Internet Gateway: for public internet access",
+    hint: "Same-account, few VPCs = VPC Peering (cheapest)"
+  },
+
+  // Q18 – Predictive scaling + target tracking
+  {
+    domain: "compute",
+    front: "How do you scale EC2 proactively for predictable patterns AND react to sudden spikes?",
+    back: "Predictive Scaling + Dynamic Scaling (Target Tracking).\n\n• Predictive Scaling: ML analyses historical data → pre-warms capacity\n• Target Tracking: reacts in real-time (e.g. keep CPU at 60%)\n• Combined = forecast + react\n\nDo NOT use:\n• Step Scaling alone: reactive only, no forecasting\n• Scheduled Scaling: manual time windows, no ML, can't adapt\n• Simple Scaling: one alarm/action, limited flexibility",
+    hint: "Predictable patterns → Predictive Scaling | Real-time spikes → Target Tracking"
+  },
+
+  // Q20 – ELB marks all targets unhealthy
+  {
+    domain: "networking",
+    front: "ALB marks all EC2s unhealthy, but IP access works fine. Two likely causes?",
+    back: "1. Health check route is misconfigured\n   • The ALB is hitting the wrong path\n\n2. EC2 security group blocks traffic from the ALB's security group\n   • Must allow traffic on both the listener port AND health check port\n\nDo NOT blame:\n• Elastic IPs: not needed with ALB\n• EBS volumes: site loads fine by IP\n• Web app runtime: no connection to ALB health checks",
+    hint: "ELB health check fails = wrong path OR security group blocking ALB"
+  },
+
+  // Q21 – Real-time analytics pipeline: KDS → KDA → KDF → S3
+  {
+    domain: "analytics",
+    front: "Which Kinesis pipeline supports real-time analytics AND persists results to S3?",
+    back: "Kinesis Data Streams → Kinesis Data Analytics → Kinesis Data Firehose → S3.\n\n• KDS: ingest streaming data\n• KDA: run SQL queries in real-time on the stream\n• KDF: deliver results to S3 reliably\n\nDo NOT use:\n• KDS → KDF → Athena: Athena is batch/interactive, not real-time\n• QuickSight: cannot consume KDS directly, not real-time stream processing\n• SQS + EC2 + third-party: not purpose-built for streaming analytics",
+    hint: "Real-time analytics: KDS → KDA → KDF → S3"
+  },
+
+  // Q22 – Storage Gateway: cached vs stored volumes
+  {
+    domain: "storage",
+    front: "Cached Volumes vs. Stored Volumes in AWS Storage Gateway — what's the difference?",
+    back: "Cached Volumes:\n• Primary data stored in S3\n• Frequently accessed data cached locally\n• Minimises local storage use ✓\n• No retrieval fees from S3\n\nStored Volumes:\n• Full dataset stored on-premises\n• Async point-in-time snapshots to S3\n• Still needs large local storage ✗\n• Recovery requires restoring from S3\n\nKeyword 'extend storage to cloud with local cache' → Cached Volumes",
+    hint: "Cached = S3 primary + local hot cache | Stored = on-prem primary + S3 backup"
+  },
+
+  // Q24 – ASG min=2 + Reserved Instances
+  {
+    domain: "compute",
+    front: "For an HA ASG across 3 AZs with variable load, what's the optimal minimum capacity and pricing?",
+    back: "Minimum capacity = 2 + Reserved Instances for the minimum.\n\n• Min=2 ensures HA (one instance per AZ, ASG recovers to 2 after AZ failure)\n• Min=1 → single point of failure\n• Min=3 → pay for always-running 3rd instance unnecessarily\n• Reserved Instances on the always-on minimum = maximum savings\n• Use On-Demand or Spot for burst above minimum",
+    hint: "Min=2 for HA | Reserve only the guaranteed minimum baseline"
+  },
+
+  // Q25 – NLB for static IP whitelisting
+  {
+    domain: "networking",
+    front: "A bank needs to whitelist your load balancer's IP in their firewall. Which LB type do you choose?",
+    back: "Network Load Balancer (NLB).\n\n• NLB exposes a fixed, static IP per AZ (or Elastic IP)\n• Banks/firewalls can whitelist the static IP\n• Scales to millions of requests/second (Layer 4)\n\nDo NOT use:\n• ALB: exposes a DNS name, not a static IP\n• Classic LB: also DNS-based, not static IP\n• ASG with dynamic EIPs: no such native feature",
+    hint: "Static IP for whitelisting = Network Load Balancer"
+  },
+
+  // Q26 – Amazon Neptune for graph queries
+  {
+    domain: "database",
+    front: "Which database handles graph queries like 'likes on videos posted by friends of a user'?",
+    back: "Amazon Neptune.\n\n• Purpose-built graph database\n• Optimised for highly connected datasets and relationships\n• Supports Gremlin (property graph) and SPARQL (RDF)\n• Use cases: social networks, recommendation engines, fraud detection\n\nDo NOT use:\n• Redshift: data warehouse, not graph\n• OpenSearch: search/log analytics\n• Aurora: relational DB, poor at deep graph traversal",
+    hint: "Relationships between entities at scale = Amazon Neptune"
+  },
+
+  // Q27 – Cost Optimization Hub + Compute Optimizer
+  {
+    domain: "management",
+    front: "How do you identify idle EC2s and get right-sizing recommendations across all accounts?",
+    back: "AWS Cost Optimization Hub + AWS Compute Optimizer.\n\n• Cost Optimization Hub: single dashboard, aggregates recommendations (idle resources, RIs, Savings Plans)\n• Compute Optimizer: ML-based instance type recommendations from utilization metrics\n\nDo NOT confuse with:\n• S3 Storage Class Analysis: only for S3 IA transitions (NOT Glacier)\n• Trusted Advisor: shows recommendations but does NOT auto-renew RIs",
+    hint: "Cost Optimization Hub = consolidate savings | Compute Optimizer = right-size EC2"
+  },
+
+  // Q30 – KMS customer managed key with auto rotation
+  {
+    domain: "security",
+    front: "How do you encrypt S3 data at rest with automatic annual key rotation and minimal overhead?",
+    back: "AWS KMS Customer Managed Key (CMK) with automatic rotation enabled.\n\n• Create a CMK in KMS → enable 'Automatic key rotation'\n• KMS rotates the key every 12 months automatically\n• Set S3 bucket default encryption to use the CMK\n\nDo NOT use:\n• SSE-S3: AWS manages keys, rotation is not user-configurable or auditable\n• Imported key material: automatic rotation is DISABLED for imported keys\n• CloudHSM: manual rotation, highest overhead",
+    hint: "Annual auditable rotation = KMS CMK with automatic rotation enabled"
+  },
+
+  // Q31 – AWS DMS: S3 → Kinesis
+  {
+    domain: "analytics",
+    front: "Fastest way to stream existing S3 files + ongoing updates into Kinesis Data Streams?",
+    back: "AWS Database Migration Service (DMS).\n\n• DMS natively supports S3 as source and Kinesis as target\n• Handles both full load AND ongoing CDC (change data capture)\n• No custom code needed\n\nDo NOT use:\n• EventBridge + Lambda: needs CloudTrail enabled + custom code\n• S3 event notifications + Lambda: significant custom development\n• SNS: S3 cannot write data directly to SNS; SNS cannot write to Kinesis",
+    hint: "S3 → Kinesis with no code = AWS DMS"
+  },
+
+  // Q35 – EFS burst throughput mode
+  {
+    domain: "storage",
+    front: "EFS for sporadic bursts with low average throughput — which mode minimises cost and requires no manual config?",
+    back: "EFS Burst Throughput Mode (default) + General Purpose performance mode.\n\n• Earns burst credits during idle periods\n• Spends credits during burst periods — fully automatic\n• No manual provisioning needed\n• Use EFS Standard storage class for multi-AZ availability\n\nDo NOT use:\n• Provisioned Throughput: manual config, costs more for low average usage\n• One Zone storage class: does NOT auto-enable burst mode\n• EFS IA storage class: causes latency and retrieval cost during bursts",
+    hint: "Unpredictable bursts, low average = EFS Burst Throughput (automatic credits)"
+  },
+
+  // Q38 – Global Accelerator for static IPs across regions
+  {
+    domain: "networking",
+    front: "ALBs in multiple regions with changing IPs — how do you give on-prem firewalls stable IPs to whitelist?",
+    back: "AWS Global Accelerator.\n\n• Provides 2 static anycast IPs globally\n• Associate multiple ALBs (across regions) as endpoints\n• Firewall whitelist = just those 2 static IPs, one-time config\n\nDo NOT use:\n• Lambda IP script: IPs keep changing, ongoing firewall updates needed\n• Single NLB: region-bound, can't span multiple regions\n• Migrate ALBs to NLBs: more work, still multiple IPs to manage",
+    hint: "Multi-region ALBs + stable IPs for firewall = Global Accelerator"
+  },
+
+  // Q40 – EFS mount target per AZ
+  {
+    domain: "storage",
+    front: "How do you minimise EFS latency for EC2 instances across multiple AZs?",
+    back: "Create one EFS mount target per Availability Zone.\n\n• Mount target = ENI in the AZ's subnet\n• EC2 instances connect to the mount target in their own AZ\n• Traffic stays local → lowest latency, no cross-AZ charges\n• AWS best practice for HA + performance\n\nDo NOT use:\n• Single mount target in one AZ: cross-AZ traffic = higher latency + cost\n• Mount targets on EC2 instances: mount targets are VPC-level ENIs managed by EFS",
+    hint: "EFS = one mount target per AZ → connect locally for minimum latency"
+  },
+
+  // Q42 – CloudFront: 3 correct features
+  {
+    domain: "networking",
+    front: "Which three CloudFront capabilities are correct? (field encryption / KMS / multi-origin / origin failover / geo restriction / price class routing)",
+    back: "Correct three:\n1. Field-Level Encryption: encrypts specific POST fields at the edge\n2. Route to multiple origins based on content type (path-based)\n3. Origin group (primary + secondary) for HA and failover\n\nIncorrect:\n• KMS encryption: CloudFront uses field-level encryption, not KMS directly\n• Geo restriction: for BLOCKING countries, not for HA/failover\n• Price class: groups edge locations by cost, does NOT route to different origins",
+    hint: "CloudFront HA = origin group | Security = field-level encryption | Routing = content type"
+  },
+
+  // Q44 – Transit Gateway ECMP for VPN throughput
+  {
+    domain: "networking",
+    front: "How do you scale VPN throughput beyond 1.25 Gbps?",
+    back: "AWS Transit Gateway with ECMP (Equal Cost Multi-Path) routing + multiple VPN tunnels.\n\n• Each VPN tunnel = max 1.25 Gbps\n• TGW + ECMP aggregates multiple tunnels → scales beyond 1.25 Gbps\n• Must enable dynamic routing (BGP) on the TGW\n\nDo NOT use:\n• Virtual Private Gateway: does NOT support ECMP\n• Global Accelerator: optimises path, does not add VPN bandwidth\n• S3 Transfer Acceleration: only for S3 uploads, irrelevant here",
+    hint: "VPN > 1.25 Gbps = Transit Gateway + ECMP + multiple tunnels"
+  },
+
+  // Q45 – RDS IAM auth with Lambda
+  {
+    domain: "security",
+    front: "How does Lambda authenticate to RDS PostgreSQL using short-lived credentials?",
+    back: "IAM Database Authentication + IAM Role attached to Lambda.\n\n• Attach IAM role to Lambda → grants permissions to generate DB auth token\n• Lambda uses IAM DB auth instead of username/password\n• Auth token lifetime = 15 minutes (short-lived)\n• Traffic encrypted via SSL\n\nDo NOT confuse with:\n• Security group rules: network access, not authentication\n• Deploying Lambda in VPC: network placement, not auth\n• SSM Parameter Store credentials: still long-lived secrets",
+    hint: "Short-lived DB credentials = IAM role on Lambda + RDS IAM auth"
+  },
+
+  // Q46 – S3 bucket policy for cross-account access
+  {
+    domain: "security",
+    front: "How do you grant S3 access to users in BOTH your account AND another AWS account?",
+    back: "Use a Bucket Policy (resource-based policy).\n\n• Bucket policies support cross-account principals\n• Can specify Principal from any account\n\nDo NOT use:\n• User/Identity-based policy: only applies to principals in YOUR account\n• Permissions boundary: sets max permissions but does not GRANT access\n• Both bucket + user policy: user policy alone still can't cross accounts",
+    hint: "Cross-account S3 access = bucket policy only (user policy can't cross accounts)"
+  },
+
+  // Q47 – Tape Gateway for physical tape migration
+  {
+    domain: "storage",
+    front: "How do you migrate petabytes of physical tape data to AWS without changing backup workflows?",
+    back: "AWS Storage Gateway — Tape Gateway (Virtual Tape Library).\n\n• Replaces physical tapes with virtual tapes in S3\n• No changes to existing backup software\n• Archives to S3 Glacier / S3 Glacier Deep Archive for ultra-low cost\n• Compresses data automatically\n\nDo NOT use:\n• DataSync: supports NFS/SMB only, not tape\n• Direct Connect: for ongoing hybrid connectivity, expensive for one-time migration\n• VPN + EFS: not relevant to tape archival",
+    hint: "Physical tapes → AWS with no workflow change = Tape Gateway"
+  },
+
+  // Q48 – S3 Lifecycle with prefix + Glacier for all
+  {
+    domain: "storage",
+    front: "S3 bucket: images rarely accessed after 45d, thumbnails still active. All archive at 180d. Two correct lifecycle rules?",
+    back: "1. Lifecycle → transition objects with PREFIX 's3://bucket/images' to Standard-IA after 45 days\n   (thumbnails stay in Standard — no prefix = wrong)\n\n2. Lifecycle → transition ALL objects to S3 Glacier after 180 days\n   (no prefix needed — everything archives)\n\nDo NOT use:\n• One Zone-IA: single AZ, fails if AZ goes down — not HA\n• Transition ALL to IA at 45d: thumbnails are still active, use prefix\n• Glacier with prefix at 180d: unnecessary; archive everything",
+    hint: "Selective transition = use prefix | Archive everything = no prefix needed"
+  },
+
+  // Q49 – Golden AMI + EC2 user data
+  {
+    domain: "compute",
+    front: "Elastic Beanstalk app takes 45 min to install. How do you get new instances ready in < 2 min?",
+    back: "Golden AMI + EC2 User Data.\n\n• Golden AMI: bake all static installation components into the AMI\n• EC2 User Data: run at boot to configure dynamic/generated parts only\n• Result: instance starts from pre-built state, only seconds for dynamic config\n\nDo NOT use:\n• User Data for the full install: still takes 45 min at boot\n• Store files on S3: S3 is storage, not a compute environment\n• Elastic Beanstalk deployment caching: does not exist",
+    hint: "Static = Golden AMI | Dynamic config at boot = User Data"
+  },
+
+  // Q51 – DynamoDB deletion protection
+  {
+    domain: "database",
+    front: "How do you PREVENT accidental DynamoDB table deletion with zero operational overhead?",
+    back: "Enable Deletion Protection on the DynamoDB table.\n\n• Simple toggle — prevents any DeleteTable operation\n• Must explicitly disable before a table can be deleted\n• Zero ongoing maintenance\n\nDo NOT confuse with:\n• PITR (Point-in-Time Recovery): restores AFTER deletion, reactive not preventive\n• CloudTrail + EventBridge + Lambda: detects and reacts, but data is already lost\n• Weekly S3 exports: data loss between backups + manual recovery",
+    hint: "Prevent deletion = Deletion Protection | Recover from deletion = PITR"
+  },
+
+  // Q52 – S3 bucket policy with IpAddress + NotIpAddress
+  {
+    domain: "security",
+    front: "What does a bucket policy with IpAddress '54.240.143.0/24' AND NotIpAddress '54.240.143.188/32' do?",
+    back: "It allows the entire CIDR range 54.240.143.0/24 EXCEPT the single IP 54.240.143.188.\n\n• IpAddress condition = source must be in the CIDR block\n• NotIpAddress condition = source must NOT be that specific IP\n• Both conditions must be true (AND logic)\n• Effect: Allow = all 256 IPs in /24, minus .188",
+    hint: "IpAddress + NotIpAddress together = allow CIDR except one IP"
+  },
+
+  // Q54 – Route 53 TTL propagation
+  {
+    domain: "networking",
+    front: "You updated a Route 53 simple record to point to a new Load Balancer but users still hit the old one. Why?",
+    back: "The TTL (Time to Live) is still in effect.\n\n• DNS resolvers cache the old record until TTL expires\n• No instant propagation — must wait for TTL to expire\n• Best practice: lower TTL to 300s BEFORE making changes\n\nDo NOT blame:\n• CNAME/Alias misconfiguration: would break routing, not just delay it\n• Health checks: Simple records have NO health checks\n• Security groups: unrelated to DNS propagation",
+    hint: "DNS change not propagating = TTL hasn't expired yet"
+  },
+
+  // Q57 – DynamoDB on-demand for unpredictable traffic
+  {
+    domain: "database",
+    front: "DynamoDB table: idle at night, unpredictable day traffic with instant spikes. Which mode?",
+    back: "On-Demand Capacity Mode.\n\n• Pay per request — no capacity planning\n• Instantly handles any traffic spike\n• Zero cost during idle periods\n\nDo NOT use:\n• Provisioned + Auto Scaling: CloudWatch alarms introduce lag — not instant\n• Provisioned mode: must predict capacity in advance\n• Global Tables: for multi-region replication, not variable load handling",
+    hint: "Unpredictable/bursty + instant scale = DynamoDB On-Demand"
+  },
+
+  // Q59 – Lambda best practices (3 correct)
+  {
+    domain: "compute",
+    front: "Three key Lambda best practices for VPC, monitoring, and code reuse?",
+    back: "1. VPC-enabled Lambda needs a NAT Gateway to reach public internet/AWS APIs\n   (default Lambda uses AWS-owned VPC with public internet access)\n\n2. Use CloudWatch Alarms on ConcurrentExecutions / Invocations to detect spikes\n\n3. Use Lambda Layers for reusable code shared across multiple functions\n\nDo NOT believe:\n• Lambda cannot be deployed as container images → FALSE (supported since 2020)\n• Over-provision function timeout → AWS says DO NOT — match timeout to actual runtime",
+    hint: "VPC Lambda + NAT | ConcurrentExecutions alarm | Layers for shared code"
+  },
+
+  // Q60 – Trust policy is IAM's only resource-based policy
+  {
+    domain: "security",
+    front: "What is the ONLY resource-based policy that IAM itself supports?",
+    back: "Trust Policy (Role Trust Policy).\n\n• Defines which principals can ASSUME an IAM role\n• Attached to IAM roles only\n• IAM role = identity + resource → needs both trust policy + identity-based policy\n\nDo NOT confuse with:\n• ACL (Access Control List): used by S3, VPC — not an IAM resource-based policy\n• Permissions Boundary: limits max permissions, does not grant access\n• SCP (Service Control Policy): AWS Organizations level, not IAM",
+    hint: "IAM's only resource-based policy = Trust Policy on a role"
+  },
+
+  // Q62 – EventBridge for SaaS decoupling
+  {
+    domain: "integration",
+    front: "SaaS app feeds events to in-house AND third-party apps — which AWS service decouples this asynchronously?",
+    back: "Amazon EventBridge.\n\n• ONLY event service with native third-party SaaS integration\n• Ingests events from 90+ AWS services automatically\n• Supports 15+ AWS targets (Lambda, SQS, SNS, Kinesis…)\n• JSON-based event schema with flexible routing rules\n\nDo NOT use:\n• SNS: no third-party SaaS integration\n• SQS: queue only, no SaaS integration\n• ELB: synchronous load balancing, not event-driven",
+    hint: "SaaS + AWS event routing = EventBridge (only service with SaaS integration)"
+  },
+
+  // Q63 – ASG for dynamic scaling, not CloudFront
+  {
+    domain: "compute",
+    front: "Website with highly dynamic content expects 10x traffic spike. Best solution?",
+    back: "Auto Scaling Group (ASG).\n\n• Automatically adds/removes EC2 instances based on demand\n• Handles any traffic spike, including 10x\n\nDo NOT use:\n• CloudFront: CDN caches STATIC content — useless for highly dynamic content\n• S3: static hosting only, cannot run dynamic applications\n• Route 53 Multi-Value: DNS load distribution, not compute scaling",
+    hint: "Dynamic content + traffic spike = ASG | CloudFront is for static/cached content"
+  },
+
+  // Q65 – RDS SSL for data-in-transit
+  {
+    domain: "security",
+    front: "How do you secure data-in-transit between EC2 and Amazon RDS PostgreSQL?",
+    back: "Configure Amazon RDS to use SSL/TLS.\n\n• RDS auto-installs an SSL certificate on the instance\n• Client connects using --ssl_ca flag (MySQL) or SSL mode (PostgreSQL)\n• Can force all connections to use SSL\n\nDo NOT confuse with:\n• KMS encryption: protects data AT REST, not in transit\n• IAM DB authentication: authenticates users, does not encrypt the channel\n• Security group changes: network access control, not encryption",
+    hint: "In-transit encryption = SSL on RDS | At-rest encryption = KMS"
   }
 ];
