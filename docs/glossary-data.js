@@ -464,6 +464,230 @@ const glossaryTerms = [
       "Schedule jobs or trigger based on events",
       "Write transformations in Python or Scala"
     ]
+  },
+
+  // ── GAP-FILL GLOSSARY TERMS (SAA-C03 Complete Coverage) ─────────────────
+
+  {
+    term: "Amazon FSx",
+    short: "Fully managed third-party file systems",
+    definition: "Amazon FSx provides fully managed third-party file systems. FSx for Windows File Server provides a Windows-native SMB file system. FSx for Lustre provides a high-performance parallel file system for HPC and ML workloads. FSx for NetApp ONTAP and FSx for OpenZFS are also available.",
+    category: "storage",
+    examRelevant: true,
+    examples: [
+      "FSx for Windows: SMB shares for Windows workloads, AD integration",
+      "FSx for Lustre: HPC, ML training, sub-millisecond latency",
+      "FSx for Lustre can be linked to S3 for data processing pipelines",
+      "Use FSx for Windows when migrating on-premises Windows file servers"
+    ]
+  },
+  {
+    term: "AWS Backup",
+    short: "Centralized managed backup across AWS services",
+    definition: "AWS Backup is a fully managed service that centralizes and automates data protection across AWS services and hybrid workloads. It supports EC2, EBS, RDS, DynamoDB, EFS, FSx, Storage Gateway, and more from a single console.",
+    category: "management",
+    examRelevant: true,
+    examples: [
+      "Create backup plans with schedules and retention rules",
+      "Cross-region and cross-account backup copies",
+      "Backup vault for immutable backups (backup vault lock)",
+      "Centralize backup compliance reporting"
+    ]
+  },
+  {
+    term: "AWS Organizations",
+    short: "Multi-account management and governance",
+    definition: "AWS Organizations lets you centrally manage multiple AWS accounts. It enables consolidated billing, account grouping via Organizational Units (OUs), and policy enforcement via Service Control Policies (SCPs). SCPs set the maximum permissions for accounts — they do not grant permissions but restrict what can be done.",
+    category: "security",
+    examRelevant: true,
+    examples: [
+      "SCP to deny all regions except us-east-1 across all accounts",
+      "SCP to prevent disabling CloudTrail",
+      "Consolidated billing for volume discounts on Reserved Instances",
+      "Use OUs to apply policies to groups of accounts (Dev, Prod, Security)"
+    ]
+  },
+  {
+    term: "AWS Step Functions",
+    short: "Serverless workflow orchestration service",
+    definition: "AWS Step Functions is a serverless orchestration service that lets you coordinate multiple AWS services into workflows (state machines). Supports Standard Workflows (long-running, exactly-once) and Express Workflows (high-volume, at-least-once).",
+    category: "integration",
+    examRelevant: true,
+    examples: [
+      "Orchestrate multi-step ETL pipelines",
+      "Human approval steps in automated workflows",
+      "Retry and error handling built-in",
+      "Replace complex Lambda chaining with visual workflows"
+    ]
+  },
+  {
+    term: "AWS Secrets Manager",
+    short: "Rotate, manage, and retrieve secrets automatically",
+    definition: "AWS Secrets Manager helps you protect secrets needed to access applications, services, and IT resources. It enables automatic rotation of secrets (database credentials, API keys) without application changes. Unlike SSM Parameter Store, Secrets Manager is designed specifically for secrets with built-in rotation.",
+    category: "security",
+    examRelevant: true,
+    examples: [
+      "Auto-rotate RDS database passwords every 30 days",
+      "Store and retrieve API keys securely",
+      "Cross-account secret sharing",
+      "Secrets Manager vs Parameter Store: Secrets Manager = rotation + higher cost; Parameter Store = config + cheaper"
+    ]
+  },
+  {
+    term: "Amazon Inspector",
+    short: "Automated vulnerability assessment for EC2 and containers",
+    definition: "Amazon Inspector is an automated vulnerability management service that continuously scans AWS workloads for software vulnerabilities and unintended network exposure. It covers EC2 instances, container images in ECR, and Lambda functions.",
+    category: "security",
+    examRelevant: true,
+    examples: [
+      "Scan EC2 for OS and application CVEs",
+      "Scan ECR container images for vulnerabilities",
+      "Prioritize findings by severity",
+      "Integrates with Security Hub for centralized view"
+    ]
+  },
+  {
+    term: "AWS Config",
+    short: "Track resource configuration changes and compliance",
+    definition: "AWS Config continuously monitors and records AWS resource configurations and allows you to evaluate them against desired configurations. It maintains a history of configuration changes and can trigger remediation actions. Use Config for compliance auditing and change management.",
+    category: "management",
+    examRelevant: true,
+    examples: [
+      "Alert when S3 bucket becomes publicly accessible",
+      "Track EC2 security group changes over time",
+      "Auto-remediate non-compliant resources with SSM Automation",
+      "Config vs CloudTrail: Config = WHAT changed; CloudTrail = WHO made the API call"
+    ]
+  },
+  {
+    term: "AWS Security Hub",
+    short: "Centralized cloud security posture management",
+    definition: "AWS Security Hub provides a comprehensive view of your security state across AWS accounts. It aggregates findings from GuardDuty, Inspector, Macie, IAM Access Analyzer, and third-party tools into a single dashboard with automated compliance checks against CIS, PCI-DSS, and AWS best practices.",
+    category: "security",
+    examRelevant: true,
+    examples: [
+      "Aggregate GuardDuty + Inspector + Macie findings in one place",
+      "Automated CIS benchmark compliance checks",
+      "Send findings to EventBridge for automated remediation",
+      "Multi-account security posture management"
+    ]
+  },
+  {
+    term: "AWS DataSync",
+    short: "Automated online data transfer between on-prem and AWS",
+    definition: "AWS DataSync is an online data transfer service that simplifies, automates, and accelerates copying data between on-premises storage and AWS storage services (S3, EFS, FSx). It supports NFS, SMB, HDFS, and object storage. Transfers are encrypted and validated.",
+    category: "storage",
+    examRelevant: true,
+    examples: [
+      "Migrate NFS shares to Amazon EFS",
+      "Sync on-premises SMB to FSx for Windows",
+      "Replicate data to S3 for backup or analytics",
+      "DataSync vs Storage Gateway: DataSync = one-time/scheduled migration; Gateway = ongoing hybrid access"
+    ]
+  },
+  {
+    term: "Amazon Macie",
+    short: "ML-powered sensitive data discovery in S3",
+    definition: "Amazon Macie uses machine learning to automatically discover, classify, and protect sensitive data in Amazon S3. It identifies PII (Personally Identifiable Information), financial data, credentials, and other sensitive content, and generates findings for remediation.",
+    category: "security",
+    examRelevant: true,
+    examples: [
+      "Discover PII data stored in S3 buckets",
+      "Alert on publicly accessible S3 buckets with sensitive data",
+      "GDPR and HIPAA compliance scanning",
+      "Integrates with Security Hub for centralized findings"
+    ]
+  },
+  {
+    term: "AWS DMS",
+    short: "Database Migration Service — migrate databases to AWS",
+    definition: "AWS Database Migration Service (DMS) helps you migrate databases to AWS quickly and securely. Supports homogeneous migrations (e.g., MySQL → MySQL) and heterogeneous migrations (e.g., Oracle → Aurora). The source database remains operational during migration (minimal downtime). Also supports S3 and Kinesis as targets for streaming data.",
+    category: "database",
+    examRelevant: true,
+    examples: [
+      "Migrate on-premises Oracle to Amazon Aurora PostgreSQL",
+      "Continuous replication for ongoing CDC (change data capture)",
+      "Use Schema Conversion Tool (SCT) for heterogeneous migrations",
+      "Stream S3 data to Kinesis Data Streams with no custom code"
+    ]
+  },
+  {
+    term: "Amazon RDS Proxy",
+    short: "Managed database proxy for connection pooling",
+    definition: "Amazon RDS Proxy is a fully managed, highly available database proxy that pools and shares database connections. It improves application scalability, reduces failover time, and protects databases from connection exhaustion — especially useful with Lambda functions that create many short-lived connections.",
+    category: "database",
+    examRelevant: true,
+    examples: [
+      "Lambda + RDS: use RDS Proxy to avoid connection exhaustion",
+      "Reduces RDS failover time by up to 66%",
+      "Enforces IAM authentication for database access",
+      "Supports MySQL, PostgreSQL, MariaDB, SQL Server, Aurora"
+    ]
+  },
+  {
+    term: "AWS EventBridge",
+    short: "Serverless event bus for AWS, SaaS, and custom apps",
+    definition: "Amazon EventBridge is a serverless event bus service that connects application data from AWS services, SaaS applications, and custom apps. It routes events based on rules to targets like Lambda, SQS, SNS, Step Functions, and more. EventBridge Scheduler enables scheduled invocations without cron jobs.",
+    category: "integration",
+    examRelevant: true,
+    examples: [
+      "Route Salesforce events to Lambda for processing",
+      "Trigger workflows on EC2 state changes",
+      "EventBridge Scheduler: run tasks on schedule without CloudWatch Events",
+      "Dead-letter queues for failed event deliveries"
+    ]
+  },
+  {
+    term: "Disaster Recovery Strategies",
+    short: "RPO/RTO patterns: backup, pilot light, warm standby, active-active",
+    definition: "AWS DR strategies range from cheapest/slowest to most expensive/fastest: (1) Backup & Restore — backup data to S3, restore when needed; (2) Pilot Light — minimal core infrastructure always running; (3) Warm Standby — scaled-down full environment always running; (4) Active-Active (Multi-Site) — full production in multiple regions simultaneously.",
+    category: "architecture",
+    examRelevant: true,
+    examples: [
+      "Backup & Restore: lowest cost, highest RTO (hours)",
+      "Pilot Light: core DB replicated, apps stopped — RTO minutes",
+      "Warm Standby: scaled-down live copy — RTO seconds/minutes",
+      "Active-Active: zero downtime, highest cost — RTO near zero"
+    ]
+  },
+  {
+    term: "Amazon ECS / EKS",
+    short: "Container orchestration — ECS (AWS-native) vs EKS (Kubernetes)",
+    definition: "Amazon ECS (Elastic Container Service) is AWS-native container orchestration. Amazon EKS (Elastic Kubernetes Service) is managed Kubernetes. Both support EC2 launch type (you manage servers) and Fargate launch type (serverless containers). Choose ECS for simplicity, EKS for Kubernetes portability.",
+    category: "compute",
+    examRelevant: true,
+    examples: [
+      "ECS with Fargate: no server management, pay per task",
+      "EKS: portable across cloud providers using Kubernetes",
+      "ECS Task Definition: defines container image, CPU, memory, ports",
+      "Service Auto Scaling: scale tasks based on CPU/memory metrics"
+    ]
+  },
+  {
+    term: "AWS Elastic Beanstalk",
+    short: "PaaS — deploy apps without managing infrastructure",
+    definition: "AWS Elastic Beanstalk is a PaaS that automatically handles deployment, capacity provisioning, load balancing, and auto-scaling. Supports multiple deployment strategies: All-at-once (fastest, downtime), Rolling (no extra cost, some capacity lost), Rolling with additional batch (full capacity), Blue/Green (zero downtime, separate environment), Immutable (safest, new ASG).",
+    category: "compute",
+    examRelevant: true,
+    examples: [
+      "All-at-once: deploy to all at once, downtime occurs",
+      "Rolling: deploy in batches, reduced capacity during deploy",
+      "Blue/Green: deploy to separate environment, swap Route 53 DNS",
+      "Immutable: new ASG, safest rollback, highest cost"
+    ]
+  },
+  {
+    term: "AWS Cost Explorer",
+    short: "Visualize and analyze AWS costs and usage",
+    definition: "AWS Cost Explorer provides an interface to visualize, understand, and manage AWS costs and usage over time. It includes Reserved Instance recommendations, Savings Plans recommendations, and cost forecasting. Use Cost Anomaly Detection (built on ML) to get alerts when spend deviates from the baseline.",
+    category: "management",
+    examRelevant: true,
+    examples: [
+      "Analyze monthly spend by service, region, or tag",
+      "Get RI purchase recommendations based on usage",
+      "Cost Anomaly Detection: ML alerts on unexpected cost spikes",
+      "Forecast future spend based on historical patterns"
+    ]
   }
 ];
 
@@ -927,5 +1151,135 @@ const flashcards = [
     front: "How do you secure data-in-transit between EC2 and Amazon RDS PostgreSQL?",
     back: "Configure Amazon RDS to use SSL/TLS.\n\n• RDS auto-installs an SSL certificate on the instance\n• Client connects using --ssl_ca flag (MySQL) or SSL mode (PostgreSQL)\n• Can force all connections to use SSL\n\nDo NOT confuse with:\n• KMS encryption: protects data AT REST, not in transit\n• IAM DB authentication: authenticates users, does not encrypt the channel\n• Security group changes: network access control, not encryption",
     hint: "In-transit encryption = SSL on RDS | At-rest encryption = KMS"
+  },
+
+  // ── SAA-C03 GAP FLASHCARDS ────────────────────────────────────────────────
+
+  // DR Strategies
+  {
+    domain: "architecture",
+    front: "What are the 4 AWS Disaster Recovery strategies in order of cost/speed?",
+    back: "Cheapest → Most Expensive (slowest → fastest RTO):\n\n1. Backup & Restore\n   • S3 backups, restore on demand\n   • RTO: hours | RPO: hours\n\n2. Pilot Light\n   • Core DB replicating, apps stopped\n   • RTO: minutes | RPO: minutes\n\n3. Warm Standby\n   • Scaled-down live copy always running\n   • RTO: seconds/minutes | RPO: seconds\n\n4. Active-Active (Multi-Site)\n   • Full production in multiple regions\n   • RTO: near zero | RPO: near zero",
+    hint: "Backup→Pilot→Warm→Active = cheap/slow to expensive/fast"
+  },
+
+  // Secrets Manager vs Parameter Store
+  {
+    domain: "security",
+    front: "Secrets Manager vs SSM Parameter Store — when do you use each?",
+    back: "Secrets Manager:\n• Built for SECRETS (passwords, API keys, tokens)\n• Automatic rotation built-in (RDS, Redshift, etc.)\n• Higher cost (~$0.40/secret/month)\n• Cross-account sharing\n\nSSM Parameter Store:\n• Built for CONFIGURATION + secrets\n• No built-in rotation (manual via Lambda)\n• Free tier available (standard params)\n• Hierarchical key structure\n\nKeyword 'automatic rotation' → Secrets Manager\nKeyword 'config values + low cost' → Parameter Store",
+    hint: "Auto rotation = Secrets Manager | Config + cheap = Parameter Store"
+  },
+
+  // ECS vs EKS vs Fargate
+  {
+    domain: "compute",
+    front: "ECS vs EKS vs Fargate — when do you use each?",
+    back: "ECS (Elastic Container Service):\n• AWS-native Docker orchestration\n• Simpler, tighter AWS integration\n• Best for teams staying in AWS\n\nEKS (Elastic Kubernetes Service):\n• Managed Kubernetes\n• Portable across clouds\n• Best when you need Kubernetes features\n\nFargate:\n• Serverless compute for ECS OR EKS\n• No EC2 instances to manage\n• Pay per task CPU/memory\n• Best for variable, unpredictable workloads",
+    hint: "ECS=AWS-native | EKS=Kubernetes | Fargate=serverless containers"
+  },
+
+  // Step Functions
+  {
+    domain: "integration",
+    front: "When do you use AWS Step Functions instead of Lambda chaining?",
+    back: "Use Step Functions when:\n• Workflow has multiple sequential/parallel steps\n• Need retry logic and error handling\n• Human approval steps required\n• Long-running workflows (> 15 min Lambda limit)\n• Need visual workflow debugging\n\nStandard Workflows: long-running, exactly-once, auditable\nExpress Workflows: high-volume, at-least-once, short duration\n\nKeyword 'orchestrate', 'coordinate services', 'workflow' → Step Functions",
+    hint: "Multi-step workflow + retry + error handling = Step Functions"
+  },
+
+  // AWS Backup
+  {
+    domain: "management",
+    front: "What is AWS Backup and when do you use it?",
+    back: "AWS Backup centralizes backup management across:\nEC2, EBS, RDS, Aurora, DynamoDB, EFS, FSx, Storage Gateway\n\nKey features:\n• Backup plans: schedules + retention rules\n• Cross-region + cross-account copies\n• Backup vault lock: immutable backups (WORM)\n• Compliance reporting dashboard\n\nKeyword 'centralized backup', 'cross-region backup', 'backup compliance' → AWS Backup",
+    hint: "Centralized backup across all AWS services = AWS Backup"
+  },
+
+  // Organizations & SCPs
+  {
+    domain: "security",
+    front: "What are AWS Organizations SCPs and how do they differ from IAM policies?",
+    back: "SCPs (Service Control Policies):\n• Applied at the OU or account level via Organizations\n• Set MAXIMUM permissions — they do NOT grant permissions\n• Even the account root user is restricted by SCPs\n• Deny list approach: deny what you don't want\n\nIAM Policies:\n• Grant/deny permissions to users, groups, roles\n• Work within what SCPs allow\n• Cannot override an SCP deny\n\nCombined: permission = SCP allows AND IAM allows",
+    hint: "SCP = ceiling on what accounts can do | IAM = what users can do"
+  },
+
+  // Elastic Beanstalk deployment strategies
+  {
+    domain: "compute",
+    front: "What are Elastic Beanstalk's deployment strategies and their trade-offs?",
+    back: "1. All-at-once: fastest, causes downtime, free\n2. Rolling: no extra cost, reduced capacity during deploy\n3. Rolling with additional batch: full capacity, slightly more cost\n4. Immutable: new ASG, safest rollback, doubles capacity briefly\n5. Blue/Green: new environment, swap Route 53 CNAME, zero downtime\n6. Traffic splitting (Canary): % traffic to new version, gradual\n\nKeyword 'zero downtime' → Blue/Green or Traffic Splitting\nKeyword 'safest rollback' → Immutable\nKeyword 'fastest' → All-at-once",
+    hint: "Zero downtime=Blue/Green | Safest rollback=Immutable | Fastest=All-at-once"
+  },
+
+  // Cost Explorer vs Budgets vs Cost Anomaly Detection
+  {
+    domain: "management",
+    front: "Cost Explorer vs AWS Budgets vs Cost Anomaly Detection — what's each for?",
+    back: "Cost Explorer:\n• Visualize + analyze past and forecasted spend\n• RI/Savings Plans purchase recommendations\n• Historical trends and usage patterns\n\nAWS Budgets:\n• Set ALERTS when cost/usage/RI/SP thresholds are crossed\n• Proactive: warns BEFORE you overspend\n• Can trigger actions (e.g. stop EC2s)\n\nCost Anomaly Detection:\n• ML-powered: alerts on UNEXPECTED spend spikes\n• No threshold needed — learns your baseline\n\nKeyword 'analyze past spend' → Cost Explorer\nKeyword 'alert when budget exceeded' → AWS Budgets\nKeyword 'unexpected spike' → Cost Anomaly Detection",
+    hint: "Explore=analyze | Budgets=threshold alerts | Anomaly=ML spike detection"
+  },
+
+  // FSx for Windows vs FSx for Lustre
+  {
+    domain: "storage",
+    front: "FSx for Windows File Server vs FSx for Lustre — when do you use each?",
+    back: "FSx for Windows File Server:\n• Windows-native SMB file system\n• Active Directory integration\n• DFS namespaces support\n• Keyword: Windows workloads, SMB, AD integration\n\nFSx for Lustre:\n• High-performance parallel file system\n• Sub-millisecond latency, hundreds of GB/s throughput\n• Can link to S3 for data processing\n• Keyword: HPC, ML training, big data, genomics\n\nBoth: fully managed, highly available",
+    hint: "Windows+SMB+AD = FSx for Windows | HPC+ML+speed = FSx for Lustre"
+  },
+
+  // AWS Config vs CloudTrail
+  {
+    domain: "security",
+    front: "AWS Config vs AWS CloudTrail — what's the difference?",
+    back: "AWS CloudTrail:\n• Records WHO made WHICH API call and WHEN\n• Audit log of all AWS API activity\n• Who deleted the S3 bucket? Who changed the security group?\n\nAWS Config:\n• Records WHAT the resource configuration IS and HOW IT CHANGED\n• Compliance: is this S3 bucket publicly accessible? Was it yesterday?\n• Can auto-remediate non-compliant resources\n\nUse together:\nConfig = WHAT changed | CloudTrail = WHO changed it",
+    hint: "CloudTrail = WHO/WHEN (API calls) | Config = WHAT/HOW (resource state)"
+  },
+
+  // RDS Proxy
+  {
+    domain: "database",
+    front: "When should you use Amazon RDS Proxy?",
+    back: "Use RDS Proxy when:\n• Lambda functions connecting to RDS (Lambda creates many short-lived connections → connection exhaustion)\n• Applications with unpredictable connection spikes\n• Need faster failover (up to 66% faster than standard)\n• Want to enforce IAM auth for DB access\n\nHow it works:\n• Pools and shares existing DB connections\n• Sits between app and RDS/Aurora\n• Fully managed and highly available\n\nKeyword 'Lambda + RDS' → almost always means RDS Proxy",
+    hint: "Lambda + RDS connection exhaustion = RDS Proxy"
+  },
+
+  // VPN: Customer Gateway vs VGW
+  {
+    domain: "networking",
+    front: "What is the difference between Customer Gateway and Virtual Private Gateway in VPN?",
+    back: "Virtual Private Gateway (VGW):\n• AWS side of the Site-to-Site VPN\n• Attached to your VPC\n• Single VGW per VPC\n\nCustomer Gateway (CGW):\n• On-premises side of the VPN\n• Represents your physical router/firewall\n• You configure BGP or static routing\n\nSite-to-Site VPN = 2 tunnels between CGW and VGW\nFor redundancy: use 2 Customer Gateways\nFor scale: replace VGW with Transit Gateway (supports ECMP)",
+    hint: "VGW = AWS side | CGW = your on-premises router"
+  },
+
+  // Amazon Macie
+  {
+    domain: "security",
+    front: "What is Amazon Macie and when is it the right answer?",
+    back: "Amazon Macie:\n• ML-powered sensitive data discovery in S3\n• Finds PII, credentials, financial data, health records\n• Generates findings for publicly accessible buckets with sensitive data\n\nKeywords that point to Macie:\n• 'Discover sensitive data in S3'\n• 'PII detection'\n• 'GDPR/HIPAA compliance in S3'\n• 'Automatically classify S3 data'\n\nDo NOT confuse with:\n• GuardDuty: threat detection (malicious activity)\n• Inspector: vulnerability scanning (CVEs)\n• Config: configuration compliance",
+    hint: "Sensitive data + S3 + ML = Macie | Threats = GuardDuty | Vulns = Inspector"
+  },
+
+  // DataSync vs Storage Gateway
+  {
+    domain: "storage",
+    front: "AWS DataSync vs Storage Gateway — when do you use each?",
+    back: "AWS DataSync:\n• One-time or scheduled data MIGRATION\n• Online transfer: NFS/SMB on-prem → S3/EFS/FSx\n• Fast, encrypted, validated\n• Keyword: 'migrate', 'transfer', 'sync files to AWS'\n\nAWS Storage Gateway:\n• Ongoing HYBRID ACCESS — on-prem apps accessing AWS storage\n• File Gateway: NFS/SMB → S3\n• Volume Gateway: iSCSI block storage\n• Tape Gateway: virtual tape library\n• Keyword: 'hybrid', 'on-prem apps need cloud storage'",
+    hint: "DataSync = migrate/transfer | Storage Gateway = ongoing hybrid access"
+  },
+
+  // Cost allocation tags
+  {
+    domain: "management",
+    front: "How do you track AWS costs by department, project, or team?",
+    back: "Use Cost Allocation Tags.\n\n• Tag resources with key-value pairs (e.g. Department=Engineering)\n• Activate tags in Billing Console → show in Cost Explorer\n• Two types:\n  1. AWS-generated tags (e.g. createdBy)\n  2. User-defined tags (e.g. Project=Phoenix)\n\nBest practices:\n• Tag everything at creation\n• Enforce tagging with AWS Config rules or SCPs\n• Use AWS Organizations Tag Policies for consistency\n\nKeyword 'track costs by team/project' → Cost Allocation Tags",
+    hint: "Cost by team/project = Cost Allocation Tags activated in Billing"
+  },
+
+  // Graviton instances
+  {
+    domain: "compute",
+    front: "What are AWS Graviton instances and why should you use them?",
+    back: "AWS Graviton:\n• ARM-based processors designed by AWS\n• Up to 40% better price-performance vs x86\n• Graviton2: M6g, C6g, R6g families\n• Graviton3: M7g, C7g, R7g families\n\nBest for:\n• Web servers, microservices, containerized apps\n• Databases (MySQL, PostgreSQL)\n• Any Linux-based workload\n\nNOT for:\n• Windows workloads (x86 only)\n• Apps requiring x86 binary compatibility\n\nKeyword 'cost-optimized compute', 'best price-performance' → Graviton",
+    hint: "Best price-performance for Linux = Graviton instances"
   }
 ];

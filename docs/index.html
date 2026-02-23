@@ -726,6 +726,92 @@
         <div class="insight">🔑 <strong>Keywords:</strong> RDS, SSL, TLS, Data-in-Transit, Encryption, In-Transit vs At-Rest, PostgreSQL, ssl_ca, Force SSL</div>
       </div>
 
+      <!-- SAA-C03 Gap Topics Card -->
+      <div class="card">
+        <div class="card-title">🚀 SAA-C03 Complete Coverage — Gap Topics</div>
+        <p style="color:var(--muted)">Critical topics not fully covered by the practice tests. Master these for a high score.</p>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">Disaster Recovery — 4 Strategies (RPO / RTO)</h3>
+        <div class="insight">✅ <strong>Answer:</strong> Backup &amp; Restore → Pilot Light → Warm Standby → Active-Active (cheapest/slowest to costliest/fastest).</div>
+        <div class="insight">💡 <strong>Why:</strong> RPO = how much data you can lose. RTO = how fast you recover. Backup &amp; Restore: hours. Pilot Light: core DB replicating, apps off, RTO minutes. Warm Standby: scaled-down live clone, RTO seconds. Active-Active: full production in 2+ regions, RTO ~zero.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> RPO, RTO, Backup &amp; Restore, Pilot Light, Warm Standby, Active-Active, Multi-Site, Disaster Recovery, Cross-Region</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">Secrets Manager vs SSM Parameter Store</h3>
+        <div class="insight">✅ <strong>Answer:</strong> Secrets Manager for automatic credential rotation. Parameter Store for config values and low-cost secret storage.</div>
+        <div class="insight">💡 <strong>Why:</strong> Secrets Manager has built-in rotation for RDS/Redshift/DocumentDB and charges ~$0.40/secret/month. Parameter Store is free for standard parameters, supports hierarchy (/app/prod/db), but has no built-in rotation. Keyword 'rotate automatically' always points to Secrets Manager.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> Secrets Manager, Parameter Store, Automatic Rotation, Credentials, API Keys, RDS Password Rotation, SecureString, SSM</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">AWS Organizations &amp; Service Control Policies (SCPs)</h3>
+        <div class="insight">✅ <strong>Answer:</strong> SCPs set the MAXIMUM permissions ceiling for entire accounts — they do NOT grant permissions and restrict even the root user.</div>
+        <div class="insight">💡 <strong>Why:</strong> Even if an IAM policy allows an action, an SCP deny overrides it. Common exam scenario: 'prevent any account from disabling CloudTrail' or 'restrict regions to us-east-1 only' → attach SCP to root OU. IAM policies work within what SCPs permit.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> SCPs, Organizations, OU, Organizational Unit, Permission Ceiling, Root User Restriction, Deny All Regions, Consolidated Billing</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">Elastic Beanstalk Deployment Strategies</h3>
+        <div class="insight">✅ <strong>Answer:</strong> All-at-once (fastest, downtime) → Rolling → Rolling+batch → Immutable (safest rollback) → Blue/Green (zero downtime).</div>
+        <div class="insight">💡 <strong>Why:</strong> Blue/Green swaps Route 53 CNAME between two environments — zero downtime, easy rollback. Immutable creates a fresh ASG then swaps — safest but doubles capacity briefly. Traffic Splitting (Canary) sends a % of traffic to new version. All-at-once is fastest but causes downtime in production.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> Elastic Beanstalk, Blue/Green, Immutable, Rolling, All-at-once, Traffic Splitting, Canary, Zero Downtime, Deployment Policy</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">ECS vs EKS vs Fargate</h3>
+        <div class="insight">✅ <strong>Answer:</strong> ECS = AWS-native containers. EKS = managed Kubernetes. Fargate = serverless compute for either (no EC2 to manage).</div>
+        <div class="insight">💡 <strong>Why:</strong> ECS is simpler with tight AWS integration. EKS is for teams already using Kubernetes or needing multi-cloud portability. Fargate removes server management for both. Keyword 'serverless containers' = Fargate. Keyword 'Kubernetes' = EKS. Keyword 'no server management, AWS-native' = ECS + Fargate.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> ECS, EKS, Fargate, Kubernetes, Serverless Containers, Task Definition, Service Auto Scaling, Container Orchestration</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">AWS Step Functions</h3>
+        <div class="insight">✅ <strong>Answer:</strong> Use Step Functions to orchestrate multi-step workflows with retry, error handling, and parallel execution — especially when Lambda chaining gets complex.</div>
+        <div class="insight">💡 <strong>Why:</strong> Lambda max runtime is 15 min. Step Functions Standard Workflows can run for up to 1 year. Express Workflows handle high-volume, short-duration tasks. Built-in retry logic, error catching, and human approval states. Keywords: 'long-running workflow', 'orchestrate multiple services', 'human approval' → Step Functions.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> Step Functions, State Machine, Workflow Orchestration, Standard Workflow, Express Workflow, Retry, Error Handling, Human Approval</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">AWS Backup</h3>
+        <div class="insight">✅ <strong>Answer:</strong> AWS Backup centralizes backup management across EC2, EBS, RDS, DynamoDB, EFS, FSx, and Storage Gateway from one console.</div>
+        <div class="insight">💡 <strong>Why:</strong> Before AWS Backup, you had to configure backup policies service by service. AWS Backup creates backup plans with schedules and retention. Backup Vault Lock enables WORM (Write Once Read Many) for immutable backups — cannot be deleted even by admin. Keyword 'centralized backup compliance' or 'cross-account backup' → AWS Backup.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> AWS Backup, Backup Plan, Backup Vault, Vault Lock, WORM, Cross-Region Backup, Cross-Account Backup, Centralized Backup</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">FSx for Windows vs FSx for Lustre</h3>
+        <div class="insight">✅ <strong>Answer:</strong> FSx for Windows = SMB + Active Directory for Windows workloads. FSx for Lustre = sub-millisecond HPC/ML file system.</div>
+        <div class="insight">💡 <strong>Why:</strong> FSx for Windows supports DFS namespaces, AD integration, and SMB protocol — ideal for migrating Windows file servers. FSx for Lustre delivers hundreds of GB/s throughput, integrates with S3 for data lake pipelines, and is used for ML training, genomics, financial simulations. Keyword 'Windows file server on AWS' → FSx Windows. Keyword 'HPC, ML training, sub-ms latency' → FSx Lustre.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> FSx for Windows, FSx for Lustre, SMB, Active Directory, HPC, ML Training, Sub-millisecond, S3 Integration, Parallel File System</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">Amazon RDS Proxy</h3>
+        <div class="insight">✅ <strong>Answer:</strong> Use RDS Proxy between Lambda and RDS to pool connections and prevent connection exhaustion.</div>
+        <div class="insight">💡 <strong>Why:</strong> Lambda can scale to thousands of concurrent executions, each opening a new DB connection — this exhausts RDS max connections. RDS Proxy pools connections, reuses them, and reduces failover time by up to 66%. Supports IAM authentication. If exam says 'Lambda + RDS + connection limit' → answer is RDS Proxy.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> RDS Proxy, Connection Pooling, Lambda RDS, Connection Exhaustion, Faster Failover, IAM Auth, Managed Proxy</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">AWS Config vs CloudTrail</h3>
+        <div class="insight">✅ <strong>Answer:</strong> CloudTrail = WHO made the API call. Config = WHAT the resource configuration is and how it changed.</div>
+        <div class="insight">💡 <strong>Why:</strong> CloudTrail logs every API call (who, when, from where). Config continuously records resource state and evaluates compliance rules — e.g. 'is this security group open to 0.0.0.0/0?'. Config can auto-remediate via SSM Automation. Use both together: Config detects the misconfiguration, CloudTrail shows who caused it.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> AWS Config, CloudTrail, Configuration History, Compliance Rules, Auto-Remediation, Resource State, API Audit Log, WHAT vs WHO</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">Amazon Macie</h3>
+        <div class="insight">✅ <strong>Answer:</strong> Macie uses ML to discover and classify sensitive data (PII, credentials, financial) in Amazon S3.</div>
+        <div class="insight">💡 <strong>Why:</strong> Macie scans S3 objects, identifies sensitive content, and alerts on exposed data. GDPR/HIPAA compliance in S3 → Macie. Do NOT confuse: GuardDuty = threat/malicious activity. Inspector = CVE vulnerabilities in EC2/containers. Config = resource compliance. Macie = sensitive DATA in S3.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> Macie, PII, Sensitive Data, S3 Classification, GDPR, HIPAA, Data Discovery, ML-powered, Personally Identifiable Information</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">Cost Explorer vs Budgets vs Cost Anomaly Detection</h3>
+        <div class="insight">✅ <strong>Answer:</strong> Cost Explorer = analyze + forecast. AWS Budgets = threshold alerts. Cost Anomaly Detection = ML-powered unexpected spike alerts.</div>
+        <div class="insight">💡 <strong>Why:</strong> Cost Explorer shows historical spend, trends, and RI/Savings Plans recommendations. Budgets sends alerts when you hit a defined $ threshold and can trigger automated actions. Cost Anomaly Detection requires no manual threshold — it learns your baseline and alerts when spend deviates unexpectedly. Keyword 'unexpected cost spike' → Anomaly Detection.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> Cost Explorer, AWS Budgets, Cost Anomaly Detection, RI Recommendations, Savings Plans, Budget Actions, Forecast, Cost Allocation Tags</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">Cost Allocation Tags</h3>
+        <div class="insight">✅ <strong>Answer:</strong> Activate Cost Allocation Tags in Billing Console to track spend by team, project, or department in Cost Explorer.</div>
+        <div class="insight">💡 <strong>Why:</strong> Without tags, all costs are mixed together. Tags like Environment=Production, Team=DataEng allow Cost Explorer to break down spend. Must be ACTIVATED in Billing Console to appear in reports. Use AWS Config rules or SCPs (via Tag Policies) to enforce tagging. Keyword 'showback/chargeback', 'cost by team' → Cost Allocation Tags.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> Cost Allocation Tags, Tag Policy, Chargeback, Showback, Billing Console Activation, Cost Explorer Tags, AWS Organizations Tag Policies</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">AWS Graviton (ARM-based Instances)</h3>
+        <div class="insight">✅ <strong>Answer:</strong> Graviton instances (M6g, C7g, R7g, etc.) deliver up to 40% better price-performance than equivalent x86 instances for Linux workloads.</div>
+        <div class="insight">💡 <strong>Why:</strong> AWS designed Graviton processors in-house using ARM architecture. They cost less and perform better for most Linux/containerized workloads. NOT for Windows (x86 only) or apps requiring x86 binary compatibility. Keyword 'best price-performance for compute' or 'reduce EC2 cost without Reserved Instances' → Graviton.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> Graviton, ARM, M6g, C7g, R7g, Price-Performance, 40% cheaper, Linux, Containerized, AWS-designed</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">DataSync vs Storage Gateway</h3>
+        <div class="insight">✅ <strong>Answer:</strong> DataSync = migrate/transfer data to AWS. Storage Gateway = ongoing hybrid access between on-prem and AWS storage.</div>
+        <div class="insight">💡 <strong>Why:</strong> DataSync is for moving data: NFS/SMB on-prem to S3/EFS/FSx. It's fast, encrypted, and validates data integrity. Storage Gateway keeps on-prem apps working while storing data in AWS — File Gateway (S3), Volume Gateway (EBS snapshots), Tape Gateway (Glacier). Keyword 'migrate files to AWS' → DataSync. Keyword 'on-prem apps need AWS storage' → Storage Gateway.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> DataSync, Storage Gateway, Migration, Hybrid Storage, NFS, SMB, File Gateway, Volume Gateway, One-Time Transfer, Ongoing Access</div>
+
+        <h3 style="margin-top:1rem;margin-bottom:.5rem;color:var(--aws-dark)">VPN: Customer Gateway vs Virtual Private Gateway</h3>
+        <div class="insight">✅ <strong>Answer:</strong> VGW (Virtual Private Gateway) = AWS side. CGW (Customer Gateway) = your on-premises router/firewall side.</div>
+        <div class="insight">💡 <strong>Why:</strong> Site-to-Site VPN creates 2 encrypted tunnels between CGW and VGW for redundancy. For HA: use 2 CGWs. For throughput scale: replace VGW with Transit Gateway (supports ECMP across multiple VPN tunnels). VGW does NOT support ECMP — only TGW does.</div>
+        <div class="insight">🔑 <strong>Keywords:</strong> Customer Gateway, Virtual Private Gateway, VGW, CGW, Site-to-Site VPN, IPSec, BGP, Static Routing, Redundancy, Two Tunnels</div>
+      </div>
+
       <!-- Scenario to Service Mapping -->
       <div class="card">
         <div class="card-title">🎯 Common Scenarios → AWS Service Mapping</div>
