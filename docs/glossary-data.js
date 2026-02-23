@@ -688,6 +688,175 @@ const glossaryTerms = [
       "Cost Anomaly Detection: ML alerts on unexpected cost spikes",
       "Forecast future spend based on historical patterns"
     ]
+  },
+  {
+    term: "AWS Transit Gateway",
+    short: "Central hub for connecting VPCs and on-premises networks",
+    definition: "AWS Transit Gateway acts as a cloud router — connect thousands of VPCs and on-premises networks through a single gateway. It supports transitive routing (unlike VPC Peering), route tables per attachment, multicast, and works with Direct Connect and VPN. Use when you have more than 2-3 VPCs to connect.",
+    category: "networking",
+    examRelevant: true,
+    examples: [
+      "Hub-and-spoke model: multiple VPCs → single TGW",
+      "Replace complex VPC Peering mesh with TGW",
+      "TGW + Direct Connect Gateway for hybrid multi-region",
+      "Inter-region peering via TGW peering attachments"
+    ]
+  },
+  {
+    term: "AWS Storage Gateway",
+    short: "Hybrid cloud storage connecting on-premises to AWS",
+    definition: "AWS Storage Gateway bridges on-premises environments to AWS cloud storage. Three types: (1) S3 File Gateway — NFS/SMB access to S3; (2) Volume Gateway — iSCSI block storage with Cached (primary in S3, hot cache local) or Stored (full dataset local, async backup to S3) modes; (3) Tape Gateway — virtual tape library backed by S3/Glacier.",
+    category: "storage",
+    examRelevant: true,
+    examples: [
+      "Cached Volumes: minimize on-prem storage, primary data in S3",
+      "Stored Volumes: full local copy + async snapshots to S3",
+      "Tape Gateway: replace physical tape library with virtual tapes",
+      "S3 File Gateway: on-prem apps access S3 via NFS/SMB"
+    ]
+  },
+  {
+    term: "Amazon Cognito",
+    short: "User authentication and identity management for apps",
+    definition: "Amazon Cognito provides authentication, authorization, and user management for web and mobile apps. Two components: (1) User Pools — user directory with sign-up/sign-in, MFA, social login (Google, Facebook); (2) Identity Pools (Federated Identities) — grant temporary AWS credentials to access AWS services directly from client apps.",
+    category: "security",
+    examRelevant: true,
+    examples: [
+      "User Pools: add sign-up/sign-in to your app",
+      "Identity Pools: give users temp IAM credentials to call S3/DynamoDB",
+      "Social federation: login with Google/Facebook via User Pool",
+      "Keyword 'mobile app auth' or 'web identity federation' → Cognito"
+    ]
+  },
+  {
+    term: "AWS Global Accelerator",
+    short: "Improve global application availability and performance using AWS network",
+    definition: "AWS Global Accelerator routes traffic through the AWS global network backbone instead of the public internet, reducing latency and improving availability. It provides two static Anycast IPs that route to optimal endpoints (ALB, NLB, EC2) based on health, geography, and routing policies. Unlike CloudFront, it works with non-HTTP (TCP/UDP) traffic and provides static IPs.",
+    category: "networking",
+    examRelevant: true,
+    examples: [
+      "Static IPs that front multi-region ALBs — no DNS caching issues",
+      "Non-HTTP apps (gaming, IoT, VoIP) needing low latency globally",
+      "Instant failover via traffic dial — no TTL wait",
+      "CloudFront = content caching; Global Accelerator = network routing"
+    ]
+  },
+  {
+    term: "AWS Snow Family",
+    short: "Physical devices for large-scale data migration to/from AWS",
+    definition: "AWS Snow Family are physical edge computing and data migration devices. Snowcone: smallest, 8TB, edge compute + transfer. Snowball Edge Storage Optimized: 80TB, for large migrations. Snowball Edge Compute Optimized: GPU-enabled for edge ML/processing. Snowmobile: 100PB truck for exabyte-scale migrations. Use when network transfer would take weeks/months.",
+    category: "migration",
+    examRelevant: true,
+    examples: [
+      "Snowball Edge: migrate 80TB datacenter to S3 without WAN",
+      "Snowcone: collect data in disconnected/remote locations",
+      "Snowmobile: migrate entire datacenter (>10PB) to AWS",
+      "Keyword 'limited bandwidth', 'weeks to transfer' → Snow Family"
+    ]
+  },
+  {
+    term: "Amazon EMR",
+    short: "Managed big data platform using Hadoop, Spark, and more",
+    definition: "Amazon EMR (Elastic MapReduce) is a managed cluster platform for processing big data using open-source frameworks like Apache Hadoop, Spark, Hive, HBase, Flink, and Presto. It auto-provisions EC2 instances (including Spot), scales clusters, and integrates with S3 (as data lake), DynamoDB, and Redshift. Best for ETL, ML training, log analysis, and interactive queries at petabyte scale.",
+    category: "analytics",
+    examRelevant: true,
+    examples: [
+      "Run Spark ETL jobs on petabytes of S3 data",
+      "Hive: SQL-like queries on large datasets",
+      "Use Spot Instances for cost-efficient transient clusters",
+      "Keyword 'Hadoop', 'Spark', 'big data processing' → EMR"
+    ]
+  },
+  {
+    term: "Amazon MQ",
+    short: "Managed message broker for standard protocols (MQTT, AMQP, STOMP)",
+    definition: "Amazon MQ is a managed message broker service supporting Apache ActiveMQ and RabbitMQ. It supports industry-standard messaging protocols: JMS, AMQP, STOMP, MQTT, OpenWire, WebSocket. Use Amazon MQ when migrating existing on-premises applications that use these protocols (lift-and-shift) — no code changes needed. Use SQS/SNS for new cloud-native apps.",
+    category: "integration",
+    examRelevant: true,
+    examples: [
+      "Lift-and-shift: on-prem ActiveMQ → Amazon MQ, zero code change",
+      "MQTT for IoT device messaging",
+      "AMQP for financial messaging systems",
+      "Keyword 'existing broker', 'MQTT', 'AMQP', 'no code change' → Amazon MQ"
+    ]
+  },
+  {
+    term: "AWS Trusted Advisor",
+    short: "Real-time guidance for AWS best practices across 5 pillars",
+    definition: "AWS Trusted Advisor inspects your AWS environment and provides recommendations across 5 categories: Cost Optimization, Performance, Security, Fault Tolerance, and Service Limits. Free checks are available to all; full checks require Business or Enterprise Support. Key checks: unused EC2, open S3 buckets, IAM use, MFA on root, RDS Multi-AZ, EBS snapshots.",
+    category: "management",
+    examRelevant: true,
+    examples: [
+      "Identify idle/underutilized EC2 instances → cost savings",
+      "Security: flag open security groups, S3 public buckets",
+      "Service Limits: warn before you hit resource quotas",
+      "Keyword 'best practice check', 'cost recommendation' → Trusted Advisor"
+    ]
+  },
+  {
+    term: "SSM Parameter Store",
+    short: "Secure hierarchical storage for configuration data and secrets",
+    definition: "AWS Systems Manager Parameter Store provides secure, hierarchical storage for configuration data and secrets. Two tiers: Standard (free, 10KB limit, no rotation) and Advanced (paid, 8KB, supports parameter policies). Use SecureString type with KMS for encrypted values. Unlike Secrets Manager, no automatic rotation built-in. Best for app config, feature flags, non-sensitive parameters.",
+    category: "security",
+    examRelevant: true,
+    examples: [
+      "Store DB connection strings, API endpoints, feature flags",
+      "SecureString: encrypt with KMS, IAM-controlled access",
+      "Parameter Store = free, no rotation; Secrets Manager = paid, auto-rotation",
+      "Keyword 'config data', 'no rotation needed', 'free tier' → Parameter Store"
+    ]
+  },
+  {
+    term: "Amazon Neptune",
+    short: "Fully managed graph database for highly connected data",
+    definition: "Amazon Neptune is a fully managed graph database supporting Property Graph (Apache TinkerPop Gremlin) and RDF/SPARQL query languages. Best for highly connected datasets where relationships matter. Use cases: social networks, fraud detection, knowledge graphs, recommendation engines. Multi-AZ, read replicas, and point-in-time recovery supported.",
+    category: "database",
+    examRelevant: true,
+    examples: [
+      "Social network: find friends-of-friends in 1 query",
+      "Fraud detection: detect suspicious patterns in transaction graphs",
+      "Recommendation engine: 'people who bought X also bought Y'",
+      "Keyword 'graph database', 'relationships', 'social network' → Neptune"
+    ]
+  },
+  {
+    term: "Amazon QuickSight",
+    short: "Cloud-native BI and data visualization service",
+    definition: "Amazon QuickSight is a fully managed business intelligence (BI) service for creating interactive dashboards and visualizations. It uses SPICE (Super-fast, Parallel, In-memory Calculation Engine) for fast query results. Connects to S3, Athena, RDS, Redshift, Aurora, and third-party sources. ML Insights feature provides anomaly detection and forecasting automatically.",
+    category: "analytics",
+    examRelevant: true,
+    examples: [
+      "Build dashboards on S3/Athena data without a server",
+      "SPICE: in-memory engine for sub-second dashboard loads",
+      "Share dashboards with thousands of users (pay-per-session)",
+      "Keyword 'dashboard', 'visualization', 'BI', 'business intelligence' → QuickSight"
+    ]
+  },
+  {
+    term: "AWS Compute Optimizer",
+    short: "ML-based recommendations for right-sizing compute resources",
+    definition: "AWS Compute Optimizer uses machine learning to analyze CloudWatch utilization metrics and recommend optimal AWS compute resources. Covers EC2 instances, EC2 Auto Scaling groups, EBS volumes, Lambda functions, and ECS on Fargate. Identifies over-provisioned and under-provisioned resources. Requires minimum 14 days of metric data.",
+    category: "management",
+    examRelevant: true,
+    examples: [
+      "Downsize over-provisioned EC2 from m5.4xlarge → m5.xlarge",
+      "Rightsize EBS gp2 volumes or upgrade to gp3",
+      "Lambda memory optimization based on invocation patterns",
+      "Keyword 'right-sizing', 'over-provisioned', 'ML recommendations' → Compute Optimizer"
+    ]
+  },
+  {
+    term: "AWS Budgets",
+    short: "Set custom cost and usage alerts for your AWS spend",
+    definition: "AWS Budgets lets you set custom budgets and receive alerts when actual or forecasted costs/usage exceed thresholds. Four types: Cost Budget, Usage Budget, Savings Plans Budget, and Reservation Budget. Supports email and SNS notifications. Budget Actions can automatically apply IAM policies or SCP to restrict spend when budget is breached.",
+    category: "management",
+    examRelevant: true,
+    examples: [
+      "Alert when monthly EC2 spend exceeds $1000",
+      "Forecast alert: warn at 80% of budget before month ends",
+      "Budget Action: auto-apply SCP to stop new resource creation",
+      "Keyword 'cost alert', 'spending threshold', 'notify team' → AWS Budgets"
+    ]
   }
 ];
 
@@ -1281,5 +1450,109 @@ const flashcards = [
     front: "What are AWS Graviton instances and why should you use them?",
     back: "AWS Graviton:\n• ARM-based processors designed by AWS\n• Up to 40% better price-performance vs x86\n• Graviton2: M6g, C6g, R6g families\n• Graviton3: M7g, C7g, R7g families\n\nBest for:\n• Web servers, microservices, containerized apps\n• Databases (MySQL, PostgreSQL)\n• Any Linux-based workload\n\nNOT for:\n• Windows workloads (x86 only)\n• Apps requiring x86 binary compatibility\n\nKeyword 'cost-optimized compute', 'best price-performance' → Graviton",
     hint: "Best price-performance for Linux = Graviton instances"
+  },
+
+  // Transit Gateway
+  {
+    domain: "networking",
+    front: "When should you use Transit Gateway instead of VPC Peering?",
+    back: "Use Transit Gateway when:\n• Connecting 3+ VPCs (peering becomes complex mesh)\n• Need transitive routing (A→TGW→B→TGW→C)\n• Connecting VPCs + on-premises (Direct Connect + VPN)\n• Need centralized routing control\n\nVPC Peering is fine for:\n• 2 VPCs in same or different accounts\n• Simple, low-cost point-to-point\n\nKey: VPC Peering is NON-transitive. TGW IS transitive.\nKeyword 'many VPCs', 'hub-and-spoke', 'transitive routing' → Transit Gateway",
+    hint: "3+ VPCs or transitive routing = Transit Gateway"
+  },
+
+  // Storage Gateway
+  {
+    domain: "storage",
+    front: "What are the Storage Gateway volume types and when to use each?",
+    back: "Storage Gateway Volume types:\n\n1. Cached Volumes:\n• Primary data stored in S3\n• Frequently accessed data cached locally\n• Minimizes on-prem storage footprint\n• Keyword: 'minimize local storage'\n\n2. Stored Volumes:\n• Full dataset stored on-premises\n• Asynchronous backup snapshots to S3\n• Low-latency local access to all data\n• Keyword: 'need all data locally'\n\n3. Tape Gateway:\n• Virtual tape library → S3/Glacier\n• Replace physical tape backup\n• Keyword: 'migrate tapes to cloud'",
+    hint: "Minimize local storage = Cached | Full local copy = Stored"
+  },
+
+  // Cognito
+  {
+    domain: "security",
+    front: "What is the difference between Cognito User Pools and Identity Pools?",
+    back: "Cognito User Pools:\n• User directory: sign-up, sign-in, MFA\n• Returns JWT token (not AWS credentials)\n• Social login: Google, Facebook, Apple\n• Use for: authenticating users to YOUR app\n\nCognito Identity Pools (Federated Identities):\n• Exchange token for temporary AWS credentials (STS)\n• Grants IAM role to access AWS services directly\n• Use for: letting users call S3, DynamoDB from client\n\nCombo flow:\nUser Pool login → JWT → Identity Pool → IAM credentials → AWS API\n\nKeyword 'mobile app', 'web identity federation', 'temp AWS access' → Cognito",
+    hint: "User Pool = auth to your app | Identity Pool = temp AWS creds"
+  },
+
+  // Global Accelerator vs CloudFront
+  {
+    domain: "networking",
+    front: "When do you use Global Accelerator vs CloudFront?",
+    back: "Global Accelerator:\n• Routes traffic over AWS backbone network\n• 2 static Anycast IPs (no DNS TTL issues)\n• Works with TCP/UDP (non-HTTP)\n• No caching — pure network acceleration\n• Instant failover via traffic dial\n• Use for: gaming, IoT, VoIP, static IP requirement\n\nCloudFront:\n• Content Delivery Network (CDN)\n• Caches content at edge locations\n• HTTP/HTTPS only\n• Dynamic + static content\n• Use for: websites, APIs, video streaming\n\nKeyword 'static IP', 'non-HTTP', 'TCP/UDP' → Global Accelerator\nKeyword 'cache', 'CDN', 'static content' → CloudFront",
+    hint: "Static IP + non-HTTP = Global Accelerator | Caching = CloudFront"
+  },
+
+  // Snow Family
+  {
+    domain: "migration",
+    front: "Which AWS Snow device should you use for different data sizes?",
+    back: "Snow Family decision tree:\n\n• < 10TB, remote/disconnected location → Snowcone (8TB)\n• 10TB – 80TB → Snowball Edge Storage Optimized (80TB)\n• Need edge compute + ML → Snowball Edge Compute Optimized (GPU)\n• > 10PB (datacenter migration) → Snowmobile (100PB truck)\n\nWhen to use Snow vs DataSync:\n• Poor/no network, tight deadline → Snow Family\n• Good network, ongoing transfer → DataSync\n\nKeyword 'limited bandwidth', 'weeks to upload', 'offline transfer' → Snow",
+    hint: "No/slow internet = Snow Family | Good internet = DataSync"
+  },
+
+  // EMR
+  {
+    domain: "analytics",
+    front: "When should you use Amazon EMR vs Glue vs Athena?",
+    back: "Amazon EMR:\n• Full Hadoop/Spark cluster, custom frameworks\n• Large-scale ETL and ML training\n• Need full control over cluster config\n• Supports: Spark, Hive, HBase, Flink, Presto\n• Keyword: 'Hadoop', 'Spark', 'big data cluster'\n\nAWS Glue:\n• Serverless ETL, auto schema discovery (crawlers)\n• Glue Data Catalog = central metadata store\n• Keyword: 'serverless ETL', 'schema discovery'\n\nAmazon Athena:\n• Serverless SQL queries directly on S3\n• Pay per query, no infrastructure\n• Keyword: 'query S3 data with SQL', 'ad-hoc analysis'",
+    hint: "Custom cluster/Spark = EMR | Serverless ETL = Glue | SQL on S3 = Athena"
+  },
+
+  // Amazon MQ
+  {
+    domain: "integration",
+    front: "When should you use Amazon MQ instead of SQS or SNS?",
+    back: "Use Amazon MQ when:\n• Migrating existing on-prem message broker to AWS\n• App uses standard protocols: MQTT, AMQP, STOMP, OpenWire\n• Want zero code changes (lift-and-shift)\n• Need ActiveMQ or RabbitMQ compatibility\n\nUse SQS/SNS when:\n• Building new cloud-native apps\n• Don't need standard protocol support\n• Want fully managed, highly scalable AWS-native service\n• No existing broker to migrate\n\nKeyword 'existing broker', 'MQTT', 'AMQP', 'lift-and-shift' → Amazon MQ\nKeyword 'new app', 'cloud-native messaging' → SQS/SNS",
+    hint: "Existing MQTT/AMQP app = Amazon MQ | New app = SQS/SNS"
+  },
+
+  // Trusted Advisor
+  {
+    domain: "management",
+    front: "What are the 5 categories of AWS Trusted Advisor checks?",
+    back: "Trusted Advisor 5 pillars:\n\n1. Cost Optimization — idle resources, RI coverage\n2. Performance — service limits, throughput\n3. Security — open ports, IAM use, MFA on root, public S3\n4. Fault Tolerance — Multi-AZ, EBS snapshots, Auto Scaling\n5. Service Limits — warn before hitting quotas\n\nFree checks (all plans): 7 core checks (security + service limits)\nFull checks: Business/Enterprise Support only\n\nKey checks to remember:\n• MFA on root account\n• Open security groups (0.0.0.0/0)\n• Public S3 buckets\n• Underutilized EC2 instances\n\nKeyword 'best practice review', 'security check', 'idle resources' → Trusted Advisor",
+    hint: "5 pillars: Cost | Performance | Security | Fault Tolerance | Service Limits"
+  },
+
+  // Parameter Store vs Secrets Manager
+  {
+    domain: "security",
+    front: "When do you use SSM Parameter Store vs Secrets Manager?",
+    back: "SSM Parameter Store:\n• Free (Standard tier)\n• Config data, connection strings, feature flags\n• SecureString uses KMS encryption\n• No built-in automatic rotation\n• 10KB limit per parameter\n• Keyword: 'config', 'non-sensitive', 'free', 'no rotation'\n\nSecrets Manager:\n• Paid (~$0.40/secret/month)\n• Designed for secrets: DB passwords, API keys\n• Built-in automatic rotation (Lambda-powered)\n• Native RDS, Redshift, DocumentDB rotation\n• Keyword: 'rotate credentials', 'DB password', 'auto-rotation'\n\nRule: Need rotation? → Secrets Manager. Just config? → Parameter Store",
+    hint: "Auto-rotation = Secrets Manager | Config/free = Parameter Store"
+  },
+
+  // Neptune
+  {
+    domain: "database",
+    front: "When should you use Amazon Neptune over other databases?",
+    back: "Use Neptune when:\n• Data is highly connected (relationships are the query)\n• Use cases: social networks, fraud detection, knowledge graphs, recommendations\n• Queries like: 'friends of friends', 'connected accounts', 'shortest path'\n\nQuery languages:\n• Property Graph → Apache TinkerPop Gremlin\n• RDF → SPARQL\n\nDon't use Neptune for:\n• Simple key-value → DynamoDB\n• Relational/tabular → RDS/Aurora\n• Document store → DocumentDB\n• Time-series → Timestream\n\nKeyword 'graph', 'relationships', 'social network', 'fraud detection' → Neptune",
+    hint: "Graph relationships = Neptune"
+  },
+
+  // QuickSight
+  {
+    domain: "analytics",
+    front: "What is Amazon QuickSight and what is SPICE?",
+    back: "Amazon QuickSight:\n• Fully managed BI/visualization service\n• Build dashboards, charts, ML-powered insights\n• Pay-per-session for dashboard readers (no per-user cost)\n• Connects to: S3, Athena, RDS, Redshift, Aurora, Salesforce\n\nSPICE (Super-fast Parallel In-memory Calculation Engine):\n• In-memory data store for fast queries\n• Data imported into SPICE for sub-second performance\n• Auto-scaling, no infrastructure to manage\n\nML Insights:\n• Anomaly detection, forecasting, auto-narratives\n\nKeyword 'dashboard', 'BI', 'business intelligence', 'visualization' → QuickSight",
+    hint: "BI dashboards on AWS data = QuickSight | SPICE = in-memory speed"
+  },
+
+  // Compute Optimizer
+  {
+    domain: "management",
+    front: "What does AWS Compute Optimizer analyze and recommend?",
+    back: "AWS Compute Optimizer uses ML on CloudWatch metrics to recommend optimal sizing.\n\nCovers:\n• EC2 instances (type, size)\n• EC2 Auto Scaling Groups\n• EBS volumes (type + size)\n• Lambda functions (memory)\n• ECS tasks on Fargate\n\nRequirements:\n• Minimum 14 days of CloudWatch metric data\n• Must opt-in per account/org\n\nOutputs:\n• Over-provisioned → downsize recommendation\n• Under-provisioned → upsize recommendation\n• Estimated monthly savings\n\nKeyword 'right-sizing', 'ML recommendations', 'over-provisioned' → Compute Optimizer",
+    hint: "ML-based right-sizing for EC2/EBS/Lambda = Compute Optimizer"
+  },
+
+  // AWS Budgets
+  {
+    domain: "management",
+    front: "What are the four types of AWS Budgets and what can Budget Actions do?",
+    back: "AWS Budgets types:\n1. Cost Budget — alert when $ spend exceeds threshold\n2. Usage Budget — alert when usage (e.g. EC2 hours) exceeds threshold\n3. Savings Plans Budget — track coverage/utilization\n4. Reservation Budget — track RI coverage/utilization\n\nAlert triggers:\n• Actual spend (already happened)\n• Forecasted spend (projected to exceed)\n\nBudget Actions (automated response):\n• Apply IAM policy (deny new resource creation)\n• Apply SCP (restrict org unit)\n• Target EC2/RDS instances (stop them)\n\nKeyword 'cost alert', 'notify when spend exceeds', 'auto-stop resources' → AWS Budgets",
+    hint: "Cost alerts + automated spend control = AWS Budgets"
   }
 ];
