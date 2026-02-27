@@ -2834,8 +2834,9 @@
 
     // Handle deep linking from other pages (e.g. index.html#quiz)
     if (window.location.hash) {
-      const hashTab = window.location.hash.replace('#', '');
-      const hashTabEl = document.querySelector('[data-tab="' + hashTab + '"]');
+      // Sanitize: only allow alphanumeric characters and hyphens
+      const hashTab = window.location.hash.replace('#', '').replace(/[^a-zA-Z0-9-]/g, '');
+      const hashTabEl = hashTab ? document.querySelector('[data-tab="' + hashTab + '"]') : null;
       if (hashTabEl) hashTabEl.click();
     }
   </script>
