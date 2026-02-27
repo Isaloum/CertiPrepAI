@@ -170,7 +170,7 @@
           <button class="nav-tab" data-tab="study-guide"><span class="icon">🎓</span><span>Study Guide</span></button>
           <button class="nav-tab" data-tab="hints-keywords"><span class="icon">💡</span><span>Hint / Keywords</span></button>
           <button class="nav-tab" data-tab="services"><span class="icon">📚</span><span>Services</span></button>
-          <button class="nav-tab" data-tab="adaptive"><span class="icon">🎓</span><span>Adaptive</span></button>
+          <button class="nav-tab" data-tab="adaptive"><span class="icon">🎓</span><span>Adaptive Learning</span></button>
         </nav>
       </div>
     </div>
@@ -2276,12 +2276,22 @@
     let adaptiveCurrentIndex = 0;
     let adaptiveInitialized = false;
     const adaptiveMaxAttempts = { beginner: 3, intermediate: 2, advanced: 1 };
+    const ADAPTIVE_DEFAULT_HINT1 = 'Think carefully about the core requirement in the question. Consider what the question is really asking for.';
+    const ADAPTIVE_DEFAULT_HINT2 = 'Consider the option that is the most specific AWS-managed solution for this scenario.';
+
+    function getDiffBtnId(diff) {
+      return 'btn' + diff.charAt(0).toUpperCase() + diff.slice(1);
+    }
+
+    function handleAdaptiveImgError(el) {
+      el.parentElement.innerHTML = '<div style="padding:.75rem;text-align:center;color:var(--muted);font-size:.8rem">📸 AWS Console View</div>';
+    }
 
     function setDifficulty(level) {
       currentDifficulty = level;
       localStorage.setItem('awsprep_adaptive_difficulty', level);
       ['beginner', 'intermediate', 'advanced'].forEach(d => {
-        const btn = document.getElementById('btn' + d.charAt(0).toUpperCase() + d.slice(1));
+        const btn = document.getElementById(getDiffBtnId(d));
         if (btn) btn.classList.toggle('active', d === level);
       });
       loadAdaptiveQuestion();
@@ -2325,8 +2335,9 @@
         optionsContainer.innerHTML = q.options.map((opt, i) => `
           <div class="adaptive-option" onclick="selectAdaptiveAnswer(${i})">
             <div class="adaptive-option-img">
-              <img src="screenshots/placeholder.svg" alt="AWS Console View" style="width:100%;height:auto;max-height:90px;object-fit:contain"
-                onerror="this.parentElement.innerHTML='<div style=&quot;padding:.75rem;text-align:center;color:var(--muted);font-size:.8rem&quot;>📸 AWS Console View</div>'" />
+              <img src="screenshots/placeholder.svg" alt="AWS Console View"
+                style="width:100%;height:auto;max-height:90px;object-fit:contain"
+                onerror="handleAdaptiveImgError(this)" />
             </div>
             <div>${String.fromCharCode(65 + i)}. ${opt}</div>
           </div>
@@ -2408,9 +2419,9 @@
       } else if (attemptNum >= 2 && q.hint2) {
         hintText = q.hint2;
       } else if (attemptNum === 1) {
-        hintText = 'Think carefully about the core requirement in the question. Consider what the question is really asking for.';
+        hintText = ADAPTIVE_DEFAULT_HINT1;
       } else {
-        hintText = 'Consider the option that is the most specific AWS-managed solution for this scenario.';
+        hintText = ADAPTIVE_DEFAULT_HINT2;
       }
       feedback.innerHTML += `
         <div class="adaptive-hint-box">
@@ -2480,7 +2491,7 @@
       if (saved) currentDifficulty = saved;
 
       ['beginner', 'intermediate', 'advanced'].forEach(d => {
-        const btn = document.getElementById('btn' + d.charAt(0).toUpperCase() + d.slice(1));
+        const btn = document.getElementById(getDiffBtnId(d));
         if (btn) btn.classList.toggle('active', d === currentDifficulty);
       });
 
