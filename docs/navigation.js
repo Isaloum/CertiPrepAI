@@ -70,5 +70,7 @@ document.querySelectorAll('.nav-item-dropdown').forEach(dropdown => {
 // ==================== SHOW TAB FALLBACK (for non-index pages) ====================
 // On index.html the inline script defines showTab(); this fallback is used on other pages.
 window.showTab = window.showTab || function (tabName) {
-  window.location.href = 'index.html#' + tabName;
+  // Sanitize: only allow alphanumeric characters and hyphens
+  const safe = String(tabName).replace(/[^a-zA-Z0-9-]/g, '');
+  window.location.href = 'index.html#' + safe;
 };
