@@ -26,8 +26,8 @@
     .nav-tab:hover{background:#f0f0f0;border-color:var(--aws-blue);color:var(--aws-blue)}
     .nav-tab.active{background:var(--aws-blue);color:#fff;border-color:var(--aws-blue);font-weight:700}
     main{padding:1.5rem 0}
-    .app-section{display:none}
-    .app-section.active{display:block}
+    .app-section{display:none;opacity:0;transition:opacity 0.3s ease-in-out}
+    .app-section.active{display:block;opacity:1}
     .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.08)}
     .card-title{font-size:1.25rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;color:var(--aws-dark)}
     .card-orange{border-left:4px solid var(--light-aqua)}
@@ -1806,9 +1806,38 @@
           visualExamInitialized = true;
         }
 
+        // Scroll to top so content change is immediately visible
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+
+        // Update URL hash for deep linking and back/forward navigation (skip during popstate)
+        if (!window._isPopStateNavigation) {
+          history.pushState(null, null, '#' + tab.dataset.tab);
+        }
+
+        // Update active nav link state
+        document.querySelectorAll('.nav-link, .dropdown-item, .mobile-nav-link').forEach(link => {
+          link.classList.remove('active');
+        });
+        const activeLink = document.querySelector('[href="#' + tab.dataset.tab + '"]');
+        if (activeLink) activeLink.classList.add('active');
+
         // Close mobile menu after navigation
         closeMobileMenu();
       });
+    });
+
+    // Support browser back/forward navigation
+    window.addEventListener('popstate', () => {
+      const hash = window.location.hash.replace('#', '').replace(/[^a-zA-Z0-9-]/g, '');
+      if (hash) {
+        const tabEl = document.querySelector('[data-tab="' + hash + '"]');
+        if (tabEl) {
+          window._isPopStateNavigation = true;
+          tabEl.click();
+          window._isPopStateNavigation = false;
+        }
+      }
     });
 
     // Mobile Menu Functions
