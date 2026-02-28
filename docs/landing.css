@@ -462,11 +462,6 @@
   opacity: 1;
 }
 
-/* First feature card spans 2 columns */
-.feature-card:first-child {
-  grid-column: span 2;
-}
-
 .feature-highlight {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.04) 0%, rgba(139, 92, 246, 0.04) 100%);
   border-color: rgba(59, 130, 246, 0.2);
@@ -527,13 +522,9 @@
   border-radius: 2px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .features-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .feature-card:first-child {
-    grid-column: span 2;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -544,14 +535,6 @@
 
   .section-title {
     font-size: 1.75rem;
-  }
-
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .feature-card:first-child {
-    grid-column: span 1;
   }
 }
 
