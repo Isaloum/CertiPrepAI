@@ -25,7 +25,7 @@ exports.handler = async (event) => {
 
         return {
             statusCode: 200,
-            body: JSON.stringify({ id: session.id }),
+            body: JSON.stringify({ id: session.id, url: session.url }),
         };
     } catch (error) {
         return {

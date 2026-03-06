@@ -147,16 +147,10 @@ async function initiatePayment(tier = 'lifetime') {
 
     const session = await response.json();
 
-    const result = await stripe.redirectToCheckout({
-      sessionId: session.id,
-    });
-
-    if (result.error) {
-      alert(result.error.message);
-      if (button) {
-        button.disabled = false;
-        button.textContent = pricing.label || '🔓 Unlock';
-      }
+    if (session.url) {
+      window.location.href = session.url;
+    } else {
+      throw new Error('No checkout URL returned');
     }
   } catch (error) {
     console.error('Payment error:', error);
