@@ -2967,11 +2967,15 @@
         }
       });
       const _tab_isPremium = (typeof hasPremiumAccess === 'function') ? hasPremiumAccess() : false;
+      // Set active tab global so updateUI keeps it highlighted
+      window._currentActiveCat = cat;
       if (!_tab_isPremium) {
-        // Free users: ALWAYS start guided tour from domain 0 regardless of tab clicked
-        freeTourDomainIndex = 0;
-        freeQuestionsAnswered = 0;
-        loadFreeTourDomain(0);
+        // Free users: load the chosen domain, apply per-domain limit
+        window.currentFreeLimit = (cat === 'all') ? 20 : 5;
+        filteredQuestions = cat === 'all' ? [...questions] : questions.filter(q => q.cat === cat);
+        shuffleArray(filteredQuestions);
+        currentQuestionIndex = 0;
+        loadQuestion();
         return;
       }
       // Premium: normal filter
@@ -3053,62 +3057,30 @@
       updateUI();
     }
 
-    // ===== FREE TOUR STATE =====
-    const FREE_TOUR_DOMAINS = ['design-secure','design-resilient','design-performant','design-cost'];
-    const FREE_TOUR_LABELS  = ['Secure Architectures','Resilient Architectures','High-Performing','Cost-Optimized'];
-    let freeTourDomainIndex   = 0; // which domain we're on (0-3)
-    let freeQuestionsAnswered = 0; // questions answered in current domain
-    const FREE_PER_DOMAIN     = 5;
-
-    function loadFreeTourDomain(domainIndex) {
-      freeTourDomainIndex   = domainIndex;
-      freeQuestionsAnswered = 0;
-      const cat = FREE_TOUR_DOMAINS[domainIndex];
-      window._currentActiveCat = cat; // keep updateUI in sync
-      window.currentFreeLimit = FREE_PER_DOMAIN;
-      filteredQuestions = questions.filter(q => q.cat === cat);
-      shuffleArray(filteredQuestions);
-      currentQuestionIndex = 0;
-      updateUI(); // rebuild buttons with correct active tab
-      loadQuestion();
-    }
+    // ===== FREE TIER STATE =====
+    const FREE_PER_DOMAIN = 5;    // max free questions per domain tab
+    const FREE_TOTAL      = 20;   // max free questions across all domains
+    let freeQuestionsUsed = 0;    // global session counter
 
     function nextQuestion() {
       const isPremium = (typeof hasPremiumAccess === 'function') ? hasPremiumAccess() : false;
 
       if (!isPremium) {
-        // ---- GUIDED FREE TOUR ----
-        freeQuestionsAnswered++;
-        const totalAnswered = freeTourDomainIndex * FREE_PER_DOMAIN + freeQuestionsAnswered;
-
-        if (freeQuestionsAnswered >= FREE_PER_DOMAIN) {
-          // Done with this domain
-          const nextDomain = freeTourDomainIndex + 1;
-          if (nextDomain < FREE_TOUR_DOMAINS.length) {
-            // Show brief message then move to next domain
-            document.getElementById('quizQuestion').innerHTML =
-              '<div style="text-align:center;padding:1rem">' +
-              '<div style="font-size:2rem">✅</div>' +
-              '<strong style="font-size:1.1rem">Section complete!</strong><br>' +
-              '<span style="color:var(--muted)">Moving to ' + FREE_TOUR_LABELS[nextDomain] + '...</span>' +
-              '</div>';
-            document.getElementById('quizOptions').innerHTML = '';
-            document.getElementById('quizExplanation').style.display = 'none';
-            document.getElementById('nextQuizBtn').style.display = 'none';
-            setTimeout(() => loadFreeTourDomain(nextDomain), 1800);
-          } else {
-            // All 20 free questions done → show paywall
-            if (typeof showPaywall === 'function') showPaywall();
-          }
+        freeQuestionsUsed++;
+        // Global 20-question cap
+        if (freeQuestionsUsed >= FREE_TOTAL) {
+          if (typeof showPaywall === 'function') showPaywall();
           return;
         }
-
-        // Still within the 5 questions of this domain
+        // Per-domain 5-question cap
+        const limit = window.currentFreeLimit || FREE_PER_DOMAIN;
         const nextIndex = currentQuestionIndex + 1;
-        if (nextIndex < filteredQuestions.length) {
-          currentQuestionIndex = nextIndex;
-          loadQuestion();
+        if (nextIndex >= limit || nextIndex >= filteredQuestions.length) {
+          if (typeof showPaywall === 'function') showPaywall();
+          return;
         }
+        currentQuestionIndex = nextIndex;
+        loadQuestion();
         return;
       }
 
@@ -3271,11 +3243,15 @@
     // ==================== Architecture Builder (loaded from external files) ====================
     // Architecture builder logic is in architecture-builder.js and aws-service-icons.js
 
-    // Initialize — free users see fixed first 20, premium users see shuffled
+    // Initialize — free users start on Secure Architectures (5 free), premium gets all
     const _isPremium = (typeof hasPremiumAccess === 'function') ? hasPremiumAccess() : false;
     if (!_isPremium) {
-      // Free users: start guided tour from domain 0 (Secure Architectures)
-      setTimeout(() => loadFreeTourDomain(0), 0);
+      window._currentActiveCat = 'design-secure';
+      window.currentFreeLimit  = FREE_PER_DOMAIN;
+      filteredQuestions = questions.filter(q => q.cat === 'design-secure');
+      shuffleArray(filteredQuestions);
+      currentQuestionIndex = 0;
+      loadQuestion();
     } else {
       shuffleArray(filteredQuestions);
       loadQuestion();
