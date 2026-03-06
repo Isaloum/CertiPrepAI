@@ -53,7 +53,8 @@ function isQuestionLocked(questionIndex) {
   if (hasPremiumAccess()) {
     return false;
   }
-  return questionIndex >= FREE_QUESTION_LIMIT;
+  const limit = window.currentFreeLimit || FREE_QUESTION_LIMIT;
+  return questionIndex >= limit;
 }
 
 function getAvailableQuestionCount() {

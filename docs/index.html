@@ -2959,11 +2959,12 @@
         }
       });
       filteredQuestions = cat === 'all' ? [...questions] : questions.filter(q => q.cat === cat);
-      // Free users: keep first 20 questions fixed (same order every time), shuffle the rest
+      // Free limit: 20 for All Domains, 5 per specific domain
+      window.currentFreeLimit = (cat === 'all') ? 20 : 5;
       const _cat_isPremium = (typeof hasPremiumAccess === 'function') ? hasPremiumAccess() : false;
       if (!_cat_isPremium) {
-        const free = filteredQuestions.slice(0, 20);
-        const rest = filteredQuestions.slice(20);
+        const free = filteredQuestions.slice(0, window.currentFreeLimit);
+        const rest = filteredQuestions.slice(window.currentFreeLimit);
         shuffleArray(rest);
         filteredQuestions = [...free, ...rest];
       } else {
@@ -3206,6 +3207,7 @@
 
     // Initialize — free users see fixed first 20, premium users see shuffled
     const _FREE_LIMIT = 20; // keep in sync with FREE_QUESTION_LIMIT in payment-system.js
+    window.currentFreeLimit = _FREE_LIMIT; // default: All Domains
     const _isPremium = (typeof hasPremiumAccess === 'function') ? hasPremiumAccess() : false;
     if (!_isPremium) {
       const free = filteredQuestions.slice(0, _FREE_LIMIT);
