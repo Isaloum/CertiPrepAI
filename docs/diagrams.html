@@ -1734,51 +1734,51 @@
           </defs>
           <!-- On-Premises -->
           <g class="hotspot" onclick="explainDX('onprem','On-Premises Data Center','Corporate network. Needs secure, high-performance connection to AWS. Options: Direct Connect or VPN.','Exam tip: DX + VPN = redundancy. DX for production, VPN for backup (or vice versa).')">
-            <rect x="10" y="80" width="100" height="80" rx="8" class="aws-box-orange"/>
-            <text x="60" y="105" class="aws-label">🏢</text>
-            <text x="60" y="122" class="aws-label">On-Prem</text>
-            <text x="60" y="138" class="aws-sublabel">DC</text>
+            <rect x="10" y="80" width="95" height="75" rx="8" class="aws-box-orange"/>
+            <text x="57" y="105" class="aws-label">🏢</text>
+            <text x="57" y="120" class="aws-label">On-Prem</text>
+            <text x="57" y="134" class="aws-sublabel">DC</text>
           </g>
-          <!-- DX Path -->
-          <line x1="110" y1="100" x2="160" y2="80" class="arrow-orange" stroke-width="3" marker-end="url(#arrowhead-dx)"/>
-          <text x="130" y="75" class="aws-sublabel" style="font-weight:bold;">Primary: DX</text>
+          <!-- DX Path label -->
+          <text x="118" y="62" class="aws-sublabel" style="font-weight:bold;fill:#FF9900;">Primary: DX</text>
+          <!-- VPN Path label -->
+          <text x="118" y="178" class="aws-sublabel" style="font-weight:bold;">Backup: VPN</text>
+          <!-- Arrows from On-Prem -->
+          <line x1="105" y1="95" x2="155" y2="72" class="arrow-orange" stroke-width="2.5" marker-end="url(#arrowhead-dx)"/>
+          <line x1="105" y1="148" x2="155" y2="162" class="arrow" stroke-width="2" marker-end="url(#arrowhead-dx)"/>
           <!-- DX -->
-          <g class="hotspot" onclick="explainDX('dx','AWS Direct Connect','Dedicated network connection. 1Gbps or 10Gbps. Consistent network performance. Reduced bandwidth costs (no internet egress charge). More stable than VPN. AWS partners/colocation.','Exam tip: DX = dedicated physical connection. Weeks to setup. Best for: high-bandwidth, critical workloads, consistent performance. Costs ~$0.30/hour + port hour.')">
-            <rect x="160" y="20" width="140" height="80" rx="8" class="aws-box-blue"/>
-            <text x="230" y="50" class="aws-label">🔗</text>
-            <text x="230" y="68" class="aws-label">Direct Connect</text>
-            <text x="230" y="84" class="aws-sublabel">1/10 Gbps</text>
+          <g class="hotspot" onclick="explainDX('dx','AWS Direct Connect','Dedicated network connection. 1Gbps or 10Gbps. Consistent network performance. Reduced bandwidth costs (no internet egress charge). More stable than VPN. AWS partners/colocation.','Exam tip: DX = dedicated physical connection. Weeks to setup. Best for: high-bandwidth, critical workloads, consistent performance.')">
+            <rect x="155" y="30" width="130" height="65" rx="8" class="aws-box-blue"/>
+            <text x="220" y="55" class="aws-label">🔗</text>
+            <text x="220" y="70" class="aws-label">Direct Connect</text>
+            <text x="220" y="83" class="aws-sublabel">1/10 Gbps</text>
           </g>
-          <!-- VPN Path (backup) -->
-          <line x1="110" y1="160" x2="160" y2="160" class="arrow" stroke-width="2" marker-end="url(#arrowhead-dx)"/>
-          <text x="120" y="178" class="aws-sublabel">Backup: VPN</text>
           <!-- VPN -->
-          <g class="hotspot" onclick="explainDX('vpn','Site-to-Site VPN','Encrypted tunnel over internet. Faster to setup (hours). Lower cost. No dedicated bandwidth guarantee. Higher latency variability (internet traffic). Good for backup or non-critical data.','Exam tip: VPN = internet-based. Encrypted (IPSec). Quick setup. Lower cost but less predictable. Good secondary link.')">
-            <rect x="160" y="140" width="140" height="80" rx="8" class="aws-box-green"/>
-            <text x="230" y="170" class="aws-label">🔐</text>
-            <text x="230" y="188" class="aws-label">VPN (Backup)</text>
-            <text x="230" y="204" class="aws-sublabel">Internet</text>
+          <g class="hotspot" onclick="explainDX('vpn','Site-to-Site VPN','Encrypted tunnel over internet. Faster to setup (hours). Lower cost. No dedicated bandwidth guarantee. Higher latency variability.','Exam tip: VPN = internet-based. Encrypted (IPSec). Quick setup. Lower cost but less predictable. Good secondary link.')">
+            <rect x="155" y="148" width="130" height="65" rx="8" class="aws-box-green"/>
+            <text x="220" y="170" class="aws-label">🔐</text>
+            <text x="220" y="185" class="aws-label">VPN (Backup)</text>
+            <text x="220" y="200" class="aws-sublabel">Encrypted / Internet</text>
           </g>
-          <!-- Arrow to VGW -->
-          <line x1="300" y1="60" x2="360" y2="60" class="arrow" marker-end="url(#arrowhead-dx)"/>
-          <line x1="300" y1="180" x2="360" y2="120" class="arrow" marker-end="url(#arrowhead-dx)"/>
-          <!-- Virtual Private Gateway (VGW) -->
-          <g class="hotspot" onclick="explainDX('vgw','Virtual Private Gateway (VGW)','Endpoint in VPC. Accepts DX and VPN connections. Routes traffic to VPC subnets. Redundancy: multiple DX/VPN connections.','Exam tip: VGW = VPC side. Attached to VPC. Route table points to VGW for on-prem traffic.')">
-            <rect x="360" y="40" width="120" height="100" rx="8" class="aws-box-purple"/>
-            <text x="420" y="70" class="aws-label">🚪</text>
-            <text x="420" y="88" class="aws-label">VGW</text>
-            <text x="420" y="106" class="aws-sublabel">in VPC</text>
+          <!-- Arrows to VGW -->
+          <line x1="285" y1="63" x2="345" y2="100" class="arrow" marker-end="url(#arrowhead-dx)"/>
+          <line x1="285" y1="180" x2="345" y2="140" class="arrow" marker-end="url(#arrowhead-dx)"/>
+          <!-- VGW -->
+          <g class="hotspot" onclick="explainDX('vgw','Virtual Private Gateway (VGW)','Endpoint in VPC. Accepts DX and VPN connections. Routes traffic to VPC subnets.','Exam tip: VGW = VPC side. Attached to one VPC. Use Transit Gateway for multiple VPCs.')">
+            <rect x="345" y="80" width="110" height="65" rx="8" class="aws-box-purple"/>
+            <text x="400" y="105" class="aws-label">🚪</text>
+            <text x="400" y="120" class="aws-label">VGW</text>
+            <text x="400" y="133" class="aws-sublabel">in VPC</text>
           </g>
           <!-- Arrow to VPC -->
-          <line x1="480" y1="90" x2="520" y2="90" class="arrow" marker-end="url(#arrowhead-dx)"/>
+          <line x1="455" y1="112" x2="490" y2="112" class="arrow" marker-end="url(#arrowhead-dx)"/>
           <!-- VPC -->
-          <g class="hotspot" onclick="explainDX('vpc','VPC','Receives traffic from on-premises via DX/VPN. Private subnet can now communicate with on-prem.','Exam tip: Private EC2 in VPC can now access on-prem resources and vice versa.')">
-            <rect x="520" y="30" width="70" height="120" rx="6" class="aws-box"/>
-            <text x="555" y="85" class="aws-label">VPC</text>
+          <g class="hotspot" onclick="explainDX('vpc','VPC','Receives traffic from on-premises via DX/VPN. Private subnet communicates with on-prem.','Exam tip: Private EC2 in VPC can now access on-prem resources and vice versa.')">
+            <rect x="490" y="72" width="100" height="80" rx="8" class="aws-box"/>
+            <text x="540" y="105" class="aws-label">☁️</text>
+            <text x="540" y="120" class="aws-label">VPC</text>
+            <text x="540" y="133" class="aws-sublabel">Private subnet</text>
           </g>
-          <!-- Benefits/Summary -->
-          <rect x="10" y="200" width="580" height="40" rx="6" class="aws-box" style="opacity:0.8"/>
-          <text x="20" y="220" class="aws-sublabel">Best practice: Use DX + VPN together for redundancy. If DX fails, VPN takes over automatically.</text>
         </svg>
       </div>
       <div class="explanation-panel" id="exp-dx">
@@ -1889,44 +1889,60 @@ function explainDX(c,t,x,tip) { showExplanation('exp-dx',c,t,x,tip); }
         <span class="exam-tag">⭐ High Frequency</span>
       </div>
       <div class="diagram-svg-wrap">
-        <svg class="arch-svg" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+        <svg class="arch-svg" viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <marker id="arrowhead-waf" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748B"/></marker>
           </defs>
           <!-- Internet -->
-          <rect x="10" y="75" width="60" height="50" rx="6" class="aws-box"/>
-          <text x="40" y="100" class="aws-label">🌐</text>
-          <text x="40" y="115" class="aws-sublabel">Internet</text>
+          <rect x="5" y="80" width="55" height="60" rx="6" class="aws-box"/>
+          <text x="32" y="104" class="aws-label">🌐</text>
+          <text x="32" y="118" class="aws-sublabel">Internet</text>
+          <text x="32" y="130" class="aws-sublabel">Requests</text>
           <!-- Arrow -->
-          <line x1="70" y1="100" x2="100" y2="100" class="arrow" marker-end="url(#arrowhead-waf)"/>
+          <line x1="60" y1="110" x2="80" y2="110" class="arrow" marker-end="url(#arrowhead-waf)"/>
           <!-- CloudFront -->
-          <g class="hotspot" onclick="explainWAF('cf','CloudFront','Global CDN edge locations. Caches content closer to users. Mitigates some DDoS by absorbing traffic at edge. Integrates with Shield Standard (free DDoS protection).','Exam tip: CloudFront = CDN + DDoS mitigation at edge. Edge locations worldwide. Great for static/dynamic content. Reduces origin load.')">
-            <rect x="100" y="70" width="100" height="60" rx="6" class="aws-box-blue"/>
-            <text x="150" y="90" class="aws-label">☁️</text>
-            <text x="150" y="105" class="aws-label">CloudFront</text>
+          <g class="hotspot" onclick="explainWAF('cf','CloudFront','Global CDN — 400+ edge locations. Absorbs DDoS at edge. Integrates with Shield Standard for free Layer 3/4 protection.','Exam tip: CloudFront = CDN + DDoS edge mitigation. Reduces origin load. Works with WAF for Layer 7 filtering.')">
+            <rect x="80" y="70" width="90" height="80" rx="6" class="aws-box-blue"/>
+            <text x="125" y="95" class="aws-label">☁️</text>
+            <text x="125" y="110" class="aws-label">CloudFront</text>
+            <text x="125" y="123" class="aws-sublabel">CDN + Cache</text>
+            <text x="125" y="136" class="aws-sublabel">400+ PoPs</text>
           </g>
           <!-- Arrow -->
-          <line x1="200" y1="100" x2="230" y2="100" class="arrow" marker-end="url(#arrowhead-waf)"/>
+          <line x1="170" y1="110" x2="190" y2="110" class="arrow" marker-end="url(#arrowhead-waf)"/>
           <!-- Shield -->
-          <g class="hotspot" onclick="explainWAF('shield','AWS Shield','Shield Standard (free) = DDoS protection included. Layer 3/4 attacks (SYN floods, UDP floods). Shield Advanced (paid) = 24/7 support, DDoS expert assistance, cost protection.','Exam tip: Shield Standard = Layer 3/4 DDoS protection (free). Advanced = Layer 7 protection + DDoS Response Team. Requires WAF for advanced attacks.')">
-            <rect x="230" y="70" width="100" height="60" rx="6" class="aws-box-orange"/>
-            <text x="280" y="90" class="aws-label">🛡️</text>
-            <text x="280" y="105" class="aws-label">Shield</text>
+          <g class="hotspot" onclick="explainWAF('shield','AWS Shield','Standard (free): L3/4 DDoS protection — SYN floods, UDP floods. Advanced ($3k/mo): L7 protection, DRT team, cost protection after attack.','Exam tip: Shield Standard = free, automatic. Advanced = paid, 24/7 DDoS Response Team. Both work with CloudFront.')">
+            <rect x="190" y="70" width="90" height="80" rx="6" class="aws-box-orange"/>
+            <text x="235" y="95" class="aws-label">🛡️</text>
+            <text x="235" y="110" class="aws-label">Shield</text>
+            <text x="235" y="123" class="aws-sublabel">DDoS L3/L4</text>
+            <text x="235" y="136" class="aws-sublabel">Standard free</text>
           </g>
           <!-- Arrow -->
-          <line x1="330" y1="100" x2="360" y2="100" class="arrow" marker-end="url(#arrowhead-waf)"/>
+          <line x1="280" y1="110" x2="300" y2="110" class="arrow" marker-end="url(#arrowhead-waf)"/>
           <!-- WAF -->
-          <g class="hotspot" onclick="explainWAF('waf','WAF (Web Application Firewall)','Layer 7 protection. Blocks malicious HTTP/HTTPS requests. Rules for: SQL injection, XSS, geo-blocking, rate limiting, IP whitelisting.','Exam tip: WAF = Layer 7 (application). Integrates with ALB/CloudFront/API Gateway. Define custom rules or use AWS Managed Rules. Pay per rule/request.')">
-            <rect x="360" y="70" width="100" height="60" rx="6" class="aws-box-red"/>
-            <text x="410" y="90" class="aws-label">🔥</text>
-            <text x="410" y="105" class="aws-label">WAF</text>
+          <g class="hotspot" onclick="explainWAF('waf','WAF (Web Application Firewall)','Layer 7 protection. Rules block: SQL injection, XSS, bad bots, geo-blocks, rate limits.','Exam tip: WAF = Layer 7. Attaches to CloudFront, ALB, or API Gateway. AWS Managed Rules available. Pay per rule + request.')">
+            <rect x="300" y="70" width="90" height="80" rx="6" class="aws-box-red"/>
+            <text x="345" y="95" class="aws-label">🔥</text>
+            <text x="345" y="110" class="aws-label">WAF</text>
+            <text x="345" y="123" class="aws-sublabel">L7 Filter</text>
+            <text x="345" y="136" class="aws-sublabel">SQL/XSS/Geo</text>
           </g>
           <!-- Arrow -->
-          <line x1="460" y1="100" x2="490" y2="100" class="arrow" marker-end="url(#arrowhead-waf)"/>
+          <line x1="390" y1="110" x2="410" y2="110" class="arrow" marker-end="url(#arrowhead-waf)"/>
           <!-- ALB -->
-          <rect x="490" y="70" width="100" height="60" rx="6" class="aws-box-green"/>
-          <text x="540" y="90" class="aws-label">⚙️</text>
-          <text x="540" y="105" class="aws-label">ALB</text>
+          <g class="hotspot" onclick="explainWAF('alb','Application Load Balancer','Distributes clean (filtered) traffic to EC2 instances or containers. WAF integrates directly with ALB.','Exam tip: ALB = Layer 7 LB. Routes by path/host/header. Works with WAF, ACM (SSL), ECS, Lambda targets.')">
+            <rect x="410" y="70" width="90" height="80" rx="6" class="aws-box-green"/>
+            <text x="455" y="95" class="aws-label">⚙️</text>
+            <text x="455" y="110" class="aws-label">ALB</text>
+            <text x="455" y="123" class="aws-sublabel">Load Balancer</text>
+            <text x="455" y="136" class="aws-sublabel">Clean traffic</text>
+          </g>
+          <!-- Layer labels -->
+          <text x="125" y="165" class="aws-sublabel" style="text-anchor:middle;fill:#0EA5E9;">Edge Cache</text>
+          <text x="235" y="165" class="aws-sublabel" style="text-anchor:middle;fill:#FF9900;">L3/L4 DDoS</text>
+          <text x="345" y="165" class="aws-sublabel" style="text-anchor:middle;fill:#E11D48;">L7 Filter</text>
+          <text x="455" y="165" class="aws-sublabel" style="text-anchor:middle;fill:#16A34A;">Distribution</text>
         </svg>
       </div>
       <div class="explanation-panel" id="exp-waf">
