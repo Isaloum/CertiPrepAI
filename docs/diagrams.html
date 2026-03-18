@@ -91,7 +91,6 @@
       background: white;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      overflow: hidden;
       border: 1px solid var(--border);
       transition: box-shadow .2s;
     }
@@ -116,11 +115,11 @@
       padding: 1.25rem;
       background: #FAFAFA;
       border-bottom: 1px solid var(--border);
-      overflow: visible;
+      overflow: hidden;
     }
 
     /* SVG DIAGRAM STYLES */
-    .arch-svg { width: 100%; height: auto; overflow: visible; }
+    .arch-svg { width: 100%; height: auto; display: block; }
     .aws-box { fill: white; stroke: #CBD5E1; stroke-width: 1.5; rx: 8; }
     .aws-box-orange { fill: #FFF8F0; stroke: var(--aws-orange); stroke-width: 2; }
     .aws-box-blue { fill: #EFF6FF; stroke: var(--aws-blue); stroke-width: 2; }
@@ -911,13 +910,13 @@
             <text x="540" y="68" class="aws-sublabel">RTO: 0</text>
           </g>
           <!-- Legend -->
-          <text x="10" y="120" class="aws-sublabel" style="font-weight:bold;">RTO (Recovery Time Objective) = downtime duration</text>
-          <text x="10" y="140" class="aws-sublabel" style="font-weight:bold;">RPO (Recovery Point Objective) = data loss window</text>
+          <text x="40" y="120" class="aws-sublabel" style="font-weight:bold;">RTO (Recovery Time Objective) = downtime duration</text>
+          <text x="40" y="140" class="aws-sublabel" style="font-weight:bold;">RPO (Recovery Point Objective) = data loss window</text>
           <!-- Cost comparison -->
-          <text x="10" y="170" class="aws-sublabel">💰 Cost (Low to High):</text>
-          <line x1="10" y1="180" x2="590" y2="180" stroke="#E5E7EB" stroke-width="1"/>
-          <rect x="10" y="185" width="130" height="30" rx="4" class="aws-box-blue"/>
-          <text x="75" y="205" class="aws-sublabel">Backup</text>
+          <text x="40" y="170" class="aws-sublabel">💰 Cost (Low to High):</text>
+          <line x1="40" y1="180" x2="590" y2="180" stroke="#E5E7EB" stroke-width="1"/>
+          <rect x="40" y="185" width="120" height="30" rx="4" class="aws-box-blue"/>
+          <text x="100" y="205" class="aws-sublabel">Backup</text>
           <rect x="170" y="185" width="130" height="30" rx="4" class="aws-box-green"/>
           <text x="235" y="205" class="aws-sublabel">Pilot Light</text>
           <rect x="330" y="185" width="130" height="30" rx="4" class="aws-box-orange"/>
@@ -1986,11 +1985,11 @@
             <text x="535" y="70" class="aws-sublabel">$0.00099</text>
           </g>
           <!-- Legend -->
-          <text x="15" y="120" class="aws-sublabel" style="font-weight:bold;">Lifecycle rule example:</text>
-          <text x="15" y="140" class="aws-sublabel">Move to Standard-IA after 30 days → Glacier Flexible after 90 days</text>
-          <text x="15" y="160" class="aws-sublabel">This minimizes costs while meeting compliance and access</text>
+          <text x="40" y="120" class="aws-sublabel" style="font-weight:bold;">Lifecycle rule example:</text>
+          <text x="40" y="140" class="aws-sublabel">Standard-IA after 30d → Glacier Flexible after 90d → Deep Archive 180d</text>
+          <text x="40" y="160" class="aws-sublabel">Use lifecycle rules to minimize cost while meeting compliance</text>
           <!-- Cost comparison -->
-          <text x="15" y="190" class="aws-sublabel" style="font-weight:bold;">Cost increases →</text>
+          <text x="40" y="190" class="aws-sublabel" style="font-weight:bold;">Cost increases →</text>
           <line x1="200" y1="200" x2="570" y2="200" stroke="#E5E7EB" stroke-width="2"/>
           <text x="220" y="220" class="aws-sublabel">More access needed ✓</text>
           <text x="520" y="220" class="aws-sublabel">Cheaper ✓</text>
@@ -2032,13 +2031,13 @@
             <text x="520" y="68" class="aws-sublabel">90% | Risky</text>
           </g>
           <!-- Use cases -->
-          <text x="15" y="120" class="aws-sublabel" style="font-weight:bold;">Use case selection:</text>
-          <rect x="10" y="135" width="575" height="100" rx="6" class="aws-box" style="opacity:0.8"/>
-          <text x="25" y="155" class="aws-sublabel">Unpredictable traffic / testing → On-Demand</text>
-          <text x="25" y="175" class="aws-sublabel">Steady production workload → Savings Plans</text>
-          <text x="25" y="195" class="aws-sublabel">Batch jobs / non-critical → Spot Instances (up to 90% savings!)</text>
-          <text x="25" y="215" class="aws-sublabel">Baseline + spiky → Savings Plans + Spot + On-Demand</text>
-          <text x="25" y="230" class="aws-sublabel">Best practice: Use AWS Cost Explorer recommendations!</text>
+          <text x="40" y="120" class="aws-sublabel" style="font-weight:bold;">Use case selection:</text>
+          <rect x="35" y="130" width="550" height="105" rx="6" class="aws-box" style="opacity:0.8"/>
+          <text x="50" y="150" class="aws-sublabel">Variable traffic / testing → On-Demand</text>
+          <text x="50" y="168" class="aws-sublabel">Steady production workload → Savings Plans</text>
+          <text x="50" y="186" class="aws-sublabel">Batch / non-critical → Spot Instances (up to 90% savings!)</text>
+          <text x="50" y="204" class="aws-sublabel">Baseline + spiky → Savings Plans + Spot + On-Demand</text>
+          <text x="50" y="222" class="aws-sublabel">Tip: Use AWS Cost Explorer for recommendations!</text>
         </svg>
       </div>
       <div class="explanation-panel" id="exp-savings">
@@ -2077,7 +2076,7 @@
           </g>
           <!-- Comparison header -->
           <line x1="10" y1="210" x2="590" y2="210" stroke="#E5E7EB" stroke-width="2"/>
-          <text x="15" y="230" class="aws-sublabel" style="font-weight:bold;">vs Traditional: EC2 + RDS</text>
+          <text x="40" y="230" class="aws-sublabel" style="font-weight:bold;">vs Traditional: EC2 + RDS</text>
           <!-- Traditional (pays always) -->
           <g class="hotspot" onclick="explainServerlessCost('traditional','Traditional Stack','EC2 (always running) + RDS (always running). Fixed cost regardless of traffic. ~$100-500/month baseline.','Exam tip: Traditional = always-on cost. Good if high-traffic (>10k req/day). Predictable costs.')">
             <rect x="10" y="240" width="280" height="20" rx="4" class="aws-box-orange"/>
@@ -2169,7 +2168,7 @@
           </defs>
           <!-- VPC with Private Subnet -->
           <rect x="10" y="10" width="580" height="240" rx="8" class="vpc-bg"/>
-          <text x="25" y="28" class="aws-sublabel">VPC (Private)</text>
+          <text x="45" y="28" class="aws-sublabel">VPC (Private)</text>
           <!-- EC2 in Private Subnet -->
           <g class="hotspot" onclick="explainEndpoint('ec2','EC2 Instance (Private)','Needs to access AWS services. No internet gateway (not exposed). Uses VPC Endpoints for private access.','Exam tip: Private EC2 can't access services via internet. VPC Endpoints = private path to services. No NAT Gateway cost.')">
             <rect x="30" y="60" width="120" height="60" rx="6" class="aws-box-blue"/>
@@ -2275,8 +2274,8 @@
             <text x="355" y="187" class="aws-sublabel">Multiple IPs</text>
           </g>
           <!-- Legend -->
-          <text x="10" y="240" class="aws-sublabel" style="font-weight:bold;">Key: Only Failover/Weighted/Latency/Geolocation/Geoproximity have ROUTING POLICIES</text>
-          <text x="10" y="258" class="aws-sublabel">Others (Simple/Multi-Value) are just return patterns</text>
+          <text x="40" y="240" class="aws-sublabel" style="font-weight:bold;">Key: Failover/Weighted/Latency/Geolocation/Geoproximity have ROUTING POLICIES</text>
+          <text x="40" y="258" class="aws-sublabel">Simple/Multi-Value are just return patterns</text>
         </svg>
       </div>
       <div class="explanation-panel" id="exp-r53policies">
