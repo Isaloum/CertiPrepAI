@@ -114,10 +114,11 @@
       background: #FAFAFA;
       border-bottom: 1px solid var(--border);
       overflow-x: auto;
+      overflow-y: hidden;
     }
 
     /* SVG DIAGRAM STYLES */
-    .arch-svg { width: 100%; height: auto; }
+    .arch-svg { width: 100%; height: auto; max-height: 280px; }
     .aws-box { fill: white; stroke: #CBD5E1; stroke-width: 1.5; rx: 8; }
     .aws-box-orange { fill: #FFF8F0; stroke: var(--aws-orange); stroke-width: 2; }
     .aws-box-blue { fill: #EFF6FF; stroke: var(--aws-blue); stroke-width: 2; }
@@ -1889,7 +1890,7 @@ function explainDX(c,t,x,tip) { showExplanation('exp-dx',c,t,x,tip); }
         <span class="exam-tag">⭐ High Frequency</span>
       </div>
       <div class="diagram-svg-wrap">
-        <svg class="arch-svg" viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg">
+        <svg class="arch-svg" viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <marker id="arrowhead-waf" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748B"/></marker>
           </defs>
