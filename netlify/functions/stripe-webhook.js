@@ -56,31 +56,39 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: JSON.stringify({ received: true, action: 'access_flagged' }) };
   }
 
-  // Only handle successful payments
+  // Handle: successful payment OR trial start
+  if (stripeEvent.type === 'customer.subscription.deleted') {
+    console.log('[webhook] Subscription cancelled:', stripeEvent.data.object.id);
+    return { statusCode: 200, body: JSON.stringify({ received: true, action: 'subscription_cancelled' }) };
+  }
+
   if (stripeEvent.type !== 'checkout.session.completed') {
     return { statusCode: 200, body: JSON.stringify({ received: true }) };
   }
 
   const session = stripeEvent.data.object;
+  const isTrial = session.payment_status === 'no_payment_required'; // trial start
 
-  if (session.payment_status !== 'paid') {
+  if (session.payment_status !== 'paid' && !isTrial) {
     return { statusCode: 200, body: JSON.stringify({ received: true }) };
   }
 
   const tier = session.metadata?.tier || 'lifetime';
-  const piId = session.payment_intent || null;
+  const piId = session.payment_intent || session.subscription || null;
 
+  // Expiry: trial gets 3 days, subscriptions get their full period
   let expiry = null;
-  if (tier === 'monthly') {
-    const d = new Date(); d.setHours(d.getHours() + 24); expiry = d.toISOString();
+  if (isTrial) {
+    const d = new Date(); d.setDate(d.getDate() + 3); expiry = d.toISOString();
+  } else if (tier === 'monthly') {
+    const d = new Date(); d.setDate(d.getDate() + 32); expiry = d.toISOString();
   } else if (tier === 'yearly') {
-    const d = new Date(); d.setHours(d.getHours() + 24); expiry = d.toISOString();
+    const d = new Date(); d.setDate(d.getDate() + 366); expiry = d.toISOString();
   }
 
   const accessToken = issueToken(tier, piId, expiry);
 
-  // Log for audit trail
-  console.log(`[webhook] Payment confirmed — tier: ${tier}, pi: ${piId}`);
+  console.log(`[webhook] ${isTrial ? 'Trial started' : 'Payment confirmed'} — tier: ${tier}, id: ${piId}`);
 
   return {
     statusCode: 200,

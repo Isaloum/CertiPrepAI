@@ -99,16 +99,22 @@
     .faq-item.open .faq-answer{max-height:300px}
     .faq-answer-inner{padding:.25rem 1.25rem 1.1rem;color:var(--muted);font-size:.95rem;line-height:1.7}
 
-    /* ── Email capture modal ── */
+    /* ── Trial signup modal ── */
     .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center}
     .modal-overlay.active{display:flex}
-    .modal-box{background:#fff;border-radius:16px;padding:2.5rem 2rem;max-width:440px;width:90%;text-align:center;box-shadow:0 25px 50px rgba(0,0,0,.25)}
-    .modal-box h2{font-size:1.5rem;font-weight:800;color:var(--aws-dark);margin-bottom:.5rem}
-    .modal-box p{color:var(--muted);margin-bottom:1.5rem;font-size:.95rem}
-    .modal-input{width:100%;padding:.85rem 1rem;border:1px solid var(--border);border-radius:12px;font-size:1rem;margin-bottom:1rem;outline:none}
+    .modal-box{background:#fff;border-radius:16px;padding:2rem 2rem 1.5rem;max-width:460px;width:90%;text-align:left;box-shadow:0 25px 50px rgba(0,0,0,.25)}
+    .modal-box h2{font-size:1.4rem;font-weight:800;color:var(--aws-dark);margin-bottom:.25rem;text-align:center}
+    .modal-box .modal-sub{color:var(--muted);margin-bottom:1.25rem;font-size:.9rem;text-align:center}
+    .modal-notice{background:#ecfdf5;border:1px solid #6ee7b7;border-radius:8px;padding:.55rem .85rem;font-size:.82rem;font-weight:700;color:#065f46;margin-bottom:1.25rem;text-align:center}
+    .modal-label{display:block;font-size:.82rem;font-weight:700;color:var(--aws-dark);margin-bottom:.3rem}
+    .modal-input{width:100%;padding:.75rem 1rem;border:1px solid var(--border);border-radius:10px;font-size:.95rem;margin-bottom:.9rem;outline:none;font-family:inherit}
     .modal-input:focus{border-color:var(--aws-blue);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
-    .modal-btn{width:100%;padding:.9rem;background:var(--aws-orange);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:.75rem}
-    .modal-skip{background:none;border:none;color:var(--muted);font-size:.9rem;cursor:pointer;text-decoration:underline}
+    .modal-card-row{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:.9rem}
+    .modal-card-row .modal-input{margin-bottom:0}
+    .modal-divider{border:none;border-top:1px solid var(--border);margin:.75rem 0}
+    .modal-btn{width:100%;padding:.9rem;background:var(--aws-orange);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:.6rem;transition:background .2s}
+    .modal-btn:hover{background:#e08800}
+    .modal-fine{font-size:.75rem;color:#9CA3AF;text-align:center;line-height:1.5}
 
     footer{background:var(--aws-dark);border-top:2px solid var(--border);padding:1.5rem 0;margin-top:2rem;text-align:center;color:#d5dbdb}
     @media(max-width:900px){.pricing-grid,.testimonials-grid{grid-template-columns:1fr}}
@@ -156,16 +162,27 @@
     </div>
   </nav>
 
-  <!-- Email Capture Modal -->
+  <!-- Trial Signup Modal -->
   <div class="modal-overlay" id="emailModal">
     <div class="modal-box">
-      <div style="font-size:2.5rem;margin-bottom:.75rem">🎯</div>
-      <h2>Start Your Free Trial</h2>
-      <p style="color:#065f46;background:#ecfdf5;border-radius:8px;padding:.5rem .75rem;margin-bottom:.75rem;font-weight:600;font-size:.9rem">✅ 3 days free · No credit card · Cancel anytime</p>
-      <p>Enter your email and we'll activate your free trial instantly.</p>
-      <input type="email" class="modal-input" id="modalEmail" placeholder="you@email.com">
-      <button class="modal-btn" onclick="proceedWithEmail()">Activate Free Trial →</button>
-      <button class="modal-skip" onclick="skipEmail()">Skip and continue without email</button>
+      <div style="font-size:2rem;text-align:center;margin-bottom:.5rem">🎯</div>
+      <h2>Start Your 3-Day Free Trial</h2>
+      <p class="modal-sub">Full access for 3 days. Cancel before day 3 and you won't be charged.</p>
+      <div class="modal-notice">✅ Free for 3 days → then $7/month. Cancel anytime.</div>
+
+      <label class="modal-label" for="modalName">Full Name</label>
+      <input type="text" class="modal-input" id="modalName" placeholder="Ihab Saloum" autocomplete="name">
+
+      <label class="modal-label" for="modalEmail">Email Address</label>
+      <input type="email" class="modal-input" id="modalEmail" placeholder="you@email.com" autocomplete="email">
+
+      <button class="modal-btn" id="trialSubmitBtn" onclick="proceedWithTrial()">Continue to Secure Checkout →</button>
+
+      <div style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:.6rem;font-size:.78rem;color:#6B7280">
+        <span>🔒</span>
+        <span>Card collected on <strong>Stripe's</strong> secure page — never touches our servers</span>
+      </div>
+      <p class="modal-fine" style="margin-top:.35rem">Not charged today · $7/mo starts after 3 days · Cancel anytime</p>
     </div>
   </div>
 
@@ -176,13 +193,13 @@
       <div class="trial-icon">🎯</div>
       <div class="trial-text">
         <h2>Try AWSPrepAI Free for 3 Days</h2>
-        <p>Full access. No credit card required. Cancel anytime before day 3 — you won't be charged a thing.</p>
+        <p>Enter your info once. Get full access for 3 days free. Cancel before day 3 and you won't be charged a thing.</p>
         <div class="trial-steps">
-          <span class="trial-step">Day 1–3 → Full Free Access</span>
+          <span class="trial-step">Sign up → Full Access (Day 1–3)</span>
           <span class="trial-arrow">→</span>
-          <span class="trial-step">Day 3 → Choose to pay $7/mo</span>
+          <span class="trial-step">Day 3 → $7/mo starts</span>
           <span class="trial-arrow">→</span>
-          <span class="trial-step">Or cancel for free</span>
+          <span class="trial-step">Cancel anytime before = $0</span>
         </div>
       </div>
       <button class="trial-cta" onclick="openEmailModal('trial')">Start Free Trial →</button>
@@ -228,7 +245,7 @@
           <span style="font-size:.9rem;color:var(--muted)">/month after trial</span>
         </div>
         <div class="tier-period" style="margin-bottom:.5rem">3-day free trial &bull; cancel anytime</div>
-        <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:8px;padding:.4rem .75rem;font-size:.82rem;font-weight:700;color:#065f46;margin-bottom:.75rem;text-align:center">✅ FREE for 3 days — then $7/mo</div>
+        <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:8px;padding:.4rem .75rem;font-size:.82rem;font-weight:700;color:#065f46;margin-bottom:.75rem;text-align:center">✅ FREE for 3 days — $7/mo after · Cancel before = $0</div>
         <ul class="features-list">
           <li>All 533 practice questions</li>
           <li>Unlimited mock exams</li>
@@ -358,7 +375,7 @@
             <span class="faq-icon">+</span>
           </button>
           <div class="faq-answer">
-            <div class="faq-answer-inner">You get full access to everything for 3 days — no credit card required at signup. On day 3, you'll get a reminder. If you choose to continue, you pick a plan ($7/month or $49/year). If you don't want to continue, just don't enter any payment info — you won't be charged anything.</div>
+            <div class="faq-answer-inner">You enter your name, email, and card once at signup. Your card is saved securely via Stripe but NOT charged for 3 days. You get full access immediately. On day 3, $7/month starts automatically. If you cancel before day 3, you owe nothing — your card will never be charged.</div>
           </div>
         </div>
         <div class="faq-item">
@@ -463,44 +480,41 @@
       item.classList.toggle('open');
     }
 
-    // ── Email modal ──
+    // ── Trial modal — collects name + email, then redirects to Stripe Checkout ──
+    // Card data is collected entirely on Stripe's secure hosted page (stripe.com domain).
+    // Our site never sees, handles, or stores any card information. Full PCI compliance.
     let pendingTier = null;
+
     function openEmailModal(tier) {
       pendingTier = tier;
-      // Skip modal if already captured email
-      if (localStorage.getItem('awsprepai_email')) {
-        initiatePayment(tier);
+      document.getElementById('emailModal').classList.add('active');
+      setTimeout(() => document.getElementById('modalName').focus(), 100);
+    }
+
+    async function proceedWithTrial() {
+      const name  = document.getElementById('modalName').value.trim();
+      const email = document.getElementById('modalEmail').value.trim();
+      if (!name || !email) {
+        alert('Please enter your full name and email to continue.');
         return;
       }
-      document.getElementById('emailModal').classList.add('active');
-      setTimeout(() => document.getElementById('modalEmail').focus(), 100);
-    }
-    function proceedWithEmail() {
-      const email = document.getElementById('modalEmail').value.trim();
-      if (email) {
-        localStorage.setItem('awsprepai_email', email);
-        // ── RESEND EMAIL CAPTURE ──
-        // When you have a Resend API key, create a Netlify function and call it here:
-        // fetch('/.netlify/functions/capture-email', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({ email, tier: pendingTier })
-        // });
-      }
+      const btn = document.getElementById('trialSubmitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Redirecting to Stripe...';
+      // Save name/email for post-checkout display only
+      localStorage.setItem('awsprepai_email', email);
+      localStorage.setItem('awsprepai_name', name);
       document.getElementById('emailModal').classList.remove('active');
-      initiatePayment(pendingTier);
+      // Stripe Checkout handles card collection, trial setup, and recurring billing
+      // trial_period_days:3 is set server-side in create-checkout-session.js
+      await initiatePayment(pendingTier === 'trial' ? 'monthly' : pendingTier);
+      btn.disabled = false;
+      btn.textContent = 'Continue to Secure Checkout →';
     }
-    function skipEmail() {
-      document.getElementById('emailModal').classList.remove('active');
-      initiatePayment(pendingTier);
-    }
+
     // Close modal on overlay click
     document.getElementById('emailModal').addEventListener('click', function(e) {
-      if (e.target === this) skipEmail();
-    });
-    // Enter key in email field
-    document.getElementById('modalEmail').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') proceedWithEmail();
+      if (e.target === this) this.classList.remove('active');
     });
   </script>
 </body>
