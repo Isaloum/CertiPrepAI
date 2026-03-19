@@ -12,17 +12,22 @@ exports.handler = async (event) => {
     }
 
     try {
-        const session = await stripe.checkout.sessions.create({
+        const sessionParams = {
             payment_method_types: ['card'],
-            line_items: [{
-                price: priceId,
-                quantity,
-            }],
-            mode: mode,
+            line_items: [{ price: priceId, quantity }],
+            mode,
             metadata: { product: 'awsprepai_premium', tier },
             success_url: `${process.env.SUCCESS_URL}?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.CANCEL_URL}`,
-        });
+        };
+
+        // 3-day free trial for subscription plans only (not lifetime)
+        if (mode === 'subscription') {
+            sessionParams.subscription_data = { trial_period_days: 3 };
+            sessionParams.payment_method_collection = 'always'; // collect card now, charge after trial
+        }
+
+        const session = await stripe.checkout.sessions.create(sessionParams);
 
         return {
             statusCode: 200,
