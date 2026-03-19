@@ -2051,7 +2051,7 @@
         <span class="exam-tag">High Value</span>
       </div>
       <div class="diagram-svg-wrap">
-        <svg class="arch-svg" viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+        <svg class="arch-svg" viewBox="0 0 600 295" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <marker id="arrowhead-serverless" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748B"/></marker>
           </defs>
@@ -2064,28 +2064,32 @@
           <!-- SERVERLESS ARCHITECTURE -->
           <g class="hotspot" onclick="explainServerlessCost('serverless','Serverless Stack','Lambda (compute) → API Gateway (entry) → DynamoDB (database) → S3 (storage). Pay only for what you use!','Exam tip: Serverless = no servers to manage. Auto-scales. Pay per execution, request, data stored. Great for variable workloads.')">
             <rect x="110" y="40" width="450" height="50" rx="6" class="aws-box-green"/>
-            <text x="335" y="65" class="aws-sublabel">API Gateway | Lambda | DynamoDB | S3 = Pay Per Use ✓</text>
+            <text x="335" y="60" class="aws-label" style="font-size:11px;">⚡ Serverless Stack</text>
+            <text x="335" y="78" class="aws-sublabel">API Gateway | Lambda | DynamoDB | S3 = Pay Per Use ✓</text>
           </g>
           <!-- Arrow -->
           <line x1="335" y1="90" x2="335" y2="110" class="arrow" marker-end="url(#arrowhead-serverless)"/>
           <!-- Serverless usage example -->
           <g class="hotspot" onclick="explainServerlessCost('usage','Example Usage','100 requests/day → Lambda: $0.20/month. DynamoDB: $0.25 for on-demand. S3: $0.023/GB. Total: ~$1-2/month.','Exam tip: Small-to-medium apps serverless often costs $5-50/month vs $100s for traditional.')">
-            <rect x="110" y="110" width="450" height="80" rx="6" class="aws-box-blue"/>
-            <text x="335" y="135" class="aws-sublabel">Lambda: $0.0000002 per request + $0.0000166 per GB-second</text>
-            <text x="335" y="155" class="aws-sublabel">DynamoDB: $1.25/GB for on-demand read/write</text>
-            <text x="335" y="175" class="aws-sublabel">Total monthly: varies from $1 (low) to $100s (high traffic)</text>
+            <rect x="110" y="110" width="450" height="90" rx="6" class="aws-box-blue"/>
+            <text x="335" y="130" class="aws-label" style="font-size:11px;">💰 Pricing Example</text>
+            <text x="335" y="148" class="aws-sublabel">Lambda: $0.0000002 per request + $0.0000166 per GB-second</text>
+            <text x="335" y="165" class="aws-sublabel">DynamoDB: $1.25/GB for on-demand read/write</text>
+            <text x="335" y="182" class="aws-sublabel">Total monthly: $1 (low) → $100s (high traffic)</text>
           </g>
           <!-- Comparison header -->
-          <line x1="10" y1="210" x2="590" y2="210" stroke="#E5E7EB" stroke-width="2"/>
-          <text x="40" y="230" class="aws-sublabel" style="font-weight:bold;">vs Traditional: EC2 + RDS</text>
-          <!-- Traditional (pays always) -->
+          <line x1="10" y1="218" x2="590" y2="218" stroke="#E5E7EB" stroke-width="2"/>
+          <text x="10" y="234" style="font-size:10px;font-weight:700;fill:#334155;text-anchor:start;">⚖️ vs Traditional: EC2 + RDS</text>
+          <!-- Traditional -->
           <g class="hotspot" onclick="explainServerlessCost('traditional','Traditional Stack','EC2 (always running) + RDS (always running). Fixed cost regardless of traffic. ~$100-500/month baseline.','Exam tip: Traditional = always-on cost. Good if high-traffic (>10k req/day). Predictable costs.')">
-            <rect x="10" y="240" width="280" height="20" rx="4" class="aws-box-orange"/>
-            <text x="150" y="253" class="aws-sublabel">EC2+RDS: $100-500/month always (even at 0 traffic!)</text>
+            <rect x="10" y="240" width="280" height="48" rx="8" class="aws-box-orange"/>
+            <text x="150" y="259" class="aws-label" style="font-size:11px;">Traditional: EC2 + RDS</text>
+            <text x="150" y="276" class="aws-sublabel">$100-500/month (even at 0 traffic!)</text>
           </g>
-          <!-- Serverless (pays when used) -->
-          <rect x="310" y="240" width="280" height="20" rx="4" class="aws-box-green"/>
-          <text x="450" y="253" class="aws-sublabel">Serverless: $1-100/month (scales with traffic)</text>
+          <!-- Serverless comparison -->
+          <rect x="310" y="240" width="280" height="48" rx="8" class="aws-box-green"/>
+          <text x="450" y="259" class="aws-label" style="font-size:11px;">Serverless</text>
+          <text x="450" y="276" class="aws-sublabel">$1-100/month (scales with traffic)</text>
         </svg>
       </div>
       <div class="explanation-panel" id="exp-serverless-cost">
