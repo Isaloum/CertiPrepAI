@@ -1754,7 +1754,7 @@
           </g>
           <!-- Error branch — up -->
           <line x1="258" y1="90" x2="258" y2="55" class="arrow" marker-end="url(#arrowhead-sf)"/>
-          <text x="265" y="75" class="aws-sublabel">error</text>
+          <text x="272" y="75" class="aws-sublabel" style="text-anchor:start;">error</text>
           <!-- Send Alert box -->
           <g class="hotspot" onclick="explainSF('error','Error Handler','Sends notification on failure. Example: SNS, SQS, or Lambda to log error.','Exam tip: Error handling = Catch state. Send alert, retry, or fail gracefully.')">
             <rect x="203" y="10" width="110" height="45" rx="6" class="aws-box-red"/>
@@ -1763,7 +1763,7 @@
           </g>
           <!-- Valid branch — down -->
           <line x1="258" y1="180" x2="258" y2="210" class="arrow" marker-end="url(#arrowhead-sf)"/>
-          <text x="265" y="198" class="aws-sublabel">valid</text>
+          <text x="272" y="198" class="aws-sublabel" style="text-anchor:start;">valid</text>
           <!-- Task 2 -->
           <g class="hotspot" onclick="explainSF('process','Lambda Task 2 — Process','Executes main processing Lambda. Can have retry policy (exponential backoff) and catch for errors.','Exam tip: Retry = automatic re-execution on failure. Catch = handle error and proceed. Both in state definition.')">
             <rect x="203" y="210" width="110" height="50" rx="6" class="aws-box-blue"/>
@@ -1901,7 +1901,7 @@
         <span class="exam-tag">⭐ High Frequency</span>
       </div>
       <div class="diagram-svg-wrap">
-        <svg class="arch-svg" viewBox="0 0 500 230" xmlns="http://www.w3.org/2000/svg">
+        <svg class="arch-svg" viewBox="0 0 500 262" xmlns="http://www.w3.org/2000/svg">
           <g class="hotspot" onclick="explainEC2('on-demand','On-Demand Instances','Pay by the hour/second. No commitment. Highest price per hour. Best for unpredictable workloads, short-term use, or testing.','Exam tip: On-Demand = flexibility, no commitment. Most expensive. Good for: spiky unpredictable traffic, short-term workloads, experiments.')">
             <rect x="10" y="15" width="460" height="35" rx="6" class="aws-box-orange"/>
             <text x="240" y="33" class="aws-label">On-Demand — Pay per hour | No commitment | Highest cost</text>
@@ -1923,8 +1923,9 @@
             <text x="240" y="193" class="aws-sublabel">Best for: batch, analytics, fault-tolerant | NOT for databases</text>
           </g>
           <g class="hotspot" onclick="explainEC2('dedicated','Dedicated Hosts / Instances','Physical server dedicated to you. Required for: per-socket/per-core software licensing, compliance requirements. Most expensive option.','Exam tip: Dedicated Host = compliance + BYOL (Bring Your Own License). You control instance placement. More expensive than Dedicated Instance. Use for regulatory requirements.')">
-            <rect x="10" y="208" width="460" height="20" rx="4" class="aws-box-red"/>
-            <text x="240" y="222" class="aws-label">Dedicated Hosts/Instances — Physical isolation | BYOL licensing | Most expensive</text>
+            <rect x="10" y="206" width="460" height="48" rx="6" class="aws-box-red"/>
+            <text x="240" y="225" class="aws-label">🏢 Dedicated Hosts / Instances</text>
+            <text x="240" y="242" class="aws-sublabel">Physical isolation | BYOL licensing | Most expensive</text>
           </g>
         </svg>
       </div>
