@@ -666,19 +666,19 @@
           </g>
           <!-- Primary Region -->
           <g class="hotspot" onclick="explain6('primary-region','Primary Region (Active)','Route 53 health checks the primary endpoint. If healthy, all traffic routes here. If unhealthy (health check fails), Route 53 automatically switches DNS to the secondary.','Exam tip: Health check interval = 30s (standard) or 10s (fast). After 3 failures → unhealthy. DNS TTL determines how quickly failover takes effect.')">
-            <rect x="250" y="30" width="115" height="80" rx="8" class="aws-box-blue"/>
-            <text x="308" y="60" class="aws-label">🏢</text>
-            <text x="308" y="75" class="aws-label">Primary</text>
-            <text x="308" y="90" class="aws-label">us-east-1</text>
-            <text x="308" y="104" class="aws-sublabel">Active (Healthy)</text>
+            <rect x="250" y="20" width="115" height="95" rx="8" class="aws-box-blue"/>
+            <text x="308" y="45" class="aws-label">🏢</text>
+            <text x="308" y="63" class="aws-label">Primary</text>
+            <text x="308" y="80" class="aws-label">us-east-1</text>
+            <text x="308" y="101" class="aws-sublabel">Active (Healthy)</text>
           </g>
           <!-- Secondary Region -->
           <g class="hotspot" onclick="explain6('secondary-region','Secondary Region (Passive)','Standby infrastructure in a different region. Route 53 only routes traffic here when the primary health check fails. Must be pre-warmed or use services that scale automatically (like S3 static site, or pre-scaled EC2).','Exam tip: Failover routing = active/passive. For active/active (both serve traffic simultaneously), use Weighted or Latency routing instead.')">
-            <rect x="250" y="140" width="115" height="80" rx="8" class="aws-box-gray"/>
-            <text x="308" y="170" class="aws-label">🏢</text>
-            <text x="308" y="185" class="aws-label">Secondary</text>
+            <rect x="250" y="140" width="115" height="95" rx="8" class="aws-box-gray"/>
+            <text x="308" y="165" class="aws-label">🏢</text>
+            <text x="308" y="183" class="aws-label">Secondary</text>
             <text x="308" y="200" class="aws-label">us-west-2</text>
-            <text x="308" y="214" class="aws-sublabel">Passive (Standby)</text>
+            <text x="308" y="221" class="aws-sublabel">Passive (Standby)</text>
           </g>
           <!-- Health Check -->
           <g class="hotspot" onclick="explain6('hc','Health Checks','Route 53 sends periodic health check requests to your endpoints. If endpoint fails threshold, it marks record as unhealthy and stops routing traffic there. Supports HTTP, HTTPS, TCP checks.','Exam tip: Health checks can monitor CloudWatch alarms (calculated health checks). Use for complex health scenarios, e.g., check if DB is accessible before marking web app healthy.')">
