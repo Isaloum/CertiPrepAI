@@ -2179,13 +2179,6 @@
           <!-- AWS Cloud label (right side) -->
           <text x="410" y="22" style="font-size:10px;font-weight:600;fill:#64748B;text-anchor:start;">☁️ AWS Cloud</text>
 
-          <!-- EC2 — vertically centered between the two rows -->
-          <g class="hotspot" onclick="explainEndpoint('ec2','EC2 Instance (Private)','Needs to access AWS services. No internet gateway (not exposed). Uses VPC Endpoints for private access.','Exam tip: Private EC2 can\'t access services via internet. VPC Endpoints = private path to services. No NAT Gateway cost.')">
-            <rect x="25" y="65" width="115" height="110" rx="8" class="aws-box-blue"/>
-            <text x="82" y="108" class="aws-label">🖥️</text>
-            <text x="82" y="128" class="aws-label">EC2 Private</text>
-          </g>
-
           <!-- Gateway Endpoint -->
           <g class="hotspot" onclick="explainEndpoint('gw','Gateway Endpoint (Free)','S3 and DynamoDB only. No cost! Add to route table — traffic automatically routed through endpoint. No ENI.','Exam tip: Gateway = S3/DynamoDB only, free, easiest. Add to route table. Perfect for private S3 access.')">
             <rect x="180" y="45" width="155" height="85" rx="8" class="aws-box-green"/>
@@ -2202,9 +2195,16 @@
             <text x="257" y="223" class="aws-sublabel">Costs $$</text>
           </g>
 
+          <!-- EC2 — perfectly centered between Gateway (center y=87) and Interface (center y=197) -->
+          <g class="hotspot" onclick="explainEndpoint('ec2','EC2 Instance (Private)','Needs to access AWS services. No internet gateway (not exposed). Uses VPC Endpoints for private access.','Exam tip: Private EC2 can\'t access services via internet. VPC Endpoints = private path to services. No NAT Gateway cost.')">
+            <rect x="25" y="88" width="115" height="110" rx="8" class="aws-box-blue"/>
+            <text x="82" y="131" class="aws-label">🖥️</text>
+            <text x="82" y="151" class="aws-label">EC2 Private</text>
+          </g>
+
           <!-- Arrows: EC2 → Endpoints -->
-          <line x1="140" y1="98"  x2="180" y2="87"  class="arrow" marker-end="url(#arrowhead-endpoint)"/>
-          <line x1="140" y1="142" x2="180" y2="197" class="arrow" marker-end="url(#arrowhead-endpoint)"/>
+          <line x1="140" y1="115" x2="180" y2="87"  class="arrow" marker-end="url(#arrowhead-endpoint)"/>
+          <line x1="140" y1="171" x2="180" y2="197" class="arrow" marker-end="url(#arrowhead-endpoint)"/>
 
           <!-- S3 (external) -->
           <g class="hotspot" onclick="explainEndpoint('gw','Gateway Endpoint (Free)','S3 and DynamoDB only. No cost! Add to route table — traffic automatically routed through endpoint. No ENI.','Exam tip: Gateway = S3/DynamoDB only, free, easiest. Add to route table. Perfect for private S3 access.')">
