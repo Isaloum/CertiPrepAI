@@ -107,7 +107,17 @@
   </div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
+const SUPA_URL = 'https://swkqwqtgbxymyhcnhmfv.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3a3F3cXRnYnh5bXloY25obWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxNzEwNzcsImV4cCI6MjA4NTc0NzA3N30.RttI8lDSItgTLMR1QwstSfNakyXqsLgt5kEfmhEJxf4';
+const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+// Already logged in → go to dashboard
+supa.auth.getSession().then(({ data }) => {
+  if (data.session) window.location.href = 'user-dashboard.html';
+});
+
 function checkStrength(val) {
   const fill = document.getElementById('strengthFill');
   let score = 0;
@@ -123,16 +133,25 @@ function checkStrength(val) {
 
 async function handleSignup(e) {
   e.preventDefault();
-  const btn = document.getElementById('submitBtn');
-  const errorEl = document.getElementById('errorMsg');
+  const btn       = document.getElementById('submitBtn');
+  const errorEl   = document.getElementById('errorMsg');
   const successEl = document.getElementById('successMsg');
-  errorEl.style.display = 'none';
+  errorEl.style.display   = 'none';
   successEl.style.display = 'none';
 
-  const password = document.getElementById('password').value;
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName  = document.getElementById('lastName').value.trim();
+  const email     = document.getElementById('email').value.trim().toLowerCase();
+  const password  = document.getElementById('password').value;
   const password2 = document.getElementById('password2').value;
+
   if (password !== password2) {
     errorEl.textContent = 'Passwords do not match.';
+    errorEl.style.display = 'block';
+    return;
+  }
+  if (password.length < 8) {
+    errorEl.textContent = 'Password must be at least 8 characters.';
     errorEl.style.display = 'block';
     return;
   }
@@ -140,47 +159,29 @@ async function handleSignup(e) {
   btn.disabled = true;
   btn.textContent = 'Creating account…';
 
-  const payload = {
-    firstName: document.getElementById('firstName').value.trim(),
-    lastName: document.getElementById('lastName').value.trim(),
-    email: document.getElementById('email').value.trim().toLowerCase(),
-    password
-  };
+  const { data, error } = await supa.auth.signUp({
+    email,
+    password,
+    options: { data: { first_name: firstName, last_name: lastName, full_name: firstName + ' ' + lastName } }
+  });
 
-  try {
-    const resp = await fetch('/.netlify/functions/auth-signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const data = await resp.json();
-
-    if (!resp.ok) {
-      errorEl.textContent = data.error || 'Could not create account. Please try again.';
-      errorEl.style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = 'Create Free Account →';
-      return;
-    }
-
-    localStorage.setItem('_apa_session', data.token);
-    localStorage.setItem('_apa_email', payload.email);
-    localStorage.setItem('_apa_name', payload.firstName);
-
-    successEl.textContent = 'Account created! Redirecting…';
-    successEl.style.display = 'block';
-    setTimeout(() => window.location.href = 'user-dashboard.html', 800);
-
-  } catch (err) {
-    errorEl.textContent = 'Network error — please try again.';
+  if (error) {
+    errorEl.textContent = error.message || 'Could not create account. Please try again.';
     errorEl.style.display = 'block';
     btn.disabled = false;
     btn.textContent = 'Create Free Account →';
+    return;
   }
-}
 
-if (localStorage.getItem('_apa_session')) {
-  window.location.href = 'user-dashboard.html';
+  // Store session
+  localStorage.setItem('_apa_session', data.session?.access_token || 'confirmed');
+  localStorage.setItem('_apa_email', email);
+  localStorage.setItem('_apa_name', firstName);
+  localStorage.setItem('_apa_tier', 'free');
+
+  successEl.textContent = 'Account created! Redirecting…';
+  successEl.style.display = 'block';
+  setTimeout(() => window.location.href = 'user-dashboard.html', 900);
 }
 </script>
 <script src="navigation.js"></script>

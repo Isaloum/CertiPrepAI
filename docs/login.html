@@ -82,56 +82,51 @@
   </div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
+const SUPA_URL = 'https://swkqwqtgbxymyhcnhmfv.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3a3F3cXRnYnh5bXloY25obWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxNzEwNzcsImV4cCI6MjA4NTc0NzA3N30.RttI8lDSItgTLMR1QwstSfNakyXqsLgt5kEfmhEJxf4';
+const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+// Already logged in → go to dashboard
+supa.auth.getSession().then(({ data }) => {
+  if (data.session) window.location.href = 'user-dashboard.html';
+});
+
 async function handleLogin(e) {
   e.preventDefault();
-  const btn = document.getElementById('submitBtn');
-  const errorEl = document.getElementById('errorMsg');
+  const btn       = document.getElementById('submitBtn');
+  const errorEl   = document.getElementById('errorMsg');
   const successEl = document.getElementById('successMsg');
-  errorEl.style.display = 'none';
+  errorEl.style.display   = 'none';
   successEl.style.display = 'none';
   btn.disabled = true;
   btn.textContent = 'Logging in…';
 
-  const email = document.getElementById('email').value.trim();
+  const email    = document.getElementById('email').value.trim().toLowerCase();
   const password = document.getElementById('password').value;
 
-  try {
-    const resp = await fetch('/.netlify/functions/auth-login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-    const data = await resp.json();
+  const { data, error } = await supa.auth.signInWithPassword({ email, password });
 
-    if (!resp.ok) {
-      errorEl.textContent = data.error || 'Invalid email or password.';
-      errorEl.style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = 'Log In →';
-      return;
-    }
-
-    // Store session
-    localStorage.setItem('_apa_session', data.token);
-    localStorage.setItem('_apa_email', email);
-    if (data.tier) localStorage.setItem('_apa_tier', data.tier);
-
-    successEl.textContent = 'Logged in! Redirecting…';
-    successEl.style.display = 'block';
-    setTimeout(() => window.location.href = 'user-dashboard.html', 800);
-
-  } catch (err) {
-    errorEl.textContent = 'Network error — please try again.';
+  if (error) {
+    errorEl.textContent = error.message === 'Invalid login credentials'
+      ? 'Incorrect email or password.'
+      : (error.message || 'Login failed. Please try again.');
     errorEl.style.display = 'block';
     btn.disabled = false;
     btn.textContent = 'Log In →';
+    return;
   }
-}
 
-// If already logged in, redirect
-if (localStorage.getItem('_apa_session')) {
-  window.location.href = 'user-dashboard.html';
+  const user = data.user;
+  localStorage.setItem('_apa_session', data.session.access_token);
+  localStorage.setItem('_apa_email', email);
+  localStorage.setItem('_apa_name', user.user_metadata?.first_name || user.user_metadata?.full_name?.split(' ')[0] || '');
+  localStorage.setItem('_apa_tier', user.user_metadata?.tier || 'free');
+
+  successEl.textContent = 'Logged in! Redirecting…';
+  successEl.style.display = 'block';
+  setTimeout(() => window.location.href = 'user-dashboard.html', 900);
 }
 </script>
 <script src="navigation.js"></script>
