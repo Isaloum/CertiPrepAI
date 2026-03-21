@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="navigation.css">
   <style>
-    :root{--bg:#F9FAFB;--card:#fff;--text:#232F3E;--muted:#545b64;--border:#d5dbdb;--radius:8px;--aws-orange:#FF9900;--aws-dark:#1F2937;--aws-blue:#3B82F6;--accent-2:#2563EB;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--saa-color:#FF9900;--saa-dark:#232F3E;--saa-light:#fff8ee}
+    :root{--bg:#F9FAFB;--card:#fff;--text:#232F3E;--muted:#545b64;--border:#d5dbdb;--radius:8px;--aws-orange:#2563EB;--aws-dark:#1F2937;--aws-blue:#3B82F6;--accent-2:#2563EB;--success:#10b981;--warning:#2563EB;--danger:#ef4444;--saa-color:#2563EB;--saa-dark:#1E3A8A;--saa-light:#EFF6FF}
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
     .container{max-width:1140px;margin:0 auto;padding:0 1.5rem}
@@ -25,13 +25,13 @@
 
     /* ── Hero ── */
     .saa-hero{background:linear-gradient(135deg,#1a2332 0%,#232F3E 50%,#2d3a4a 100%);padding:2.5rem 1.5rem;text-align:center;margin:0}
-    .saa-hero-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:.35rem 1rem;font-size:.8rem;font-weight:700;color:#ffd27d;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.06em}
+    .saa-hero-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:.35rem 1rem;font-size:.8rem;font-weight:700;color:#93C5FD;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.06em}
     .saa-hero h1{font-size:2.4rem;color:#fff;font-weight:900;margin-bottom:.5rem}
-    .saa-hero p{color:#ffd27d;font-size:1.05rem;max-width:600px;margin:0 auto 1.5rem}
+    .saa-hero p{color:#93C5FD;font-size:1.05rem;max-width:600px;margin:0 auto 1.5rem}
     .saa-stats-row{display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap}
     .saa-stat{text-align:center}
     .saa-stat .num{font-size:2rem;font-weight:900;color:#fff}
-    .saa-stat .lbl{font-size:.75rem;color:#ffd27d;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+    .saa-stat .lbl{font-size:.75rem;color:#93C5FD;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
 
     /* ── Nav tabs ── */
     .nav-bar{background:#fff;border-bottom:1px solid var(--border);padding:.75rem 0;position:sticky;top:72px;z-index:99}
@@ -58,7 +58,7 @@
     .domain-name{font-weight:700;font-size:.9rem;color:var(--aws-dark);margin-bottom:.25rem}
     .domain-meta{font-size:.78rem;color:var(--muted);margin-bottom:.6rem}
     .progress-bar{height:8px;background:#f3f4f6;border-radius:999px;overflow:hidden}
-    .progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--saa-color),#7c3aed);transition:width .4s}
+    .progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--saa-color),#60A5FA);transition:width .4s}
 
     /* ── Filter bar ── */
     .filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;align-items:center}
@@ -76,7 +76,7 @@
     .quiz-question{font-size:1.15rem;font-weight:600;line-height:1.55;margin-bottom:1.5rem;color:var(--aws-dark)}
     .quiz-options{display:grid;gap:.75rem}
     .quiz-option{background:#fafafa;border:2px solid var(--border);border-radius:10px;padding:1rem 1.25rem;cursor:pointer;transition:all .2s;font-size:.95rem;display:flex;align-items:flex-start;gap:.75rem}
-    .quiz-option:hover:not(.locked){border-color:var(--saa-color);background:#fff8ee}
+    .quiz-option:hover:not(.locked){border-color:var(--saa-color);background:#EFF6FF}
     .quiz-option.correct{border-color:var(--success);background:rgba(16,185,129,.1)}
     .quiz-option.incorrect{border-color:var(--danger);background:rgba(239,68,68,.09)}
     .quiz-option.locked{pointer-events:none}
@@ -86,7 +86,7 @@
     .opt-text{flex:1;line-height:1.4}
 
     /* Explanation */
-    .explanation{margin-top:1rem;padding:1rem 1.25rem;border-radius:8px;background:#fff8ee;border-left:4px solid var(--saa-color);font-size:.9rem;line-height:1.55;display:none}
+    .explanation{margin-top:1rem;padding:1rem 1.25rem;border-radius:8px;background:#EFF6FF;border-left:4px solid var(--saa-color);font-size:.9rem;line-height:1.55;display:none}
     .explanation.show{display:block}
     .explanation strong{color:var(--saa-color)}
 
@@ -214,7 +214,7 @@
     <div class="stat-card"><div class="stat-value" id="dash-total">0</div><div class="stat-label">Questions Answered</div></div>
     <div class="stat-card"><div class="stat-value" id="dash-correct" style="color:var(--success)">0</div><div class="stat-label">Correct</div></div>
     <div class="stat-card"><div class="stat-value" id="dash-pct" style="color:var(--saa-color)">0%</div><div class="stat-label">Accuracy</div></div>
-    <div class="stat-card"><div class="stat-value" id="dash-streak" style="color:var(--warning)">0</div><div class="stat-label">Current Streak</div></div>
+    <div class="stat-card"><div class="stat-value" id="dash-streak" style="color:#2563EB">0</div><div class="stat-label">Current Streak</div></div>
   </div>
 
   <h2 style="font-size:1.15rem;font-weight:700;color:var(--aws-dark);margin-bottom:1rem">Domain Progress</h2>
@@ -262,7 +262,7 @@
       <div style="font-size:3rem;margin-bottom:1rem">🎯</div>
       <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:.75rem">Mock Exam</h2>
       <p style="color:var(--muted);margin-bottom:1.5rem">65 questions · 130 minutes · Simulates the real SAA-C03 exam experience. Answers revealed only at the end.</p>
-      <div style="background:#fff8ee;border-radius:8px;padding:1rem;margin-bottom:1.5rem;text-align:left">
+      <div style="background:#EFF6FF;border-radius:8px;padding:1rem;margin-bottom:1.5rem;text-align:left">
         <div style="font-weight:700;margin-bottom:.5rem;color:var(--saa-color)">Exam blueprint:</div>
         <div style="font-size:.85rem;color:var(--muted);line-height:1.8">
           Design Secure Architectures — 30%<br>
