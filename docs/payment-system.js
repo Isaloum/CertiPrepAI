@@ -1,6 +1,6 @@
 // ==================== PAYMENT SYSTEM ====================
 
-const FREE_QUESTION_LIMIT = 20;
+const FREE_QUESTION_LIMIT = 5;
 
 const PRICING = {
   monthly: {
@@ -35,6 +35,9 @@ let stripe;
 if (typeof Stripe !== 'undefined') {
   stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 }
+
+// API base — functions live on Netlify, site is served from GitHub Pages
+const API_BASE = 'https://awsprepai.netlify.app';
 
 // ==================== RSA-JWT VERIFICATION ====================
 // Public key embedded at build time — private key never leaves the server.
@@ -130,7 +133,7 @@ async function initPremiumCheck() {
 
 async function _refreshToken(paymentIntentId) {
   try {
-    const resp = await fetch('/.netlify/functions/restore-access', {
+    const resp = await fetch(API_BASE + '/.netlify/functions/restore-access', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ paymentIntentId }),
@@ -243,7 +246,7 @@ async function initiatePayment(tier) {
   if (!plan) return;
 
   try {
-    const resp = await fetch('/.netlify/functions/create-checkout-session', {
+    const resp = await fetch(API_BASE + '/.netlify/functions/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -268,8 +271,8 @@ async function initiatePayment(tier) {
 // Saves & loads quiz progress via Netlify Blobs (JWT-authenticated).
 // Local storage is always used as primary cache; server is synced in background.
 
-const SYNC_BASE = '/.netlify/functions/sync-progress';
-const LOAD_BASE = '/.netlify/functions/load-progress';
+const SYNC_BASE = API_BASE + '/.netlify/functions/sync-progress';
+const LOAD_BASE = API_BASE + '/.netlify/functions/load-progress';
 
 /**
  * Save progress for one cert to the server.
