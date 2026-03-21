@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="navigation.css">
   <style>
-    :root{--bg:#F9FAFB;--card:#fff;--text:#232F3E;--muted:#545b64;--border:#d5dbdb;--radius:8px;--aws-orange:#2563EB;--aws-dark:#1E3A8A;--aws-blue:#3B82F6;--accent-2:#2563EB;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--gai-dark:#1E3A8A;--gai-light:#EFF6FF;--gai-blue:#2563EB}
+    :root{--bg:#F9FAFB;--card:#fff;--text:#232F3E;--muted:#545b64;--border:#d5dbdb;--radius:8px;--aws-orange:#2563EB;--aws-dark:#1E3A8A;--aws-blue:#3B82F6;--accent-2:#2563EB;--success:#10b981;--warning:#2563EB;--danger:#ef4444;--gai-dark:#1E3A8A;--gai-light:#EFF6FF;--gai-blue:#2563EB}
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
     .container{max-width:1140px;margin:0 auto;padding:0 1.5rem}
@@ -25,13 +25,13 @@
 
     /* ── Hero ── */
     .gai-hero{background:linear-gradient(135deg,#1a2332 0%,#232F3E 50%,#2d3a4a 100%);padding:2.5rem 1.5rem;text-align:center;margin:0}
-    .gai-hero-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:.35rem 1rem;font-size:.8rem;font-weight:700;color:#ffd27d;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.06em}
+    .gai-hero-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:.35rem 1rem;font-size:.8rem;font-weight:700;color:#93C5FD;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.06em}
     .gai-hero h1{font-size:2.4rem;color:#fff;font-weight:900;margin-bottom:.5rem}
-    .gai-hero p{color:#ffd27d;font-size:1.05rem;max-width:600px;margin:0 auto 1.5rem}
+    .gai-hero p{color:#93C5FD;font-size:1.05rem;max-width:600px;margin:0 auto 1.5rem}
     .gai-stats-row{display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap}
     .gai-stat{text-align:center}
     .gai-stat .num{font-size:2rem;font-weight:900;color:#fff}
-    .gai-stat .lbl{font-size:.75rem;color:#ffd27d;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+    .gai-stat .lbl{font-size:.75rem;color:#93C5FD;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
 
     /* ── Nav tabs ── */
     .nav-bar{background:#fff;border-bottom:1px solid var(--border);padding:.75rem 0;position:sticky;top:72px;z-index:99}
@@ -214,7 +214,7 @@
     <div class="stat-card"><div class="stat-value" id="dash-total">0</div><div class="stat-label">Questions Answered</div></div>
     <div class="stat-card"><div class="stat-value" id="dash-correct" style="color:var(--success)">0</div><div class="stat-label">Correct</div></div>
     <div class="stat-card"><div class="stat-value" id="dash-pct" style="color:var(--gai-blue)">0%</div><div class="stat-label">Accuracy</div></div>
-    <div class="stat-card"><div class="stat-value" id="dash-streak" style="color:var(--warning)">0</div><div class="stat-label">Current Streak</div></div>
+    <div class="stat-card"><div class="stat-value" id="dash-streak" style="color:#2563EB">0</div><div class="stat-label">Current Streak</div></div>
   </div>
 
   <h2 style="font-size:1.15rem;font-weight:700;color:var(--aws-dark);margin-bottom:1rem">Domain Progress</h2>
