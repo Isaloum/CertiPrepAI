@@ -236,69 +236,98 @@
       </div>
     </div>
 
+    <!-- Value anchor bar -->
+    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1rem 1.5rem;margin-bottom:1.75rem;display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap;text-align:center;">
+      <div style="font-size:.85rem;color:#6b7280;">Compared to alternatives:</div>
+      <div style="display:flex;align-items:center;gap:.5rem;"><span style="text-decoration:line-through;color:#ef4444;font-weight:700;font-size:.95rem;">$399</span><span style="font-size:.85rem;color:#6b7280;">Udemy SAA course</span></div>
+      <div style="display:flex;align-items:center;gap:.5rem;"><span style="text-decoration:line-through;color:#ef4444;font-weight:700;font-size:.95rem;">$300+</span><span style="font-size:.85rem;color:#6b7280;">Official AWS training</span></div>
+      <div style="display:flex;align-items:center;gap:.5rem;"><span style="text-decoration:line-through;color:#ef4444;font-weight:700;font-size:.95rem;">$1,200+</span><span style="font-size:.85rem;color:#6b7280;">Bootcamp prep courses</span></div>
+      <div style="background:#dcfce7;color:#166534;font-weight:800;font-size:.9rem;padding:.3rem .85rem;border-radius:999px;">AWSPrepAI from $7/mo</div>
+    </div>
+
     <!-- Pricing Cards -->
     <div class="pricing-grid">
+
       <!-- Monthly -->
-      <div class="pricing-card" style="border:2px solid #059669;">
-        <div class="popular-badge" style="background:linear-gradient(90deg,#059669,#10b981);">🎁 3 DAYS FREE — Then $7/month</div>
-        <div class="tier-name" style="margin-top:.5rem">Monthly</div>
-
+      <div class="pricing-card" style="border:2px solid #059669;background:linear-gradient(180deg,#f0fdf4 0%,#fff 60%);">
+        <div class="popular-badge" style="background:linear-gradient(90deg,#059669,#10b981);">🎁 TRY FREE FOR 3 DAYS</div>
+        <div style="margin-top:.75rem;">
+          <div class="tier-name">Monthly</div>
+          <div style="font-size:.82rem;color:#059669;font-weight:700;margin-bottom:.5rem;">✓ Perfect for a focused exam sprint</div>
+        </div>
         <div class="tier-price"><span class="currency">$</span>7</div>
-        <div class="tier-period">/ month &bull; cancel anytime</div>
-
+        <div class="tier-period">/ month · cancel anytime</div>
+        <div class="tier-savings">☕ Less than a coffee per week</div>
         <ul class="features-list">
-          <li>All 533 practice questions</li>
-          <li>Unlimited mock exams</li>
+          <li><strong>2,860 real scenario questions</strong> across 11 AWS certs</li>
+          <li>Timed mock exams — real exam simulation</li>
           <li>Visual architecture builder</li>
-          <li>Progress tracking</li>
-          <li>All future updates</li>
-          <li>30-day pass guarantee</li>
+          <li>Domain progress tracking + weak area detection</li>
+          <li>30-day pass guarantee — fail = full refund</li>
           <li>Email support</li>
+          <li style="color:#9ca3af;font-size:.88rem;">⚡ Start free today, pay only if you love it</li>
         </ul>
-        <button class="btn-premium" onclick="openEmailModal('trial')">Start Free Trial →</button>
+        <button class="btn-premium" style="background:linear-gradient(90deg,#059669,#10b981);font-size:1.05rem;" onclick="openEmailModal('trial')">Start Free — No Card Needed →</button>
+        <div style="text-align:center;font-size:.75rem;color:#9ca3af;margin-top:.5rem;">3 days free · then $7/mo · cancel anytime</div>
       </div>
 
-      <!-- Yearly -->
-      <div class="pricing-card" style="border:2px solid #3B82F6;">
-        <div class="popular-badge" style="background:linear-gradient(90deg,#2563EB,#3B82F6);">💰 Save $35 vs Monthly</div>
-        <div class="tier-name" style="margin-top:.5rem">Yearly</div>
-        <div class="tier-price"><span class="currency">$</span>49</div>
-        <div class="tier-period">/year (~$4.08/month)</div>
+      <!-- Yearly — MOST POPULAR -->
+      <div class="pricing-card pricing-card--popular" style="border:3px solid var(--aws-orange);transform:scale(1.03);background:linear-gradient(180deg,#fff8ee 0%,#fff 60%);">
+        <div class="popular-badge" style="background:linear-gradient(90deg,#FF9900,#f59e0b);font-size:.8rem;">⭐ MOST POPULAR · SMARTEST PICK</div>
+        <div style="margin-top:.75rem;">
+          <div class="tier-name" style="font-size:1.4rem;">Yearly</div>
+          <div style="font-size:.82rem;color:#d97706;font-weight:700;margin-bottom:.5rem;">✓ Best for multi-cert career growth</div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:.5rem;">
+          <div class="tier-price" style="color:var(--aws-orange);"><span class="currency" style="color:var(--aws-orange);">$</span>49</div>
+          <div style="text-decoration:line-through;color:#9ca3af;font-size:1.2rem;font-weight:700;">$84</div>
+        </div>
+        <div class="tier-period">/year · <strong style="color:var(--aws-orange);">~$4/month</strong> · save $35</div>
+        <div class="tier-savings" style="background:#fff3cd;color:#92400e;">🔥 Save $35 vs monthly — 41% off</div>
         <ul class="features-list">
-          <li>All 533 practice questions</li>
-          <li>Unlimited mock exams</li>
+          <li><strong>2,860 real scenario questions</strong> across 11 AWS certs</li>
+          <li>Timed mock exams — real exam simulation</li>
           <li>Visual architecture builder</li>
-          <li>Progress tracking &amp; weak area detection</li>
-          <li>All future updates — all 12 certs as we add them</li>
-          <li>30-day pass guarantee</li>
-          <li style="color:var(--success);font-weight:700;">📊 Domain score breakdown per session</li>
-          <li style="color:var(--success);">🎯 Mock exam mode (timed, real exam simulation)</li>
-          <li style="color:var(--success);">📅 Priority email support</li>
+          <li>Domain score breakdown per session</li>
+          <li>Weak area detection + personalized focus</li>
+          <li>30-day pass guarantee — fail = full refund</li>
+          <li style="color:var(--success);font-weight:700;">🏆 All 11 cert question banks (CLF → SAP)</li>
+          <li style="color:var(--success);font-weight:700;">📅 Priority email support</li>
+          <li style="color:var(--success);">🔄 All future cert updates included free</li>
         </ul>
-        <button class="btn-premium" onclick="openEmailModal('yearly')" style="background:#2563EB">Get Yearly Access →</button>
+        <button class="btn-premium btn-premium--popular" style="font-size:1.05rem;padding:1rem;" onclick="openEmailModal('yearly')">Lock In Yearly — Save $35 →</button>
+        <div style="text-align:center;font-size:.75rem;color:#9ca3af;margin-top:.5rem;">One payment · full year · no surprises</div>
       </div>
 
       <!-- Lifetime -->
-      <div class="pricing-card pricing-card--popular">
-        <div class="popular-badge">⭐ BEST VALUE — Most Popular</div>
-        <div class="tier-name">Lifetime</div>
-        <div class="tier-price"><span class="currency">$</span>97</div>
-        <div class="tier-period">one-time payment · pay once, study forever</div>
+      <div class="pricing-card" style="border:2px solid #7c3aed;background:linear-gradient(180deg,#faf5ff 0%,#fff 60%);">
+        <div class="popular-badge" style="background:linear-gradient(90deg,#7c3aed,#8b5cf6);">🤖 INCLUDES UNLIMITED AI COACH</div>
+        <div style="margin-top:.75rem;">
+          <div class="tier-name">Lifetime</div>
+          <div style="font-size:.82rem;color:#7c3aed;font-weight:700;margin-bottom:.5rem;">✓ One payment. Own it forever.</div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:.5rem;">
+          <div class="tier-price" style="color:#7c3aed;"><span class="currency" style="color:#7c3aed;">$</span>97</div>
+          <div style="text-decoration:line-through;color:#9ca3af;font-size:1.2rem;font-weight:700;">$399</div>
+        </div>
+        <div class="tier-period">one-time · never pay again</div>
+        <div class="tier-savings" style="background:#ede9fe;color:#5b21b6;">💡 AWS cert = avg $15K salary boost. We cost $97.</div>
         <ul class="features-list">
-          <li>All 533 practice questions</li>
-          <li>Unlimited mock exams</li>
+          <li><strong>2,860 real scenario questions</strong> across 11 AWS certs</li>
+          <li>Timed mock exams — real exam simulation</li>
           <li>Visual architecture builder</li>
-          <li>Progress tracking</li>
-          <li>All future updates included</li>
-          <li>30-day pass guarantee</li>
-          <li style="color:var(--success);font-weight:700;">🤖 Unlimited AI Coach (GPT-4o)</li>
-          <li style="color:var(--success);">💡 Instant concept explanations</li>
-          <li style="color:var(--success);">📝 On-demand practice Q&amp;A</li>
-          <li style="color:var(--success);">📅 Personalised study plans</li>
-          <li style="color:var(--success);">🏆 Pay once · use forever</li>
+          <li>Domain progress tracking + weak area detection</li>
+          <li>30-day pass guarantee — fail = full refund</li>
+          <li style="color:#7c3aed;font-weight:700;">🤖 Unlimited AI Coach — ask anything, 24/7</li>
+          <li style="color:#7c3aed;font-weight:700;">💡 Instant explanations for every wrong answer</li>
+          <li style="color:#7c3aed;font-weight:700;">📝 Custom study plans tailored to your gaps</li>
+          <li style="color:var(--success);font-weight:700;">🏆 All future certs added — no extra charge</li>
+          <li style="color:var(--success);">♾️ Lifetime access — study at your own pace</li>
         </ul>
-        <button class="btn-premium btn-premium--popular" onclick="openEmailModal('lifetime')">Get Lifetime + AI Coach →</button>
+        <button class="btn-premium" style="background:linear-gradient(90deg,#7c3aed,#8b5cf6);font-size:1.05rem;" onclick="openEmailModal('lifetime')">Get Lifetime + AI Coach →</button>
+        <div style="text-align:center;font-size:.75rem;color:#9ca3af;margin-top:.5rem;">Pay once · use forever · all certs included</div>
       </div>
+
     </div>
 
     <!-- AI Coach highlight strip -->
