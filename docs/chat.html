@@ -553,7 +553,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     currentTier = getPremiumTier();
   }
 
-  // Has premium — show chat
+  // AI Coach is lifetime only — block monthly/bundle/yearly
+  if (currentTier !== 'lifetime') {
+    document.getElementById('paywall-view').style.display = 'block';
+    return;
+  }
+
+  // Has lifetime — show chat
   document.getElementById('chat-view').style.display = 'flex';
 
   // Set tier badge
