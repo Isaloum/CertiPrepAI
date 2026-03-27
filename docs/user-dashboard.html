@@ -657,7 +657,7 @@ function buildCertGrid() {
   grid.innerHTML = CERTS.map(c => {
     let accessible, statusCls, statusText, href;
 
-    if (c.free) {
+    if (c.free && (userTier === 'free' || !userTier)) {
       accessible = true;
       statusCls  = 'cert-status-free';
       statusText = '✅ Free Tier';
@@ -932,7 +932,7 @@ function showCancelSaveFlow() {
 
   const overlay = document.createElement('div');
   overlay.id = 'cancelSaveOverlay';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto';
 
   // Step 1 — Reason screen
   overlay.innerHTML = `
@@ -988,7 +988,7 @@ function showCancelSaveOffer(reason) {
       <div style="color:#9CA3AF;font-size:.88rem;margin-bottom:1.25rem;line-height:1.5">
         Pick a new cert right now, no waiting period.<br>Keep your subscription and start fresh today.
       </div>
-      <div style="background:#111827;border-radius:10px;padding:1rem;margin-bottom:1.25rem;border:1px solid #10B981;max-height:260px;overflow-y:auto">
+      <div style="background:#111827;border-radius:10px;padding:.75rem;margin-bottom:1.25rem;border:1px solid #10B981;max-height:220px;overflow-y:auto;overflow-x:hidden">
         ${CERTS.filter(c => !c.free).map(c => `
           <div onclick="acceptCancelSaveSwitch('${c.code}')"
             style="display:flex;align-items:center;gap:.75rem;padding:.65rem .75rem;border-radius:8px;cursor:pointer;margin-bottom:.3rem;background:#1F2937;border:1px solid #374151"
