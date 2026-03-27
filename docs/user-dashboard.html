@@ -299,7 +299,7 @@
       <div class="dash-page-header">
         <div>
           <div class="dash-page-title">My Certifications</div>
-          <div class="dash-page-sub">Free tier: SAA-C03 (5 questions). Upgrade to unlock all.</div>
+          <div class="dash-page-sub" id="certSubtitle">Loading plan info...</div>
         </div>
       </div>
 
@@ -621,12 +621,24 @@ function buildStats() {
 // ══════════════════════════════════════════
 function buildCertGrid() {
   const grid = document.getElementById('certAccessGrid');
-  const monthlyCert = localStorage.getItem('_apa_monthly_cert'); // e.g. 'CLF-C02'
+  const monthlyCert = localStorage.getItem('_apa_monthly_cert');
+
+  // Dynamic subtitle
+  const sub = document.getElementById('certSubtitle');
+  if (sub) {
+    if (userTier === 'lifetime') sub.textContent = '🏆 Lifetime — All 12 certifications unlocked forever.';
+    else if (userTier === 'yearly') sub.textContent = '📅 Yearly Plan — All 12 certifications unlocked.';
+    else if (userTier === 'monthly' || userTier === 'monthly3') {
+      const certName = monthlyCert || 'none selected';
+      sub.textContent = `📋 Monthly Plan — Your cert: ${certName}. Upgrade to Yearly for all 12.`;
+    } else sub.textContent = 'Free tier: SAA-C03 (5 questions). Upgrade to unlock all.';
+  }
 
   grid.innerHTML = CERTS.map(c => {
     let accessible, statusCls, statusText, href;
 
-    if (c.free) {
+    if (c.free && (userTier === 'free' || !userTier)) {
+      // SAA-C03 free tier — only for non-paying users
       accessible = true;
       statusCls  = 'cert-status-free';
       statusText = '✅ Free Tier';
