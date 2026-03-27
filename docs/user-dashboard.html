@@ -848,6 +848,7 @@ function swapBundleSlot(newCode) {
 
 function showBundleSwapPicker(newCode, eligible, bundleCerts) {
   const overlay = document.createElement('div');
+  overlay.id = 'bundle-swap-picker-overlay';
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem';
   overlay.innerHTML = `
     <div style="background:#1F2937;border-radius:16px;padding:2rem;max-width:440px;width:100%;border:2px solid #374151">
@@ -856,18 +857,18 @@ function showBundleSwapPicker(newCode, eligible, bundleCerts) {
       <div style="display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.25rem">
         ${eligible.map(code => {
           const cert = CERTS.find(c => c.code === code) || {};
-          return `<button onclick="confirmBundleSwap('${code}','${newCode}',this)" style="background:#111827;border:1.5px solid #374151;border-radius:10px;padding:.75rem 1rem;text-align:left;cursor:pointer;color:#F1F5F9;font-size:.88rem;font-weight:600">
+          return `<button onclick="confirmBundleSwap('${code}','${newCode}')" style="background:#111827;border:1.5px solid #374151;border-radius:10px;padding:.75rem 1rem;text-align:left;cursor:pointer;color:#F1F5F9;font-size:.88rem;font-weight:600">
             ${cert.icon || ''} ${cert.name || code} <span style="color:#9CA3AF;font-weight:400">(${code})</span>
           </button>`;
         }).join('')}
       </div>
-      <button onclick="this.closest('[style]').remove()" style="background:#374151;color:#9CA3AF;border:none;padding:.5rem 1rem;border-radius:8px;cursor:pointer;font-size:.85rem;width:100%">Cancel</button>
+      <button onclick="document.getElementById('bundle-swap-picker-overlay').remove()" style="background:#374151;color:#9CA3AF;border:none;padding:.5rem 1rem;border-radius:8px;cursor:pointer;font-size:.85rem;width:100%">Cancel</button>
     </div>`;
   document.body.appendChild(overlay);
   overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
 }
 
-function confirmBundleSwap(oldCode, newCode, btn) {
+function confirmBundleSwap(oldCode, newCode) {
   const bundleCerts = getBundleCerts();
   const idx = bundleCerts.indexOf(oldCode);
   if (idx === -1) return;
@@ -876,7 +877,8 @@ function confirmBundleSwap(oldCode, newCode, btn) {
   const switchLog = JSON.parse(localStorage.getItem('_apa_bundle_switch_log') || '{}');
   switchLog[newCode] = Date.now();
   localStorage.setItem('_apa_bundle_switch_log', JSON.stringify(switchLog));
-  btn.closest('[style]').remove();
+  const picker = document.getElementById('bundle-swap-picker-overlay');
+  if (picker) picker.remove();
   buildCertGrid();
   updateBundleSubtitle();
   showToast(`✅ Swapped ${oldCode} → ${newCode}. Next swap for this slot in 30 days.`, '#15803D');
@@ -884,6 +886,7 @@ function confirmBundleSwap(oldCode, newCode, btn) {
 
 function showBundleSwapBlockedModal(nextDate) {
   const overlay = document.createElement('div');
+  overlay.id = 'bundle-swap-blocked-overlay';
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem';
   overlay.innerHTML = `
     <div style="background:#1F2937;border-radius:16px;padding:2rem;max-width:420px;width:100%;text-align:center;border:2px solid #374151">
@@ -899,7 +902,7 @@ function showBundleSwapBlockedModal(nextDate) {
       </div>
       <div style="display:flex;gap:.75rem;justify-content:center">
         <a href="pricing.html" style="background:#F59E0B;color:#111;padding:.65rem 1.4rem;border-radius:8px;font-weight:800;font-size:.9rem;text-decoration:none">⬆️ Upgrade Now</a>
-        <button onclick="this.closest('[style]').remove()" style="background:#374151;color:#F9FAFB;padding:.65rem 1.4rem;border-radius:8px;font-weight:700;font-size:.9rem;border:none;cursor:pointer">Cancel</button>
+        <button onclick="document.getElementById('bundle-swap-blocked-overlay').remove()" style="background:#374151;color:#F9FAFB;padding:.65rem 1.4rem;border-radius:8px;font-weight:700;font-size:.9rem;border:none;cursor:pointer">Cancel</button>
       </div>
     </div>`;
   document.body.appendChild(overlay);
@@ -974,6 +977,7 @@ function showAICoachUpgradeModal() {
 
 function showSwitchBlockedModal(code, nextDate) {
   const overlay = document.createElement('div');
+  overlay.id = 'switch-blocked-overlay';
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem';
   overlay.innerHTML = `
     <div style="background:#1F2937;border-radius:16px;padding:2rem;max-width:420px;width:100%;text-align:center;border:2px solid #374151">
@@ -989,7 +993,7 @@ function showSwitchBlockedModal(code, nextDate) {
       </div>
       <div style="display:flex;gap:.75rem;justify-content:center">
         <a href="pricing.html" style="background:#F59E0B;color:#111;padding:.65rem 1.4rem;border-radius:8px;font-weight:800;font-size:.9rem;text-decoration:none">⬆️ Upgrade Now</a>
-        <button onclick="this.closest('[style]').remove()" style="background:#374151;color:#F9FAFB;padding:.65rem 1.4rem;border-radius:8px;font-weight:700;font-size:.9rem;border:none;cursor:pointer">Cancel</button>
+        <button onclick="document.getElementById('switch-blocked-overlay').remove()" style="background:#374151;color:#F9FAFB;padding:.65rem 1.4rem;border-radius:8px;font-weight:700;font-size:.9rem;border:none;cursor:pointer">Cancel</button>
       </div>
     </div>`;
   document.body.appendChild(overlay);
