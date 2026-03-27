@@ -67,8 +67,10 @@
         ].join('');
         dashBtn.href = 'user-dashboard.html';
       }
-      // Hide sign-up / start-practicing button
+      // Hide sign-up and log-in buttons for logged-in users
       if (signupBtn) signupBtn.style.display = 'none';
+      var loginBtn = document.getElementById('nav-login-btn');
+      if (loginBtn) loginBtn.style.display = 'none';
     } else {
       // Hide My Dashboard button
       if (dashBtn) dashBtn.style.display = 'none';
