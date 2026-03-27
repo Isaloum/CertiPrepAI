@@ -567,8 +567,18 @@ function init() {
     if (userTier !== 'lifetime') {
       document.getElementById('billNextRow').style.display   = 'flex';
       document.getElementById('billAmountRow').style.display = 'flex';
-      // Show cancel button for monthly/bundle/yearly (not lifetime)
-      document.getElementById('cancelSubBtn').style.display = 'inline-block';
+      document.getElementById('cancelSubBtn').style.display  = 'inline-block';
+
+      // Next billing date — from session expiry
+      const expMs = parseInt(localStorage.getItem('_apa_session_exp') || '0');
+      if (expMs) {
+        const nextDate = new Date(expMs).toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
+        document.getElementById('billNext').textContent = nextDate;
+      }
+
+      // Amount by plan
+      const amounts = { monthly:'$7.00 / month', bundle3:'$17.00 / month', yearly:'$49.00 / year' };
+      document.getElementById('billAmount').textContent = amounts[userTier] || '—';
     }
   }
 
