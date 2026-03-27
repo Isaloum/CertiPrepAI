@@ -23,6 +23,9 @@
     .sidebar-link.active{background:rgba(59,130,246,.15);color:#60A5FA;border-left-color:#3B82F6}
     .sidebar-link .icon{font-size:1.1rem;width:20px;text-align:center}
     .sidebar-bottom{margin-top:auto;padding:1rem 0;border-top:1px solid #374151}
+    .sidebar-ai-locked{opacity:.5;cursor:not-allowed;position:relative}
+    .sidebar-ai-badge{font-size:.65rem;font-weight:700;background:#7C3AED;color:#fff;border-radius:4px;padding:.1rem .35rem;margin-left:auto}
+    .sidebar-ai-locked .sidebar-ai-badge{background:#6B7280}
     .sidebar-user{display:flex;align-items:center;gap:.75rem;padding:.5rem 1.5rem;font-size:.85rem;color:#9CA3AF}
     .sidebar-user .avatar{width:34px;height:34px;background:#3B82F6;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff;flex-shrink:0}
 
@@ -191,6 +194,15 @@
     </button>
     <button class="sidebar-link" id="sb-history" onclick="showSection('history')">
       <span class="icon">📋</span> Exam History
+    </button>
+    <div class="sidebar-section-label">AI Tools</div>
+    <a href="chat.html" class="sidebar-link" id="sb-aicoach" style="display:none">
+      <span class="icon">🤖</span> AI Coach
+      <span class="sidebar-ai-badge">LIFETIME</span>
+    </a>
+    <button class="sidebar-link sidebar-ai-locked" id="sb-aicoach-locked" onclick="showAICoachUpgradeModal()" style="display:none">
+      <span class="icon">🤖</span> AI Coach
+      <span class="sidebar-ai-badge">LIFETIME</span>
     </button>
     <div class="sidebar-section-label">Settings</div>
     <button class="sidebar-link" id="sb-account" onclick="showSection('account')">
@@ -531,6 +543,17 @@ function init() {
   document.getElementById('sidebarAvatar').textContent = initials;
   document.getElementById('sidebarName').textContent   = userName || userEmail.split('@')[0] || 'User';
   document.getElementById('sidebarEmail').textContent  = userEmail;
+
+  // AI Coach sidebar visibility
+  const aiCoachLink   = document.getElementById('sb-aicoach');
+  const aiCoachLocked = document.getElementById('sb-aicoach-locked');
+  if (userTier === 'lifetime') {
+    if (aiCoachLink)   aiCoachLink.style.display   = 'flex';
+    if (aiCoachLocked) aiCoachLocked.style.display = 'none';
+  } else {
+    if (aiCoachLink)   aiCoachLink.style.display   = 'none';
+    if (aiCoachLocked) aiCoachLocked.style.display = 'flex';
+  }
 
   // Welcome
   const greeting = userName ? `Welcome back, ${userName}!` : 'Welcome back!';
@@ -916,6 +939,37 @@ function switchMonthlyCert(code) {
   const sub = document.getElementById('certSubtitle');
   if (sub) sub.textContent = `📋 Monthly Plan — Your cert: ${certName}. Upgrade to Yearly for all 12.`;
   showToast(`✅ Switched to ${code}! Next switch available in 30 days.`, '#15803D');
+}
+
+function showAICoachUpgradeModal() {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:16px;padding:2rem;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+      <div style="font-size:3rem;margin-bottom:.75rem">🤖</div>
+      <h2 style="font-size:1.25rem;font-weight:800;color:#1F2937;margin-bottom:.5rem">AI Coach — Lifetime Only</h2>
+      <p style="color:#6B7280;font-size:.9rem;margin-bottom:1.5rem;line-height:1.6">
+        Get a personal AI tutor that explains concepts, answers your questions, and helps you master every AWS certification — available exclusively on the Lifetime plan.
+      </p>
+      <div style="background:#F5F3FF;border-radius:10px;padding:1rem;margin-bottom:1.5rem">
+        <div style="font-size:.8rem;color:#7C3AED;font-weight:700;margin-bottom:.5rem">LIFETIME PLAN INCLUDES</div>
+        <div style="font-size:.85rem;color:#4B5563;line-height:1.8">
+          ✅ All 12 AWS certifications<br>
+          ✅ 3,120 practice questions<br>
+          ✅ AI Coach — unlimited access<br>
+          ✅ Visual Exam<br>
+          ✅ Never pay again
+        </div>
+      </div>
+      <a href="pricing.html" style="display:block;background:#7C3AED;color:#fff;border-radius:8px;padding:.85rem;font-weight:700;font-size:.95rem;text-decoration:none;margin-bottom:.75rem">
+        Upgrade to Lifetime — $97 one-time
+      </a>
+      <button onclick="this.closest('[style*=fixed]').remove()" style="background:none;border:none;color:#9CA3AF;cursor:pointer;font-size:.85rem">
+        Maybe later
+      </button>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
 }
 
 function showSwitchBlockedModal(code, nextDate) {
