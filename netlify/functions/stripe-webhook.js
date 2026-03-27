@@ -100,8 +100,9 @@ exports.handler = async (event) => {
 
   let exp = null;
   if (isTrial)               exp = now + 3   * 86400;
-  else if (tier === 'monthly') exp = now + 32  * 86400;
-  else if (tier === 'yearly')  exp = now + 366 * 86400;
+  else if (tier === 'monthly')  exp = now + 32  * 86400;
+  else if (tier === 'bundle3')  exp = now + 32  * 86400;
+  else if (tier === 'yearly')   exp = now + 366 * 86400;
 
   const accessToken = issueJWT({ tier, pi: piId, ...(exp ? { exp } : {}) });
 

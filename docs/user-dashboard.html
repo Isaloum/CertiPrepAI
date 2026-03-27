@@ -74,13 +74,12 @@
 
     /* ── CERT GRID ── */
     .cert-access-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
-    .cert-access-card{border:1px solid #E5E7EB;border-radius:10px;padding:1rem;display:flex;flex-direction:column;gap:.35rem;text-decoration:none;color:inherit;transition:all .2s;min-height:110px}
+    .cert-access-card{border:1px solid #E5E7EB;border-radius:10px;padding:1rem;display:flex;flex-direction:column;gap:.5rem;text-decoration:none;color:inherit;transition:all .2s}
     .cert-access-card:hover{border-color:#3B82F6;box-shadow:0 2px 12px rgba(59,130,246,.12);transform:translateY(-1px)}
     .cert-access-card .cert-icon{font-size:1.5rem}
     .cert-access-card .cert-name{font-size:.85rem;font-weight:700;color:#1F2937}
     .cert-access-card .cert-code{font-size:.75rem;color:#6B7280}
-    .cert-access-card .cert-spacer{flex:1}
-    .cert-access-card .cert-status{display:inline-flex;align-items:center;gap:.3rem;font-size:.75rem;font-weight:600;padding:.25rem .6rem;border-radius:999px;width:fit-content}
+    .cert-access-card .cert-status{display:inline-flex;align-items:center;gap:.3rem;font-size:.75rem;font-weight:600;padding:.25rem .6rem;border-radius:999px;margin-top:.25rem;width:fit-content}
     .cert-status-locked{background:#FEF2F2;color:#DC2626}
     .cert-status-active{background:#F0FDF4;color:#16A34A}
     .cert-status-free{background:#EFF6FF;color:#2563EB}
@@ -300,7 +299,7 @@
       <div class="dash-page-header">
         <div>
           <div class="dash-page-title">My Certifications</div>
-          <div class="dash-page-sub" id="certSubtitle">Loading plan info...</div>
+          <div class="dash-page-sub" id="certSubtitle">Free tier: SAA-C03 (5 questions). Upgrade to unlock all.</div>
         </div>
       </div>
 
@@ -508,7 +507,7 @@ const CERTS = [
   { code:'GAI-C01', name:'AI Practitioner',               icon:'✨', href:'gai-c01.html', free:false },
 ];
 
-const isPremium = (userTier === 'monthly' || userTier === 'yearly' || userTier === 'lifetime');
+const isPremium = (userTier === 'monthly' || userTier === 'bundle3' || userTier === 'yearly' || userTier === 'lifetime');
 
 // ══════════════════════════════════════════
 // EXAM HISTORY — stored in localStorage as JSON array
@@ -537,10 +536,11 @@ function init() {
   // Tier badge
   const badgeEl = document.getElementById('tierBadge');
   const tierMap = {
-    free: ['Free', 'tier-free'],
-    monthly: ['Monthly Pro', 'tier-monthly'],
-    yearly: ['Yearly Pro', 'tier-yearly'],
-    lifetime: ['Lifetime', 'tier-lifetime'],
+    free:     ['Free',         'tier-free'],
+    monthly:  ['Monthly Pro',  'tier-monthly'],
+    bundle3:  ['Bundle (3)',   'tier-monthly'],
+    yearly:   ['Yearly Pro',   'tier-yearly'],
+    lifetime: ['Lifetime',     'tier-lifetime'],
   };
   const [label, cls] = tierMap[userTier] || tierMap.free;
   badgeEl.textContent = label;
@@ -559,7 +559,7 @@ function init() {
   document.getElementById('profileTier').innerHTML    = `<span class="tier-badge ${tierMap[userTier]?.[1]||'tier-free'}">${label}</span>`;
 
   // Billing
-  const planNames = { free:'Free', monthly:'Monthly Pro ($7/mo)', yearly:'Yearly Pro ($49/yr)', lifetime:'Lifetime ($97)' };
+  const planNames = { free:'Free', monthly:'Monthly Pro ($7/mo)', bundle3:'Bundle — 3 Certs ($17/mo)', yearly:'Yearly Pro ($49/yr)', lifetime:'Lifetime ($97)' };
   document.getElementById('billPlan').textContent = planNames[userTier] || 'Free';
   if (userTier !== 'free') {
     document.getElementById('upgradePlanBtn').textContent = 'Manage Subscription →';
@@ -575,6 +575,26 @@ function init() {
   // Cert grid
   buildCertGrid();
   buildMonthlyCertPicker();
+
+  // Dynamic cert subtitle
+  const sub = document.getElementById('certSubtitle');
+  if (sub) {
+    if (userTier === 'lifetime') {
+      sub.textContent = '🏆 Lifetime — All 12 certifications unlocked forever.';
+    } else if (userTier === 'yearly') {
+      sub.textContent = '📅 Yearly Plan — All 12 certifications unlocked.';
+    } else if (userTier === 'bundle3') {
+      const certs = getBundleCerts();
+      sub.textContent = certs.length === 3
+        ? `📦 Bundle Plan — Your 3 certs: ${certs.join(', ')}. Upgrade to Yearly for all 12.`
+        : `📦 Bundle Plan — Pick ${3 - certs.length} more cert${3 - certs.length > 1 ? 's' : ''} below.`;
+    } else if (userTier === 'monthly') {
+      const mc = localStorage.getItem('_apa_monthly_cert');
+      sub.textContent = mc
+        ? `📋 Monthly Plan — Your cert: ${mc}. Upgrade to Yearly for all 12.`
+        : '📋 Monthly Plan — Pick your cert below.';
+    }
+  }
 
   // History
   buildHistoryFilter();
@@ -605,6 +625,7 @@ function buildStats() {
 
   document.getElementById('statExamsTaken').textContent   = history.length || '0';
   const unlocked = (userTier === 'yearly' || userTier === 'lifetime') ? '12'
+                 : (userTier === 'bundle3') ? '3'
                  : (userTier === 'monthly') ? '1'
                  : '1';
   document.getElementById('statCertsUnlocked').textContent = unlocked;
@@ -620,9 +641,15 @@ function buildStats() {
 // ══════════════════════════════════════════
 // CERT GRID
 // ══════════════════════════════════════════
+function getBundleCerts() {
+  try { return JSON.parse(localStorage.getItem('_apa_bundle_certs') || '[]'); }
+  catch(e) { return []; }
+}
+
 function buildCertGrid() {
   const grid = document.getElementById('certAccessGrid');
-  const monthlyCert = localStorage.getItem('_apa_monthly_cert'); // e.g. 'CLF-C02'
+  const monthlyCert  = localStorage.getItem('_apa_monthly_cert');
+  const bundleCerts  = getBundleCerts(); // array of up to 3 codes
 
   grid.innerHTML = CERTS.map(c => {
     let accessible, statusCls, statusText, href;
@@ -637,6 +664,21 @@ function buildCertGrid() {
       statusCls  = 'cert-status-active';
       statusText = '✅ Unlocked';
       href       = c.href;
+    } else if (userTier === 'bundle3') {
+      accessible = bundleCerts.includes(c.code);
+      if (accessible) {
+        statusCls  = 'cert-status-active';
+        statusText = '✅ Your Cert';
+        href       = c.href;
+      } else if (bundleCerts.length < 3) {
+        statusCls  = 'cert-status-locked';
+        statusText = '➕ Add to Bundle';
+        href       = `javascript:addBundleSlot('${c.code}')`;
+      } else {
+        statusCls  = 'cert-status-locked';
+        statusText = '🔄 Swap Slot';
+        href       = `javascript:swapBundleSlot('${c.code}')`;
+      }
     } else if (userTier === 'monthly') {
       accessible = (monthlyCert === c.code);
       statusCls  = accessible ? 'cert-status-active' : 'cert-status-locked';
@@ -657,9 +699,8 @@ function buildCertGrid() {
       <div class="cert-icon">${c.icon}</div>
       <div class="cert-name">${c.name}</div>
       <div class="cert-code">${c.code}</div>
-      <div class="cert-spacer"></div>
       <span class="cert-status ${statusCls}">${statusText}</span>
-      ${attempts ? `<div style="font-size:.75rem;color:#6B7280">
+      ${attempts ? `<div style="font-size:.75rem;color:#6B7280;margin-top:.25rem">
         ${attempts} attempt${attempts>1?'s':''} · Best: <strong>${bestScore}%</strong>
       </div>` : ''}
     </a>`;
@@ -670,23 +711,39 @@ function buildCertGrid() {
 // MONTHLY CERT PICKER
 // ══════════════════════════════════════════
 function buildMonthlyCertPicker() {
-  if (userTier !== 'monthly') return;
-  const already = localStorage.getItem('_apa_monthly_cert');
+  if (userTier === 'monthly') {
+    const already     = localStorage.getItem('_apa_monthly_cert');
+    const pickerCard  = document.getElementById('monthlyCertPickerCard');
+    if (!already) {
+      pickerCard.style.display = 'block';
+      const grid = document.getElementById('monthlyCertPickerGrid');
+      grid.innerHTML = CERTS.filter(c => !c.free).map(c => `
+        <div onclick="selectMonthlyCert('${c.code}')" class="cert-access-card" style="cursor:pointer;border:2px solid #E5E7EB">
+          <div class="cert-icon">${c.icon}</div>
+          <div class="cert-name">${c.name}</div>
+          <div class="cert-code">${c.code}</div>
+          <span style="font-size:.78rem;font-weight:700;color:#16A34A;margin-top:.25rem">Tap to select →</span>
+        </div>`).join('');
+    }
+  }
 
-  // Show "change cert" link in cert grid header if already picked
-  const pickerCard = document.getElementById('monthlyCertPickerCard');
-
-  if (!already) {
-    // No cert picked yet — show the full picker
-    pickerCard.style.display = 'block';
-    const grid = document.getElementById('monthlyCertPickerGrid');
-    grid.innerHTML = CERTS.filter(c => !c.free).map(c => `
-      <div onclick="selectMonthlyCert('${c.code}')" class="cert-access-card" style="cursor:pointer;border:2px solid #E5E7EB">
-        <div class="cert-icon">${c.icon}</div>
-        <div class="cert-name">${c.name}</div>
-        <div class="cert-code">${c.code}</div>
-        <span style="font-size:.78rem;font-weight:700;color:#16A34A;margin-top:.25rem">Tap to select →</span>
-      </div>`).join('');
+  if (userTier === 'bundle3') {
+    const bundleCerts = getBundleCerts();
+    const pickerCard  = document.getElementById('monthlyCertPickerCard');
+    if (bundleCerts.length < 3) {
+      pickerCard.style.display = 'block';
+      const needed = 3 - bundleCerts.length;
+      const heading = pickerCard.querySelector('h3') || pickerCard.querySelector('.picker-heading');
+      if (heading) heading.textContent = `Pick ${needed} more cert${needed > 1 ? 's' : ''} for your bundle`;
+      const grid = document.getElementById('monthlyCertPickerGrid');
+      grid.innerHTML = CERTS.filter(c => !c.free && !bundleCerts.includes(c.code)).map(c => `
+        <div onclick="addBundleSlot('${c.code}')" class="cert-access-card" style="cursor:pointer;border:2px solid #60A5FA">
+          <div class="cert-icon">${c.icon}</div>
+          <div class="cert-name">${c.name}</div>
+          <div class="cert-code">${c.code}</div>
+          <span style="font-size:.78rem;font-weight:700;color:#60A5FA;margin-top:.25rem">Add to bundle →</span>
+        </div>`).join('');
+    }
   }
 }
 
@@ -696,6 +753,119 @@ function selectMonthlyCert(code) {
   document.getElementById('monthlyCertPickerCard').style.display = 'none';
   buildCertGrid();
   showToast(`✅ ${code} unlocked! You can now study it.`, '#15803D');
+}
+
+// ── Bundle: add a cert to an open slot (< 3 certs picked) ──
+function addBundleSlot(code) {
+  const bundleCerts = getBundleCerts();
+  if (bundleCerts.includes(code)) return;
+  if (bundleCerts.length >= 3) { swapBundleSlot(code); return; }
+  bundleCerts.push(code);
+  localStorage.setItem('_apa_bundle_certs', JSON.stringify(bundleCerts));
+  if (bundleCerts.length === 3) {
+    document.getElementById('monthlyCertPickerCard').style.display = 'none';
+    showToast('✅ All 3 certs unlocked! Start studying.', '#15803D');
+  } else {
+    showToast(`✅ ${code} added. Pick ${3 - bundleCerts.length} more.`, '#2563EB');
+  }
+  buildMonthlyCertPicker();
+  buildCertGrid();
+  updateBundleSubtitle();
+}
+
+// ── Bundle: swap one slot (all 3 filled, user wants to replace one) ──
+function swapBundleSlot(newCode) {
+  const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+  const switchLog   = JSON.parse(localStorage.getItem('_apa_bundle_switch_log') || '{}');
+  const bundleCerts = getBundleCerts();
+
+  // Find the oldest slot that is past the 30-day window (eligible for swap)
+  const eligible = bundleCerts.filter(code => {
+    const last = switchLog[code] || 0;
+    return (Date.now() - last) >= THIRTY_DAYS;
+  });
+
+  if (!eligible.length) {
+    // All slots are locked — find soonest available
+    const soonest = bundleCerts.reduce((min, code) => {
+      const next = (switchLog[code] || 0) + THIRTY_DAYS;
+      return next < min ? next : min;
+    }, Infinity);
+    const nextDate = new Date(soonest).toLocaleDateString('en-US', {month:'long', day:'numeric'});
+    showBundleSwapBlockedModal(nextDate);
+    return;
+  }
+
+  // Show modal asking which slot to replace
+  showBundleSwapPicker(newCode, eligible, bundleCerts);
+}
+
+function showBundleSwapPicker(newCode, eligible, bundleCerts) {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem';
+  overlay.innerHTML = `
+    <div style="background:#1F2937;border-radius:16px;padding:2rem;max-width:440px;width:100%;border:2px solid #374151">
+      <div style="font-weight:800;font-size:1rem;color:#F9FAFB;margin-bottom:.4rem">Replace which cert?</div>
+      <div style="color:#9CA3AF;font-size:.85rem;margin-bottom:1.25rem">Choose a slot to replace with <strong style="color:#60A5FA">${newCode}</strong>.</div>
+      <div style="display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.25rem">
+        ${eligible.map(code => {
+          const cert = CERTS.find(c => c.code === code) || {};
+          return `<button onclick="confirmBundleSwap('${code}','${newCode}',this)" style="background:#111827;border:1.5px solid #374151;border-radius:10px;padding:.75rem 1rem;text-align:left;cursor:pointer;color:#F1F5F9;font-size:.88rem;font-weight:600">
+            ${cert.icon || ''} ${cert.name || code} <span style="color:#9CA3AF;font-weight:400">(${code})</span>
+          </button>`;
+        }).join('')}
+      </div>
+      <button onclick="this.closest('[style]').remove()" style="background:#374151;color:#9CA3AF;border:none;padding:.5rem 1rem;border-radius:8px;cursor:pointer;font-size:.85rem;width:100%">Cancel</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+}
+
+function confirmBundleSwap(oldCode, newCode, btn) {
+  const bundleCerts = getBundleCerts();
+  const idx = bundleCerts.indexOf(oldCode);
+  if (idx === -1) return;
+  bundleCerts[idx] = newCode;
+  localStorage.setItem('_apa_bundle_certs', JSON.stringify(bundleCerts));
+  const switchLog = JSON.parse(localStorage.getItem('_apa_bundle_switch_log') || '{}');
+  switchLog[newCode] = Date.now();
+  localStorage.setItem('_apa_bundle_switch_log', JSON.stringify(switchLog));
+  btn.closest('[style]').remove();
+  buildCertGrid();
+  updateBundleSubtitle();
+  showToast(`✅ Swapped ${oldCode} → ${newCode}. Next swap for this slot in 30 days.`, '#15803D');
+}
+
+function showBundleSwapBlockedModal(nextDate) {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem';
+  overlay.innerHTML = `
+    <div style="background:#1F2937;border-radius:16px;padding:2rem;max-width:420px;width:100%;text-align:center;border:2px solid #374151">
+      <div style="font-size:2.5rem;margin-bottom:.75rem">🔒</div>
+      <div style="font-weight:800;font-size:1.1rem;color:#F9FAFB;margin-bottom:.5rem">All Slots Locked</div>
+      <div style="color:#9CA3AF;font-size:.9rem;margin-bottom:1.25rem;line-height:1.5">
+        Each slot can be swapped once per 30 days.<br>
+        Your next swap is available on <strong style="color:#60A5FA">${nextDate}</strong>.
+      </div>
+      <div style="background:#111827;border-radius:10px;padding:1rem;margin-bottom:1.25rem;border:1px solid #374151">
+        <div style="font-size:.8rem;color:#9CA3AF;margin-bottom:.4rem">Want all 12 certs with no restrictions?</div>
+        <div style="font-weight:700;color:#F9FAFB;font-size:.95rem">Upgrade to Yearly — All 12, always.</div>
+      </div>
+      <div style="display:flex;gap:.75rem;justify-content:center">
+        <a href="pricing.html" style="background:#F59E0B;color:#111;padding:.65rem 1.4rem;border-radius:8px;font-weight:800;font-size:.9rem;text-decoration:none">⬆️ Upgrade Now</a>
+        <button onclick="this.closest('[style]').remove()" style="background:#374151;color:#F9FAFB;padding:.65rem 1.4rem;border-radius:8px;font-weight:700;font-size:.9rem;border:none;cursor:pointer">Cancel</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+}
+
+function updateBundleSubtitle() {
+  const sub = document.getElementById('certSubtitle');
+  if (!sub) return;
+  const certs = getBundleCerts();
+  const names = certs.join(', ') || 'none selected';
+  sub.textContent = `📦 Bundle Plan — Your 3 certs: ${names}. Upgrade to Yearly for all 12.`;
 }
 
 // Called when monthly user clicks "Switch to This" on a locked cert

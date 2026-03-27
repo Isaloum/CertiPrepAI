@@ -36,16 +36,19 @@ exports.handler = async (event) => {
     }
 
     const lineItems = [{ price: priceId, quantity }];
-    // Order bump: add $17 one-time 3-cert bundle if selected
+    // Order bump: 3-cert bundle add-on → upgrades tier to bundle3
     if (addOnPriceId) {
       lineItems.push({ price: addOnPriceId, quantity: 1 });
     }
+
+    // If user added the bundle bump, elevate tier to bundle3
+    const effectiveTier = addOnPriceId ? 'bundle3' : tier;
 
     const sessionParams = {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode,
-      metadata: { product: 'awsprepai_premium', tier },
+      metadata: { product: 'awsprepai_premium', tier: effectiveTier },
       success_url: `${process.env.SUCCESS_URL}?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: process.env.CANCEL_URL,
     };
