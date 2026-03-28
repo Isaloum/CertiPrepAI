@@ -187,16 +187,24 @@
           Yes! Add 3 certs for $17
         </label>
       </div>
-      <button class="modal-btn" id="trialSubmitBtn" onclick="proceedWithTrial()">Continue to Secure Checkout →</button>
+      <!-- Terms agreement checkbox -->
+      <div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:8px;padding:.75rem 1rem;margin-bottom:.85rem;">
+        <label style="display:flex;align-items:flex-start;gap:.6rem;cursor:pointer;font-size:.82rem;color:#374151;line-height:1.5;">
+          <input type="checkbox" id="termsCheckbox" style="width:15px;height:15px;margin-top:2px;accent-color:#2563EB;flex-shrink:0;" onchange="toggleCheckoutBtn()">
+          <span>I have read and agree to the
+            <a href="terms.pdf" target="_blank" style="color:#2563EB;font-weight:700;text-decoration:underline;">Terms of Service &amp; Privacy Policy</a>.
+            I understand that exam results are not guaranteed and all digital sales are final.
+          </span>
+        </label>
+      </div>
+
+      <button class="modal-btn" id="trialSubmitBtn" onclick="proceedWithTrial()" disabled style="opacity:.5;cursor:not-allowed;">Continue to Secure Checkout →</button>
 
       <div style="display:flex;align-items:center;justify-content:center;gap:.4rem;margin-top:.6rem;font-size:.78rem;color:#6B7280">
         <span>🔒</span>
         <span>Card collected on <strong>Stripe's</strong> secure page — never touches our servers</span>
       </div>
       <p class="modal-fine" style="margin-top:.35rem">Not charged today · $7/mo starts after 3 days · Cancel anytime</p>
-      <p style="margin-top:.75rem;font-size:.72rem;color:#9CA3AF;line-height:1.5;text-align:center;border-top:1px solid #F3F4F6;padding-top:.65rem;">
-        ⚠️ <strong>Disclaimer:</strong> AWSPrepAI is an independent study tool. Exam results are not guaranteed and depend on individual effort and preparation. AWSPrepAI is not affiliated with, endorsed by, or sponsored by Amazon Web Services (AWS) or Amazon.com, Inc. All sales of digital products are final — no refunds except under our 30-day pass guarantee.
-      </p>
     </div>
   </div>
 
@@ -567,8 +575,21 @@
 
     let pendingTier = null;
 
+    function toggleCheckoutBtn() {
+      const cb  = document.getElementById('termsCheckbox');
+      const btn = document.getElementById('trialSubmitBtn');
+      if (!btn) return;
+      const agreed = cb && cb.checked;
+      btn.disabled = !agreed;
+      btn.style.opacity = agreed ? '1' : '0.5';
+      btn.style.cursor  = agreed ? 'pointer' : 'not-allowed';
+    }
+
     function openEmailModal(tier) {
       pendingTier = tier;
+      // Reset terms checkbox each time modal opens
+      const cb = document.getElementById('termsCheckbox');
+      if (cb) { cb.checked = false; toggleCheckoutBtn(); }
       // Show order bump only on monthly/trial checkout
       const bump = document.getElementById('orderBumpBox');
       if (bump) bump.style.display = (tier === 'trial') ? 'block' : 'none';
