@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Certifications from './pages/Certifications'
+import CertDetail from './pages/CertDetail'
+import Pricing from './pages/Pricing'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 
 const Placeholder = ({ title }: { title: string }) => (
   <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -18,14 +22,14 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/certifications" element={<Certifications />} />
-        <Route path="/cert/:certId" element={<Placeholder title="Practice Page" />} />
-        <Route path="/pricing" element={<Placeholder title="Pricing" />} />
+        <Route path="/cert/:certId" element={<CertDetail />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<Placeholder title="About" />} />
         <Route path="/resources" element={<Placeholder title="Resources" />} />
         <Route path="/glossary" element={<Placeholder title="Glossary" />} />
         <Route path="/chat" element={<Placeholder title="AI Coach" />} />
-        <Route path="/login" element={<Placeholder title="Log In" />} />
-        <Route path="/signup" element={<Placeholder title="Sign Up" />} />
         <Route path="*" element={<Placeholder title="Page Not Found" />} />
       </Routes>
     </BrowserRouter>
