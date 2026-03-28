@@ -2117,6 +2117,21 @@
 
     document.querySelectorAll('.nav-tab').forEach(tab => {
       tab.addEventListener('click', () => {
+        // GATE CHECK FIRST — before any content is shown
+        if (tab.dataset.tab === 'quiz' || tab.dataset.tab === 'exam') {
+          const _tier = localStorage.getItem('_apa_tier');
+          const _monthlyCert = localStorage.getItem('_apa_monthly_cert');
+          if (_tier === 'monthly' && _monthlyCert && _monthlyCert !== 'SAA-C03') {
+            showPaywall(); return;
+          }
+          if (_tier === 'bundle3') {
+            try {
+              const _bc = JSON.parse(localStorage.getItem('_apa_bundle_certs') || '[]');
+              if (!_bc.includes('SAA-C03')) { showPaywall(); return; }
+            } catch(e) {}
+          }
+        }
+
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
         tab.classList.add('active');
@@ -2130,22 +2145,8 @@
           document.getElementById('floatingTips').style.display = 'none';
         }
 
-        // Gate quiz + exam tabs for monthly users with non-SAA cert
-        if (tab.dataset.tab === 'quiz' || tab.dataset.tab === 'exam') {
-          const _tier = localStorage.getItem('_apa_tier');
-          const _monthlyCert = localStorage.getItem('_apa_monthly_cert');
-          if (_tier === 'monthly' && _monthlyCert && _monthlyCert !== 'SAA-C03') {
-            if (typeof showPaywall === 'function') showPaywall();
-            return;
-          }
-          if (_tier === 'bundle3') {
-            try {
-              const _bc = JSON.parse(localStorage.getItem('_apa_bundle_certs') || '[]');
-              if (!_bc.includes('SAA-C03')) { if (typeof showPaywall === 'function') showPaywall(); return; }
-            } catch(e) {}
-          }
-          if (tab.dataset.tab === 'exam') backToExamSelect();
-        }
+        // Exam tab init
+        if (tab.dataset.tab === 'exam') backToExamSelect();
 
         // Initialize architecture builder on first visit
         if (tab.dataset.tab === 'adaptive' && !architectureBuilderInitialized) {
@@ -2157,7 +2158,7 @@
         if (tab.dataset.tab === 'visual-exam') {
           const _ve_premium = (typeof hasPremiumAccess === 'function') ? hasPremiumAccess() : false;
           if (!_ve_premium) {
-            if (typeof showPaywall === 'function') showPaywall();
+            showPaywall();
             return; // don't show the tab
           }
           if (!visualExamInitialized) {
@@ -3034,7 +3035,7 @@
         const _tier = localStorage.getItem('_apa_tier');
         const _monthlyCert = localStorage.getItem('_apa_monthly_cert');
         if (_tier === 'monthly' && _monthlyCert && _monthlyCert !== 'SAA-C03') {
-          if (typeof showPaywall === 'function') showPaywall();
+          showPaywall();
           return;
         }
       }
@@ -3139,14 +3140,14 @@
         freeQuestionsUsed++;
         // Global 20-question cap
         if (freeQuestionsUsed >= FREE_TOTAL) {
-          if (typeof showPaywall === 'function') showPaywall();
+          showPaywall();
           return;
         }
         // Per-domain 5-question cap
         const limit = window.currentFreeLimit || FREE_PER_DOMAIN;
         const nextIndex = currentQuestionIndex + 1;
         if (nextIndex >= limit || nextIndex >= filteredQuestions.length) {
-          if (typeof showPaywall === 'function') showPaywall();
+          showPaywall();
           return;
         }
         currentQuestionIndex = nextIndex;
@@ -3231,7 +3232,7 @@
       // Mock Exam is premium only
       const _exam_isPremium = (typeof hasPremiumAccess === 'function') ? hasPremiumAccess() : false;
       if (!_exam_isPremium) {
-        if (typeof showPaywall === 'function') showPaywall();
+        showPaywall();
         return;
       }
       const cert = certifications[currentCert];
@@ -3379,6 +3380,17 @@
   <script src="architecture-builder.js"></script>
   <script src="visual-exam-questions.js"></script>
   <script src="visual-exam.js"></script>
+
+  <script>
+    function showPaywall() {
+      const m = document.getElementById('paywall-modal');
+      if (m) { m.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+    }
+    function closePaywall() {
+      const m = document.getElementById('paywall-modal');
+      if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
+    }
+  </script>
 
   <!-- ==================== PAYWALL MODAL ==================== -->
   <div id="paywall-modal" class="paywall-modal" style="display: none;">
