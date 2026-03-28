@@ -3383,14 +3383,42 @@
 
   <script>
     function showPaywall() {
+      // If user already has a paid tier stored, their session expired — redirect to login
+      const _existingTier = localStorage.getItem('_apa_tier');
+      const _paidTiers = ['monthly','bundle3','yearly','lifetime'];
+      if (_paidTiers.includes(_existingTier)) {
+        // Show session-expired notice instead of upgrade modal
+        const _se = document.getElementById('session-expired-modal');
+        if (_se) { _se.style.display = 'flex'; document.body.style.overflow = 'hidden'; return; }
+      }
+      // Free user — show upgrade modal
       const m = document.getElementById('paywall-modal');
       if (m) { m.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
     }
     function closePaywall() {
       const m = document.getElementById('paywall-modal');
       if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
+      const se = document.getElementById('session-expired-modal');
+      if (se) { se.style.display = 'none'; document.body.style.overflow = ''; }
     }
   </script>
+
+  <!-- Session expired modal for existing subscribers -->
+  <div id="session-expired-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;align-items:center;justify-content:center;padding:1rem;">
+    <div style="background:#fff;border-radius:16px;padding:2rem;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+      <div style="font-size:2.5rem;margin-bottom:.75rem">🔐</div>
+      <h2 style="font-size:1.2rem;font-weight:800;color:#1F2937;margin-bottom:.5rem">Session Expired</h2>
+      <p style="color:#6B7280;font-size:.9rem;margin-bottom:1.5rem;line-height:1.6">
+        Your session has timed out. Please log back in to continue using your subscription.
+      </p>
+      <a href="login.html" style="display:block;background:#2563EB;color:#fff;border-radius:8px;padding:.85rem;font-weight:700;font-size:.95rem;text-decoration:none;margin-bottom:.75rem">
+        Log In Again
+      </a>
+      <button onclick="closePaywall()" style="background:none;border:none;color:#9CA3AF;cursor:pointer;font-size:.85rem">
+        Dismiss
+      </button>
+    </div>
+  </div>
 
   <!-- ==================== PAYWALL MODAL ==================== -->
   <div id="paywall-modal" class="paywall-modal" style="display: none;">
