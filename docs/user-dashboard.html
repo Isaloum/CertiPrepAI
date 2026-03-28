@@ -585,7 +585,7 @@ function init() {
   document.getElementById('profileTier').innerHTML    = `<span class="tier-badge ${tierMap[userTier]?.[1]||'tier-free'}">${label}</span>`;
 
   // Billing
-  const planNames = { free:'Free', monthly:'Monthly Pro ($7/mo)', bundle3:'Bundle — 3 Certs ($17/mo)', yearly:'Yearly Pro ($49/yr)', lifetime:'Lifetime ($97)' };
+  const planNames = { free:'Free', monthly:'Monthly Pro ($7/mo)', bundle3:'Bundle — 3 Certs ($17/mo)', yearly:'Yearly Pro ($49/yr)', lifetime:'Lifetime ($147)' };
   document.getElementById('billPlan').textContent = planNames[userTier] || 'Free';
   if (userTier !== 'free') {
     document.getElementById('upgradePlanBtn').textContent = 'Manage Subscription →';
@@ -965,7 +965,7 @@ function showAICoachUpgradeModal() {
         </div>
       </div>
       <a href="pricing.html" style="display:block;background:#7C3AED;color:#fff;border-radius:8px;padding:.85rem;font-weight:700;font-size:.95rem;text-decoration:none;margin-bottom:.75rem">
-        Upgrade to Lifetime — $97 one-time
+        Upgrade to Lifetime — $147 one-time
       </a>
       <button onclick="this.closest('[style*=fixed]').remove()" style="background:none;border:none;color:#9CA3AF;cursor:pointer;font-size:.85rem">
         Maybe later
