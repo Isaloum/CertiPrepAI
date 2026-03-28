@@ -2154,12 +2154,12 @@
           architectureBuilderInitialized = true;
         }
 
-        // Visual Exam — premium only
+        // Visual Exam — Lifetime only
         if (tab.dataset.tab === 'visual-exam') {
-          const _ve_premium = (typeof hasPremiumAccess === 'function') ? hasPremiumAccess() : false;
-          if (!_ve_premium) {
-            showPaywall();
-            return; // don't show the tab
+          const _ve_tier = localStorage.getItem('_apa_tier');
+          if (_ve_tier !== 'lifetime') {
+            showPaywall('lifetime-required');
+            return;
           }
           if (!visualExamInitialized) {
             initVisualExam();
@@ -3382,24 +3382,32 @@
   <script src="visual-exam.js"></script>
 
   <script>
-    function showPaywall() {
-      // If user already has a paid tier stored, their session expired — redirect to login
-      const _existingTier = localStorage.getItem('_apa_tier');
+    function showPaywall(reason) {
+      const _tier = localStorage.getItem('_apa_tier');
       const _paidTiers = ['monthly','bundle3','yearly','lifetime'];
-      if (_paidTiers.includes(_existingTier)) {
-        // Show session-expired notice instead of upgrade modal
+
+      // Lifetime-required feature: show tier upgrade prompt
+      if (reason === 'lifetime-required') {
+        const _lu = document.getElementById('lifetime-required-modal');
+        if (_lu) { _lu.style.display = 'flex'; document.body.style.overflow = 'hidden'; return; }
+      }
+
+      // Already a paid subscriber but JWT expired
+      if (_paidTiers.includes(_tier)) {
         const _se = document.getElementById('session-expired-modal');
         if (_se) { _se.style.display = 'flex'; document.body.style.overflow = 'hidden'; return; }
       }
+
       // Free user — show upgrade modal
       const m = document.getElementById('paywall-modal');
       if (m) { m.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
     }
     function closePaywall() {
-      const m = document.getElementById('paywall-modal');
-      if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
-      const se = document.getElementById('session-expired-modal');
-      if (se) { se.style.display = 'none'; document.body.style.overflow = ''; }
+      ['paywall-modal','session-expired-modal','lifetime-required-modal'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+      document.body.style.overflow = '';
     }
   </script>
 
@@ -3416,6 +3424,24 @@
       </a>
       <button onclick="closePaywall()" style="background:none;border:none;color:#9CA3AF;cursor:pointer;font-size:.85rem">
         Dismiss
+      </button>
+    </div>
+  </div>
+
+  <!-- Lifetime-required modal for paid-but-not-lifetime subscribers -->
+  <div id="lifetime-required-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;align-items:center;justify-content:center;padding:1rem;" onclick="if(event.target===this)closePaywall()">
+    <div style="background:#fff;border-radius:16px;padding:2rem;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+      <div style="font-size:2.5rem;margin-bottom:.75rem">🤖</div>
+      <h2 style="font-size:1.2rem;font-weight:800;color:#1F2937;margin-bottom:.5rem">Lifetime Plan Required</h2>
+      <p style="color:#6B7280;font-size:.9rem;margin-bottom:1.5rem;line-height:1.6">
+        The <strong>Visual Architecture Exam</strong> is exclusive to the Lifetime plan.<br>
+        Upgrade once — use everything forever.
+      </p>
+      <a href="pricing.html" style="display:block;background:#7C3AED;color:#fff;border-radius:8px;padding:.85rem;font-weight:700;font-size:.95rem;text-decoration:none;margin-bottom:.75rem">
+        Upgrade to Lifetime — $147 one-time
+      </a>
+      <button onclick="closePaywall()" style="background:none;border:none;color:#9CA3AF;cursor:pointer;font-size:.85rem">
+        Maybe later
       </button>
     </div>
   </div>
