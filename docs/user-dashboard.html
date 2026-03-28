@@ -1266,6 +1266,9 @@ function buildCertBreakdown() {
 // SECTION SWITCHING
 // ══════════════════════════════════════════
 function showSection(id, mobileBtnCtx) {
+  // Validate section exists
+  if (!document.getElementById('section-' + id)) return;
+
   // Hide all
   document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.sidebar-link').forEach(b => b.classList.remove('active'));
@@ -1276,13 +1279,22 @@ function showSection(id, mobileBtnCtx) {
   if (sb) sb.classList.add('active');
 
   // Mobile tabs
-  if (mobileBtnCtx) {
-    document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
-    // Find clicked tab
-    event.target.classList.add('active');
-  }
+  document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
+  if (mobileBtnCtx && event && event.target) event.target.classList.add('active');
+
+  // Persist section in URL hash so hard refresh lands on same page
+  history.replaceState(null, '', '#' + id);
 
   window.scrollTo(0, 0);
+}
+
+// Restore section from URL hash on page load
+function restoreSectionFromHash() {
+  const hash = window.location.hash.replace('#', '');
+  const valid = ['overview','certifications','history','account'];
+  if (hash && valid.includes(hash)) {
+    showSection(hash);
+  }
 }
 
 // ══════════════════════════════════════════
@@ -1373,5 +1385,9 @@ window.saveExamResult = function(certCode, score, total, mode, domain) {
 </script>
 
 <script src="navigation.js"></script>
+<script>
+  // Restore the section the user was on before the hard refresh
+  restoreSectionFromHash();
+</script>
 </body>
 </html>
