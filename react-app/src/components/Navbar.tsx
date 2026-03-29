@@ -2,6 +2,13 @@ import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
+// Proper SVG chevron — clearly a dropdown arrow, not a bullet
+const ChevronDown = () => (
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" style={{ display: 'inline-block', verticalAlign: 'middle', opacity: 0.5 }}>
+    <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+)
+
 export default function Navbar() {
   const [practiceOpen, setPracticeOpen] = useState(false)
   const [studyOpen, setStudyOpen] = useState(false)
@@ -25,30 +32,43 @@ export default function Navbar() {
     free: '🆓 Free',
   }
 
+  const linkClass = (path: string) =>
+    `px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+      isActive(path) ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
+    }`
+
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
 
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 font-bold text-lg text-blue-600 no-underline">
+        <Link to="/" className="flex items-center gap-2 font-bold text-lg text-blue-600 no-underline shrink-0">
           ☁️ <span>AWSPrepAI</span>
         </Link>
 
         {/* Nav Links */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center" style={{ gap: '4px' }}>
 
           {/* Practice dropdown */}
           <div className="relative" onMouseEnter={() => setPracticeOpen(true)} onMouseLeave={() => setPracticeOpen(false)}>
-            <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-md hover:bg-gray-50">
-              Practice <span className="text-xs">▾</span>
+            <button className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 rounded-md hover:bg-gray-50 transition-colors">
+              Practice <ChevronDown />
             </button>
             {practiceOpen && (
-              <div className="absolute top-full left-0 w-56 bg-white border border-gray-200 rounded-xl shadow-lg py-2 z-50">
+              <div className="absolute top-full left-0 w-56 bg-white border border-gray-200 rounded-xl shadow-lg py-2 z-50 mt-1">
                 <Link to="/certifications" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                  <span>📝</span><div><div className="font-semibold">Practice Quiz</div><div className="text-xs text-gray-400">All certifications</div></div>
+                  <span>📝</span>
+                  <div>
+                    <div className="font-semibold">Practice Quiz</div>
+                    <div className="text-xs text-gray-400">All certifications</div>
+                  </div>
                 </Link>
                 <Link to="/certifications" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                  <span>⏱️</span><div><div className="font-semibold">Mock Exam</div><div className="text-xs text-gray-400">Timed practice test</div></div>
+                  <span>⏱️</span>
+                  <div>
+                    <div className="font-semibold">Mock Exam</div>
+                    <div className="text-xs text-gray-400">65q · 90 min timed</div>
+                  </div>
                 </Link>
               </div>
             )}
@@ -56,28 +76,39 @@ export default function Navbar() {
 
           {/* Study dropdown */}
           <div className="relative" onMouseEnter={() => setStudyOpen(true)} onMouseLeave={() => setStudyOpen(false)}>
-            <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-md hover:bg-gray-50">
-              Study <span className="text-xs">▾</span>
+            <button className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600 rounded-md hover:bg-gray-50 transition-colors">
+              Study <ChevronDown />
             </button>
             {studyOpen && (
-              <div className="absolute top-full left-0 w-56 bg-white border border-gray-200 rounded-xl shadow-lg py-2 z-50">
+              <div className="absolute top-full left-0 w-56 bg-white border border-gray-200 rounded-xl shadow-lg py-2 z-50 mt-1">
                 <Link to="/glossary" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                  <span>📖</span><div><div className="font-semibold">Glossary</div><div className="text-xs text-gray-400">AWS terminology</div></div>
+                  <span>📖</span>
+                  <div>
+                    <div className="font-semibold">Glossary</div>
+                    <div className="text-xs text-gray-400">AWS terminology</div>
+                  </div>
                 </Link>
                 <Link to="/resources" className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                  <span>📚</span><div><div className="font-semibold">Resources</div><div className="text-xs text-gray-400">Study materials</div></div>
+                  <span>📚</span>
+                  <div>
+                    <div className="font-semibold">Resources</div>
+                    <div className="text-xs text-gray-400">Study materials</div>
+                  </div>
                 </Link>
               </div>
             )}
           </div>
 
-          <Link to="/certifications" className={`px-3 py-2 text-sm font-medium rounded-md ${isActive('/certifications') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'}`}>Certifications</Link>
-          <Link to="/about" className={`px-3 py-2 text-sm font-medium rounded-md ${isActive('/about') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'}`}>About</Link>
-          <Link to="/pricing" className={`px-3 py-2 text-sm font-medium rounded-md ${isActive('/pricing') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'}`}>Pricing</Link>
+          {/* Thin divider */}
+          <div style={{ width: '1px', height: '20px', background: '#e5e7eb', margin: '0 6px', flexShrink: 0 }} />
+
+          <Link to="/certifications" className={linkClass('/certifications')}>Certifications</Link>
+          <Link to="/about" className={linkClass('/about')}>About</Link>
+          <Link to="/pricing" className={linkClass('/pricing')}>Pricing</Link>
         </div>
 
         {/* Auth area */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           {loading ? (
             <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
           ) : user ? (
@@ -90,7 +121,7 @@ export default function Navbar() {
                 <span className="text-sm font-medium text-gray-700 hidden sm:block max-w-[120px] truncate">
                   {user.email?.split('@')[0]}
                 </span>
-                <span className="text-xs">▾</span>
+                <ChevronDown />
               </button>
               {userMenuOpen && (
                 <div className="absolute top-full right-0 w-56 bg-white border border-gray-200 rounded-xl shadow-lg py-2 z-50 mt-1">
@@ -120,7 +151,7 @@ export default function Navbar() {
           ) : (
             /* Guest buttons */
             <>
-              <Link to="/login" className="px-3 py-2 text-sm font-bold text-gray-700 hover:text-blue-600">Log In</Link>
+              <Link to="/login" className="px-3 py-2 text-sm font-semibold text-gray-600 hover:text-blue-600 transition-colors">Log In</Link>
               <Link to="/signup" className="px-4 py-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">Sign Up Free</Link>
             </>
           )}

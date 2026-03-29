@@ -252,7 +252,7 @@ export default function Home() {
             {[
               { label: 'Free', price: '$0', desc: '20 questions / cert' },
               { label: 'Monthly', price: '$7/mo', desc: 'Full access' },
-              { label: 'Lifetime', price: '$97', desc: 'Pay once, forever' },
+              { label: 'Lifetime', price: '$147', desc: 'Pay once, forever' },
             ].map(p => (
               <div key={p.label} style={{ background: '#fff', border: '1px solid #bfdbfe', borderRadius: '0.875rem', padding: '1.25rem 0.75rem', textAlign: 'center' }}>
                 <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#2563eb', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>{p.label}</div>

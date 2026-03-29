@@ -5,7 +5,9 @@ const plans = [
   {
     name: 'Free',
     price: '$0',
+    oldPrice: null,
     period: 'forever',
+    savings: null,
     color: 'border-gray-200',
     badge: null,
     features: [
@@ -21,7 +23,9 @@ const plans = [
   {
     name: 'Monthly',
     price: '$7',
+    oldPrice: null,
     period: 'per month',
+    savings: null,
     color: 'border-blue-300',
     badge: null,
     features: [
@@ -38,26 +42,29 @@ const plans = [
   },
   {
     name: 'Yearly',
-    price: '$49',
+    price: '$67',
+    oldPrice: '$108',
     period: 'per year',
+    savings: '🔥 Save $41 — 38% off monthly',
     color: 'border-blue-500',
     badge: '⭐ Most Popular',
     features: [
       'Everything in Monthly',
-      'Save 41% vs monthly billing',
       'All 12 AWS certifications',
       '260 questions per cert (3,120 total)',
       'Timed mock exams included',
-      'Cancel anytime',
+      '~$5.60/month — cancel anytime',
     ],
-    cta: 'Start Yearly',
+    cta: 'Lock In Yearly — Save $41',
     ctaStyle: 'bg-blue-700 text-white hover:bg-blue-800',
     action: '/signup?plan=yearly',
   },
   {
     name: 'Lifetime',
-    price: '$97',
+    price: '$147',
+    oldPrice: '$499',
     period: 'one-time',
+    savings: '💡 AWS cert = avg $15K salary boost. We cost $147.',
     color: 'border-amber-400',
     badge: '🔥 Best Value',
     features: [
@@ -73,7 +80,7 @@ const plans = [
 ]
 
 const faqs = [
-  { q: 'Can I try before buying?', a: "Yes — 20 free SAA-C03 questions, no sign up needed. See exactly what you're getting before paying." },
+  { q: 'Can I try before buying?', a: "Yes — 20 free questions per cert, no sign up needed. See exactly what you're getting before paying." },
   { q: "What's the pass rate for AWS exams?", a: 'AWS exams require 72% or higher. Our questions are scenario-based and match the real exam difficulty.' },
   { q: 'Does Lifetime include future certs?', a: 'Yes. Any new AWS certification we add is included in your Lifetime plan at no extra cost.' },
   { q: 'Can I cancel Monthly or Yearly anytime?', a: 'Yes, cancel from your dashboard with one click. No cancellation fees.' },
@@ -104,10 +111,18 @@ export default function Pricing() {
               )}
               <div className="mb-4">
                 <h3 className="font-black text-gray-900 text-lg mb-1">{plan.name}</h3>
-                <div className="flex items-end gap-1">
+                <div className="flex items-end gap-2">
                   <span className="text-3xl font-black text-gray-900">{plan.price}</span>
+                  {plan.oldPrice && (
+                    <span className="text-gray-400 text-sm line-through mb-1">{plan.oldPrice}</span>
+                  )}
                   <span className="text-gray-400 text-sm mb-1">/{plan.period}</span>
                 </div>
+                {plan.savings && (
+                  <div className="mt-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-lg px-2 py-1 leading-snug">
+                    {plan.savings}
+                  </div>
+                )}
               </div>
 
               <ul className="space-y-2.5 mb-6 flex-1">
