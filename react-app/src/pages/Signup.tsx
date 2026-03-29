@@ -4,6 +4,7 @@ import Layout from '../components/Layout'
 import { supabase } from '../lib/supabase'
 
 const STRIPE_MONTHLY_LINK = import.meta.env.VITE_STRIPE_MONTHLY_LINK as string
+const STRIPE_YEARLY_LINK = import.meta.env.VITE_STRIPE_YEARLY_LINK as string
 const STRIPE_LIFETIME_LINK = import.meta.env.VITE_STRIPE_LIFETIME_LINK as string
 
 export default function Signup() {
@@ -39,12 +40,13 @@ export default function Signup() {
     }
 
     // Paid plan — redirect to Stripe with email prefilled
-    if (plan === 'monthly' && STRIPE_MONTHLY_LINK) {
-      window.location.href = `${STRIPE_MONTHLY_LINK}?prefilled_email=${encodeURIComponent(email)}`
-      return
+    const stripeLinks: Record<string, string> = {
+      monthly: STRIPE_MONTHLY_LINK,
+      yearly: STRIPE_YEARLY_LINK,
+      lifetime: STRIPE_LIFETIME_LINK,
     }
-    if (plan === 'lifetime' && STRIPE_LIFETIME_LINK) {
-      window.location.href = `${STRIPE_LIFETIME_LINK}?prefilled_email=${encodeURIComponent(email)}`
+    if (plan !== 'free' && stripeLinks[plan]) {
+      window.location.href = `${stripeLinks[plan]}?prefilled_email=${encodeURIComponent(email)}`
       return
     }
 
@@ -83,9 +85,11 @@ export default function Signup() {
             <h1 className="text-2xl font-black text-gray-900">Create your account</h1>
             <p className="text-gray-500 text-sm mt-1">
               {plan === 'lifetime'
-                ? '🔥 Lifetime plan selected — pay once, access forever'
+                ? '🔥 Lifetime plan — pay once, access forever'
+                : plan === 'yearly'
+                ? '📅 Yearly plan — best value, cancel anytime'
                 : plan === 'monthly'
-                ? '📦 Monthly plan selected — cancel anytime'
+                ? '📦 Monthly plan — cancel anytime'
                 : '20 free questions — no credit card required'}
             </p>
           </div>

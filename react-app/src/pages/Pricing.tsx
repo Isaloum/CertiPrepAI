@@ -22,7 +22,7 @@ const plans = [
     name: 'Monthly',
     price: '$7',
     period: 'per month',
-    color: 'border-blue-400',
+    color: 'border-blue-300',
     badge: null,
     features: [
       'All 12 AWS certifications',
@@ -37,13 +37,31 @@ const plans = [
     action: '/signup?plan=monthly',
   },
   {
+    name: 'Yearly',
+    price: '$49',
+    period: 'per year',
+    color: 'border-blue-500',
+    badge: '⭐ Most Popular',
+    features: [
+      'Everything in Monthly',
+      'Save 40% vs monthly billing',
+      'All 12 AWS certifications',
+      '260 questions per cert (3,120 total)',
+      'AI Coach (GPT-4o)',
+      'Cancel anytime',
+    ],
+    cta: 'Start Yearly',
+    ctaStyle: 'bg-blue-700 text-white hover:bg-blue-800',
+    action: '/signup?plan=yearly',
+  },
+  {
     name: 'Lifetime',
     price: '$97',
     period: 'one-time',
     color: 'border-amber-400',
     badge: '🔥 Best Value',
     features: [
-      'Everything in Monthly',
+      'Everything in Yearly',
       'All future certifications included',
       'Visual Architecture Exam (exclusive)',
       'Architecture Builder tool',
@@ -58,11 +76,11 @@ const plans = [
 ]
 
 const faqs = [
-  { q: 'Can I try before buying?', a: 'Yes — 20 free SAA-C03 questions, no sign up needed. See exactly what you\'re getting before paying.' },
-  { q: 'What\'s the pass rate for AWS exams?', a: 'AWS exams require 72% or higher. Our questions are scenario-based and match the real exam difficulty.' },
+  { q: 'Can I try before buying?', a: "Yes — 20 free SAA-C03 questions, no sign up needed. See exactly what you're getting before paying." },
+  { q: "What's the pass rate for AWS exams?", a: 'AWS exams require 72% or higher. Our questions are scenario-based and match the real exam difficulty.' },
   { q: 'Does Lifetime include future certs?', a: 'Yes. Any new AWS certification we add is included in your Lifetime plan at no extra cost.' },
-  { q: 'Can I cancel Monthly anytime?', a: 'Yes, cancel from your dashboard with one click. No cancellation fees.' },
-  { q: 'Is there a refund policy?', a: 'We offer a 7-day money-back guarantee if you\'re not satisfied.' },
+  { q: 'Can I cancel Monthly or Yearly anytime?', a: 'Yes, cancel from your dashboard with one click. No cancellation fees.' },
+  { q: 'Is there a refund policy?', a: "We offer a 7-day money-back guarantee if you're not satisfied." },
 ]
 
 export default function Pricing() {
@@ -70,7 +88,7 @@ export default function Pricing() {
 
   return (
     <Layout>
-      <div className="max-w-5xl mx-auto px-4 py-12">
+      <div className="max-w-6xl mx-auto px-4 py-12">
 
         {/* Hero */}
         <div className="text-center mb-10">
@@ -79,11 +97,11 @@ export default function Pricing() {
         </div>
 
         {/* Plans */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
           {plans.map((plan) => (
             <div key={plan.name} className={`bg-white rounded-2xl border-2 ${plan.color} p-6 flex flex-col relative`}>
               {plan.badge && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
                   {plan.badge}
                 </span>
               )}
