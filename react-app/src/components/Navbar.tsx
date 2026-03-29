@@ -83,9 +83,9 @@ export default function Navbar() {
                 {[
                   { to: '/certifications', bg: '#eff6ff', icon: '📝', label: 'Practice Quiz', sub: '3,120 questions · 12 certs', soon: false },
                   { to: '/certifications', bg: '#f0fdf4', icon: '⏱️', label: 'Mock Exam', sub: 'Timed practice test · 65q · 90 min', soon: false },
-                  { to: null, bg: '#f5f3ff', icon: '🏗️', label: 'Architecture Builder', sub: 'Drag & drop AWS services', soon: true },
-                  { to: null, bg: '#fff0f0', icon: '🎯', label: 'Visual Exam', sub: 'Diagram-based questions', soon: true },
-                  { to: '/certifications', bg: '#fffbeb', icon: '🆓', label: 'Sample Questions', sub: '20 free questions · no sign up', soon: false },
+                  { to: '/architecture-builder', bg: '#f5f3ff', icon: '🏗️', label: 'Architecture Builder', sub: 'Drag & drop AWS services', soon: false },
+                  { to: '/visual-exam', bg: '#fff0f0', icon: '🎯', label: 'Visual Exam', sub: 'Diagram-based questions', soon: false },
+                  { to: '/sample-questions', bg: '#fffbeb', icon: '🆓', label: 'Sample Questions', sub: '20 free questions · no sign up', soon: false },
                 ].map(item => (
                   item.to ? (
                     <Link key={item.label} to={item.to} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '9px 10px', borderRadius: '10px', textDecoration: 'none' }}
@@ -130,7 +130,7 @@ export default function Navbar() {
                   { to: '/glossary', bg: '#faf5ff', icon: '🔑', label: 'Keywords & Terms', sub: 'Scenario identifiers & AWS glossary', soon: false },
                   { to: '/resources', bg: '#f0fdf4', icon: '🛠️', label: 'AWS Services', sub: '40+ service references & cheat sheets', soon: false },
                   { to: '/glossary', bg: '#fff7ed', icon: '📖', label: 'Glossary', sub: '50+ AWS terms explained simply', soon: false },
-                  { to: null, bg: '#f5f3ff', icon: '🗺️', label: 'Architecture Diagrams', sub: 'Interactive SAA-C03 diagrams', soon: true },
+                  { to: '/diagrams', bg: '#f5f3ff', icon: '🗺️', label: 'Architecture Diagrams', sub: 'Interactive SAA-C03 diagrams', soon: false },
                   { to: '/about', bg: '#f0f9ff', icon: 'ℹ️', label: 'About AWSPrepAI', sub: 'Our mission & cert coverage', soon: false },
                 ].map(item => (
                   item.to ? (

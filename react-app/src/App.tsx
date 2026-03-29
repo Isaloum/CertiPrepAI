@@ -12,6 +12,10 @@ import About from './pages/About'
 import Resources from './pages/Resources'
 import Glossary from './pages/Glossary'
 import PaymentSuccess from './pages/PaymentSuccess'
+import SampleQuestions from './pages/SampleQuestions'
+import VisualExam from './pages/VisualExam'
+import ArchitectureBuilder from './pages/ArchitectureBuilder'
+import Diagrams from './pages/Diagrams'
 
 const NotFound = () => (
   <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9fafb' }}>
@@ -43,6 +47,10 @@ export default function App() {
           <Route path="/resources" element={<Resources />} />
           <Route path="/glossary" element={<Glossary />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/sample-questions" element={<SampleQuestions />} />
+          <Route path="/visual-exam" element={<VisualExam />} />
+          <Route path="/architecture-builder" element={<ArchitectureBuilder />} />
+          <Route path="/diagrams" element={<Diagrams />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
