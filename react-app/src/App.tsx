@@ -1,17 +1,27 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
 import Home from './pages/Home'
 import Certifications from './pages/Certifications'
 import CertDetail from './pages/CertDetail'
 import Pricing from './pages/Pricing'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import Dashboard from './pages/Dashboard'
+import MockExam from './pages/MockExam'
+import About from './pages/About'
+import Resources from './pages/Resources'
+import Glossary from './pages/Glossary'
+import PaymentSuccess from './pages/PaymentSuccess'
 
-const Placeholder = ({ title }: { title: string }) => (
-  <div className="min-h-screen flex items-center justify-center bg-gray-50">
-    <div className="text-center">
-      <div className="text-4xl mb-4">🚧</div>
-      <h1 className="text-2xl font-bold text-gray-800">{title}</h1>
-      <p className="text-gray-500 mt-2">Coming soon</p>
+const NotFound = () => (
+  <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9fafb' }}>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
+      <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827' }}>Page Not Found</h1>
+      <p style={{ color: '#6b7280', marginTop: '0.5rem' }}>The page you're looking for doesn't exist.</p>
+      <a href="/" style={{ display: 'inline-block', marginTop: '1.5rem', padding: '0.75rem 1.5rem', background: '#2563eb', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, textDecoration: 'none' }}>
+        Go Home
+      </a>
     </div>
   </div>
 )
@@ -19,19 +29,23 @@ const Placeholder = ({ title }: { title: string }) => (
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/certifications" element={<Certifications />} />
-        <Route path="/cert/:certId" element={<CertDetail />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/about" element={<Placeholder title="About" />} />
-        <Route path="/resources" element={<Placeholder title="Resources" />} />
-        <Route path="/glossary" element={<Placeholder title="Glossary" />} />
-        <Route path="/chat" element={<Placeholder title="AI Coach" />} />
-        <Route path="*" element={<Placeholder title="Page Not Found" />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/certifications" element={<Certifications />} />
+          <Route path="/cert/:certId" element={<CertDetail />} />
+          <Route path="/mock-exam/:certId" element={<MockExam />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/glossary" element={<Glossary />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

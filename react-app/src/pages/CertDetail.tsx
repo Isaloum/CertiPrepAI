@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import Paywall from '../components/Paywall'
+import { useAuth } from '../contexts/AuthContext'
 
 interface Question {
   cat: string
@@ -31,6 +32,7 @@ const FREE_LIMIT = 20
 export default function CertDetail() {
   const { certId } = useParams<{ certId: string }>()
   const navigate = useNavigate()
+  const { isPremium } = useAuth()
 
   const [questions, setQuestions] = useState<Question[]>([])
   const [filtered, setFiltered] = useState<Question[]>([])
@@ -77,7 +79,7 @@ export default function CertDetail() {
   }, [selected, revealed, filtered, current])
 
   const handleNext = useCallback(() => {
-    if (questionCount >= FREE_LIMIT) { setShowPaywall(true); return }
+    if (!isPremium && questionCount >= FREE_LIMIT) { setShowPaywall(true); return }
     if (current + 1 >= filtered.length) setShowResults(true)
     else { setCurrent(c => c + 1); setSelected(null); setRevealed(false) }
   }, [current, filtered.length, questionCount])
