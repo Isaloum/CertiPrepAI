@@ -2,330 +2,349 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Layout from '../components/Layout'
 
-/* ─── Animated Illustration: Card 1 — Electrical → Cloud ─── */
+/* ════════════════════════════════════════════════════════════
+   CARD 1 — Electrical Engineering → Cloud
+   220 × 140  |  chip  →  particle wire  →  aws cloud
+════════════════════════════════════════════════════════════ */
 function IllustrationElectrical() {
   return (
-    <svg width="172" height="114" viewBox="0 0 172 114" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="220" height="140" viewBox="0 0 220 140" fill="none">
+      <defs>
+        <linearGradient id="g1-chip" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#eff6ff"/>
+          <stop offset="100%" stopColor="#bfdbfe"/>
+        </linearGradient>
+        <linearGradient id="g1-cloud" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#f0f9ff"/>
+          <stop offset="100%" stopColor="#dbeafe"/>
+        </linearGradient>
+      </defs>
+
       {/* ── CHIP ── */}
-      <rect x="8" y="14" width="52" height="76" rx="8" fill="#dbeafe" stroke="#3b82f6" strokeWidth="2">
-        <animate attributeName="opacity" values="0.8;1;0.8" dur="2.5s" repeatCount="indefinite"/>
-      </rect>
-      {/* Inner core grid */}
-      <rect x="16" y="24" width="14" height="14" rx="3" fill="#93c5fd" stroke="#3b82f6" strokeWidth="1">
-        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" begin="0s" repeatCount="indefinite"/>
-      </rect>
-      <rect x="34" y="24" width="14" height="14" rx="3" fill="#93c5fd" stroke="#3b82f6" strokeWidth="1">
-        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" begin="0.4s" repeatCount="indefinite"/>
-      </rect>
-      <rect x="16" y="42" width="14" height="14" rx="3" fill="#60a5fa" stroke="#3b82f6" strokeWidth="1">
-        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" begin="0.8s" repeatCount="indefinite"/>
-      </rect>
-      <rect x="34" y="42" width="14" height="14" rx="3" fill="#60a5fa" stroke="#3b82f6" strokeWidth="1">
-        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" begin="1.2s" repeatCount="indefinite"/>
-      </rect>
-      {/* Chip labels */}
-      <text x="11" y="70" fontSize="6.5" fontWeight="800" fill="#1d4ed8">ELEC. ENG</text>
-      <text x="18" y="82" fontSize="7" fontWeight="700" fill="#3b82f6">⚡ ⚡ ⚡</text>
-      {/* Pins — left */}
-      {[28, 40, 52, 64].map((y, i) => (
-        <g key={`pl${i}`}>
-          <line x1="8" y1={y} x2="2" y2={y} stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
-          <rect x="0" y={y - 3} width="4" height="6" rx="1" fill="#93c5fd"/>
+      <rect x="12" y="8" width="62" height="124" rx="10" fill="url(#g1-chip)" stroke="#3b82f6" strokeWidth="2.5"/>
+      {/* Blue header */}
+      <rect x="12" y="8" width="62" height="28" rx="10" fill="#1d4ed8"/>
+      <rect x="12" y="26" width="62" height="10" fill="#1d4ed8"/>
+      <text x="19" y="27" fontSize="9" fontWeight="900" fill="white" letterSpacing="1">ELEC.ENG</text>
+
+      {/* 4 CPU cores — blinking in sequence */}
+      {[{x:18,y:44,id:'C1',d:'0s'},{x:46,y:44,id:'C2',d:'0.4s'},{x:18,y:72,id:'C3',d:'0.8s'},{x:46,y:72,id:'C4',d:'1.2s'}].map(c=>(
+        <g key={c.id}>
+          <rect x={c.x} y={c.y} width="24" height="24" rx="5" fill="#93c5fd" stroke="#3b82f6" strokeWidth="1.8">
+            <animate attributeName="opacity" values="0.3;1;0.3" dur="1.6s" begin={c.d} repeatCount="indefinite"/>
+          </rect>
+          <text x={c.x+7} y={c.y+16} fontSize="9" fontWeight="800" fill="#1d4ed8">{c.id}</text>
         </g>
       ))}
-      {/* Pins — right */}
-      {[28, 40, 52, 64].map((y, i) => (
-        <g key={`pr${i}`}>
-          <line x1="60" y1={y} x2="66" y2={y} stroke="#3b82f6" strokeWidth="2" strokeLinecap="round"/>
-          <rect x="64" y={y - 3} width="4" height="6" rx="1" fill="#93c5fd"/>
+      {/* Core trace connectors */}
+      <line x1="42" y1="56" x2="46" y2="56" stroke="#bfdbfe" strokeWidth="2"/>
+      <line x1="42" y1="84" x2="46" y2="84" stroke="#bfdbfe" strokeWidth="2"/>
+      <line x1="30" y1="68" x2="30" y2="72" stroke="#bfdbfe" strokeWidth="2"/>
+      <line x1="58" y1="68" x2="58" y2="72" stroke="#bfdbfe" strokeWidth="2"/>
+
+      {/* Chip footer */}
+      <text x="14" y="108" fontSize="8" fontWeight="700" fill="#1d4ed8">⚡ Electrical</text>
+      <text x="18" y="122" fontSize="7.5" fill="#3b82f6">Engineer</text>
+
+      {/* Left pins × 6 */}
+      {[30,46,62,78,94,110].map((y,i)=>(
+        <g key={`lp${i}`}>
+          <line x1="12" y1={y} x2="3" y2={y} stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round"/>
+          <rect x="1" y={y-4} width="6" height="8" rx="2" fill="#60a5fa"/>
+        </g>
+      ))}
+      {/* Right pins × 6 */}
+      {[30,46,62,78,94,110].map((y,i)=>(
+        <g key={`rp${i}`}>
+          <line x1="74" y1={y} x2="83" y2={y} stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round"/>
+          <rect x="81" y={y-4} width="6" height="8" rx="2" fill="#60a5fa"/>
         </g>
       ))}
 
-      {/* ── WIRE + PARTICLES ── */}
-      <path d="M68 52 L84 52" stroke="#bfdbfe" strokeWidth="3" strokeLinecap="round"/>
-      {/* Animated particle dots */}
-      <circle r="3.5" fill="#3b82f6">
-        <animateMotion path="M68,52 L84,52" dur="1.2s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0;1;1;0" dur="1.2s" repeatCount="indefinite"/>
-      </circle>
-      <circle r="3.5" fill="#60a5fa">
-        <animateMotion path="M68,52 L84,52" dur="1.2s" begin="0.4s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0;1;1;0" dur="1.2s" begin="0.4s" repeatCount="indefinite"/>
-      </circle>
-      <circle r="3.5" fill="#93c5fd">
-        <animateMotion path="M68,52 L84,52" dur="1.2s" begin="0.8s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="0;1;1;0" dur="1.2s" begin="0.8s" repeatCount="indefinite"/>
-      </circle>
+      {/* ── DATA WIRE ── */}
+      <line x1="88" y1="70" x2="112" y2="70" stroke="#93c5fd" strokeWidth="5" strokeLinecap="round"/>
+      <line x1="88" y1="70" x2="112" y2="70" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="5,3">
+        <animate attributeName="strokeDashoffset" values="16;0" dur="0.7s" repeatCount="indefinite"/>
+      </line>
+      {/* Particles */}
+      {[0, 0.23, 0.46].map((delay,i)=>(
+        <circle key={i} r="5" fill={['#1d4ed8','#3b82f6','#93c5fd'][i]}>
+          <animateMotion path="M88,70 L112,70" dur="0.7s" begin={`${delay}s`} repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0;1;1;0" dur="0.7s" begin={`${delay}s`} repeatCount="indefinite"/>
+        </circle>
+      ))}
       {/* Arrow */}
-      <polyline points="80,46 87,52 80,58" stroke="#2563eb" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+      <polyline points="106,62 115,70 106,78" stroke="#1d4ed8" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.4s" repeatCount="indefinite"/>
+      </polyline>
 
       {/* ── AWS CLOUD ── */}
-      {/* Cloud base */}
-      <path d="M106 94 Q94 94 94 84 Q94 73 104 72 Q104 62 113 60 Q118 52 129 55 Q136 50 144 57 Q155 57 155 68 Q164 68 164 79 Q164 94 153 94 Z"
-        fill="#dbeafe" stroke="#2563eb" strokeWidth="2">
-        <animate attributeName="opacity" values="0.85;1;0.85" dur="3s" repeatCount="indefinite"/>
+      <path d="M130 134 Q114 134 114 120 Q114 105 128 103 Q126 88 140 85 Q145 74 162 78 Q171 67 183 76 Q200 76 200 92 Q217 92 217 108 Q217 134 202 134 Z"
+        fill="url(#g1-cloud)" stroke="#2563eb" strokeWidth="2.5">
+        <animate attributeName="opacity" values="0.85;1;0.85" dur="2.5s" repeatCount="indefinite"/>
       </path>
       {/* AWS text */}
-      <text x="111" y="80" fontSize="14" fontWeight="900" fill="#1d4ed8">AWS</text>
-      {/* Service chips below */}
-      {[
-        { x: 96, label: 'EC2', d: '0s' },
-        { x: 110, label: 'S3',  d: '0.4s' },
-        { x: 123, label: 'RDS', d: '0.8s' },
-        { x: 137, label: 'λ',   d: '1.2s' },
-        { x: 149, label: 'CF',  d: '1.6s' },
-      ].map(s => (
-        <g key={s.label}>
-          <circle cx={s.x + 4} cy="88" r="5" fill="#3b82f6">
-            <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" begin={s.d} repeatCount="indefinite"/>
+      <text x="145" y="109" fontSize="26" fontWeight="900" fill="#1d4ed8">AWS</text>
+      {/* Service dot row */}
+      {[{cx:122,lb:'EC2',d:'0s'},{cx:139,lb:'S3',d:'0.35s'},{cx:156,lb:'RDS',d:'0.7s'},{cx:173,lb:'λ',d:'1.05s'},{cx:190,lb:'VPC',d:'1.4s'}].map(s=>(
+        <g key={s.lb}>
+          <circle cx={s.cx} cy="123" r="10" fill="#2563eb">
+            <animate attributeName="opacity" values="0.45;1;0.45" dur="2s" begin={s.d} repeatCount="indefinite"/>
+            <animate attributeName="r" values="9;11;9" dur="2s" begin={s.d} repeatCount="indefinite"/>
           </circle>
-          <text x={s.x} y="91" fontSize="4.5" fontWeight="800" fill="#fff">{s.label}</text>
+          <text x={s.cx-(s.lb.length===3?7:s.lb.length===2?5:3)} y="127" fontSize="6.5" fontWeight="900" fill="white">{s.lb}</text>
         </g>
       ))}
     </svg>
   )
 }
 
-/* ─── Animated Illustration: Card 2 — Cloud is Lego ─── */
+/* ════════════════════════════════════════════════════════════
+   CARD 2 — Cloud is Lego
+   220 × 140  |  3 floating service blocks  →  assembled result
+════════════════════════════════════════════════════════════ */
 function IllustrationLego() {
   return (
-    <svg width="172" height="114" viewBox="0 0 172 114" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* ── Three floating service blocks ── */}
+    <svg width="220" height="140" viewBox="0 0 220 140" fill="none">
 
-      {/* Block EC2 */}
+      {/* ── Block: EC2 (left, floating up) ── */}
       <g>
-        <animateTransform attributeName="transform" type="translate" values="0,0;0,-6;0,0" dur="2.2s" repeatCount="indefinite"/>
-        <rect x="8" y="30" width="42" height="36" rx="6" fill="#bbf7d0" stroke="#16a34a" strokeWidth="2"/>
-        {/* Lego studs on top */}
-        <ellipse cx="22" cy="30" rx="6" ry="3.5" fill="#86efac" stroke="#16a34a" strokeWidth="1.5"/>
-        <ellipse cx="38" cy="30" rx="6" ry="3.5" fill="#86efac" stroke="#16a34a" strokeWidth="1.5"/>
-        <text x="14" y="48" fontSize="8" fontWeight="800" fill="#166534">🖥 EC2</text>
-        <text x="12" y="60" fontSize="5.5" fill="#15803d">compute</text>
+        <animateTransform attributeName="transform" type="translate" values="0,0;0,-8;0,0" dur="2.2s" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" repeatCount="indefinite"/>
+        <rect x="6" y="34" width="62" height="48" rx="8" fill="#bbf7d0" stroke="#16a34a" strokeWidth="2.5"/>
+        <ellipse cx="26" cy="34" rx="10" ry="6" fill="#86efac" stroke="#16a34a" strokeWidth="2"/>
+        <ellipse cx="52" cy="34" rx="10" ry="6" fill="#86efac" stroke="#16a34a" strokeWidth="2"/>
+        <text x="12" y="56" fontSize="11" fontWeight="900" fill="#166534">🖥 EC2</text>
+        <text x="14" y="70" fontSize="8" fill="#15803d" fontWeight="600">compute</text>
       </g>
 
-      {/* Block S3 */}
+      {/* ── Block: S3 (center, floating more) ── */}
       <g>
-        <animateTransform attributeName="transform" type="translate" values="0,-4;0,4;0,-4" dur="2.8s" repeatCount="indefinite"/>
-        <rect x="65" y="18" width="42" height="36" rx="6" fill="#6ee7b7" stroke="#059669" strokeWidth="2"/>
-        <ellipse cx="79" cy="18" rx="6" ry="3.5" fill="#34d399" stroke="#059669" strokeWidth="1.5"/>
-        <ellipse cx="95" cy="18" rx="6" ry="3.5" fill="#34d399" stroke="#059669" strokeWidth="1.5"/>
-        <text x="72" y="36" fontSize="8" fontWeight="800" fill="#065f46">🪣 S3</text>
-        <text x="70" y="48" fontSize="5.5" fill="#047857">storage</text>
+        <animateTransform attributeName="transform" type="translate" values="0,-4;0,6;0,-4" dur="2.8s" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" repeatCount="indefinite"/>
+        <rect x="79" y="18" width="62" height="48" rx="8" fill="#6ee7b7" stroke="#059669" strokeWidth="2.5"/>
+        <ellipse cx="99" cy="18" rx="10" ry="6" fill="#34d399" stroke="#059669" strokeWidth="2"/>
+        <ellipse cx="125" cy="18" rx="10" ry="6" fill="#34d399" stroke="#059669" strokeWidth="2"/>
+        <text x="86" y="40" fontSize="11" fontWeight="900" fill="#065f46">🪣 S3</text>
+        <text x="88" y="54" fontSize="8" fill="#047857" fontWeight="600">storage</text>
       </g>
 
-      {/* Block Lambda */}
+      {/* ── Block: Lambda (right, floating medium) ── */}
       <g>
-        <animateTransform attributeName="transform" type="translate" values="0,-2;0,-8;0,-2" dur="2.5s" repeatCount="indefinite"/>
-        <rect x="122" y="30" width="42" height="36" rx="6" fill="#a7f3d0" stroke="#10b981" strokeWidth="2"/>
-        <ellipse cx="136" cy="30" rx="6" ry="3.5" fill="#6ee7b7" stroke="#10b981" strokeWidth="1.5"/>
-        <ellipse cx="152" cy="30" rx="6" ry="3.5" fill="#6ee7b7" stroke="#10b981" strokeWidth="1.5"/>
-        <text x="126" y="48" fontSize="8" fontWeight="800" fill="#065f46">⚡ λ</text>
-        <text x="126" y="60" fontSize="5.5" fill="#047857">serverless</text>
+        <animateTransform attributeName="transform" type="translate" values="0,0;0,-6;0,0" dur="2.5s" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" repeatCount="indefinite"/>
+        <rect x="152" y="34" width="62" height="48" rx="8" fill="#a7f3d0" stroke="#10b981" strokeWidth="2.5"/>
+        <ellipse cx="172" cy="34" rx="10" ry="6" fill="#6ee7b7" stroke="#10b981" strokeWidth="2"/>
+        <ellipse cx="198" cy="34" rx="10" ry="6" fill="#6ee7b7" stroke="#10b981" strokeWidth="2"/>
+        <text x="158" y="56" fontSize="11" fontWeight="900" fill="#065f46">⚡ λ</text>
+        <text x="155" y="70" fontSize="8" fill="#047857" fontWeight="600">serverless</text>
       </g>
 
-      {/* ── Connectors between blocks ── */}
-      <line x1="50" y1="48" x2="65" y2="36" stroke="#22c55e" strokeWidth="1.5" strokeDasharray="4,3">
-        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
+      {/* ── Dashed connecting lines (down to result) ── */}
+      <line x1="37" y1="82" x2="72" y2="100" stroke="#22c55e" strokeWidth="2" strokeDasharray="5,3">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.6s" repeatCount="indefinite"/>
       </line>
-      <line x1="107" y1="36" x2="122" y2="48" stroke="#22c55e" strokeWidth="1.5" strokeDasharray="4,3">
-        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" begin="0.5s" repeatCount="indefinite"/>
+      <line x1="110" y1="66" x2="110" y2="100" stroke="#22c55e" strokeWidth="2" strokeDasharray="5,3">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.6s" begin="0.3s" repeatCount="indefinite"/>
+      </line>
+      <line x1="183" y1="82" x2="148" y2="100" stroke="#22c55e" strokeWidth="2" strokeDasharray="5,3">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.6s" begin="0.6s" repeatCount="indefinite"/>
       </line>
 
-      {/* ── Bottom: Assembled result ── */}
-      <rect x="44" y="80" width="84" height="28" rx="8" fill="#dcfce7" stroke="#16a34a" strokeWidth="2">
-        <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
+      {/* ── Assembled Result ── */}
+      <rect x="46" y="100" width="128" height="36" rx="10" fill="#dcfce7" stroke="#16a34a" strokeWidth="2.5">
+        <animate attributeName="opacity" values="0.75;1;0.75" dur="2s" repeatCount="indefinite"/>
       </rect>
-      <text x="52" y="96" fontSize="8" fontWeight="800" fill="#166534">🏗 Architecture</text>
-      <text x="55" y="106" fontSize="6" fill="#15803d">EC2 + S3 + Lambda</text>
+      <text x="58" y="116" fontSize="10.5" fontWeight="900" fill="#166534">🏗 Architecture</text>
+      <text x="60" y="128" fontSize="8.5" fill="#15803d" fontWeight="600">EC2  +  S3  +  Lambda</text>
 
-      {/* Down arrows showing assembly */}
-      <line x1="29" y1="66" x2="60" y2="80" stroke="#16a34a" strokeWidth="1.5" strokeDasharray="3,2" opacity="0.6"/>
-      <line x1="86" y1="54" x2="86" y2="80" stroke="#16a34a" strokeWidth="1.5" strokeDasharray="3,2" opacity="0.6"/>
-      <line x1="143" y1="66" x2="112" y2="80" stroke="#16a34a" strokeWidth="1.5" strokeDasharray="3,2" opacity="0.6"/>
-
-      {/* Snap sparkles */}
-      {[[60, 80], [86, 80], [112, 80]].map(([cx, cy], i) => (
-        <circle key={i} cx={cx} cy={cy} r="3" fill="#22c55e">
-          <animate attributeName="r" values="2;5;2" dur="1.8s" begin={`${i * 0.4}s`} repeatCount="indefinite"/>
-          <animate attributeName="opacity" values="1;0;1" dur="1.8s" begin={`${i * 0.4}s`} repeatCount="indefinite"/>
+      {/* Snap sparkles at junctions */}
+      {[[72,100],[110,100],[148,100]].map(([cx,cy],i)=>(
+        <circle key={i} cx={cx} cy={cy} r="4" fill="#16a34a">
+          <animate attributeName="r" values="3;7;3" dur="1.8s" begin={`${i*0.4}s`} repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="1;0;1" dur="1.8s" begin={`${i*0.4}s`} repeatCount="indefinite"/>
         </circle>
       ))}
     </svg>
   )
 }
 
-/* ─── Animated Illustration: Card 3 — Visual Learning ─── */
+/* ════════════════════════════════════════════════════════════
+   CARD 3 — Visual Learning
+   220 × 140  |  boring notes ❌  →  eye  →  live diagram ✓
+════════════════════════════════════════════════════════════ */
 function IllustrationVisual() {
   return (
-    <svg width="172" height="114" viewBox="0 0 172 114" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="220" height="140" viewBox="0 0 220 140" fill="none">
 
-      {/* ── LEFT: Boring text wall ── */}
-      <rect x="2" y="10" width="62" height="90" rx="7" fill="#ede9fe" stroke="#c4b5fd" strokeWidth="1.5"/>
-      <text x="9" y="26" fontSize="7" fontWeight="700" fill="#6d28d9">📄 Notes.txt</text>
-      {/* Blurred text lines */}
-      {[34, 44, 54, 64, 74, 84, 94].map((y, i) => (
-        <rect key={i} x="9" y={y} width={i % 2 === 0 ? 44 : 36} height="5" rx="2" fill="#c4b5fd" opacity="0.6"/>
+      {/* ── LEFT: Notes panel ── */}
+      <rect x="4" y="8" width="82" height="124" rx="9" fill="#ede9fe" stroke="#c4b5fd" strokeWidth="2"/>
+      {/* Panel header */}
+      <rect x="4" y="8" width="82" height="24" rx="9" fill="#7c3aed"/>
+      <rect x="4" y="22" width="82" height="10" fill="#7c3aed"/>
+      <text x="11" y="24.5" fontSize="8.5" fontWeight="800" fill="white">📄  Notes.txt</text>
+      {/* Text lines — blurred/boring */}
+      {[38,50,62,74,86,98,110,122].map((y,i)=>(
+        <rect key={i} x="12" y={y} width={i%3===0?54:i%3===1?44:60} height="7" rx="3" fill="#c4b5fd" opacity="0.65"/>
       ))}
-      {/* Big X overlay */}
-      <circle cx="50" cy="24" r="10" fill="#fecaca" stroke="#ef4444" strokeWidth="1.5">
+      {/* ❌ badge — top right of panel */}
+      <circle cx="74" cy="20" r="13" fill="#fecaca" stroke="#ef4444" strokeWidth="2">
         <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
       </circle>
-      <line x1="44" y1="18" x2="56" y2="30" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round"/>
-      <line x1="56" y1="18" x2="44" y2="30" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round"/>
+      <line x1="67" y1="13" x2="81" y2="27" stroke="#ef4444" strokeWidth="3" strokeLinecap="round"/>
+      <line x1="81" y1="13" x2="67" y2="27" stroke="#ef4444" strokeWidth="3" strokeLinecap="round"/>
 
-      {/* ── MIDDLE: Animated eye / lens ── */}
-      {/* Eye white */}
-      <ellipse cx="86" cy="55" rx="10" ry="7" fill="#f5f3ff" stroke="#8b5cf6" strokeWidth="1.8">
-        <animate attributeName="ry" values="7;3;7" dur="3s" repeatCount="indefinite"/>
+      {/* ── CENTER: Animated eye ── */}
+      {/* Eye whites */}
+      <ellipse cx="110" cy="70" rx="14" ry="10" fill="#f5f3ff" stroke="#7c3aed" strokeWidth="2">
+        <animate attributeName="ry" values="10;4;10" dur="3.5s" repeatCount="indefinite"/>
       </ellipse>
       {/* Pupil */}
-      <circle cx="86" cy="55" r="4" fill="#7c3aed">
-        <animate attributeName="r" values="4;2;4" dur="3s" repeatCount="indefinite"/>
+      <circle cx="110" cy="70" r="6" fill="#6d28d9">
+        <animate attributeName="r" values="6;2.5;6" dur="3.5s" repeatCount="indefinite"/>
       </circle>
-      {/* Highlight */}
-      <circle cx="88" cy="53" r="1.2" fill="white"/>
-      {/* Arrow right */}
-      <polyline points="98,50 105,55 98,60" stroke="#7c3aed" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+      {/* Shine */}
+      <circle cx="113" cy="67" r="2" fill="white"/>
+      {/* Arrow → */}
+      <polyline points="126,64 135,70 126,76" stroke="#6d28d9" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite"/>
       </polyline>
 
-      {/* ── RIGHT: Architecture diagram drawing in ── */}
-      <rect x="108" y="10" width="62" height="90" rx="7" fill="#f5f3ff" stroke="#8b5cf6" strokeWidth="1.5"/>
-      <text x="114" y="25" fontSize="7" fontWeight="700" fill="#6d28d9">🏗 Diagram</text>
+      {/* ── RIGHT: Architecture diagram ── */}
+      <rect x="138" y="8" width="78" height="124" rx="9" fill="#f5f3ff" stroke="#8b5cf6" strokeWidth="2"/>
+      {/* Panel header */}
+      <rect x="138" y="8" width="78" height="24" rx="9" fill="#6d28d9"/>
+      <rect x="138" y="22" width="78" height="10" fill="#6d28d9"/>
+      <text x="145" y="24.5" fontSize="8.5" fontWeight="800" fill="white">🏗  Diagram</text>
+
+      {/* ✅ badge */}
+      <circle cx="207" cy="20" r="13" fill="#bbf7d0" stroke="#16a34a" strokeWidth="2">
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <polyline points="201,20 205,25 213,14" stroke="#16a34a" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
 
       {/* Node: User */}
-      <rect x="118" y="30" width="32" height="16" rx="4" fill="#ddd6fe" stroke="#7c3aed" strokeWidth="1.5">
-        <animate attributeName="opacity" values="0;1" dur="0.5s" begin="0s" fill="freeze" repeatCount="1"/>
-      </rect>
-      <text x="123" y="42" fontSize="6.5" fontWeight="700" fill="#5b21b6">👤 User</text>
+      <rect x="148" y="34" width="56" height="22" rx="6" fill="#ddd6fe" stroke="#7c3aed" strokeWidth="1.8"/>
+      <text x="153" y="49" fontSize="9" fontWeight="800" fill="#5b21b6">👤  User</text>
 
-      {/* Arrow 1 drawing in */}
-      <line x1="134" y1="46" x2="134" y2="56" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round">
-        <animate attributeName="strokeDasharray" values="0,20;12,0" dur="0.4s" begin="0.5s" fill="freeze" repeatCount="1"/>
-        <animate attributeName="opacity" values="0;1;1;0;1" dur="3s" repeatCount="indefinite"/>
+      {/* Arrow 1 */}
+      <line x1="176" y1="56" x2="176" y2="68" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
       </line>
-      <polyline points="130,53 134,57 138,53" stroke="#8b5cf6" strokeWidth="1.5" fill="none" strokeLinecap="round">
-        <animate attributeName="opacity" values="0;0;1;1;0;1" dur="3s" repeatCount="indefinite"/>
+      <polyline points="171,65 176,70 181,65" stroke="#8b5cf6" strokeWidth="2" fill="none" strokeLinecap="round">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
       </polyline>
 
       {/* Node: ALB */}
-      <rect x="118" y="57" width="32" height="16" rx="4" fill="#c4b5fd" stroke="#7c3aed" strokeWidth="1.5">
-        <animate attributeName="opacity" values="0;0;1" dur="1s" begin="0s" fill="freeze" repeatCount="1"/>
-      </rect>
-      <text x="123" y="69" fontSize="6.5" fontWeight="700" fill="#4c1d95">⚖ ALB</text>
+      <rect x="148" y="70" width="56" height="22" rx="6" fill="#c4b5fd" stroke="#7c3aed" strokeWidth="1.8"/>
+      <text x="153" y="85" fontSize="9" fontWeight="800" fill="#4c1d95">⚖  ALB</text>
 
       {/* Arrow 2 */}
-      <line x1="134" y1="73" x2="134" y2="82" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round">
-        <animate attributeName="opacity" values="0;0;1;1;0;1" dur="3s" repeatCount="indefinite"/>
+      <line x1="176" y1="92" x2="176" y2="104" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
       </line>
-      <polyline points="130,79 134,83 138,79" stroke="#8b5cf6" strokeWidth="1.5" fill="none" strokeLinecap="round">
-        <animate attributeName="opacity" values="0;0;1;1;0;1" dur="3s" repeatCount="indefinite"/>
+      <polyline points="171,101 176,106 181,101" stroke="#8b5cf6" strokeWidth="2" fill="none" strokeLinecap="round">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
       </polyline>
 
       {/* Node: EC2 cluster */}
-      <rect x="112" y="83" width="44" height="14" rx="4" fill="#a78bfa" stroke="#7c3aed" strokeWidth="1.5">
-        <animate attributeName="opacity" values="0;0;0;1" dur="1.5s" begin="0s" fill="freeze" repeatCount="1"/>
-      </rect>
-      <text x="117" y="93" fontSize="6.5" fontWeight="700" fill="white">🖥 EC2 × 3</text>
-
-      {/* Green checkmark — all good */}
-      <circle cx="163" cy="22" r="8" fill="#bbf7d0" stroke="#16a34a" strokeWidth="1.5">
-        <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
-      </circle>
-      <polyline points="158,22 161,26 168,17" stroke="#16a34a" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+      <rect x="144" y="106" width="64" height="22" rx="6" fill="#a78bfa" stroke="#7c3aed" strokeWidth="1.8"/>
+      <text x="148" y="121" fontSize="9" fontWeight="800" fill="white">🖥  EC2 × 3</text>
     </svg>
   )
 }
 
-/* ─── Animated Illustration: Card 4 — Too many subscriptions ─── */
+/* ════════════════════════════════════════════════════════════
+   CARD 4 — Too many subscriptions
+   220 × 140  |  3 receipts  →  merge  →  1 unified card
+════════════════════════════════════════════════════════════ */
 function IllustrationSubscriptions() {
   return (
-    <svg width="172" height="114" viewBox="0 0 172 114" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="220" height="140" viewBox="0 0 220 140" fill="none">
 
-      {/* ── LEFT: Stacked subscription receipts ── */}
+      {/* ── LEFT: 3 subscription cards ── */}
 
       {/* Udemy */}
       <g>
-        <animateTransform attributeName="transform" type="translate" values="0,0;0,-3;0,0" dur="2s" repeatCount="indefinite"/>
-        <rect x="4" y="8" width="54" height="28" rx="5" fill="#fde68a" stroke="#d97706" strokeWidth="1.8"/>
-        <text x="10" y="21" fontSize="7.5" fontWeight="800" fill="#92400e">Udemy</text>
-        <text x="10" y="31" fontSize="6" fill="#b45309">Video Course</text>
-        <rect x="36" y="10" width="20" height="12" rx="3" fill="#f59e0b"/>
-        <text x="39" y="19.5" fontSize="8" fontWeight="900" fill="white">$23+</text>
+        <animateTransform attributeName="transform" type="translate" values="0,0;0,-4;0,0" dur="2.2s" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" repeatCount="indefinite"/>
+        <rect x="4" y="6" width="70" height="34" rx="7" fill="#fef3c7" stroke="#d97706" strokeWidth="2"/>
+        <text x="10" y="21" fontSize="9.5" fontWeight="900" fill="#92400e">Udemy</text>
+        <text x="10" y="32" fontSize="7.5" fill="#b45309">Video Course</text>
+        <rect x="42" y="8" width="28" height="16" rx="4" fill="#f59e0b"/>
+        <text x="46" y="19.5" fontSize="8.5" fontWeight="900" fill="white">$23+</text>
       </g>
+
+      {/* + */}
+      <text x="32" y="52" fontSize="18" fontWeight="900" fill="#fb923c">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.2s" repeatCount="indefinite"/>
+        +
+      </text>
 
       {/* YouTube */}
       <g>
-        <animateTransform attributeName="transform" type="translate" values="0,0;0,-2;0,0" dur="2.5s" begin="0.3s" repeatCount="indefinite"/>
-        <rect x="4" y="42" width="54" height="28" rx="5" fill="#fecaca" stroke="#ef4444" strokeWidth="1.8"/>
-        <text x="10" y="55" fontSize="7.5" fontWeight="800" fill="#991b1b">YouTube</text>
-        <text x="10" y="65" fontSize="6" fill="#b91c1c">Hunt videos</text>
-        <rect x="36" y="44" width="20" height="12" rx="3" fill="#dc2626"/>
-        <text x="38" y="53.5" fontSize="7.5" fontWeight="900" fill="white">free?</text>
+        <animateTransform attributeName="transform" type="translate" values="0,0;0,-3;0,0" dur="2.7s" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" repeatCount="indefinite"/>
+        <rect x="4" y="54" width="70" height="34" rx="7" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+        <text x="10" y="69" fontSize="9.5" fontWeight="900" fill="#991b1b">YouTube</text>
+        <text x="10" y="80" fontSize="7.5" fill="#b91c1c">Video walk-throughs</text>
+        <rect x="42" y="56" width="28" height="16" rx="4" fill="#dc2626"/>
+        <text x="47" y="67.5" fontSize="8.5" fontWeight="900" fill="white">free?</text>
       </g>
 
-      {/* TutorialsDojo */}
+      {/* + */}
+      <text x="32" y="100" fontSize="18" fontWeight="900" fill="#fb923c">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.2s" begin="0.2s" repeatCount="indefinite"/>
+        +
+      </text>
+
+      {/* Dojo */}
       <g>
-        <animateTransform attributeName="transform" type="translate" values="0,0;0,-4;0,0" dur="1.8s" begin="0.6s" repeatCount="indefinite"/>
-        <rect x="4" y="76" width="54" height="28" rx="5" fill="#fed7aa" stroke="#f97316" strokeWidth="1.8"/>
-        <text x="10" y="89" fontSize="6.5" fontWeight="800" fill="#9a3412">T. Dojo</text>
-        <text x="10" y="99" fontSize="6" fill="#c2410c">Practice</text>
-        <rect x="36" y="78" width="20" height="12" rx="3" fill="#ea580c"/>
-        <text x="39" y="87.5" fontSize="8" fontWeight="900" fill="white">$15</text>
+        <animateTransform attributeName="transform" type="translate" values="0,0;0,-5;0,0" dur="2s" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" repeatCount="indefinite"/>
+        <rect x="4" y="102" width="70" height="34" rx="7" fill="#ffedd5" stroke="#f97316" strokeWidth="2"/>
+        <text x="10" y="117" fontSize="9.5" fontWeight="900" fill="#9a3412">T. Dojo</text>
+        <text x="10" y="128" fontSize="7.5" fill="#c2410c">Practice Tests</text>
+        <rect x="42" y="104" width="28" height="16" rx="4" fill="#ea580c"/>
+        <text x="47" y="115.5" fontSize="8.5" fontWeight="900" fill="white">$15</text>
       </g>
-
-      {/* Plus signs */}
-      <text x="59" y="42" fontSize="16" fontWeight="900" fill="#fb923c">
-        +
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="1s" repeatCount="indefinite"/>
-      </text>
-      <text x="59" y="78" fontSize="16" fontWeight="900" fill="#fb923c">
-        +
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="1s" begin="0.3s" repeatCount="indefinite"/>
-      </text>
 
       {/* ── MERGE ARROW ── */}
-      <line x1="68" y1="55" x2="84" y2="55" stroke="#f97316" strokeWidth="3" strokeLinecap="round">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.2s" repeatCount="indefinite"/>
+      <line x1="80" y1="70" x2="96" y2="70" stroke="#f97316" strokeWidth="4" strokeLinecap="round">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.2s" repeatCount="indefinite"/>
       </line>
-      <polyline points="79,48 86,55 79,62" stroke="#ea580c" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.2s" repeatCount="indefinite"/>
+      <polyline points="90,62 98,70 90,78" stroke="#ea580c" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.2s" repeatCount="indefinite"/>
       </polyline>
 
-      {/* ── RIGHT: One AWSPrepAI card ── */}
-      <rect x="88" y="14" width="80" height="82" rx="10" fill="#fff7ed" stroke="#ea580c" strokeWidth="2.5">
-        <animate attributeName="opacity" values="0.85;1;0.85" dur="2.5s" repeatCount="indefinite"/>
+      {/* ── AWSPrepAI result card ── */}
+      <rect x="102" y="6" width="114" height="128" rx="12" fill="#fff7ed" stroke="#ea580c" strokeWidth="2.5">
+        <animate attributeName="opacity" values="0.9;1;0.9" dur="2.5s" repeatCount="indefinite"/>
       </rect>
       {/* Header */}
-      <rect x="88" y="14" width="80" height="24" rx="10" fill="#ea580c"/>
-      <rect x="88" y="28" width="80" height="10" fill="#ea580c"/>
-      <text x="99" y="30" fontSize="8" fontWeight="900" fill="white">AWSPrepAI</text>
+      <rect x="102" y="6" width="114" height="30" rx="12" fill="#ea580c"/>
+      <rect x="102" y="26" width="114" height="10" fill="#ea580c"/>
+      <text x="118" y="26" fontSize="11" fontWeight="900" fill="white">AWSPrepAI</text>
 
-      {/* Feature checkmarks */}
+      {/* Feature rows */}
       {[
-        { y: 52, label: 'Questions ✓' },
-        { y: 64, label: 'Diagrams ✓' },
-        { y: 76, label: 'Explanations ✓' },
-        { y: 88, label: 'Visual Exam ✓' },
-      ].map((f, i) => (
-        <g key={i}>
-          <text x="96" y={f.y} fontSize="6.5" fontWeight="700" fill="#c2410c">
-            {f.label}
-            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" begin={`${i * 0.4}s`} repeatCount="indefinite"/>
-          </text>
-        </g>
+        {y:56, t:'✓  Practice Questions'},
+        {y:74, t:'✓  Mock Exams'},
+        {y:92, t:'✓  Visual Diagrams'},
+        {y:110, t:'✓  Explanations'},
+      ].map((f,i)=>(
+        <text key={i} x="112" y={f.y} fontSize="9" fontWeight="700" fill="#c2410c">
+          {f.t}
+          <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" begin={`${i*0.35}s`} repeatCount="indefinite"/>
+        </text>
       ))}
 
-      {/* ONE tab badge */}
-      <rect x="104" y="96" width="48" height="16" rx="6" fill="#16a34a">
+      {/* "1 tab" badge */}
+      <rect x="110" y="118" width="98" height="20" rx="7" fill="#16a34a">
         <animate attributeName="opacity" values="0.8;1;0.8" dur="1.5s" repeatCount="indefinite"/>
       </rect>
-      <text x="110" y="107.5" fontSize="8" fontWeight="900" fill="white">1 tab. Done. ✓</text>
+      <text x="117" y="131" fontSize="9.5" fontWeight="900" fill="white">1 tab. Everything. ✓</text>
     </svg>
   )
 }
 
-/* ─── Main About Page ─── */
+/* ════════════════════════════════════════════════════════════
+   MAIN PAGE
+════════════════════════════════════════════════════════════ */
 export default function About() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
