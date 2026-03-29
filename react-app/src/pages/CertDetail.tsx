@@ -32,7 +32,7 @@ const FREE_LIMIT = 20
 export default function CertDetail() {
   const { certId } = useParams<{ certId: string }>()
   const navigate = useNavigate()
-  const { isPremium } = useAuth()
+  const { isPremium, user, loading } = useAuth()
 
   const [questions, setQuestions] = useState<Question[]>([])
   const [filtered, setFiltered] = useState<Question[]>([])
@@ -92,6 +92,12 @@ export default function CertDetail() {
     setCurrent(0); setSelected(null); setRevealed(false)
     setScore(0); setAnswered(0); setQuestionCount(0)
     setShowResults(false); setWrongQuestions([])
+  }
+
+  // Redirect unauthenticated users to signup
+  if (!loading && !user) {
+    navigate('/signup')
+    return null
   }
 
   if (questions.length === 0) {
