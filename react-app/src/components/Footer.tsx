@@ -63,13 +63,12 @@ export default function Footer() {
               { to: '/signup?plan=yearly', name: 'Yearly', price: '$67/yr' },
               { to: '/signup?plan=lifetime', name: 'Lifetime', price: '$147' },
             ].map(l => (
-              <Link key={l.name} to={l.to} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none', color: '#64748b' }}
+              <Link key={l.name} to={l.to} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', textDecoration: 'none', color: '#64748b', maxWidth: '160px' }}
                 onMouseEnter={e => { e.currentTarget.style.color = '#93c5fd' }}
                 onMouseLeave={e => { e.currentTarget.style.color = '#64748b' }}
               >
-                <span style={{ fontSize: '0.85rem', whiteSpace: 'nowrap' }}>{l.name}</span>
-                <span style={{ flex: 1, borderBottom: '1px dotted #1e293b', marginBottom: '2px' }} />
-                <span style={{ fontSize: '0.85rem', fontWeight: 600, whiteSpace: 'nowrap' }}>{l.price}</span>
+                <span style={{ fontSize: '0.85rem' }}>{l.name}</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{l.price}</span>
               </Link>
             ))}
             <Link to="/pricing" style={{ marginTop: '0.35rem', fontSize: '0.8rem', color: '#3b82f6', textDecoration: 'none', fontWeight: 600 }}
