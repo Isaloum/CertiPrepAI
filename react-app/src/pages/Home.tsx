@@ -282,8 +282,8 @@ export default function Home() {
               },
               {
                 id: 'yearly', label: 'Yearly', price: '$67', period: '/yr',
-                badge: '⭐ Most Popular', highlight: true,
-                color: '#fff',
+                badge: '⭐ Most Popular', highlight: false,
+                color: '#60a5fa',
                 features: ['Everything in Monthly', 'Save $17/year', '~$5.60/month', 'Best for studiers'],
               },
               {
@@ -379,9 +379,6 @@ export default function Home() {
             >
               See Full Pricing & Features →
             </Link>
-            <p style={{ color: '#475569', fontSize: '0.82rem', marginTop: '0.85rem' }}>
-              No credit card required · Cancel anytime · 7-day money-back guarantee
-            </p>
           </div>
         </div>
       </section>
