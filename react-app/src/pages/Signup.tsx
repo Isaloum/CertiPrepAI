@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
-import Layout from '../components/Layout'
 import { supabase } from '../lib/supabase'
 
-// Existing Netlify function — already live with Stripe secret key configured
 const CHECKOUT_API = 'https://awsprepai.netlify.app/.netlify/functions/create-checkout-session'
 
 const PLAN_PRICE_IDS: Record<string, string> = {
@@ -18,6 +16,14 @@ const PLAN_MODES: Record<string, string> = {
   lifetime: 'payment',
 }
 
+const perks = [
+  { icon: '📋', text: '3,120 scenario-based questions' },
+  { icon: '⏱️', text: 'Timed mock exams — 65q / 90 min' },
+  { icon: '🗺️', text: 'Architecture diagrams & visual exam' },
+  { icon: '🤖', text: 'AI Coach (Lifetime plan)' },
+  { icon: '🏆', text: 'All 12 active AWS certifications' },
+]
+
 export default function Signup() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -28,6 +34,13 @@ export default function Signup() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [confirmSent, setConfirmSent] = useState(false)
+  const [focusField, setFocusField] = useState<string | null>(null)
+
+  const planLabel =
+    plan === 'lifetime' ? '🔥 Lifetime — pay once, use forever'
+    : plan === 'yearly'  ? '📅 Yearly — ~$5.60/month'
+    : plan === 'monthly' ? '📦 Monthly — cancel anytime'
+    : null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,29 +49,18 @@ export default function Signup() {
     if (password.length < 8) { setError('Password must be at least 8 characters.'); return }
 
     setLoading(true)
-
-    // 1. Create Supabase account
     const { error: authError } = await supabase.auth.signUp({ email, password })
     if (authError) { setLoading(false); setError(authError.message); return }
 
-    // 2. Paid plan — call Netlify checkout function → redirect to Stripe
     if (plan !== 'free' && PLAN_PRICE_IDS[plan]) {
       try {
         const res = await fetch(CHECKOUT_API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            priceId: PLAN_PRICE_IDS[plan],
-            mode: PLAN_MODES[plan],
-            tier: plan,
-            email,
-          }),
+          body: JSON.stringify({ priceId: PLAN_PRICE_IDS[plan], mode: PLAN_MODES[plan], tier: plan, email }),
         })
         const data = await res.json()
-        if (data.url) {
-          window.location.href = data.url
-          return
-        }
+        if (data.url) { window.location.href = data.url; return }
         setError(data.error || 'Checkout failed. Please try again.')
       } catch {
         setError('Network error. Please try again.')
@@ -67,95 +69,182 @@ export default function Signup() {
       return
     }
 
-    // 3. Free plan — show confirmation screen
     setLoading(false)
     setConfirmSent(true)
   }
 
   if (confirmSent) {
     return (
-      <Layout>
-        <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
-          <div className="text-center max-w-sm">
-            <div className="text-5xl mb-4">📬</div>
-            <h2 className="text-xl font-black text-gray-900 mb-2">Check your email</h2>
-            <p className="text-gray-500 text-sm mb-6">
-              We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account.
-            </p>
-            <button
-              onClick={() => navigate('/certifications')}
-              className="px-6 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 transition-colors"
-            >
-              Start practicing (20 free questions)
-            </button>
-          </div>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc', padding: '2rem' }}>
+        <div style={{ textAlign: 'center', maxWidth: '360px' }}>
+          <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>📬</div>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 900, color: '#111827', marginBottom: '0.5rem' }}>Check your email</h2>
+          <p style={{ color: '#6b7280', fontSize: '0.9rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+            We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account.
+          </p>
+          <button
+            onClick={() => navigate('/sample-questions')}
+            style={{ padding: '0.75rem 1.75rem', background: '#2563eb', color: '#fff', fontWeight: 700, borderRadius: '0.75rem', border: 'none', cursor: 'pointer', fontSize: '0.9rem' }}
+          >
+            Start practicing (20 free questions)
+          </button>
         </div>
-      </Layout>
+      </div>
     )
   }
 
   return (
-    <Layout>
-      <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-8">
-            <div className="text-4xl mb-3">🚀</div>
-            <h1 className="text-2xl font-black text-gray-900">Create your account</h1>
-            <p className="text-gray-500 text-sm mt-1">
-              {plan === 'lifetime'
-                ? '🔥 Lifetime plan — pay once, access forever'
-                : plan === 'yearly'
-                ? '📅 Yearly plan — best value, cancel anytime'
-                : plan === 'monthly'
-                ? '📦 Monthly plan — cancel anytime'
-                : '20 free questions — no credit card required'}
-            </p>
+    <div style={{ minHeight: '100vh', display: 'flex' }}>
+
+      {/* Left panel — branding */}
+      <div style={{
+        flex: '1',
+        background: 'linear-gradient(160deg, #0f172a 0%, #1e3a8a 100%)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: '3rem 3.5rem',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Glow */}
+        <div style={{ position: 'absolute', top: '-60px', left: '-60px', width: '300px', height: '300px', borderRadius: '50%', background: 'rgba(37,99,235,0.18)', filter: 'blur(70px)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '-40px', right: '-40px', width: '240px', height: '240px', borderRadius: '50%', background: 'rgba(99,102,241,0.12)', filter: 'blur(60px)', pointerEvents: 'none' }} />
+
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          {/* Logo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '3rem' }}>
+            <span style={{ fontSize: '1.4rem' }}>☁️</span>
+            <span style={{ color: '#fff', fontWeight: 900, fontSize: '1.15rem' }}>AWSPrepAI</span>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="Min 8 characters"
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                />
-              </div>
-              {error && <p className="text-red-500 text-sm">{error}</p>}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-60 text-sm"
-              >
-                {loading ? 'Creating account...' : plan === 'free' ? 'Sign Up Free' : 'Sign Up & Pay →'}
-              </button>
-            </form>
+          <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#fff', lineHeight: 1.2, marginBottom: '0.75rem' }}>
+            Pass your AWS cert.<br />
+            <span style={{ color: '#60a5fa' }}>Practice smarter.</span>
+          </h2>
+          <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginBottom: '2.5rem', lineHeight: 1.6 }}>
+            Scenario-based questions with instant explanations — for every active AWS certification.
+          </p>
 
-            <p className="text-xs text-gray-400 text-center mt-4">
-              By signing up you agree to our{' '}
-              <a href="/terms" className="underline">Terms & Privacy Policy</a>
-            </p>
+          {/* Perks */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+            {perks.map(p => (
+              <div key={p.text} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem', flexShrink: 0 }}>
+                  {p.icon}
+                </div>
+                <span style={{ color: '#cbd5e1', fontSize: '0.88rem' }}>{p.text}</span>
+              </div>
+            ))}
           </div>
 
-          <p className="text-center text-sm text-gray-500 mt-6">
+          {/* Social proof */}
+          <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            <div style={{ display: 'flex', gap: '2rem' }}>
+              {[['12', 'Certifications'], ['3,120', 'Questions'], ['72%', 'Pass Mark']].map(([val, label]) => (
+                <div key={label}>
+                  <div style={{ fontSize: '1.3rem', fontWeight: 900, color: '#60a5fa' }}>{val}</div>
+                  <div style={{ fontSize: '0.72rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Right panel — form */}
+      <div style={{
+        width: '480px',
+        flexShrink: 0,
+        background: '#fff',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: '3rem 3rem',
+      }}>
+        <div style={{ marginBottom: '2rem' }}>
+          <h1 style={{ fontSize: '1.6rem', fontWeight: 900, color: '#111827', marginBottom: '0.4rem' }}>
+            Create your account
+          </h1>
+          <p style={{ color: '#6b7280', fontSize: '0.88rem' }}>
+            {planLabel
+              ? <span style={{ display: 'inline-block', background: '#eff6ff', color: '#1d4ed8', fontWeight: 700, padding: '0.2rem 0.65rem', borderRadius: '999px', fontSize: '0.8rem' }}>{planLabel}</span>
+              : '20 free questions — no credit card required'}
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              onFocus={() => setFocusField('email')}
+              onBlur={() => setFocusField(null)}
+              placeholder="you@example.com"
+              style={{
+                width: '100%', padding: '0.7rem 0.9rem', borderRadius: '0.65rem', fontSize: '0.9rem',
+                border: focusField === 'email' ? '2px solid #2563eb' : '2px solid #e5e7eb',
+                outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s',
+              }}
+            />
+          </div>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              onFocus={() => setFocusField('password')}
+              onBlur={() => setFocusField(null)}
+              placeholder="Min 8 characters"
+              style={{
+                width: '100%', padding: '0.7rem 0.9rem', borderRadius: '0.65rem', fontSize: '0.9rem',
+                border: focusField === 'password' ? '2px solid #2563eb' : '2px solid #e5e7eb',
+                outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s',
+              }}
+            />
+          </div>
+
+          {error && (
+            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '0.5rem', padding: '0.6rem 0.85rem', fontSize: '0.83rem', color: '#b91c1c' }}>
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: '100%', padding: '0.85rem', background: loading ? '#93c5fd' : '#2563eb',
+              color: '#fff', fontWeight: 700, fontSize: '0.95rem', border: 'none',
+              borderRadius: '0.75rem', cursor: loading ? 'not-allowed' : 'pointer', transition: 'background 0.15s',
+            }}
+            onMouseEnter={e => { if (!loading) e.currentTarget.style.background = '#1d4ed8' }}
+            onMouseLeave={e => { if (!loading) e.currentTarget.style.background = '#2563eb' }}
+          >
+            {loading ? 'Creating account…' : plan === 'free' ? 'Sign Up Free' : 'Sign Up & Continue to Payment →'}
+          </button>
+        </form>
+
+        <p style={{ fontSize: '0.75rem', color: '#9ca3af', textAlign: 'center', marginTop: '1rem' }}>
+          By signing up you agree to our{' '}
+          <Link to="/terms" style={{ color: '#6b7280', textDecoration: 'underline' }}>Terms & Privacy Policy</Link>
+        </p>
+
+        <div style={{ borderTop: '1px solid #f3f4f6', marginTop: '1.75rem', paddingTop: '1.5rem', textAlign: 'center' }}>
+          <p style={{ fontSize: '0.88rem', color: '#6b7280' }}>
             Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 font-semibold hover:underline">Log in</Link>
+            <Link to="/login" style={{ color: '#2563eb', fontWeight: 700, textDecoration: 'none' }}>Log in</Link>
           </p>
         </div>
       </div>
-    </Layout>
+
+    </div>
   )
 }
