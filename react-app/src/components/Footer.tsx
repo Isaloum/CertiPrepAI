@@ -25,9 +25,8 @@ export default function Footer() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             {[
               { to: '/certifications', label: 'All Certifications' },
-              { to: '/cert/saa-c03', label: 'SAA-C03 Practice' },
-              { to: '/cert/clf-c02', label: 'CLF-C02 Practice' },
-              { to: '/certifications', label: 'Mock Exams' },
+              { to: '/mock-exam', label: 'Mock Exams' },
+              { to: '/sample-questions', label: 'Sample Questions' },
             ].map(l => (
               <Link key={l.label} to={l.to} style={{ color: '#64748b', fontSize: '0.85rem', textDecoration: 'none' }}
                 onMouseEnter={e => (e.currentTarget.style.color = '#93c5fd')}
