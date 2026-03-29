@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import Layout from '../components/Layout'
+import { supabase } from '../lib/supabase'
+
+const STRIPE_MONTHLY_LINK = import.meta.env.VITE_STRIPE_MONTHLY_LINK as string
+const STRIPE_LIFETIME_LINK = import.meta.env.VITE_STRIPE_LIFETIME_LINK as string
 
 export default function Signup() {
   const navigate = useNavigate()
@@ -11,6 +15,7 @@ export default function Signup() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [confirmSent, setConfirmSent] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,11 +29,49 @@ export default function Signup() {
       return
     }
     setLoading(true)
-    // TODO: wire up Supabase auth + Stripe checkout
-    setTimeout(() => {
-      setLoading(false)
-      navigate('/certifications')
-    }, 800)
+
+    const { error: authError } = await supabase.auth.signUp({ email, password })
+    setLoading(false)
+
+    if (authError) {
+      setError(authError.message)
+      return
+    }
+
+    // Paid plan — redirect to Stripe with email prefilled
+    if (plan === 'monthly' && STRIPE_MONTHLY_LINK) {
+      window.location.href = `${STRIPE_MONTHLY_LINK}?prefilled_email=${encodeURIComponent(email)}`
+      return
+    }
+    if (plan === 'lifetime' && STRIPE_LIFETIME_LINK) {
+      window.location.href = `${STRIPE_LIFETIME_LINK}?prefilled_email=${encodeURIComponent(email)}`
+      return
+    }
+
+    // Free plan — confirm email then go to certifications
+    setConfirmSent(true)
+  }
+
+  if (confirmSent) {
+    return (
+      <Layout>
+        <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
+          <div className="text-center max-w-sm">
+            <div className="text-5xl mb-4">📬</div>
+            <h2 className="text-xl font-black text-gray-900 mb-2">Check your email</h2>
+            <p className="text-gray-500 text-sm mb-6">
+              We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account.
+            </p>
+            <button
+              onClick={() => navigate('/certifications')}
+              className="px-6 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 transition-colors"
+            >
+              Start practicing (20 free questions)
+            </button>
+          </div>
+        </div>
+      </Layout>
+    )
   }
 
   return (
@@ -39,7 +82,11 @@ export default function Signup() {
             <div className="text-4xl mb-3">🚀</div>
             <h1 className="text-2xl font-black text-gray-900">Create your account</h1>
             <p className="text-gray-500 text-sm mt-1">
-              {plan === 'lifetime' ? '🔥 Lifetime plan selected' : plan === 'monthly' ? '📦 Monthly plan selected' : '20 free questions — no credit card'}
+              {plan === 'lifetime'
+                ? '🔥 Lifetime plan selected — pay once, access forever'
+                : plan === 'monthly'
+                ? '📦 Monthly plan selected — cancel anytime'
+                : '20 free questions — no credit card required'}
             </p>
           </div>
 
@@ -71,12 +118,17 @@ export default function Signup() {
                 disabled={loading}
                 className="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-60 text-sm"
               >
-                {loading ? 'Creating account...' : 'Sign Up Free'}
+                {loading
+                  ? 'Creating account...'
+                  : plan === 'free'
+                  ? 'Sign Up Free'
+                  : `Sign Up & Pay →`}
               </button>
             </form>
 
             <p className="text-xs text-gray-400 text-center mt-4">
-              By signing up you agree to our <Link to="/terms.pdf" className="underline">Terms & Privacy Policy</Link>
+              By signing up you agree to our{' '}
+              <a href="/terms" className="underline">Terms & Privacy Policy</a>
             </p>
           </div>
 

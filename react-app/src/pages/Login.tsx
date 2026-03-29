@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import Layout from '../components/Layout'
+import { supabase } from '../lib/supabase'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -8,6 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [resetSent, setResetSent] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -17,11 +19,25 @@ export default function Login() {
       return
     }
     setLoading(true)
-    // TODO: wire up Supabase auth
-    setTimeout(() => {
-      setLoading(false)
-      navigate('/certifications')
-    }, 800)
+    const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+    setLoading(false)
+    if (authError) {
+      setError(authError.message)
+      return
+    }
+    navigate('/certifications')
+  }
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setError('Enter your email above first.')
+      return
+    }
+    setError('')
+    await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    })
+    setResetSent(true)
   }
 
   return (
@@ -57,6 +73,7 @@ export default function Login() {
                 />
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
+              {resetSent && <p className="text-green-600 text-sm">Reset email sent — check your inbox.</p>}
               <button
                 type="submit"
                 disabled={loading}
@@ -67,7 +84,12 @@ export default function Login() {
             </form>
 
             <div className="mt-4 text-center">
-              <a href="#" className="text-sm text-blue-600 hover:underline">Forgot password?</a>
+              <button
+                onClick={handleForgotPassword}
+                className="text-sm text-blue-600 hover:underline"
+              >
+                Forgot password?
+              </button>
             </div>
           </div>
 
