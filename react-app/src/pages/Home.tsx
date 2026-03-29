@@ -194,10 +194,10 @@ export default function Home() {
           <h2 style={{ fontSize: '1.875rem', fontWeight: 900, color: '#111827', textAlign: 'center', marginBottom: '3rem' }}>How It Works</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '2rem' }}>
             {[
-              { n: '1', title: 'Pick your cert', desc: 'Choose from 12 active AWS certifications' },
-              { n: '2', title: 'Practice free', desc: '20 questions per cert, no account needed' },
-              { n: '3', title: 'Upgrade for full access', desc: 'Unlock all 3,120 questions + mock exams' },
-              { n: '4', title: 'Pass your exam', desc: 'Show up confident on exam day' },
+              { n: '1', title: 'Create a free account', desc: 'Sign up in seconds — no credit card required' },
+              { n: '2', title: 'Pick your cert', desc: 'Choose from 12 active AWS certifications' },
+              { n: '3', title: 'Practice free', desc: '20 questions per cert included with every account' },
+              { n: '4', title: 'Upgrade for full access', desc: 'Unlock all 3,120 questions + mock exams' },
             ].map(s => (
               <div key={s.n} style={{ textAlign: 'center' }}>
                 <div style={{ width: '52px', height: '52px', background: 'linear-gradient(135deg, #2563eb, #1d4ed8)', color: '#fff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '1.25rem', margin: '0 auto 1rem', boxShadow: '0 4px 12px rgba(37,99,235,0.35)' }}>{s.n}</div>
@@ -377,7 +377,7 @@ export default function Home() {
       {/* ── Final CTA ── */}
       <section style={{ padding: '5rem 1.5rem', background: 'linear-gradient(135deg, #1e40af, #1e3a8a)', color: '#fff', textAlign: 'center' }}>
         <h2 style={{ fontSize: '2.25rem', fontWeight: 900, marginBottom: '0.75rem' }}>Ready to start?</h2>
-        <p style={{ color: '#bfdbfe', marginBottom: '2rem', fontSize: '1.1rem' }}>20 free questions — no credit card, no account required.</p>
+        <p style={{ color: '#bfdbfe', marginBottom: '2rem', fontSize: '1.1rem' }}>Free account — 20 questions per cert, no credit card required.</p>
         <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button onClick={() => navigate('/sample-questions')} style={{ padding: '0.875rem 2rem', background: '#fff', color: '#1d4ed8', fontWeight: 800, borderRadius: '0.875rem', border: 'none', cursor: 'pointer', fontSize: '1rem', boxShadow: '0 4px 14px rgba(0,0,0,0.2)' }}>
             Start Practicing Free →
