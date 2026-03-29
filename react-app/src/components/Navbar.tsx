@@ -79,7 +79,8 @@ export default function Navbar() {
               Practice <ChevronDown />
             </button>
             {practiceOpen && (
-              <div style={{ position: 'absolute', top: 'calc(100% + 8px)', left: '0', width: '260px', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '14px', boxShadow: '0 12px 32px rgba(0,0,0,0.12)', padding: '8px', zIndex: 100 }}>
+              <div style={{ position: 'absolute', top: '100%', left: '0', width: '260px', paddingTop: '8px', zIndex: 100 }}>
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '14px', boxShadow: '0 12px 32px rgba(0,0,0,0.12)', padding: '8px' }}>
                 {[
                   { to: '/certifications', bg: '#eff6ff', icon: '📝', label: 'Practice Quiz', sub: '3,120 questions · 12 certs', soon: false },
                   { to: '/certifications', bg: '#f0fdf4', icon: '⏱️', label: 'Mock Exam', sub: 'Timed practice test · 65q · 90 min', soon: false },
@@ -112,6 +113,7 @@ export default function Navbar() {
                   )
                 ))}
               </div>
+              </div>
             )}
           </div>
 
@@ -124,7 +126,8 @@ export default function Navbar() {
               Study <ChevronDown />
             </button>
             {studyOpen && (
-              <div style={{ position: 'absolute', top: 'calc(100% + 8px)', left: '0', width: '260px', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '14px', boxShadow: '0 12px 32px rgba(0,0,0,0.12)', padding: '8px', zIndex: 100 }}>
+              <div style={{ position: 'absolute', top: '100%', left: '0', width: '260px', paddingTop: '8px', zIndex: 100 }}>
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '14px', boxShadow: '0 12px 32px rgba(0,0,0,0.12)', padding: '8px' }}>
                 {[
                   { to: '/resources', bg: '#eff6ff', icon: '📘', label: 'Study Guide', sub: 'Exam tips & curated resources', soon: false },
                   { to: '/glossary', bg: '#faf5ff', icon: '🔑', label: 'Keywords & Terms', sub: 'Scenario identifiers & AWS glossary', soon: false },
@@ -156,6 +159,7 @@ export default function Navbar() {
                     </div>
                   )
                 ))}
+              </div>
               </div>
             )}
           </div>
@@ -200,7 +204,8 @@ export default function Navbar() {
                 <ChevronDown />
               </button>
               {userMenuOpen && (
-                <div style={{ position: 'absolute', top: 'calc(100% + 8px)', right: '0', width: '220px', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)', padding: '6px', zIndex: 100 }}>
+                <div style={{ position: 'absolute', top: '100%', right: '0', paddingTop: '8px', zIndex: 100 }}>
+                <div style={{ width: '220px', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)', padding: '6px' }}>
                   <div style={{ padding: '10px 12px 10px', borderBottom: '1px solid #f3f4f6', marginBottom: '4px' }}>
                     <div style={{ fontSize: '12px', color: '#9ca3af', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.email}</div>
                     <div style={{ fontSize: '12px', fontWeight: 600, color: '#2563eb', marginTop: '2px' }}>{tierBadge[tier] ?? '🆓 Free'}</div>
@@ -235,6 +240,7 @@ export default function Navbar() {
                       <span>👋</span> Sign Out
                     </button>
                   </div>
+                </div>
                 </div>
               )}
             </div>
