@@ -123,7 +123,7 @@ export default function Home() {
             </p>
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
               <button
-                onClick={() => navigate('/certifications')}
+                onClick={() => navigate('/sample-questions')}
                 style={{ padding: '0.875rem 1.75rem', background: '#2563eb', color: '#fff', fontWeight: 800, borderRadius: '0.875rem', border: 'none', cursor: 'pointer', fontSize: '1rem', boxShadow: '0 4px 14px rgba(37,99,235,0.4)' }}
               >
                 🚀 Start Practicing Free
@@ -379,7 +379,7 @@ export default function Home() {
         <h2 style={{ fontSize: '2.25rem', fontWeight: 900, marginBottom: '0.75rem' }}>Ready to start?</h2>
         <p style={{ color: '#bfdbfe', marginBottom: '2rem', fontSize: '1.1rem' }}>20 free questions — no credit card, no account required.</p>
         <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button onClick={() => navigate('/certifications')} style={{ padding: '0.875rem 2rem', background: '#fff', color: '#1d4ed8', fontWeight: 800, borderRadius: '0.875rem', border: 'none', cursor: 'pointer', fontSize: '1rem', boxShadow: '0 4px 14px rgba(0,0,0,0.2)' }}>
+          <button onClick={() => navigate('/sample-questions')} style={{ padding: '0.875rem 2rem', background: '#fff', color: '#1d4ed8', fontWeight: 800, borderRadius: '0.875rem', border: 'none', cursor: 'pointer', fontSize: '1rem', boxShadow: '0 4px 14px rgba(0,0,0,0.2)' }}>
             Start Practicing Free →
           </button>
           <button onClick={() => navigate('/signup')} style={{ padding: '0.875rem 2rem', background: 'rgba(255,255,255,0.12)', color: '#fff', fontWeight: 700, borderRadius: '0.875rem', border: '1px solid rgba(255,255,255,0.3)', cursor: 'pointer', fontSize: '1rem' }}>
