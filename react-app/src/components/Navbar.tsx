@@ -131,7 +131,6 @@ export default function Navbar() {
                   { to: '/resources', bg: '#f0fdf4', icon: '🛠️', label: 'AWS Services', sub: '40+ service references & cheat sheets', soon: false },
                   { to: '/glossary', bg: '#eff6ff', icon: '📖', label: 'Glossary', sub: '50+ AWS terms explained simply', soon: false },
                   { to: '/diagrams', bg: '#f5f3ff', icon: '🗺️', label: 'Architecture Diagrams', sub: 'Interactive SAA-C03 diagrams', soon: false },
-                  { to: '/about', bg: '#f0f9ff', icon: 'ℹ️', label: 'About AWSPrepAI', sub: 'Our mission & cert coverage', soon: false },
                 ].map(item => (
                   item.to ? (
                     <Link key={item.label} to={item.to} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '9px 10px', borderRadius: '10px', textDecoration: 'none' }}
