@@ -87,7 +87,7 @@ export default function Dashboard() {
             </Link>
           )}
           {tier === 'monthly' && (
-            <Link to="/pricing" style={{ padding: '0.6rem 1.25rem', background: '#2563eb', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none' }}>
+            <Link to="/pricing?highlight=yearly" style={{ padding: '0.6rem 1.25rem', background: '#2563eb', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none' }}>
               ↑ Upgrade to Yearly
             </Link>
           )}

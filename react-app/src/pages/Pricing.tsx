@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Layout from '../components/Layout'
 
 const plans = [
@@ -91,8 +91,23 @@ const plans = [
 
 export default function Pricing() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [hovered, setHovered] = useState<string | null>(null)
   const [hoveredBtn, setHoveredBtn] = useState<string | null>(null)
+  const yearlyRef = useRef<HTMLDivElement>(null)
+  const [pulseYearly, setPulseYearly] = useState(false)
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    if (params.get('highlight') === 'yearly') {
+      // Small delay so layout is fully rendered before scrolling
+      setTimeout(() => {
+        yearlyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        setPulseYearly(true)
+        setTimeout(() => setPulseYearly(false), 2800)
+      }, 150)
+    }
+  }, [location.search])
 
   return (
     <Layout>
@@ -118,28 +133,37 @@ export default function Pricing() {
         }}>
           {plans.map((plan) => {
             const isHovered = hovered === plan.name
+            const isYearly = plan.name === 'Yearly'
+            const isPulsing = isYearly && pulseYearly
             return (
               <div
                 key={plan.name}
+                ref={isYearly ? yearlyRef : undefined}
                 onMouseEnter={() => setHovered(plan.name)}
                 onMouseLeave={() => setHovered(null)}
                 style={{
                   background: '#fff',
                   borderRadius: '1rem',
-                  border: isHovered
-                    ? `2px solid ${plan.ctaBg}`
-                    : '2px solid #e5e7eb',
+                  border: isPulsing
+                    ? '3px solid #7c3aed'
+                    : isHovered
+                      ? `2px solid ${plan.ctaBg}`
+                      : '2px solid #e5e7eb',
                   padding: '1.75rem 1.5rem',
                   display: 'flex',
                   flexDirection: 'column',
                   position: 'relative',
-                  boxShadow: isHovered
-                    ? '0 16px 40px rgba(0,0,0,0.13), 0 4px 12px rgba(0,0,0,0.07)'
-                    : '0 1px 4px rgba(0,0,0,0.06)',
-                  transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
+                  boxShadow: isPulsing
+                    ? '0 0 0 6px rgba(124,58,237,0.18), 0 16px 40px rgba(0,0,0,0.13)'
+                    : isHovered
+                      ? '0 16px 40px rgba(0,0,0,0.13), 0 4px 12px rgba(0,0,0,0.07)'
+                      : '0 1px 4px rgba(0,0,0,0.06)',
+                  transform: isPulsing
+                    ? 'translateY(-10px) scale(1.03)'
+                    : isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
                   transition: 'transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease',
                   cursor: 'pointer',
-                  zIndex: isHovered ? 2 : 1,
+                  zIndex: isPulsing || isHovered ? 2 : 1,
                 }}
               >
                 {/* Badge */}
