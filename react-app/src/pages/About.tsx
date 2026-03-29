@@ -110,34 +110,34 @@ function IllustrationLego() {
   return (
     <svg width="220" height="140" viewBox="0 0 220 140" fill="none">
 
-      {/* ── Block: EC2 — x=10..70, y=20..72 ── */}
+      {/* ── Block: EC2 — center x=40 ── */}
       <g>
         <animateTransform attributeName="transform" type="translate" values="0,0;0,-6;0,0" dur="2.2s" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" repeatCount="indefinite"/>
         <rect x="10" y="20" width="60" height="52" rx="8" fill="#bbf7d0" stroke="#16a34a" strokeWidth="2.5"/>
         <ellipse cx="28" cy="20" rx="9" ry="6" fill="#86efac" stroke="#16a34a" strokeWidth="2"/>
         <ellipse cx="52" cy="20" rx="9" ry="6" fill="#86efac" stroke="#16a34a" strokeWidth="2"/>
-        <text x="14" y="48" fontSize="11" fontWeight="900" fill="#166534">🖥 EC2</text>
-        <text x="16" y="62" fontSize="8" fill="#15803d" fontWeight="600">compute</text>
+        <text x="40" y="48" fontSize="11" fontWeight="900" fill="#166534" textAnchor="middle">🖥 EC2</text>
+        <text x="40" y="62" fontSize="8.5" fill="#15803d" fontWeight="600" textAnchor="middle">compute</text>
       </g>
 
-      {/* ── Block: S3 — x=80..140, y=20..72 ── */}
+      {/* ── Block: S3 — center x=110 ── */}
       <g>
         <animateTransform attributeName="transform" type="translate" values="0,0;0,-8;0,0" dur="2.8s" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" repeatCount="indefinite"/>
         <rect x="80" y="20" width="60" height="52" rx="8" fill="#6ee7b7" stroke="#059669" strokeWidth="2.5"/>
         <ellipse cx="98" cy="20" rx="9" ry="6" fill="#34d399" stroke="#059669" strokeWidth="2"/>
         <ellipse cx="122" cy="20" rx="9" ry="6" fill="#34d399" stroke="#059669" strokeWidth="2"/>
-        <text x="87" y="48" fontSize="11" fontWeight="900" fill="#065f46">🪣 S3</text>
-        <text x="89" y="62" fontSize="8" fill="#047857" fontWeight="600">storage</text>
+        <text x="110" y="48" fontSize="11" fontWeight="900" fill="#065f46" textAnchor="middle">🪣 S3</text>
+        <text x="110" y="62" fontSize="8.5" fill="#047857" fontWeight="600" textAnchor="middle">storage</text>
       </g>
 
-      {/* ── Block: Lambda — x=150..210, y=20..72 ── */}
+      {/* ── Block: Lambda — center x=180 ── */}
       <g>
         <animateTransform attributeName="transform" type="translate" values="0,0;0,-6;0,0" dur="2.5s" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" repeatCount="indefinite"/>
         <rect x="150" y="20" width="60" height="52" rx="8" fill="#a7f3d0" stroke="#10b981" strokeWidth="2.5"/>
         <ellipse cx="168" cy="20" rx="9" ry="6" fill="#6ee7b7" stroke="#10b981" strokeWidth="2"/>
         <ellipse cx="192" cy="20" rx="9" ry="6" fill="#6ee7b7" stroke="#10b981" strokeWidth="2"/>
-        <text x="156" y="48" fontSize="11" fontWeight="900" fill="#065f46">⚡ λ</text>
-        <text x="153" y="62" fontSize="8" fill="#047857" fontWeight="600">serverless</text>
+        <text x="180" y="48" fontSize="11" fontWeight="900" fill="#065f46" textAnchor="middle">⚡ λ</text>
+        <text x="180" y="62" fontSize="8.5" fill="#047857" fontWeight="600" textAnchor="middle">serverless</text>
       </g>
 
       {/* ── Vertical connecting lines ── */}
