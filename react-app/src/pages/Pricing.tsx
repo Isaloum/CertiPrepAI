@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 
@@ -88,16 +89,18 @@ const plans = [
 ]
 
 const faqs = [
-  { q: 'Can I try before buying?', a: '20 free sample questions — no sign-up needed. See exactly what you\'re getting before paying.' },
-  { q: 'What\'s the pass rate for AWS exams?', a: 'AWS exams require 72% or higher. Our questions are scenario-based and match the real exam difficulty.' },
+  { q: 'Can I try before buying?', a: "20 free sample questions — no sign-up needed. See exactly what you're getting before paying." },
+  { q: "What's the pass rate for AWS exams?", a: 'AWS exams require 72% or higher. Our questions are scenario-based and match the real exam difficulty.' },
   { q: 'Does Lifetime include future certs?', a: 'Yes. Any new AWS certification we add is included in your Lifetime plan at no extra cost.' },
   { q: 'Can I cancel Monthly or Yearly anytime?', a: 'Yes, cancel from your dashboard with one click. No cancellation fees.' },
-  { q: 'Is there a refund policy?', a: 'We offer a 7-day money-back guarantee if you\'re not satisfied.' },
-  { q: 'What is the AI Coach?', a: 'AI Coach is an intelligent tutor that answers your questions, explains concepts, and gives personalized study plans. It\'s exclusively available on the Lifetime plan.' },
+  { q: 'Is there a refund policy?', a: "We offer a 7-day money-back guarantee if you're not satisfied." },
+  { q: 'What is the AI Coach?', a: "AI Coach is an intelligent tutor that answers your questions, explains concepts, and gives personalized study plans. It's exclusively available on the Lifetime plan." },
 ]
 
 export default function Pricing() {
   const navigate = useNavigate()
+  const [hovered, setHovered] = useState<string | null>(null)
+  const [hoveredBtn, setHoveredBtn] = useState<string | null>(null)
 
   return (
     <Layout>
@@ -121,106 +124,124 @@ export default function Pricing() {
           marginBottom: '4rem',
           alignItems: 'stretch',
         }}>
-          {plans.map((plan) => (
-            <div
-              key={plan.name}
-              style={{
-                background: '#fff',
-                borderRadius: '1rem',
-                border: plan.highlight ? '2px solid #2563eb' : '2px solid #e5e7eb',
-                padding: '1.75rem 1.5rem',
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'relative',
-                boxShadow: plan.highlight ? '0 4px 24px rgba(37,99,235,0.12)' : '0 1px 4px rgba(0,0,0,0.06)',
-              }}
-            >
-              {/* Badge */}
-              {plan.badge && (
-                <div style={{
-                  position: 'absolute',
-                  top: '-14px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  background: plan.badgeColor,
-                  color: '#fff',
-                  fontSize: '0.7rem',
-                  fontWeight: 700,
-                  padding: '0.25rem 0.75rem',
-                  borderRadius: '999px',
-                  whiteSpace: 'nowrap',
-                }}>
-                  {plan.badge}
-                </div>
-              )}
-
-              {/* Plan Name + Price */}
-              <div style={{ marginBottom: '1rem' }}>
-                <h3 style={{ fontWeight: 900, color: '#111827', fontSize: '1.1rem', margin: '0 0 0.5rem' }}>
-                  {plan.name}
-                </h3>
-                <div style={{ display: 'flex', alignItems: 'flex-end', gap: '0.4rem' }}>
-                  <span style={{ fontSize: '2.25rem', fontWeight: 900, color: '#111827', lineHeight: 1 }}>
-                    {plan.price}
-                  </span>
-                  {plan.oldPrice && (
-                    <span style={{ fontSize: '0.85rem', color: '#9ca3af', textDecoration: 'line-through', marginBottom: '0.2rem' }}>
-                      {plan.oldPrice}
-                    </span>
-                  )}
-                  <span style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '0.2rem' }}>
-                    /{plan.period}
-                  </span>
-                </div>
-                {plan.savings && (
+          {plans.map((plan) => {
+            const isHovered = hovered === plan.name
+            return (
+              <div
+                key={plan.name}
+                onMouseEnter={() => setHovered(plan.name)}
+                onMouseLeave={() => setHovered(null)}
+                style={{
+                  background: '#fff',
+                  borderRadius: '1rem',
+                  border: isHovered
+                    ? `2px solid ${plan.ctaBg}`
+                    : plan.highlight
+                    ? '2px solid #2563eb'
+                    : '2px solid #e5e7eb',
+                  padding: '1.75rem 1.5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  position: 'relative',
+                  boxShadow: isHovered
+                    ? '0 16px 40px rgba(0,0,0,0.13), 0 4px 12px rgba(0,0,0,0.07)'
+                    : plan.highlight
+                    ? '0 4px 24px rgba(37,99,235,0.12)'
+                    : '0 1px 4px rgba(0,0,0,0.06)',
+                  transform: isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
+                  transition: 'transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease',
+                  cursor: 'pointer',
+                  zIndex: isHovered ? 2 : 1,
+                }}
+              >
+                {/* Badge */}
+                {plan.badge && (
                   <div style={{
-                    marginTop: '0.6rem',
-                    fontSize: '0.72rem',
-                    fontWeight: 600,
-                    color: '#15803d',
-                    background: '#f0fdf4',
-                    border: '1px solid #bbf7d0',
-                    borderRadius: '0.5rem',
-                    padding: '0.3rem 0.6rem',
-                    lineHeight: 1.4,
+                    position: 'absolute',
+                    top: '-14px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: plan.badgeColor,
+                    color: '#fff',
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    padding: '0.25rem 0.75rem',
+                    borderRadius: '999px',
+                    whiteSpace: 'nowrap',
                   }}>
-                    {plan.savings}
+                    {plan.badge}
                   </div>
                 )}
+
+                {/* Plan Name + Price */}
+                <div style={{ marginBottom: '1rem' }}>
+                  <h3 style={{ fontWeight: 900, color: '#111827', fontSize: '1.1rem', margin: '0 0 0.5rem' }}>
+                    {plan.name}
+                  </h3>
+                  <div style={{ display: 'flex', alignItems: 'flex-end', gap: '0.4rem' }}>
+                    <span style={{ fontSize: '2.25rem', fontWeight: 900, color: '#111827', lineHeight: 1 }}>
+                      {plan.price}
+                    </span>
+                    {plan.oldPrice && (
+                      <span style={{ fontSize: '0.85rem', color: '#9ca3af', textDecoration: 'line-through', marginBottom: '0.2rem' }}>
+                        {plan.oldPrice}
+                      </span>
+                    )}
+                    <span style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '0.2rem' }}>
+                      /{plan.period}
+                    </span>
+                  </div>
+                  {plan.savings && (
+                    <div style={{
+                      marginTop: '0.6rem',
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      color: '#15803d',
+                      background: '#f0fdf4',
+                      border: '1px solid #bbf7d0',
+                      borderRadius: '0.5rem',
+                      padding: '0.3rem 0.6rem',
+                      lineHeight: 1.4,
+                    }}>
+                      {plan.savings}
+                    </div>
+                  )}
+                </div>
+
+                {/* Features */}
+                <ul style={{ listStyle: 'none', margin: '0 0 1.5rem', padding: 0, flex: 1, display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                  {plan.features.map((f) => (
+                    <li key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.82rem', color: '#374151' }}>
+                      <span style={{ color: '#16a34a', marginTop: '0.1rem', flexShrink: 0, fontWeight: 700 }}>✓</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA Button */}
+                <button
+                  onClick={() => navigate(plan.action)}
+                  onMouseEnter={() => setHoveredBtn(plan.name)}
+                  onMouseLeave={() => setHoveredBtn(null)}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem',
+                    background: hoveredBtn === plan.name ? plan.ctaBg : plan.ctaBg,
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: '0.85rem',
+                    border: 'none',
+                    borderRadius: '0.75rem',
+                    cursor: 'pointer',
+                    opacity: hoveredBtn === plan.name ? 0.85 : 1,
+                    transition: 'opacity 0.15s',
+                  }}
+                >
+                  {plan.cta}
+                </button>
               </div>
-
-              {/* Features */}
-              <ul style={{ listStyle: 'none', margin: '0 0 1.5rem', padding: 0, flex: 1, display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-                {plan.features.map((f) => (
-                  <li key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.82rem', color: '#374151' }}>
-                    <span style={{ color: '#16a34a', marginTop: '0.1rem', flexShrink: 0, fontWeight: 700 }}>✓</span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-
-              {/* CTA */}
-              <button
-                onClick={() => navigate(plan.action)}
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  background: plan.ctaBg,
-                  color: '#fff',
-                  fontWeight: 700,
-                  fontSize: '0.85rem',
-                  border: 'none',
-                  borderRadius: '0.75rem',
-                  cursor: 'pointer',
-                  transition: 'opacity 0.15s',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
-                onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-              >
-                {plan.cta}
-              </button>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
         {/* FAQ */}
