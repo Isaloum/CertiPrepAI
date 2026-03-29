@@ -64,6 +64,23 @@ export default function About() {
           ))}
         </div>
 
+        {/* FAQ */}
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#111827', marginBottom: '1rem' }}>Frequently Asked Questions</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2.5rem' }}>
+          {[
+            { q: 'Can I try before buying?', a: "20 free sample questions — no sign-up needed. See exactly what you're getting before paying." },
+            { q: "What's the pass rate for AWS exams?", a: 'AWS exams require 72% or higher. Our questions are scenario-based and match the real exam difficulty.' },
+            { q: 'Does Lifetime include future certs?', a: 'Yes. Any new AWS certification we add is included in your Lifetime plan at no extra cost.' },
+            { q: 'Can I cancel Monthly or Yearly anytime?', a: 'Yes, cancel from your dashboard with one click. No cancellation fees.' },
+            { q: 'What is the AI Coach?', a: "AI Coach is an intelligent tutor that answers your questions, explains concepts, and gives personalized study plans. It's exclusively available on the Lifetime plan." },
+          ].map(faq => (
+            <div key={faq.q} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '0.75rem', padding: '1.1rem 1.25rem' }}>
+              <p style={{ fontWeight: 700, color: '#111827', margin: '0 0 0.4rem', fontSize: '0.9rem' }}>{faq.q}</p>
+              <p style={{ color: '#6b7280', fontSize: '0.85rem', margin: 0, lineHeight: 1.6 }}>{faq.a}</p>
+            </div>
+          ))}
+        </div>
+
         {/* CTA */}
         <div style={{ textAlign: 'center', padding: '2rem', background: '#f9fafb', borderRadius: '1rem', border: '1px solid #e5e7eb' }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Ready to start?</h2>
