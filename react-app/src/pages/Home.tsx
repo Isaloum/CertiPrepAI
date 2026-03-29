@@ -250,14 +250,18 @@ export default function Home() {
           <p style={{ color: '#6b7280', marginBottom: '2rem' }}>Start free. Upgrade when you need more.</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
             {[
-              { label: 'Free', price: '$0', desc: '20 questions / cert' },
-              { label: 'Monthly', price: '$7/mo', desc: 'Full access' },
-              { label: 'Lifetime', price: '$147', desc: 'Pay once, forever' },
+              { label: 'Monthly', price: '$7', period: '/mo', desc: 'Cancel anytime' },
+              { label: 'Yearly', price: '$67', period: '/yr', desc: 'Save $41 — 38% off', popular: true },
+              { label: 'Lifetime', price: '$147', period: ' once', desc: 'Pay once, use forever' },
             ].map(p => (
-              <div key={p.label} style={{ background: '#fff', border: '1px solid #bfdbfe', borderRadius: '0.875rem', padding: '1.25rem 0.75rem', textAlign: 'center' }}>
+              <div key={p.label} style={{ background: '#fff', border: `2px solid ${p.popular ? '#2563eb' : '#bfdbfe'}`, borderRadius: '0.875rem', padding: '1.25rem 0.75rem', textAlign: 'center', position: 'relative' }}>
+                {p.popular && <div style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', background: '#2563eb', color: '#fff', fontSize: '0.65rem', fontWeight: 800, padding: '2px 10px', borderRadius: '999px', whiteSpace: 'nowrap' }}>⭐ Most Popular</div>}
                 <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#2563eb', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>{p.label}</div>
-                <div style={{ fontSize: '1.375rem', fontWeight: 900, color: '#111827', marginBottom: '0.25rem' }}>{p.price}</div>
-                <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>{p.desc}</div>
+                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '1px' }}>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 900, color: '#111827' }}>{p.price}</div>
+                  <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>{p.period}</div>
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>{p.desc}</div>
               </div>
             ))}
           </div>

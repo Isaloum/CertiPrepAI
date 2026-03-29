@@ -100,11 +100,11 @@ export default function Navbar() {
           </div>
 
           {/* Thin divider */}
-          <div style={{ width: '1px', height: '20px', background: '#e5e7eb', margin: '0 6px', flexShrink: 0 }} />
+          <div style={{ width: '1px', height: '20px', background: '#e5e7eb', margin: '0 8px', flexShrink: 0 }} />
 
-          <Link to="/certifications" className={linkClass('/certifications')}>Certifications</Link>
-          <Link to="/about" className={linkClass('/about')}>About</Link>
-          <Link to="/pricing" className={linkClass('/pricing')}>Pricing</Link>
+          <Link to="/certifications" className={linkClass('/certifications')} style={{ letterSpacing: '0.01em' }}>Certifications</Link>
+          <Link to="/about" className={linkClass('/about')} style={{ letterSpacing: '0.01em' }}>About</Link>
+          <Link to="/pricing" className={linkClass('/pricing')} style={{ letterSpacing: '0.01em', fontWeight: 700, color: '#2563eb' }}>Pricing</Link>
         </div>
 
         {/* Auth area */}
