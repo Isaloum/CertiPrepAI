@@ -119,7 +119,7 @@ export default function About() {
               <div>
                 <h3 style={{ fontWeight: 800, color: '#c2410c', marginBottom: '0.5rem', fontSize: '1rem' }}>The real problem: too many tabs, too many bills</h3>
                 <p style={{ color: '#9a3412', lineHeight: 1.75, margin: 0, fontSize: '0.925rem' }}>
-                  When I started studying, the typical path looked like this: pay $25 for a Udemy course, then go to YouTube to find someone explaining the exam questions, then head to a platform like Dojo for more practice — and suddenly you've paid for three separate things and you're still jumping between tabs. I wanted to fix that. I built AWSPrepAI to bring everything into one place: the questions, the explanations, the diagrams, and the resources — so you can focus on learning, not on managing five browser tabs.
+                  When I started studying, the typical path looked like this: a Udemy course — which is genuinely great, easily worth more than $23 — then YouTube to find someone walking through exam questions, then a platform like Dojo for more practice. These are all legitimate, high-quality resources. My only problem wasn't the quality — it was the fragmentation. Suddenly you've paid for three separate things and you're still jumping between tabs. I built AWSPrepAI to bring everything into one place: the questions, the explanations, the diagrams, and the resources — so you can focus on learning, not on managing five browser tabs.
                 </p>
               </div>
             </div>
