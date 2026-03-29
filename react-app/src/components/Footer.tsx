@@ -25,7 +25,7 @@ export default function Footer() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             {[
               { to: '/certifications', label: 'All Certifications' },
-              { to: '/mock-exam', label: 'Mock Exams' },
+              { to: '/certifications', label: 'Mock Exams' },
               { to: '/sample-questions', label: 'Sample Questions' },
             ].map(l => (
               <Link key={l.label} to={l.to} style={{ color: '#64748b', fontSize: '0.85rem', textDecoration: 'none' }}
