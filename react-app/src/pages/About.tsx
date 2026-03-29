@@ -212,10 +212,10 @@ function IllustrationVisual() {
 
       {/* ── RIGHT: Architecture diagram ── */}
       <rect x="138" y="8" width="78" height="124" rx="9" fill="#f5f3ff" stroke="#8b5cf6" strokeWidth="2"/>
-      {/* Panel header */}
+      {/* Panel header — centered at x=177 */}
       <rect x="138" y="8" width="78" height="24" rx="9" fill="#6d28d9"/>
       <rect x="138" y="22" width="78" height="10" fill="#6d28d9"/>
-      <text x="145" y="24.5" fontSize="8.5" fontWeight="800" fill="white">🏗  Diagram</text>
+      <text x="177" y="24.5" fontSize="8.5" fontWeight="800" fill="white" textAnchor="middle">🏗  Diagram</text>
 
       {/* ✅ badge — top right corner of panel */}
       <circle cx="211" cy="12" r="9" fill="#bbf7d0" stroke="#16a34a" strokeWidth="2">
@@ -223,33 +223,33 @@ function IllustrationVisual() {
       </circle>
       <polyline points="206,12 210,17 217,7" stroke="#16a34a" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
 
-      {/* Node: User */}
-      <rect x="148" y="34" width="56" height="22" rx="6" fill="#ddd6fe" stroke="#7c3aed" strokeWidth="1.8"/>
-      <text x="153" y="49" fontSize="9" fontWeight="800" fill="#5b21b6">👤  User</text>
+      {/* Node: User — x=144, width=66, center=177 */}
+      <rect x="144" y="34" width="66" height="22" rx="6" fill="#ddd6fe" stroke="#7c3aed" strokeWidth="1.8"/>
+      <text x="177" y="49" fontSize="9" fontWeight="800" fill="#5b21b6" textAnchor="middle">👤  User</text>
 
-      {/* Arrow 1 */}
-      <line x1="176" y1="56" x2="176" y2="68" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round">
+      {/* Arrow 1 — centered at x=177 */}
+      <line x1="177" y1="56" x2="177" y2="68" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round">
         <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
       </line>
-      <polyline points="171,65 176,70 181,65" stroke="#8b5cf6" strokeWidth="2" fill="none" strokeLinecap="round">
+      <polyline points="172,65 177,70 182,65" stroke="#8b5cf6" strokeWidth="2" fill="none" strokeLinecap="round">
         <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
       </polyline>
 
-      {/* Node: ALB */}
-      <rect x="148" y="70" width="56" height="22" rx="6" fill="#c4b5fd" stroke="#7c3aed" strokeWidth="1.8"/>
-      <text x="153" y="85" fontSize="9" fontWeight="800" fill="#4c1d95">⚖  ALB</text>
+      {/* Node: ALB — x=144, width=66, center=177 */}
+      <rect x="144" y="70" width="66" height="22" rx="6" fill="#c4b5fd" stroke="#7c3aed" strokeWidth="1.8"/>
+      <text x="177" y="85" fontSize="9" fontWeight="800" fill="#4c1d95" textAnchor="middle">⚖  ALB</text>
 
-      {/* Arrow 2 */}
-      <line x1="176" y1="92" x2="176" y2="104" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round">
+      {/* Arrow 2 — centered at x=177 */}
+      <line x1="177" y1="92" x2="177" y2="104" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round">
         <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
       </line>
-      <polyline points="171,101 176,106 181,101" stroke="#8b5cf6" strokeWidth="2" fill="none" strokeLinecap="round">
+      <polyline points="172,101 177,106 182,101" stroke="#8b5cf6" strokeWidth="2" fill="none" strokeLinecap="round">
         <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
       </polyline>
 
-      {/* Node: EC2 cluster */}
-      <rect x="144" y="106" width="64" height="22" rx="6" fill="#a78bfa" stroke="#7c3aed" strokeWidth="1.8"/>
-      <text x="148" y="121" fontSize="9" fontWeight="800" fill="white">🖥  EC2 × 3</text>
+      {/* Node: EC2 cluster — x=144, width=66, center=177 */}
+      <rect x="144" y="106" width="66" height="22" rx="6" fill="#a78bfa" stroke="#7c3aed" strokeWidth="1.8"/>
+      <text x="177" y="121" fontSize="9" fontWeight="800" fill="white" textAnchor="middle">🖥  EC2 × 3</text>
     </svg>
   )
 }
