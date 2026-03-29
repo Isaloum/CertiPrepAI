@@ -59,6 +59,10 @@ export default function CertDetail() {
   }, [certId, navigate])
 
   useEffect(() => {
+    if (!loading && !user) { navigate('/signup') }
+  }, [loading, user, navigate])
+
+  useEffect(() => {
     if (domainFilter === 'all') setFiltered(questions)
     else setFiltered(questions.filter(q => q.cat === domainFilter))
     setCurrent(0); setSelected(null); setRevealed(false)
@@ -94,13 +98,7 @@ export default function CertDetail() {
     setShowResults(false); setWrongQuestions([])
   }
 
-  // Redirect unauthenticated users to signup
-  if (!loading && !user) {
-    navigate('/signup')
-    return null
-  }
-
-  if (questions.length === 0) {
+  if (questions.length === 0 || (!loading && !user)) {
     return (
       <Layout>
         <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
