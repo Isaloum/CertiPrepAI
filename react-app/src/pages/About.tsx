@@ -62,37 +62,37 @@ function IllustrationElectrical() {
       ))}
 
       {/* ── DATA WIRE ── */}
-      <line x1="88" y1="70" x2="112" y2="70" stroke="#93c5fd" strokeWidth="5" strokeLinecap="round"/>
-      <line x1="88" y1="70" x2="112" y2="70" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="5,3">
+      <line x1="88" y1="70" x2="120" y2="70" stroke="#93c5fd" strokeWidth="5" strokeLinecap="round"/>
+      <line x1="88" y1="70" x2="120" y2="70" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="5,3">
         <animate attributeName="strokeDashoffset" values="16;0" dur="0.7s" repeatCount="indefinite"/>
       </line>
       {/* Particles */}
       {[0, 0.23, 0.46].map((delay,i)=>(
         <circle key={i} r="5" fill={['#1d4ed8','#3b82f6','#93c5fd'][i]}>
-          <animateMotion path="M88,70 L112,70" dur="0.7s" begin={`${delay}s`} repeatCount="indefinite"/>
+          <animateMotion path="M88,70 L120,70" dur="0.7s" begin={`${delay}s`} repeatCount="indefinite"/>
           <animate attributeName="opacity" values="0;1;1;0" dur="0.7s" begin={`${delay}s`} repeatCount="indefinite"/>
         </circle>
       ))}
       {/* Arrow */}
-      <polyline points="106,62 115,70 106,78" stroke="#1d4ed8" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="113,62 122,70 113,78" stroke="#1d4ed8" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
         <animate attributeName="opacity" values="0.4;1;0.4" dur="1.4s" repeatCount="indefinite"/>
       </polyline>
 
-      {/* ── AWS CLOUD — perfectly symmetric around x=165 ── */}
-      <path d="M 112 128 Q 112 112 120 108 Q 116 94 130 90 Q 130 76 144 74 Q 150 66 165 64 Q 180 66 186 74 Q 200 76 200 90 Q 214 94 218 108 Q 218 112 218 128 Q 218 134 210 134 L 120 134 Q 112 134 112 128 Z"
+      {/* ── AWS CLOUD — symmetric, vertically centered at y=70 same as chip ── */}
+      <path d="M 112 99 Q 112 83 120 79 Q 116 65 130 61 Q 130 47 144 45 Q 150 37 165 35 Q 180 37 186 45 Q 200 47 200 61 Q 214 65 218 79 Q 218 83 218 99 Q 218 105 210 105 L 120 105 Q 112 105 112 99 Z"
         fill="url(#g1-cloud)" stroke="#2563eb" strokeWidth="2.5">
         <animate attributeName="opacity" values="0.85;1;0.85" dur="2.5s" repeatCount="indefinite"/>
       </path>
-      {/* AWS text — centered */}
-      <text x="165" y="106" fontSize="26" fontWeight="900" fill="#1d4ed8" textAnchor="middle">AWS</text>
-      {/* Service dot row — 5 dots symmetric around cx=165, step=17 */}
+      {/* AWS text — centered in cloud */}
+      <text x="165" y="77" fontSize="26" fontWeight="900" fill="#1d4ed8" textAnchor="middle">AWS</text>
+      {/* Service dot row — 5 dots symmetric around cx=165, cy=94 (bottom of cloud) */}
       {[{cx:131,lb:'EC2',d:'0s'},{cx:148,lb:'S3',d:'0.35s'},{cx:165,lb:'RDS',d:'0.7s'},{cx:182,lb:'λ',d:'1.05s'},{cx:199,lb:'VPC',d:'1.4s'}].map(s=>(
         <g key={s.lb}>
-          <circle cx={s.cx} cy="123" r="10" fill="#2563eb">
+          <circle cx={s.cx} cy="94" r="10" fill="#2563eb">
             <animate attributeName="opacity" values="0.45;1;0.45" dur="2s" begin={s.d} repeatCount="indefinite"/>
             <animate attributeName="r" values="9;11;9" dur="2s" begin={s.d} repeatCount="indefinite"/>
           </circle>
-          <text x={s.cx} y="127" fontSize="6.5" fontWeight="900" fill="white" textAnchor="middle">{s.lb}</text>
+          <text x={s.cx} y="98" fontSize="6.5" fontWeight="900" fill="white" textAnchor="middle">{s.lb}</text>
         </g>
       ))}
     </svg>
