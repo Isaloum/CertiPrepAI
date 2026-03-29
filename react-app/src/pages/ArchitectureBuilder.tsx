@@ -249,7 +249,7 @@ export default function ArchitectureBuilder() {
 
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <div style={{ display: 'inline-block', background: '#fff7ed', color: '#c2410c', padding: '4px 14px', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 700, marginBottom: '10px', letterSpacing: '0.05em' }}>
+            <div style={{ display: 'inline-block', background: '#eff6ff', color: '#1d4ed8', padding: '4px 14px', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 700, marginBottom: '10px', letterSpacing: '0.05em' }}>
               ARCHITECTURE BUILDER
             </div>
             <h1 style={{ fontSize: '1.7rem', fontWeight: 800, color: '#0f172a', margin: '0 0 6px' }}>Build AWS Architectures</h1>
@@ -296,7 +296,7 @@ export default function ArchitectureBuilder() {
                 <p style={{ color: '#475569', margin: '0 0 12px', lineHeight: '1.6', fontSize: '0.93rem' }}>{challenge.scenario}</p>
 
                 {showHint && (
-                  <div style={{ background: '#fefce8', border: '1px solid #fde68a', borderRadius: '10px', padding: '10px 14px', fontSize: '0.88rem', color: '#a16207' }}>
+                  <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '10px', padding: '10px 14px', fontSize: '0.88rem', color: '#1e40af' }}>
                     💡 {challenge.hint}
                   </div>
                 )}
@@ -374,7 +374,7 @@ export default function ArchitectureBuilder() {
                 </button>
                 {!checked ? (
                   <>
-                    <button onClick={() => setShowHint(!showHint)} style={{ padding: '10px 18px', borderRadius: '10px', border: '1px solid #fde68a', background: '#fefce8', color: '#a16207', fontWeight: 600, cursor: 'pointer', fontSize: '0.88rem' }}>
+                    <button onClick={() => setShowHint(!showHint)} style={{ padding: '10px 18px', borderRadius: '10px', border: '1px solid #bfdbfe', background: '#eff6ff', color: '#1e40af', fontWeight: 600, cursor: 'pointer', fontSize: '0.88rem' }}>
                       💡 Hint
                     </button>
                     <button onClick={checkAnswer} disabled={placed.length === 0} style={{ padding: '10px 24px', borderRadius: '10px', border: 'none', background: placed.length === 0 ? '#e2e8f0' : '#2563eb', color: placed.length === 0 ? '#94a3b8' : '#fff', fontWeight: 700, cursor: placed.length === 0 ? 'default' : 'pointer', fontSize: '0.88rem' }}>

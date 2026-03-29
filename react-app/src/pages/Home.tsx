@@ -29,7 +29,7 @@ const levelColors: Record<string, { bg: string; text: string }> = {
   Foundational: { bg: '#f0fdf4', text: '#16a34a' },
   Associate:    { bg: '#eff6ff', text: '#2563eb' },
   Professional: { bg: '#faf5ff', text: '#7c3aed' },
-  Specialty:    { bg: '#fff7ed', text: '#c2410c' },
+  Specialty:    { bg: '#eff6ff', text: '#1d4ed8' },
 }
 
 // Sample question card for hero visual

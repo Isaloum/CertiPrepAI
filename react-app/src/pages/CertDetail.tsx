@@ -177,7 +177,7 @@ export default function CertDetail() {
             <span style={{ fontWeight: 800, color: '#3b82f6', fontSize: '1rem' }}>{score}</span> correct &nbsp;·&nbsp; {answered} answered
           </span>
           {answered > 0 && (
-            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: scorePercent >= 72 ? '#16a34a' : '#d97706' }}>
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: scorePercent >= 72 ? '#16a34a' : '#2563eb' }}>
               {scorePercent}%
             </span>
           )}
@@ -267,7 +267,7 @@ export default function CertDetail() {
 
           {/* Free limit warning */}
           {questionCount >= FREE_LIMIT - 5 && questionCount < FREE_LIMIT && (
-            <div style={{ marginTop: '1rem', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '0.875rem', padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: '#92400e', fontWeight: 500 }}>
+            <div style={{ marginTop: '1rem', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '0.875rem', padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: '#1e3a8a', fontWeight: 500 }}>
               ⚠️ <strong>{FREE_LIMIT - questionCount} free questions left.</strong> Upgrade to unlock all {filtered.length} questions.
             </div>
           )}
@@ -300,7 +300,7 @@ export default function CertDetail() {
             <p style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: '#9ca3af', marginBottom: '1rem', letterSpacing: '0.06em' }}>Session Score</p>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
               <div>
-                <div style={{ fontSize: '2.25rem', fontWeight: 900, color: scorePercent >= 72 ? '#16a34a' : answered === 0 ? '#111827' : '#f59e0b' }}>
+                <div style={{ fontSize: '2.25rem', fontWeight: 900, color: scorePercent >= 72 ? '#16a34a' : answered === 0 ? '#111827' : '#3b82f6' }}>
                   {answered === 0 ? '—' : `${scorePercent}%`}
                 </div>
                 <div style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 600 }}>Current score</div>
@@ -313,7 +313,7 @@ export default function CertDetail() {
             {answered > 0 && (
               <>
                 <div style={{ background: '#f3f4f6', borderRadius: '9999px', height: '8px', marginBottom: '0.5rem' }}>
-                  <div style={{ height: '8px', borderRadius: '9999px', background: scorePercent >= 72 ? '#22c55e' : '#f59e0b', width: `${scorePercent}%`, transition: 'width 0.4s' }} />
+                  <div style={{ height: '8px', borderRadius: '9999px', background: scorePercent >= 72 ? '#22c55e' : '#3b82f6', width: `${scorePercent}%`, transition: 'width 0.4s' }} />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#9ca3af', fontWeight: 600 }}>
                   <span>0%</span>

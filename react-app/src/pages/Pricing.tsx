@@ -9,6 +9,7 @@ const plans = [
     period: 'forever',
     savings: null,
     badge: null,
+    badgeColor: '',
     highlight: false,
     features: [
       '20 free sample questions',
@@ -26,7 +27,8 @@ const plans = [
     oldPrice: null,
     period: 'per month',
     savings: null,
-    badge: null,
+    badge: '⚡ Cancel Anytime',
+    badgeColor: '#0284c7',
     highlight: false,
     features: [
       'All 12 AWS certifications',
@@ -48,6 +50,7 @@ const plans = [
     period: 'per year',
     savings: '🔥 Save $17 — ~$5.60/month',
     badge: '⭐ Most Popular',
+    badgeColor: '#2563eb',
     highlight: true,
     features: [
       'Everything in Monthly',
@@ -69,6 +72,7 @@ const plans = [
     period: 'one-time',
     savings: '💡 AWS cert = avg $15K salary boost',
     badge: '🔥 Best Value',
+    badgeColor: '#1e3a8a',
     highlight: false,
     features: [
       'Everything in Yearly',
@@ -78,7 +82,7 @@ const plans = [
       'No recurring fees, ever',
     ],
     cta: 'Get Lifetime Access',
-    ctaBg: '#d97706',
+    ctaBg: '#1e3a8a',
     action: '/signup?plan=lifetime',
   },
 ]
@@ -138,7 +142,7 @@ export default function Pricing() {
                   top: '-14px',
                   left: '50%',
                   transform: 'translateX(-50%)',
-                  background: plan.highlight ? '#2563eb' : '#d97706',
+                  background: plan.badgeColor,
                   color: '#fff',
                   fontSize: '0.7rem',
                   fontWeight: 700,
@@ -150,7 +154,7 @@ export default function Pricing() {
                 </div>
               )}
 
-              {/* Plan Name */}
+              {/* Plan Name + Price */}
               <div style={{ marginBottom: '1rem' }}>
                 <h3 style={{ fontWeight: 900, color: '#111827', fontSize: '1.1rem', margin: '0 0 0.5rem' }}>
                   {plan.name}
@@ -210,7 +214,7 @@ export default function Pricing() {
                   cursor: 'pointer',
                   transition: 'opacity 0.15s',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.opacity = '0.88')}
+                onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
                 onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
               >
                 {plan.cta}
@@ -226,15 +230,7 @@ export default function Pricing() {
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {faqs.map((faq) => (
-              <div
-                key={faq.q}
-                style={{
-                  background: '#fff',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '0.75rem',
-                  padding: '1.25rem',
-                }}
-              >
+              <div key={faq.q} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '0.75rem', padding: '1.25rem' }}>
                 <p style={{ fontWeight: 700, color: '#111827', margin: '0 0 0.5rem', fontSize: '0.9rem' }}>{faq.q}</p>
                 <p style={{ color: '#6b7280', fontSize: '0.85rem', margin: 0, lineHeight: 1.6 }}>{faq.a}</p>
               </div>
@@ -243,13 +239,7 @@ export default function Pricing() {
         </div>
 
         {/* Bottom CTA */}
-        <div style={{
-          background: '#111827',
-          borderRadius: '1rem',
-          padding: '2.5rem',
-          textAlign: 'center',
-          color: '#fff',
-        }}>
+        <div style={{ background: '#111827', borderRadius: '1rem', padding: '2.5rem', textAlign: 'center', color: '#fff' }}>
           <h2 style={{ fontSize: '1.5rem', fontWeight: 900, margin: '0 0 0.5rem' }}>
             Ready to pass your AWS cert?
           </h2>
@@ -258,16 +248,7 @@ export default function Pricing() {
           </p>
           <button
             onClick={() => navigate('/sample-questions')}
-            style={{
-              padding: '0.85rem 2rem',
-              background: '#2563eb',
-              color: '#fff',
-              fontWeight: 700,
-              fontSize: '0.95rem',
-              border: 'none',
-              borderRadius: '0.75rem',
-              cursor: 'pointer',
-            }}
+            style={{ padding: '0.85rem 2rem', background: '#2563eb', color: '#fff', fontWeight: 700, fontSize: '0.95rem', border: 'none', borderRadius: '0.75rem', cursor: 'pointer' }}
             onMouseEnter={e => (e.currentTarget.style.background = '#1d4ed8')}
             onMouseLeave={e => (e.currentTarget.style.background = '#2563eb')}
           >

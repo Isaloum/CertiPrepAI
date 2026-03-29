@@ -21,7 +21,7 @@ const levelStyle: Record<string, { bg: string; color: string; border: string }> 
   Foundation:   { bg: '#eff6ff', color: '#1d4ed8', border: '#bfdbfe' },
   Associate:    { bg: '#f0fdf4', color: '#16a34a', border: '#bbf7d0' },
   Professional: { bg: '#faf5ff', color: '#7c3aed', border: '#e9d5ff' },
-  Specialty:    { bg: '#fff7ed', color: '#c2410c', border: '#fed7aa' },
+  Specialty:    { bg: '#eff6ff', color: '#1d4ed8', border: '#bfdbfe' },
 }
 
 const paths = [

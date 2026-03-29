@@ -156,7 +156,7 @@ export default function MockExam() {
               </div>
             ))}
           </div>
-          <div style={{ background: '#fef3c7', border: '1px solid #fcd34d', borderRadius: '0.75rem', padding: '0.875rem 1rem', marginBottom: '1.5rem', textAlign: 'left', fontSize: '0.875rem', color: '#92400e' }}>
+          <div style={{ background: '#eff6ff', border: '1px solid #93c5fd', borderRadius: '0.75rem', padding: '0.875rem 1rem', marginBottom: '1.5rem', textAlign: 'left', fontSize: '0.875rem', color: '#1e3a8a' }}>
             ⚠️ <strong>Rules:</strong> No explanations shown during the exam. Answers are revealed only after submission. Timer starts immediately.
           </div>
           <button
@@ -238,7 +238,7 @@ export default function MockExam() {
   // Exam in progress
   const q = questions[current]
   const answered = answers.filter(a => a !== null).length
-  const timerColor = timeLeft < 300 ? '#dc2626' : timeLeft < 600 ? '#d97706' : '#111827'
+  const timerColor = timeLeft < 300 ? '#dc2626' : timeLeft < 600 ? '#2563eb' : '#111827'
 
   return (
     <Layout>

@@ -92,12 +92,12 @@ const CATEGORIES = [
 ]
 
 const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  compute:      { bg: '#fff7ed', text: '#c2410c', border: '#fed7aa' },
+  compute:      { bg: '#eff6ff', text: '#1d4ed8', border: '#bfdbfe' },
   storage:      { bg: '#f0fdf4', text: '#15803d', border: '#bbf7d0' },
   database:     { bg: '#eff6ff', text: '#1d4ed8', border: '#bfdbfe' },
   networking:   { bg: '#faf5ff', text: '#7e22ce', border: '#e9d5ff' },
   security:     { bg: '#fef2f2', text: '#b91c1c', border: '#fecaca' },
-  integration:  { bg: '#fefce8', text: '#a16207', border: '#fde68a' },
+  integration:  { bg: '#eef2ff', text: '#4338ca', border: '#c7d2fe' },
   analytics:    { bg: '#ecfeff', text: '#0e7490', border: '#a5f3fc' },
   management:   { bg: '#f0f9ff', text: '#0369a1', border: '#bae6fd' },
   architecture: { bg: '#fdf4ff', text: '#86198f', border: '#f0abfc' },

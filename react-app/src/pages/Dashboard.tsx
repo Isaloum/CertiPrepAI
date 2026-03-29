@@ -22,7 +22,7 @@ const tierInfo: Record<string, { label: string; color: string; bg: string; desc:
   free:     { label: '🆓 Free Plan',     color: '#374151', bg: '#f3f4f6', desc: '20 questions per certification' },
   monthly:  { label: '📦 Monthly Plan',  color: '#1d4ed8', bg: '#eff6ff', desc: 'Full access, billed monthly' },
   yearly:   { label: '📅 Yearly Plan',   color: '#7c3aed', bg: '#f5f3ff', desc: 'Full access, best annual value' },
-  lifetime: { label: '🔥 Lifetime Plan', color: '#b45309', bg: '#fffbeb', desc: 'Pay once, access forever' },
+  lifetime: { label: '🔥 Lifetime Plan', color: '#1d4ed8', bg: '#eff6ff', desc: 'Pay once, access forever' },
 }
 
 export default function Dashboard() {
@@ -135,7 +135,7 @@ export default function Dashboard() {
             📚 Resources
           </Link>
           {!isPremium && (
-            <Link to="/pricing" style={{ padding: '0.6rem 1.25rem', border: '1px solid #fbbf24', borderRadius: '0.75rem', fontWeight: 700, fontSize: '0.875rem', color: '#b45309', textDecoration: 'none', background: '#fffbeb' }}>
+            <Link to="/pricing" style={{ padding: '0.6rem 1.25rem', border: '1px solid #93c5fd', borderRadius: '0.75rem', fontWeight: 700, fontSize: '0.875rem', color: '#1d4ed8', textDecoration: 'none', background: '#eff6ff' }}>
               ⚡ View Plans
             </Link>
           )}

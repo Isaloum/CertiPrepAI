@@ -55,8 +55,8 @@ const ARCH_DIAGRAMS: Record<number, { label: string; nodes: { id: string; label:
     nodes: [
       { id: 'users', label: 'Users', x: 200, y: 30, color: '#6b7280' },
       { id: 'alb', label: 'App Load\nBalancer', x: 200, y: 110, color: '#2563eb' },
-      { id: 'ec2a', label: 'EC2\n(AZ-a)', x: 100, y: 200, color: '#f59e0b' },
-      { id: 'ec2b', label: 'EC2\n(AZ-b)', x: 300, y: 200, color: '#f59e0b' },
+      { id: 'ec2a', label: 'EC2\n(AZ-a)', x: 100, y: 200, color: '#2563eb' },
+      { id: 'ec2b', label: 'EC2\n(AZ-b)', x: 300, y: 200, color: '#2563eb' },
       { id: 'asg', label: 'Auto Scaling\nGroup', x: 200, y: 290, color: '#16a34a' },
     ],
     arrows: [
@@ -226,7 +226,7 @@ export default function VisualExam() {
           <div style={{ background: '#fff', borderRadius: '20px', padding: '48px', maxWidth: '540px', width: '100%', textAlign: 'center', boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
             <div style={{ fontSize: '3rem', marginBottom: '16px' }}>{pct >= 80 ? '🎉' : pct >= 60 ? '📚' : '💪'}</div>
             <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px' }}>Visual Exam Complete!</h2>
-            <div style={{ fontSize: '3.5rem', fontWeight: 900, color: pct >= 80 ? '#16a34a' : pct >= 60 ? '#ea580c' : '#dc2626', margin: '16px 0' }}>
+            <div style={{ fontSize: '3.5rem', fontWeight: 900, color: pct >= 80 ? '#16a34a' : pct >= 60 ? '#2563eb' : '#dc2626', margin: '16px 0' }}>
               {score}/{filtered.length}
             </div>
             <p style={{ color: '#64748b', marginBottom: '32px' }}>

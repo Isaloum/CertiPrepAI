@@ -31,7 +31,7 @@ export default function Paywall({ reason, onClose }: PaywallProps) {
           <div className="text-4xl mb-3">🎯</div>
           <h2 className="text-xl font-bold text-gray-900 mb-2">Lifetime Access Required</h2>
           <p className="text-gray-500 mb-6">The Visual Architecture Exam is exclusive to Lifetime plan members.</p>
-          <button onClick={() => navigate('/pricing')} className="w-full py-3 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600 mb-2">See Lifetime Plan →</button>
+          <button onClick={() => navigate('/pricing')} className="w-full py-3 bg-blue-800 text-white font-bold rounded-xl hover:bg-blue-900 mb-2">See Lifetime Plan →</button>
           <button onClick={onClose} className="text-sm text-gray-400 hover:text-gray-600">Dismiss</button>
         </div>
       </div>

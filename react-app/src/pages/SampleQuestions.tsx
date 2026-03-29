@@ -300,7 +300,7 @@ const DOMAIN_COLORS: Record<string, string> = {
   'Design High-Performance Architectures': '#7c3aed',
   'Design Secure Applications and Architectures': '#dc2626',
   'Design Cost-Optimized Architectures': '#16a34a',
-  'Operational Excellence': '#ea580c',
+  'Operational Excellence': '#2563eb',
 }
 
 export default function SampleQuestions() {
@@ -377,7 +377,7 @@ export default function SampleQuestions() {
               {pct >= 80 ? '🎉' : pct >= 60 ? '📚' : '💪'}
             </div>
             <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px' }}>Quiz Complete!</h2>
-            <div style={{ fontSize: '3rem', fontWeight: 900, color: pct >= 80 ? '#16a34a' : pct >= 60 ? '#ea580c' : '#dc2626', margin: '16px 0' }}>
+            <div style={{ fontSize: '3rem', fontWeight: 900, color: pct >= 80 ? '#16a34a' : pct >= 60 ? '#2563eb' : '#dc2626', margin: '16px 0' }}>
               {score}/{questions.length}
             </div>
             <p style={{ color: '#64748b', marginBottom: '8px' }}>

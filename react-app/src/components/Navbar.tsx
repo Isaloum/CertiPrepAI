@@ -85,7 +85,7 @@ export default function Navbar() {
                   { to: '/certifications', bg: '#f0fdf4', icon: '⏱️', label: 'Mock Exam', sub: 'Timed practice test · 65q · 90 min', soon: false },
                   { to: '/architecture-builder', bg: '#f5f3ff', icon: '🏗️', label: 'Architecture Builder', sub: 'Drag & drop AWS services', soon: false },
                   { to: '/visual-exam', bg: '#fff0f0', icon: '🎯', label: 'Visual Exam', sub: 'Diagram-based questions', soon: false },
-                  { to: '/sample-questions', bg: '#fffbeb', icon: '🆓', label: 'Sample Questions', sub: '20 free questions · no sign up', soon: false },
+                  { to: '/sample-questions', bg: '#eff6ff', icon: '🆓', label: 'Sample Questions', sub: '20 free questions · no sign up', soon: false },
                 ].map(item => (
                   item.to ? (
                     <Link key={item.label} to={item.to} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '9px 10px', borderRadius: '10px', textDecoration: 'none' }}
@@ -129,7 +129,7 @@ export default function Navbar() {
                   { to: '/resources', bg: '#eff6ff', icon: '📘', label: 'Study Guide', sub: 'Exam tips & curated resources', soon: false },
                   { to: '/glossary', bg: '#faf5ff', icon: '🔑', label: 'Keywords & Terms', sub: 'Scenario identifiers & AWS glossary', soon: false },
                   { to: '/resources', bg: '#f0fdf4', icon: '🛠️', label: 'AWS Services', sub: '40+ service references & cheat sheets', soon: false },
-                  { to: '/glossary', bg: '#fff7ed', icon: '📖', label: 'Glossary', sub: '50+ AWS terms explained simply', soon: false },
+                  { to: '/glossary', bg: '#eff6ff', icon: '📖', label: 'Glossary', sub: '50+ AWS terms explained simply', soon: false },
                   { to: '/diagrams', bg: '#f5f3ff', icon: '🗺️', label: 'Architecture Diagrams', sub: 'Interactive SAA-C03 diagrams', soon: false },
                   { to: '/about', bg: '#f0f9ff', icon: 'ℹ️', label: 'About AWSPrepAI', sub: 'Our mission & cert coverage', soon: false },
                 ].map(item => (
@@ -220,8 +220,8 @@ export default function Navbar() {
                   ))}
                   {!isPremium && (
                     <Link to="/pricing" onClick={() => setUserMenuOpen(false)}
-                      style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '9px 12px', borderRadius: '8px', textDecoration: 'none', fontSize: '14px', color: '#d97706', fontWeight: 600 }}
-                      onMouseEnter={e => (e.currentTarget.style.background = '#fffbeb')}
+                      style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '9px 12px', borderRadius: '8px', textDecoration: 'none', fontSize: '14px', color: '#2563eb', fontWeight: 600 }}
+                      onMouseEnter={e => (e.currentTarget.style.background = '#eff6ff')}
                       onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                     >
                       <span>⚡</span> Upgrade to Premium
