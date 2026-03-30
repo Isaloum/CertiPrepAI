@@ -142,7 +142,12 @@ export default function Pricing() {
         })
         const data = await res.json()
         if (data.url) { window.location.href = data.url; return }
+        // API returned but no URL — show error, don't redirect to signup
+        alert('Checkout error. Please try again or contact support.')
+      } catch {
+        alert('Unable to start checkout. Please try again.')
       } finally { setCheckingOut(null) }
+      return // never fall through to navigate for logged-in users
     }
     // Not logged in → signup flow
     navigate(plan.action)
