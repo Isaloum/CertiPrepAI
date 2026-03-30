@@ -50,8 +50,8 @@ exports.handler = async (event) => {
       line_items: lineItems,
       mode,
       metadata: { product: 'awsprepai_premium', tier: effectiveTier },
-      success_url: `${process.env.SUCCESS_URL}?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: process.env.CANCEL_URL,
+      success_url: `https://main.d2pm3jfcsesli7.amplifyapp.com/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: 'https://main.d2pm3jfcsesli7.amplifyapp.com/pricing',
     };
 
     if (mode === 'subscription') {
