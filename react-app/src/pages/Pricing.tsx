@@ -123,37 +123,17 @@ const plans = [
 export default function Pricing() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { tier, user } = useAuth()
+  const { tier } = useAuth()
   const [hovered, setHovered] = useState<string | null>(null)
   const [hoveredBtn, setHoveredBtn] = useState<string | null>(null)
-  const [checkingOut, setCheckingOut] = useState<string | null>(null)
+  const [checkingOut, setCheckingOut] = useState<string | null>(null) // kept for button label
   const yearlyRef = useRef<HTMLDivElement>(null)
   const [pulseYearly, setPulseYearly] = useState(false)
 
   const userRank = TIER_RANK[tier ?? 'free'] ?? 0
 
-  // Logged-in users go straight to Stripe — no signup detour
-  const handlePlanClick = async (plan: typeof plans[0]) => {
-    const planKey = plan.name.toLowerCase()
-    if (!PLAN_PRICE_IDS[planKey]) { navigate(plan.action); return }
-    if (!user) { navigate(plan.action); return }          // not logged in → signup flow
-    try {
-      setCheckingOut(plan.name)
-      const res = await fetch(CHECKOUT_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: user.email,
-          priceId: PLAN_PRICE_IDS[planKey],
-          mode: PLAN_MODES[planKey],
-          successUrl: `${window.location.origin}/payment-success`,
-          cancelUrl:  `${window.location.origin}/pricing`,
-        }),
-      })
-      const { url } = await res.json()
-      if (url) window.location.href = url
-    } catch { navigate(plan.action) }
-    finally { setCheckingOut(null) }
+  const handlePlanClick = (plan: typeof plans[0]) => {
+    navigate(plan.action)
   }
 
   useEffect(() => {
