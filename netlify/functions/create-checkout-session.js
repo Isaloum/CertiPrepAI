@@ -5,11 +5,16 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const ALLOWED_ORIGINS = [
-  'https://isaloum.github.io',
-  'https://awsprepai.netlify.app',
-  'https://main.d2pm3jfcsesli7.amplifyapp.com',
   'https://awsprepai.isaloumapps.com',
+  'https://main.d2pm3jfcsesli7.amplifyapp.com', // legacy redirect fallback
 ];
+
+// Whitelist of valid Stripe price IDs — reject anything else
+const VALID_PRICE_IDS = new Set([
+  'price_1TB1YCE9neqrFM5LDbyzVSnv', // monthly
+  'price_1TED8EE9neqrFM5LCIL9P0Yp', // yearly
+  'price_1TED9ME9neqrFM5LeKAAEWTO', // lifetime
+]);
 
 function corsHeaders(origin) {
   const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
@@ -37,6 +42,10 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'Missing priceId' }) };
     }
 
+    if (!VALID_PRICE_IDS.has(priceId)) {
+      return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid priceId' }) };
+    }
+
     const lineItems = [{ price: priceId, quantity }];
     // Order bump: 3-cert bundle add-on → upgrades tier to bundle3
     if (addOnPriceId) {
@@ -51,8 +60,8 @@ exports.handler = async (event) => {
       line_items: lineItems,
       mode,
       metadata: { product: 'awsprepai_premium', tier: effectiveTier },
-      success_url: `https://main.d2pm3jfcsesli7.amplifyapp.com/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: 'https://main.d2pm3jfcsesli7.amplifyapp.com/pricing',
+      success_url: `https://awsprepai.isaloumapps.com/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: 'https://awsprepai.isaloumapps.com/pricing',
     };
 
     if (mode === 'subscription') {
