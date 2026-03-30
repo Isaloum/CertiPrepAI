@@ -60,9 +60,9 @@ const plans = [
     badgeColor: '#0284c7',
     highlight: false,
     features: [
-      'All 12 AWS certifications',
-      '260 questions per cert (3,120 total)',
-      'Timed mock exam per cert (65q, 90 min)',
+      '1 AWS certification at a time',
+      '260 questions for your chosen cert',
+      'Timed mock exam (65q, 90 min)',
       'Visual Exam + Architecture Builder',
       'Architecture Diagrams library',
       'Domain filtering — focus weak areas',
