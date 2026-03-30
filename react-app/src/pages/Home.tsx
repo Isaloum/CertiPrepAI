@@ -19,7 +19,7 @@ const certs = [
 
 const features = [
   { icon: '📝', title: '3,120 Questions', desc: '260 per certification across all 12 AWS exams' },
-  { icon: '⏱️', title: 'Mock Exams', desc: '65 questions, 90-minute timer, score on submit' },
+  { icon: '⏱️', title: 'Mock Exams', desc: '65 questions, 130-minute timer, score on submit' },
   { icon: '💡', title: 'Instant Explanations', desc: 'Every answer explained — learn why, not just what' },
   { icon: '🎯', title: 'Domain Filtering', desc: 'Focus on your weakest areas by exam domain' },
   { icon: '📖', title: 'AWS Glossary', desc: '50+ key terms explained in plain language' },

@@ -106,7 +106,7 @@ export default function MockExam() {
           <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔒</div>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Mock Exam — Premium Only</h1>
           <p style={{ color: '#6b7280', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-            The full 65-question timed mock exam (90 min) is available for premium members. Upgrade to unlock all 12 certifications.
+            The full 65-question timed mock exam (130 min) is available for premium members. Upgrade to unlock all 12 certifications.
           </p>
           <Link to="/pricing" style={{ display: 'inline-block', padding: '0.875rem 2rem', background: '#2563eb', color: '#fff', borderRadius: '0.875rem', fontWeight: 800, textDecoration: 'none', fontSize: '1rem' }}>
             ⚡ View Plans — from $7/mo

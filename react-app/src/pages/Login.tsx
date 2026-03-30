@@ -67,7 +67,7 @@ export default function Login() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {[
               { icon: '📋', text: '3,120 questions across 12 certifications' },
-              { icon: '⏱️', text: 'Timed mock exams — 65 questions, 90 min' },
+              { icon: '⏱️', text: 'Timed mock exams — 65 questions, 130 min' },
               { icon: '📊', text: 'Track your scores domain by domain' },
               { icon: '🤖', text: 'AI Coach available on Lifetime plan' },
             ].map(p => (

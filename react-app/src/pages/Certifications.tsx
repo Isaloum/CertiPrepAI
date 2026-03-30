@@ -55,7 +55,7 @@ export default function Certifications() {
             {[
               { n: '3,120', label: 'Total Questions' },
               { n: '12', label: 'Certifications' },
-              { n: '90 min', label: 'Mock Exam Timer' },
+              { n: '130 min', label: 'Mock Exam Timer' },
             ].map(s => (
               <div key={s.label} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '1.75rem', fontWeight: 900, color: '#2563eb' }}>{s.n}</div>

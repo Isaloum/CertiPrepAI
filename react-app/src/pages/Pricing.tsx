@@ -63,7 +63,7 @@ const plans = [
       '1 AWS certification at a time',
       'Switch cert once every 30 days',
       '260 questions for your chosen cert',
-      'Timed mock exam (65q, 90 min)',
+      'Timed mock exam (65q, 130 min)',
       'Domain filtering — focus weak areas',
       'Cancel anytime',
     ],
