@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
-import { supabase } from '../lib/supabase'
+import { getMonthlyCert } from '../lib/db'
 
 const CERT_META: Record<string, { name: string; code: string; icon: string }> = {
   'clf-c02': { name: 'Cloud Practitioner', code: 'CLF-C02', icon: '☁️' },
@@ -52,12 +52,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!user || tier !== 'monthly') { setMonthlyCert(null); return }
-    supabase
-      .from('monthly_cert_selection')
-      .select('cert_id, selected_at')
-      .eq('user_id', user.id)
-      .maybeSingle()
-      .then(({ data }) => setMonthlyCert(data ?? null))
+    getMonthlyCert(user.accessToken).then((data) => setMonthlyCert(data ?? null))
   }, [user, tier])
 
   if (loading || !user) {

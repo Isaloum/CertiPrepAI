@@ -1,9 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import type { User } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
+import { getSession, signOut as cognitoSignOut, type AuthUser } from '../lib/cognito'
 
 interface AuthContextType {
-  user: User | null
+  user: AuthUser | null
   loading: boolean
   isPremium: boolean
   isFullAccess: boolean
@@ -23,37 +22,27 @@ const AuthContext = createContext<AuthContextType>({
 })
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const getTier = (u: User | null): 'free' | 'monthly' | 'yearly' | 'lifetime' => {
-    const t = u?.user_metadata?.tier
-    if (t === 'monthly' || t === 'yearly' || t === 'lifetime') return t
-    return 'free'
-  }
-
   const refreshUser = async () => {
-    const { data } = await supabase.auth.getUser()
-    setUser(data.user)
+    const u = await getSession()
+    setUser(u)
   }
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setUser(data.session?.user ?? null)
+    getSession().then((u) => {
+      setUser(u)
       setLoading(false)
     })
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-    })
-    return () => listener.subscription.unsubscribe()
   }, [])
 
-  const tier = getTier(user)
+  const tier = user?.tier ?? 'free'
   const isPremium = tier !== 'free'
   const isFullAccess = tier === 'yearly' || tier === 'lifetime'
 
   const signOut = async () => {
-    await supabase.auth.signOut()
+    cognitoSignOut()
     setUser(null)
   }
 

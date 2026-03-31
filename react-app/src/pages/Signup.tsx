@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
+import { signUp } from '../lib/cognito'
 
 const CHECKOUT_API = 'https://alwdh4nsomuznniu6yhjgf5i6y0xbzve.lambda-url.us-east-1.on.aws/'
 
@@ -49,8 +49,13 @@ export default function Signup() {
     if (password.length < 8) { setError('Password must be at least 8 characters.'); return }
 
     setLoading(true)
-    const { error: authError } = await supabase.auth.signUp({ email, password })
-    if (authError) { setLoading(false); setError(authError.message); return }
+    try {
+      await signUp(email, password)
+    } catch (err: unknown) {
+      setLoading(false)
+      setError(err instanceof Error ? err.message : 'Sign up failed.')
+      return
+    }
 
     if (plan !== 'free' && PLAN_PRICE_IDS[plan]) {
       try {

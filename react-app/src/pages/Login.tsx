@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
+import { signIn, forgotPassword } from '../lib/cognito'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -17,19 +17,24 @@ export default function Login() {
     setError('')
     if (!email || !password) { setError('Please fill in all fields.'); return }
     setLoading(true)
-    const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+    try {
+      await signIn(email, password)
+      navigate('/dashboard')
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Sign in failed.')
+    }
     setLoading(false)
-    if (authError) { setError(authError.message); return }
-    navigate('/dashboard')
   }
 
   const handleForgotPassword = async () => {
     if (!email) { setError('Enter your email above first.'); return }
     setError('')
-    await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    })
-    setResetSent(true)
+    try {
+      await forgotPassword(email)
+      setResetSent(true)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to send reset email.')
+    }
   }
 
   return (

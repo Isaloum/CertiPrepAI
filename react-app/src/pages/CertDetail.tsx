@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import Layout from '../components/Layout'
 import Paywall from '../components/Paywall'
 import { useAuth } from '../contexts/AuthContext'
-import { supabase } from '../lib/supabase'
+import { getFreeUsage, updateFreeUsage, getMonthlyCert, setMonthlyCert } from '../lib/db'
 
 interface Question {
   cat: string
@@ -76,29 +76,19 @@ export default function CertDetail() {
   // Load free usage (free tier only)
   useEffect(() => {
     if (!user || tier !== 'free') { setUsageLoaded(true); return }
-    supabase
-      .from('free_usage')
-      .select('questions_answered')
-      .eq('user_id', user.id)
-      .maybeSingle()
-      .then(({ data }) => {
-        setUsedCount(data?.questions_answered ?? 0)
-        setUsageLoaded(true)
-      })
+    getFreeUsage(user.accessToken).then((data) => {
+      setUsedCount(data?.count ?? 0)
+      setUsageLoaded(true)
+    })
   }, [user, tier])
 
   // Load monthly cert selection (monthly tier only)
   useEffect(() => {
     if (!user || tier !== 'monthly') { setMonthlyLoaded(true); return }
-    supabase
-      .from('monthly_cert_selection')
-      .select('cert_id, selected_at')
-      .eq('user_id', user.id)
-      .maybeSingle()
-      .then(({ data }) => {
-        setMonthlySelection(data)
-        setMonthlyLoaded(true)
-      })
+    getMonthlyCert(user.accessToken).then((data) => {
+      setMonthlySelection(data)
+      setMonthlyLoaded(true)
+    })
   }, [user, tier])
 
   useEffect(() => {
@@ -118,9 +108,7 @@ export default function CertDetail() {
   const handleSelectMonthlyCert = async () => {
     if (!user || !certId) return
     setSwitching(true)
-    await supabase
-      .from('monthly_cert_selection')
-      .upsert({ user_id: user.id, cert_id: certId, selected_at: new Date().toISOString() }, { onConflict: 'user_id' })
+    await setMonthlyCert(certId, user.accessToken)
     setMonthlySelection({ cert_id: certId, selected_at: new Date().toISOString() })
     setSwitching(false)
   }
@@ -143,9 +131,7 @@ export default function CertDetail() {
     if (tier === 'free' && user) {
       const newCount = usedCount + 1
       setUsedCount(newCount)
-      await supabase
-        .from('free_usage')
-        .upsert({ user_id: user.id, questions_answered: newCount }, { onConflict: 'user_id' })
+      await updateFreeUsage(certId || '', newCount, user.accessToken)
     }
   }, [selected, revealed, filtered, current, tier, usedCount, user])
 
