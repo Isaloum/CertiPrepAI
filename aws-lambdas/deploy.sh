@@ -9,7 +9,7 @@ REGION="us-east-1"
 ROLE_ARN="arn:aws:iam::441393059130:role/awsprepai-checkout-role"
 COGNITO_USER_POOL_ID="us-east-1_bqEVRsi2b"
 COGNITO_CLIENT_ID="4j9mnlkhtu023takbj0qb1g10h"
-STRIPE_SECRET_KEY="STRIPE_KEY_REMOVED"
+STRIPE_SECRET_KEY="${STRIPE_SECRET_KEY:?Set STRIPE_SECRET_KEY env var before running}"
 STRIPE_WEBHOOK_SECRET="whsec_YOUR_WEBHOOK_SECRET"  # Update this
 
 echo "=== Deploying awsprepai-verify-session ==="
