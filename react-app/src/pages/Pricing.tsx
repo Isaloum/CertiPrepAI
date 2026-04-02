@@ -5,14 +5,7 @@ import { useAuth } from '../contexts/AuthContext'
 
 // Same constants + payload as Signup.tsx — proven to work
 const CHECKOUT_API   = 'https://alwdh4nsomuznniu6yhjgf5i6y0xbzve.lambda-url.us-east-1.on.aws/'
-const PLAN_PRICE_IDS: Record<string,string> = {
-  monthly:  'price_1TB1YCE9neqrFM5LDbyzVSnv',
-  yearly:   'price_1TED8EE9neqrFM5LCIL9P0Yp',
-  lifetime: 'price_1TED9ME9neqrFM5LeKAAEWTO',
-}
-const PLAN_MODES: Record<string,string> = {
-  monthly: 'subscription', yearly: 'subscription', lifetime: 'payment',
-}
+const PAID_PLANS = new Set(['monthly', 'yearly', 'lifetime'])
 
 const TIER_RANK: Record<string, number> = { free: 0, monthly: 1, yearly: 2, lifetime: 3 }
 
@@ -129,7 +122,7 @@ export default function Pricing() {
   const handlePlanClick = async (plan: typeof plans[0]) => {
     const key = plan.name.toLowerCase()
     // Logged-in user + paid plan → direct Stripe checkout, skip signup
-    if (user?.email && PLAN_PRICE_IDS[key]) {
+    if (user?.email && PAID_PLANS.has(key)) {
       setCheckingOut(plan.name)
       try {
         const res  = await fetch(CHECKOUT_API, {

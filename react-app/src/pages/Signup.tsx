@@ -4,17 +4,7 @@ import { signUp, confirmSignUp } from '../lib/cognito'
 
 const CHECKOUT_API = 'https://alwdh4nsomuznniu6yhjgf5i6y0xbzve.lambda-url.us-east-1.on.aws/'
 
-const PLAN_PRICE_IDS: Record<string, string> = {
-  monthly:  'price_1TB1YCE9neqrFM5LDbyzVSnv',
-  yearly:   'price_1TED8EE9neqrFM5LCIL9P0Yp',
-  lifetime: 'price_1TED9ME9neqrFM5LeKAAEWTO',
-}
-
-const PLAN_MODES: Record<string, string> = {
-  monthly:  'subscription',
-  yearly:   'subscription',
-  lifetime: 'payment',
-}
+const PAID_PLANS = new Set(['monthly', 'yearly', 'lifetime'])
 
 const perks = [
   { icon: '📋', text: '3,120 scenario-based questions' },
@@ -59,7 +49,7 @@ export default function Signup() {
       return
     }
 
-    if (plan !== 'free' && PLAN_PRICE_IDS[plan]) {
+    if (plan !== 'free' && PAID_PLANS.has(plan)) {
       try {
         const res = await fetch(CHECKOUT_API, {
           method: 'POST',
