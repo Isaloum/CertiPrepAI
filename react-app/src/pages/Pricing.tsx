@@ -135,7 +135,7 @@ export default function Pricing() {
         const res  = await fetch(CHECKOUT_API, {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ priceId: PLAN_PRICE_IDS[key], mode: PLAN_MODES[key], tier: key, email: user.email }),
+          body: JSON.stringify({ plan: key, email: user.email }),
         })
         const data = await res.json()
         if (data.url) { window.location.href = data.url; return }

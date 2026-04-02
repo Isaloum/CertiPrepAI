@@ -64,7 +64,7 @@ export default function Signup() {
         const res = await fetch(CHECKOUT_API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ priceId: PLAN_PRICE_IDS[plan], mode: PLAN_MODES[plan], tier: plan, email }),
+          body: JSON.stringify({ plan, email }),
         })
         const data = await res.json()
         if (data.url) { window.location.href = data.url; return }
