@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { signUp, confirmSignUp } from '../lib/cognito'
 
-const CHECKOUT_API = 'https://alwdh4nsomuznniu6yhjgf5i6y0xbzve.lambda-url.us-east-1.on.aws/'
+const CHECKOUT_API = 'https://34zglioc5a.execute-api.us-east-1.amazonaws.com/checkout'
 
 const PAID_PLANS = new Set(['monthly', 'yearly', 'lifetime'])
 
