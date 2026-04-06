@@ -352,8 +352,8 @@ export default function Keywords() {
                     <span style={{ fontSize: '1.3rem', lineHeight: 1, marginTop: '2px' }}>{k.icon}</span>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px', marginBottom: '6px' }}>
-                        <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#111827', background: '#fef9c3', padding: '2px 8px', borderRadius: '6px', fontFamily: 'monospace' }}>
-                          "{k.keyword}"
+                        <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#111827', background: '#dbeafe', padding: '2px 8px', borderRadius: '6px', fontFamily: 'monospace' }}>
+                          "{k.keyword.charAt(0).toUpperCase() + k.keyword.slice(1)}"
                         </span>
                         <span style={{ fontSize: '0.68rem', fontWeight: 700, background: colors.bg, color: colors.tag, border: `1px solid ${colors.border}`, padding: '2px 8px', borderRadius: '999px', textTransform: 'uppercase', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>
                           {k.category}
