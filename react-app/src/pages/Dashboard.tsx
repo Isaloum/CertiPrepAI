@@ -52,7 +52,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!user || tier !== 'monthly') { setMonthlyCert(null); return }
-    getMonthlyCert(user.accessToken).then((data) => setMonthlyCert(data ?? null))
+    getMonthlyCert(user.idToken).then((data) => setMonthlyCert(data ?? null)).catch(() => setMonthlyCert(null))
   }, [user, tier])
 
   if (loading || !user) {
@@ -173,7 +173,7 @@ export default function Dashboard() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
           {[
             { label: 'Certifications', value: '12', icon: '📋' },
-            { label: 'Total Questions', value: '3,120', icon: '❓' },
+            { label: 'Total Questions', value: '3,120', icon: '📝' },
             { label: 'Available to you', value: isFullAccess ? '3,120' : tier === 'monthly' ? '260' : '20', icon: '🔓' },
           ].map(stat => (
             <div key={stat.label} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '0.875rem', padding: '1rem 1.25rem', textAlign: 'center' }}>

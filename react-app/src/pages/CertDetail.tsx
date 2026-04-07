@@ -79,8 +79,12 @@ export default function CertDetail() {
   // Load free usage (free tier only)
   useEffect(() => {
     if (!user || tier !== 'free') { setUsageLoaded(true); return }
-    getFreeUsage(user.accessToken).then((data) => {
+    getFreeUsage(user.idToken).then((data) => {
       setUsedCount(data?.count ?? 0)
+      setUsageLoaded(true)
+    }).catch(() => {
+      // DB unavailable — default to 0 usage, let user practice
+      setUsedCount(0)
       setUsageLoaded(true)
     })
   }, [user, tier])
@@ -88,8 +92,12 @@ export default function CertDetail() {
   // Load monthly cert selection (monthly tier only)
   useEffect(() => {
     if (!user || tier !== 'monthly') { setMonthlyLoaded(true); return }
-    getMonthlyCert(user.accessToken).then((data) => {
+    getMonthlyCert(user.idToken).then((data) => {
       setMonthlySelection(data)
+      setMonthlyLoaded(true)
+    }).catch(() => {
+      // DB unavailable — allow access without cert lock
+      setMonthlySelection(null)
       setMonthlyLoaded(true)
     })
   }, [user, tier])
@@ -111,7 +119,7 @@ export default function CertDetail() {
   const handleSelectMonthlyCert = async () => {
     if (!user || !certId) return
     setSwitching(true)
-    await setMonthlyCert(certId, user.accessToken)
+    await setMonthlyCert(certId, user.idToken)
     setMonthlySelection({ cert_id: certId, selected_at: new Date().toISOString() })
     setSwitching(false)
   }
@@ -134,7 +142,7 @@ export default function CertDetail() {
     if (tier === 'free' && user) {
       const newCount = usedCount + 1
       setUsedCount(newCount)
-      await updateFreeUsage(certId || '', newCount, user.accessToken)
+      await updateFreeUsage(certId || '', newCount, user.idToken)
     }
   }, [selected, revealed, filtered, current, tier, usedCount, user])
 

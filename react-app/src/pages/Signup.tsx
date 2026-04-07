@@ -49,23 +49,7 @@ export default function Signup() {
       return
     }
 
-    if (plan !== 'free' && PAID_PLANS.has(plan)) {
-      try {
-        const res = await fetch(CHECKOUT_API, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ plan, email }),
-        })
-        const data = await res.json()
-        if (data.url) { window.location.href = data.url; return }
-        setError(data.error || 'Checkout failed. Please try again.')
-      } catch {
-        setError('Network error. Please try again.')
-      }
-      setLoading(false)
-      return
-    }
-
+    // Always verify email first before any redirect (including paid plans)
     setLoading(false)
     setConfirmSent(true)
   }
@@ -78,11 +62,45 @@ export default function Signup() {
       setError('')
       try {
         await confirmSignUp(email, code)
-        navigate('/login?verified=1')
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : 'Invalid code. Please try again.')
+        setConfirming(false)
+        return
       }
-      setConfirming(false)
+
+      // Email verified — now redirect to payment if paid plan, otherwise to login
+      if (plan !== 'free' && PAID_PLANS.has(plan)) {
+        try {
+          const res = await fetch(CHECKOUT_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ plan, email }),
+          })
+          const data = await res.json()
+          if (data.url) { window.location.href = data.url; return }
+          setError(data.error || 'Checkout failed. Please try again.')
+        } catch {
+          setError('Network error. Please try again.')
+        }
+        setConfirming(false)
+        return
+      }
+
+      navigate('/login?verified=1')
+    }
+
+    const handleResend = async () => {
+      try {
+        const { CognitoUser } = await import('amazon-cognito-identity-js')
+        const { userPool } = await import('../lib/cognito')
+        const user = new CognitoUser({ Username: email, Pool: userPool })
+        user.resendConfirmationCode((err) => {
+          if (err) setError('Could not resend code. Please try again.')
+          else setError('')
+        })
+      } catch {
+        setError('Could not resend code.')
+      }
     }
 
     return (
@@ -92,6 +110,11 @@ export default function Signup() {
           <h2 style={{ fontSize: '1.4rem', fontWeight: 900, color: '#111827', marginBottom: '0.5rem' }}>Check your email</h2>
           <p style={{ color: '#6b7280', fontSize: '0.9rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
             We sent a 6-digit code to <strong>{email}</strong>. Enter it below to activate your account.
+            {plan !== 'free' && PAID_PLANS.has(plan) && (
+              <span style={{ display: 'block', marginTop: '0.5rem', color: '#2563eb', fontWeight: 600 }}>
+                After verification you'll be taken to payment.
+              </span>
+            )}
           </p>
           <form onSubmit={handleConfirm}>
             <input
@@ -106,9 +129,16 @@ export default function Signup() {
             <button
               type="submit"
               disabled={confirming}
-              style={{ width: '100%', padding: '0.75rem', background: '#2563eb', color: '#fff', fontWeight: 700, borderRadius: '0.75rem', border: 'none', cursor: 'pointer', fontSize: '0.95rem' }}
+              style={{ width: '100%', padding: '0.75rem', background: '#2563eb', color: '#fff', fontWeight: 700, borderRadius: '0.75rem', border: 'none', cursor: 'pointer', fontSize: '0.95rem', marginBottom: '0.75rem' }}
             >
-              {confirming ? 'Verifying…' : 'Verify & Log In'}
+              {confirming ? 'Verifying…' : plan !== 'free' && PAID_PLANS.has(plan) ? 'Verify & Continue to Payment →' : 'Verify & Log In'}
+            </button>
+            <button
+              type="button"
+              onClick={handleResend}
+              style={{ background: 'none', border: 'none', color: '#6b7280', fontSize: '0.82rem', cursor: 'pointer', textDecoration: 'underline' }}
+            >
+              Didn't get the code? Resend it
             </button>
           </form>
         </div>

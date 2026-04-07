@@ -143,9 +143,8 @@ function ArchDiagram({ questionId }: { questionId: number }) {
 }
 
 export default function VisualExam() {
-  const { user } = useAuth()
+  const { user, tier } = useAuth()
   const navigate = useNavigate()
-  const tier = (user as any)?.user_metadata?.tier
   const isPremium = tier === 'monthly' || tier === 'yearly' || tier === 'lifetime'
   const [filter, setFilter] = useState('all')
   const [current, setCurrent] = useState(0)

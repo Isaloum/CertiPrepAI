@@ -3,8 +3,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import Layout from '../components/Layout'
 
 const certs = [
-  { id: 'clf-c02', icon: '☁️', name: 'Cloud Practitioner', code: 'CLF-C02', level: 'Foundation', forRole: 'IT managers, sales, non-technical roles new to cloud', salary: '$95K–$115K', domains: ['Cloud Concepts', 'Security', 'Technology', 'Billing'] },
-  { id: 'aif-c01', icon: '🤖', name: 'AI Practitioner', code: 'AIF-C01', level: 'Foundation', forRole: 'Anyone exploring AI/ML on AWS — no ML background needed', salary: '$105K–$130K', domains: ['AI Fundamentals', 'ML Concepts', 'Generative AI', 'Responsible AI'] },
+  { id: 'clf-c02', icon: '☁️', name: 'Cloud Practitioner', code: 'CLF-C02', level: 'Foundational', forRole: 'IT managers, sales, non-technical roles new to cloud', salary: '$95K–$115K', domains: ['Cloud Concepts', 'Security', 'Technology', 'Billing'] },
+  { id: 'aif-c01', icon: '🤖', name: 'AI Practitioner', code: 'AIF-C01', level: 'Foundational', forRole: 'Anyone exploring AI/ML on AWS — no ML background needed', salary: '$105K–$130K', domains: ['AI Fundamentals', 'ML Concepts', 'Generative AI', 'Responsible AI'] },
   { id: 'saa-c03', icon: '🏗️', name: 'Solutions Architect Associate', code: 'SAA-C03', level: 'Associate', forRole: 'Cloud architects, DevOps engineers, backend developers', salary: '$130K–$160K', domains: ['Secure 30%', 'Resilient 26%', 'Performant 24%', 'Cost 20%'] },
   { id: 'dva-c02', icon: '💻', name: 'Developer Associate', code: 'DVA-C02', level: 'Associate', forRole: 'Software developers building and deploying on AWS', salary: '$125K–$155K', domains: ['Development', 'Security', 'Deployment', 'Troubleshooting'] },
   { id: 'soa-c02', icon: '⚙️', name: 'SysOps Administrator', code: 'SOA-C02', level: 'Associate', forRole: 'System admins and ops engineers managing AWS infrastructure', salary: '$120K–$150K', domains: ['Monitoring', 'Reliability', 'Deployment', 'Networking'] },
@@ -18,7 +18,7 @@ const certs = [
 ]
 
 const levelStyle: Record<string, { bg: string; color: string; border: string }> = {
-  Foundation:   { bg: '#eff6ff', color: '#1d4ed8', border: '#bfdbfe' },
+  Foundational: { bg: '#eff6ff', color: '#1d4ed8', border: '#bfdbfe' },
   Associate:    { bg: '#f0fdf4', color: '#16a34a', border: '#bbf7d0' },
   Professional: { bg: '#faf5ff', color: '#7c3aed', border: '#e9d5ff' },
   Specialty:    { bg: '#eff6ff', color: '#1d4ed8', border: '#bfdbfe' },
@@ -32,8 +32,8 @@ const paths = [
   { icon: '🤖', label: 'AI / ML track', path: 'AIF-C01 → MLA-C01' },
 ]
 
-type Level = 'All' | 'Foundation' | 'Associate' | 'Professional' | 'Specialty'
-const levels: Level[] = ['All', 'Foundation', 'Associate', 'Professional', 'Specialty']
+type Level = 'All' | 'Foundational' | 'Associate' | 'Professional' | 'Specialty'
+const levels: Level[] = ['All', 'Foundational', 'Associate', 'Professional', 'Specialty']
 
 export default function Certifications() {
   const [filter, setFilter] = useState<Level>('All')
