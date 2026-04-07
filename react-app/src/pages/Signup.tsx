@@ -45,7 +45,12 @@ export default function Signup() {
       await signUp(email, password)
     } catch (err: unknown) {
       setLoading(false)
-      setError(err instanceof Error ? err.message : 'Sign up failed.')
+      const msg = err instanceof Error ? err.message : 'Sign up failed.'
+      if (msg.toLowerCase().includes('exist') || msg.toLowerCase().includes('username')) {
+        setError('__EXISTS__')
+      } else {
+        setError(msg)
+      }
       return
     }
 
@@ -277,9 +282,18 @@ export default function Signup() {
             </div>
           </div>
 
-          {error && (
+          {error && error !== '__EXISTS__' && (
             <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '0.5rem', padding: '0.6rem 0.85rem', fontSize: '0.83rem', color: '#b91c1c' }}>
               {error}
+            </div>
+          )}
+          {error === '__EXISTS__' && (
+            <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '0.75rem', padding: '0.85rem 1rem', fontSize: '0.85rem', color: '#1d4ed8', textAlign: 'center' }}>
+              <strong>Account already exists.</strong>
+              <br />
+              <Link to={`/login`} style={{ color: '#1d4ed8', fontWeight: 700, textDecoration: 'underline', marginTop: '0.35rem', display: 'inline-block' }}>
+                Log in instead →
+              </Link>
             </div>
           )}
 
