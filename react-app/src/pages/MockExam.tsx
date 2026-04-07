@@ -29,7 +29,7 @@ const certMeta: Record<string, { name: string; code: string; icon: string }> = {
 }
 
 const EXAM_QUESTIONS = 65
-const EXAM_MINUTES = 90
+const EXAM_MINUTES = 130
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
