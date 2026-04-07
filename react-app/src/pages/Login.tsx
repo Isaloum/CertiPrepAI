@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { signIn, forgotPassword } from '../lib/cognito'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Login() {
   const navigate = useNavigate()
+  const { refreshUser } = useAuth()
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
   const [error, setError]       = useState('')
@@ -19,6 +21,7 @@ export default function Login() {
     setLoading(true)
     try {
       await signIn(email, password)
+      await refreshUser()
       navigate('/dashboard')
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Sign in failed.')
