@@ -239,7 +239,7 @@ export default function Signup() {
             <input
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value.trim().toLowerCase())}
               onFocus={() => setFocusField('email')}
               onBlur={() => setFocusField(null)}
               placeholder="you@example.com"

@@ -45,7 +45,7 @@ export async function signUp(email: string, password: string): Promise<void> {
 // ─── Confirm Sign Up ─────────────────────────────────────────────
 export async function confirmSignUp(email: string, code: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const user = new CognitoUser({ Username: email, Pool: userPool })
+    const user = new CognitoUser({ Username: normalizedEmail, Pool: userPool })
     user.confirmRegistration(code, true, (err) => {
       if (err) reject(err)
       else resolve()
@@ -55,9 +55,10 @@ export async function confirmSignUp(email: string, code: string): Promise<void> 
 
 // ─── Sign In ─────────────────────────────────────────────────────
 export async function signIn(email: string, password: string): Promise<AuthUser> {
+  const normalizedEmail = email.trim().toLowerCase()
   return new Promise((resolve, reject) => {
-    const user = new CognitoUser({ Username: email, Pool: userPool })
-    const authDetails = new AuthenticationDetails({ Username: email, Password: password })
+    const user = new CognitoUser({ Username: normalizedEmail, Pool: userPool })
+    const authDetails = new AuthenticationDetails({ Username: normalizedEmail, Password: password })
     user.authenticateUser(authDetails, {
       onSuccess: (session) => resolve(sessionToUser(email, session)),
       onFailure: (err) => reject(err),
@@ -92,7 +93,7 @@ export function signOut(): void {
 // ─── Forgot Password ─────────────────────────────────────────────
 export async function forgotPassword(email: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const user = new CognitoUser({ Username: email, Pool: userPool })
+    const user = new CognitoUser({ Username: normalizedEmail, Pool: userPool })
     user.forgotPassword({
       onSuccess: () => resolve(),
       onFailure: (err) => reject(err),
@@ -103,7 +104,7 @@ export async function forgotPassword(email: string): Promise<void> {
 // ─── Confirm New Password ─────────────────────────────────────────
 export async function confirmNewPassword(email: string, code: string, newPassword: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const user = new CognitoUser({ Username: email, Pool: userPool })
+    const user = new CognitoUser({ Username: normalizedEmail, Pool: userPool })
     user.confirmPassword(code, newPassword, {
       onSuccess: () => resolve(),
       onFailure: (err) => reject(err),
