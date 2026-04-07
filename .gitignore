@@ -4,3 +4,8 @@ node_modules/
 
 # Local Netlify folder
 .netlify
+
+# Lambda deployment artifacts
+**/*-lambda.zip
+aws-lambdas/cancel-subscription/package.json
+aws-lambdas/cancel-subscription/package-lock.json
