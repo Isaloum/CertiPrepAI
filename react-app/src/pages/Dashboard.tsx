@@ -137,7 +137,7 @@ export default function Dashboard() {
       const data = await res.json()
       if (!res.ok) { setCancelError(data.error || 'Cancellation failed. Please try again.'); setCancelling(false); return }
       // Success — plan cancelled at period end, stay on dashboard
-      setCancelDialogOpen(false)
+      setShowCancelModal(false)
       alert('Your plan has been cancelled. You will keep access until the end of your billing period.')
     } catch {
       setCancelError('Network error. Please try again.')
