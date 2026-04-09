@@ -65,12 +65,12 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!user || tier !== 'monthly') { setMonthlyCert(null); return }
-    getMonthlyCert(user.idToken).then((data) => setMonthlyCert(data ?? null)).catch(() => setMonthlyCert(null))
+    getMonthlyCert(user.accessToken).then((data) => setMonthlyCert(data ?? null)).catch(() => setMonthlyCert(null))
   }, [user, tier])
 
   useEffect(() => {
     if (!user) return
-    getAllProgress(user.idToken).then(setProgress).catch(() => {})
+    getAllProgress(user.accessToken).then(setProgress).catch(() => {})
     getMFAStatus().then(setMfaEnabled).catch(() => setMfaEnabled(false))
   }, [user])
 
