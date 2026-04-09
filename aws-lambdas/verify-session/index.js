@@ -49,7 +49,7 @@ async function upgradeCognitoUser(email, tier) {
 }
 
 exports.handler = async (event) => {
-  const headers = corsHeaders();
+  const headers = corsHeaders(event.headers?.origin || event.headers?.Origin || '')
 
   if (event.requestContext?.http?.method === 'OPTIONS' || event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers, body: '' };
