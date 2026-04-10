@@ -22,13 +22,13 @@ AWS certification prep SaaS. Live at **https://certiprepai.com**
 - **`worker/`** — Cloudflare Worker for progress sync
 
 ## AWS Lambdas
-| Name | File | Status |
-|------|------|--------|
-| `awsprepai-checkout` | `amplify/functions/checkout/index.js` | Deployed. Had syntax error on Apr 2 — fixed in code, needs redeploy |
-| `awsprepai-db` | `aws-lambdas/awsprepai-db/index.js` | ✅ Redeployed with node_modules + tokenUse fix |
-| `awsprepai-verify-session` | `aws-lambdas/verify-session/index.js` | ⚠️ Needs redeploy with node_modules |
-| `awsprepai-cancel-subscription` | `aws-lambdas/cancel-subscription/index.mjs` | ✅ Deployed |
-| `awsprepai-stripe-webhook` | `aws-lambdas/stripe-webhook/index.js` | Deployed |
+| Name | File | Status | Code Size |
+|------|------|--------|-----------|
+| `awsprepai-checkout` | `amplify/functions/checkout/index.js` | ✅ Active | 1.9 MB |
+| `awsprepai-db` | `aws-lambdas/awsprepai-db/index.js` | ✅ Active | 3.7 MB |
+| `awsprepai-verify-session` | `aws-lambdas/verify-session/index.js` | ✅ Active | 5.6 MB |
+| `awsprepai-cancel-subscription` | `aws-lambdas/cancel-subscription/index.mjs` | ✅ Active | 6.1 MB |
+| `awsprepai-stripe-webhook` | `aws-lambdas/stripe-webhook/index.js` | ✅ Active | 5.6 MB |
 
 ## Cognito Custom Attributes
 - `custom:plan` — `free | monthly | yearly | lifetime`
@@ -60,7 +60,7 @@ awsprepai-cancel-subscription:  STRIPE_SECRET_KEY, COGNITO_USER_POOL_ID, COGNITO
 
 ---
 
-## Current Status (as of April 8, 2026)
+## Current Status (as of April 9, 2026)
 
 ### ✅ Done
 - Login fixed (email normalization `.trim().toLowerCase()` in cognito.ts, Login.tsx, Signup.tsx)
@@ -80,17 +80,14 @@ awsprepai-cancel-subscription:  STRIPE_SECRET_KEY, COGNITO_USER_POOL_ID, COGNITO
 - awsprepai-db redeployed with `npm install` + `zip -r` (node_modules included, CodeSize ~3.7MB)
 - awsprepai-cancel-subscription deployed (node_modules included, CodeSize ~5.9MB)
 - Repo renamed AWSPrepAI → CertiPrepAI on GitHub and locally
-
-### 🔴 Still Needed (AWS CLI required)
-
-**1. Redeploy awsprepai-verify-session (node_modules + CORS fix)**
-The current deployed zip is missing node_modules — `stripe` and `@aws-sdk/client-cognito-identity-provider` are not bundled.
-```bash
-cd ~/Desktop/Projects/CertiPrepAI/aws-lambdas/verify-session
-npm install
-zip -r verify-lambda.zip index.js node_modules
-aws lambda update-function-code --function-name awsprepai-verify-session --zip-file fileb://verify-lambda.zip
-```
+- awsprepai-checkout redeployed with node_modules (1.9 MB) — stripe bundled ✅
+- awsprepai-verify-session redeployed with node_modules + CORS fix (5.6 MB) ✅
+- Footer: GitHub link removed, support@certiprepai.com added
+- Home.tsx: mock exam timer corrected to 130 min, monthly plan copy corrected
+- Pricing.tsx: monthly plan copy corrected (1 cert at a time)
+- PaymentSuccess.tsx: dead bundle3 label removed
+- Mock Exam: dark navy header + red EXAM badge to visually distinguish from Practice mode
+- Practice Quiz: green PRACTICE badge added to header
 
 **IMPORTANT — Always `npm install` + `zip -r` for Lambdas**
 Lambda runtime does NOT include third-party packages. Always bundle node_modules:
@@ -104,9 +101,12 @@ aws lambda update-function-code --function-name <function-name> --zip-file fileb
 
 ### 🟡 Important — This Week
 - Increase Lambda concurrency: Service Quotas → Lambda → Request increase to 1000
+- MFA end-to-end testing (TOTP setup + login flow)
+- Add sitemap.xml and robots.txt for SEO
 
 ### 🟢 Nice to Have
-- Optional MFA (TOTP) — Cognito supports it, UI is ready, needs testing
+- Analytics instrumentation (Plausible or similar, free tier)
+- More question banks (currently 260/cert)
 
 ---
 
