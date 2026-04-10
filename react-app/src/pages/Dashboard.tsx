@@ -4,6 +4,7 @@ import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
 import { getMonthlyCert, getAllProgress, type CertProgress } from '../lib/db'
 import { getMFAStatus, setupTOTP, verifyAndEnableTOTP, disableTOTP } from '../lib/cognito'
+import QRCode from 'qrcode'
 
 const CANCEL_API = "https://hpcdl0ft8a.execute-api.us-east-1.amazonaws.com"
 
@@ -59,6 +60,14 @@ export default function Dashboard() {
   const [mfaCode, setMfaCode] = useState('')
   const [mfaLoading, setMfaLoading] = useState(false)
   const [mfaError, setMfaError] = useState('')
+  const [qrCodeUrl, setQrCodeUrl] = useState('')
+
+  useEffect(() => {
+    if (!mfaSecret || !user) { setQrCodeUrl(''); return }
+    const uri = `otpauth://totp/CertiPrepAI:${encodeURIComponent(user.email)}?secret=${mfaSecret}&issuer=CertiPrepAI`
+    QRCode.toDataURL(uri, { width: 200, margin: 2, color: { dark: '#111827', light: '#ffffff' } })
+      .then(setQrCodeUrl).catch(() => setQrCodeUrl(''))
+  }, [mfaSecret, user])
 
   useEffect(() => {
     if (!loading && !user) navigate('/login')
@@ -367,9 +376,17 @@ export default function Dashboard() {
           {mfaSetup && mfaSecret && (
             <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #f3f4f6' }}>
               <p style={{ fontSize: '0.83rem', color: '#374151', marginBottom: '0.75rem' }}>
-                Open <strong>Google Authenticator</strong> or <strong>Authy</strong> and add a new account using the key below:
+                Scan this QR code with <strong>Google Authenticator</strong> or <strong>Authy</strong>:
               </p>
-              <div style={{ background: '#f3f4f6', borderRadius: '0.5rem', padding: '0.75rem 1rem', fontFamily: 'monospace', fontSize: '0.85rem', letterSpacing: '0.1em', wordBreak: 'break-all', marginBottom: '1rem', color: '#1d4ed8', fontWeight: 700 }}>
+              {qrCodeUrl && (
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+                  <img src={qrCodeUrl} alt="MFA QR Code" style={{ width: '180px', height: '180px', borderRadius: '0.5rem', border: '1px solid #e5e7eb' }} />
+                </div>
+              )}
+              <p style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.4rem', textAlign: 'center' }}>
+                Can't scan? Enter this key manually:
+              </p>
+              <div style={{ background: '#f3f4f6', borderRadius: '0.5rem', padding: '0.75rem 1rem', fontFamily: 'monospace', fontSize: '0.85rem', letterSpacing: '0.1em', wordBreak: 'break-all', marginBottom: '1rem', color: '#1d4ed8', fontWeight: 700, textAlign: 'center' }}>
                 {mfaSecret}
               </div>
               <p style={{ fontSize: '0.78rem', color: '#6b7280', marginBottom: '0.75rem' }}>
