@@ -16,6 +16,7 @@ interface DiagramEdge {
   from: string
   to: string
   label?: string
+  dashed?: boolean
 }
 
 interface Diagram {
@@ -400,38 +401,136 @@ const CAT_COLORS: Record<string, string> = {
 }
 
 function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge[] }) {
-  const width = 560
-  const height = 420
+  const width = 620
+  const height = 440
+
+  // Helper: parse hex color to slightly lighter shade for gradient
+  const lighten = (hex: string) => {
+    const r = parseInt(hex.slice(1, 3), 16)
+    const g = parseInt(hex.slice(3, 5), 16)
+    const b = parseInt(hex.slice(5, 7), 16)
+    const mix = (v: number) => Math.min(255, v + 60)
+    return `rgb(${mix(r)},${mix(g)},${mix(b)})`
+  }
+
+  // Compute bezier control points between two nodes
+  const bezier = (x1: number, y1: number, x2: number, y2: number) => {
+    const dx = x2 - x1
+    const dy = y2 - y1
+    const cx1 = x1 + dx * 0.5
+    const cy1 = y1
+    const cx2 = x1 + dx * 0.5
+    const cy2 = y2
+    // if mostly horizontal, use vertical curve; if mostly vertical, use straight
+    if (Math.abs(dy) < 40) {
+      return `M${x1},${y1} C${cx1},${cy1} ${cx2},${cy2} ${x2},${y2}`
+    }
+    return `M${x1},${y1} C${x1},${y1 + dy * 0.45} ${x2},${y2 - dy * 0.45} ${x2},${y2}`
+  }
+
+  // Get edge exit/entry points from node edges
+  const getConnPoint = (from: DiagramNode, to: DiagramNode): [number, number, number, number] => {
+    const fw = 120, fh = from.label.split('\n').length > 1 ? 52 : 36
+    const tw = 120, th = to.label.split('\n').length > 1 ? 52 : 36
+    const dx = to.x - from.x
+    const dy = to.y - from.y
+    let x1 = from.x, y1 = from.y, x2 = to.x, y2 = to.y
+    if (Math.abs(dx) > Math.abs(dy)) {
+      // horizontal dominant
+      x1 = from.x + (dx > 0 ? fw / 2 : -fw / 2)
+      y1 = from.y
+      x2 = to.x + (dx > 0 ? -tw / 2 : tw / 2)
+      y2 = to.y
+    } else {
+      // vertical dominant
+      x1 = from.x
+      y1 = from.y + (dy > 0 ? fh / 2 : -fh / 2)
+      x2 = to.x
+      y2 = to.y + (dy > 0 ? -th / 2 : th / 2)
+    }
+    return [x1, y1, x2, y2]
+  }
 
   return (
     <svg
       width={width} height={height}
       viewBox={`0 0 ${width} ${height}`}
-      style={{ width: '100%', height: 'auto', maxHeight: '360px', display: 'block' }}
+      style={{ width: '100%', height: 'auto', maxHeight: '420px', display: 'block' }}
     >
       <defs>
-        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#94a3b8" />
+        {/* Drop shadow filter */}
+        <filter id="dshadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="3" stdDeviation="5" floodColor="#0f172a" floodOpacity="0.18" />
+        </filter>
+        {/* Subtle shadow for labels */}
+        <filter id="lshadow" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#0f172a" floodOpacity="0.25" />
+        </filter>
+        {/* Per-node gradients */}
+        {nodes.map(n => (
+          <linearGradient key={`grad-${n.id}`} id={`grad-${n.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor={lighten(n.color)} />
+            <stop offset="100%" stopColor={n.color} />
+          </linearGradient>
+        ))}
+        {/* Arrow markers per color */}
+        {nodes.map(n => (
+          <marker key={`arr-${n.id}`} id={`arr-${n.id}`} markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+            <path d="M0,0 L0,8 L10,4 z" fill={n.color} />
+          </marker>
+        ))}
+        <marker id="arr-default" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+          <path d="M0,0 L0,8 L10,4 z" fill="#64748b" />
         </marker>
+        {/* Dot grid pattern */}
+        <pattern id="dotgrid" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+          <circle cx="12" cy="12" r="1.2" fill="#e2e8f0" />
+        </pattern>
       </defs>
+
+      {/* Background */}
+      <rect width={width} height={height} fill="#f8fafc" rx="16" />
+      <rect width={width} height={height} fill="url(#dotgrid)" rx="16" />
 
       {/* Edges */}
       {edges.map((e, i) => {
         const from = nodes.find(n => n.id === e.from)
         const to = nodes.find(n => n.id === e.to)
         if (!from || !to) return null
-        const mx = (from.x + to.x) / 2
-        const my = (from.y + to.y) / 2
+        const [x1, y1, x2, y2] = getConnPoint(from, to)
+        const path = bezier(x1, y1, x2, y2)
+        const mx = (x1 + x2) / 2
+        const my = (y1 + y2) / 2
+        const arrowId = `arr-${from.id}`
         return (
           <g key={i}>
-            <line
-              x1={from.x} y1={from.y + 20}
-              x2={to.x} y2={to.y - 20}
-              stroke="#cbd5e1" strokeWidth="1.5"
-              markerEnd="url(#arr)"
+            {/* Glow under line */}
+            <path d={path} fill="none" stroke={from.color} strokeWidth="5" strokeOpacity="0.12" strokeLinecap="round" />
+            {/* Main line */}
+            <path d={path} fill="none" stroke={from.color} strokeWidth="2" strokeLinecap="round"
+              strokeDasharray={e.dashed ? '6 4' : undefined}
+              markerEnd={`url(#${arrowId})`}
             />
+            {/* Edge label pill */}
             {e.label && (
-              <text x={mx + 4} y={my} fontSize="9" fill="#94a3b8" textAnchor="middle">{e.label}</text>
+              <g filter="url(#lshadow)">
+                <rect
+                  x={mx - e.label.length * 3.3 - 8}
+                  y={my - 10}
+                  width={e.label.length * 6.6 + 16}
+                  height={20}
+                  rx="10"
+                  fill={from.color}
+                />
+                <text
+                  x={mx} y={my + 4}
+                  fontSize="10" fontWeight="700"
+                  fill="#fff" textAnchor="middle"
+                  fontFamily="system-ui, -apple-system, sans-serif"
+                >
+                  {e.label}
+                </text>
+              </g>
             )}
           </g>
         )
@@ -440,21 +539,36 @@ function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge
       {/* Nodes */}
       {nodes.map(n => {
         const lines = n.label.split('\n')
-        const h = lines.length > 1 ? 48 : 34
+        const w = 120
+        const h = lines.length > 1 ? 52 : 36
         return (
-          <g key={n.id}>
+          <g key={n.id} filter="url(#dshadow)">
+            {/* Node body with gradient */}
             <rect
-              x={n.x - 58} y={n.y - h / 2}
-              width="116" height={h} rx="10"
-              fill={`${n.color}15`} stroke={n.color} strokeWidth="1.5"
+              x={n.x - w / 2} y={n.y - h / 2}
+              width={w} height={h} rx="12"
+              fill={`url(#grad-${n.id})`}
+              stroke="#fff"
+              strokeWidth="2"
             />
+            {/* Shine highlight at top */}
+            <rect
+              x={n.x - w / 2 + 6} y={n.y - h / 2 + 4}
+              width={w - 12} height={h / 2 - 4} rx="8"
+              fill="rgba(255,255,255,0.18)"
+            />
+            {/* Label text — white */}
             {lines.map((line, li) => (
               <text
                 key={li}
                 x={n.x}
-                y={n.y + (li - (lines.length - 1) / 2) * 14 + 1}
-                textAnchor="middle" fontSize="11"
-                fill={n.color} fontWeight="600"
+                y={n.y + (li - (lines.length - 1) / 2) * 15 + 5}
+                textAnchor="middle"
+                fontSize="11"
+                fontWeight="700"
+                fill="#fff"
+                fontFamily="system-ui, -apple-system, sans-serif"
+                style={{ letterSpacing: '0.01em' }}
               >
                 {line}
               </text>
