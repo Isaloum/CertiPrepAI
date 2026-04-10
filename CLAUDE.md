@@ -123,10 +123,11 @@ aws lambda update-function-code --function-name <function-name> --zip-file fileb
 - **CloudFront default behavior must allow POST** — GET/HEAD only by default, causes 403
 
 ## Test Accounts
-| Email | Password | Plan |
-|-------|----------|------|
-| ihabsaloum85@gmail.com | (owner) | Free |
-| ihabsaloum@hotmail.com | CertiPrep@2026! | monthly (manual) |
+| Email | Password | Plan | Notes |
+|-------|----------|------|-------|
+| ihabsaloum85@gmail.com | (owner) | Free | Owner account |
+| ihabsaloum@hotmail.com | CertiPrep@2026! | monthly (manual) | Internal test |
+| tester1.taxflow@gmail.com | CertiPrep@Tester1! | lifetime | Shared tester account — send to testers |
 
 ## Common Commands
 ```bash
