@@ -278,7 +278,7 @@ export default function Home() {
                 id: 'monthly', label: 'Monthly', price: '$7', period: '/mo',
                 badge: '⚡ Flexible',
                 bg: 'rgba(96,165,250,0.16)', border: 'rgba(96,165,250,0.32)',
-                features: ['All 12 certs', '3,120 questions', 'Mock exams', 'Cancel anytime'],
+                features: ['1 cert at a time', '260 questions', 'Mock exams', 'Cancel anytime'],
               },
               {
                 id: 'yearly', label: 'Yearly', price: '$67', period: '/yr',
