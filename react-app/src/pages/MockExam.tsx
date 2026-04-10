@@ -250,22 +250,23 @@ export default function MockExam() {
   // Exam in progress
   const q = questions[current]
   const answered = answers.filter(a => a !== null).length
-  const timerColor = timeLeft < 300 ? '#dc2626' : timeLeft < 600 ? '#2563eb' : '#111827'
+  const timerColor = timeLeft < 300 ? '#f87171' : timeLeft < 600 ? '#fbbf24' : '#f1f5f9'
 
   return (
     <Layout>
       {/* Exam header */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', padding: '0.75rem 1rem', position: 'sticky', top: 56, zIndex: 40 }}>
+      <div style={{ background: '#0f172a', borderBottom: '1px solid #1e293b', padding: '0.75rem 1rem', position: 'sticky', top: 56, zIndex: 40 }}>
         <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
-          <div style={{ fontWeight: 700, color: '#111827', fontSize: '0.875rem' }}>
-            {meta.icon} {meta.code} Mock Exam
+          <div style={{ fontWeight: 700, color: '#f1f5f9', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ background: '#dc2626', color: '#fff', fontSize: '0.6rem', fontWeight: 800, padding: '2px 7px', borderRadius: '4px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>EXAM</span>
+            {meta.icon} {meta.code} — Mock Exam
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6b7280' }}>{answered}/{questions.length} answered</div>
+            <div style={{ fontSize: '0.875rem', color: '#94a3b8' }}>{answered}/{questions.length} answered</div>
             <div style={{ fontWeight: 800, fontSize: '1rem', color: timerColor, fontVariantNumeric: 'tabular-nums' }}>
               ⏱ {formatTime(timeLeft)}
             </div>
-            <button onClick={submitExam} style={{ padding: '0.4rem 1rem', background: '#2563eb', color: '#fff', borderRadius: '0.5rem', fontWeight: 700, fontSize: '0.8rem', border: 'none', cursor: 'pointer' }}>
+            <button onClick={submitExam} style={{ padding: '0.4rem 1rem', background: '#dc2626', color: '#fff', borderRadius: '0.5rem', fontWeight: 700, fontSize: '0.8rem', border: 'none', cursor: 'pointer' }}>
               Submit
             </button>
           </div>

@@ -328,6 +328,7 @@ export default function CertDetail() {
         </button>
         <span style={{ color: '#d1d5db' }}>|</span>
         <span style={{ fontWeight: 800, color: '#111827', fontSize: '0.875rem' }}>{meta.icon} {meta.code} — {meta.name}</span>
+        <span style={{ fontSize: '0.6rem', fontWeight: 800, background: '#dcfce7', color: '#15803d', padding: '2px 8px', borderRadius: '4px', letterSpacing: '0.08em', textTransform: 'uppercase', border: '1px solid #bbf7d0' }}>PRACTICE</span>
         {tier === 'monthly' && (
           <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#dbeafe', color: '#1d4ed8', padding: '0.2rem 0.6rem', borderRadius: '999px' }}>Monthly — Active Cert</span>
         )}
