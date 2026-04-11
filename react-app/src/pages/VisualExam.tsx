@@ -49,31 +49,34 @@ const CAT_COLORS: Record<string, string> = {
   'design-cost': '#16a34a',
 }
 
-const ARCH_DIAGRAMS: Record<number, { label: string; nodes: { id: string; label: string; x: number; y: number; color: string }[]; arrows: { from: string; to: string }[] }> = {
+type ArchNode = { id: string; label: string; x: number; y: number; color: string }
+type ArchArrow = { from: string; to: string }
+
+const ARCH_DIAGRAMS: Record<number, { label: string; nodes: ArchNode[]; arrows: ArchArrow[] }> = {
   1: {
     label: 'ALB + ASG across Multi-AZ',
     nodes: [
-      { id: 'users', label: 'Users', x: 200, y: 30, color: '#6b7280' },
-      { id: 'alb', label: 'App Load\nBalancer', x: 200, y: 110, color: '#2563eb' },
-      { id: 'ec2a', label: 'EC2\n(AZ-a)', x: 100, y: 200, color: '#2563eb' },
-      { id: 'ec2b', label: 'EC2\n(AZ-b)', x: 300, y: 200, color: '#2563eb' },
-      { id: 'asg', label: 'Auto Scaling\nGroup', x: 200, y: 290, color: '#16a34a' },
+      { id: 'users', label: 'Users',              x: 210, y: 50,  color: '#475569' },
+      { id: 'alb',   label: 'App Load\nBalancer', x: 210, y: 170, color: '#2563eb' },
+      { id: 'ec2a',  label: 'EC2\n(AZ-a)',        x: 100, y: 300, color: '#2563eb' },
+      { id: 'ec2b',  label: 'EC2\n(AZ-b)',        x: 320, y: 300, color: '#2563eb' },
+      { id: 'asg',   label: 'Auto Scaling\nGroup', x: 210, y: 420, color: '#16a34a' },
     ],
     arrows: [
       { from: 'users', to: 'alb' },
-      { from: 'alb', to: 'ec2a' },
-      { from: 'alb', to: 'ec2b' },
-      { from: 'asg', to: 'ec2a' },
-      { from: 'asg', to: 'ec2b' },
+      { from: 'alb',   to: 'ec2a' },
+      { from: 'alb',   to: 'ec2b' },
+      { from: 'asg',   to: 'ec2a' },
+      { from: 'asg',   to: 'ec2b' },
     ],
   },
   3: {
     label: 'RDS Multi-AZ with Automated Backups',
     nodes: [
-      { id: 'app', label: 'Application', x: 200, y: 30, color: '#6b7280' },
-      { id: 'rds', label: 'RDS Primary\n(AZ-a)', x: 120, y: 130, color: '#2563eb' },
-      { id: 'standby', label: 'RDS Standby\n(AZ-b)', x: 280, y: 130, color: '#9ca3af' },
-      { id: 's3', label: 'S3 Backups\n(PITR)', x: 200, y: 250, color: '#16a34a' },
+      { id: 'app',     label: 'Application',       x: 210, y: 55,  color: '#475569' },
+      { id: 'rds',     label: 'RDS Primary\n(AZ-a)', x: 110, y: 190, color: '#1A73E8' },
+      { id: 'standby', label: 'RDS Standby\n(AZ-b)', x: 320, y: 190, color: '#9ca3af' },
+      { id: 's3',      label: 'S3 Backups\n(PITR)', x: 210, y: 330, color: '#16a34a' },
     ],
     arrows: [
       { from: 'app', to: 'rds' },
@@ -84,13 +87,13 @@ const ARCH_DIAGRAMS: Record<number, { label: string; nodes: { id: string; label:
   8: {
     label: 'CloudFront + S3 for Global CDN',
     nodes: [
-      { id: 'users', label: 'Global Users', x: 200, y: 30, color: '#6b7280' },
-      { id: 'cf', label: 'CloudFront\nEdge Locations', x: 200, y: 120, color: '#8b5cf6' },
-      { id: 's3', label: 'S3 Bucket\n(Origin)', x: 200, y: 230, color: '#16a34a' },
+      { id: 'users', label: 'Global\nUsers',            x: 210, y: 55,  color: '#475569' },
+      { id: 'cf',    label: 'CloudFront\nEdge Locations', x: 210, y: 195, color: '#8b5cf6' },
+      { id: 's3',    label: 'S3 Bucket\n(Origin)',      x: 210, y: 340, color: '#16a34a' },
     ],
     arrows: [
       { from: 'users', to: 'cf' },
-      { from: 'cf', to: 's3' },
+      { from: 'cf',    to: 's3' },
     ],
   },
 }
@@ -99,44 +102,92 @@ function ArchDiagram({ questionId }: { questionId: number }) {
   const diagram = ARCH_DIAGRAMS[questionId]
   if (!diagram) return null
 
+  const NW = 130
+  const NH = (n: ArchNode) => n.label.split('\n').length >= 3 ? 66 : n.label.includes('\n') ? 52 : 38
+
+  const lighten = (hex: string) => {
+    const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16)
+    return `rgb(${Math.min(255,r+55)},${Math.min(255,g+55)},${Math.min(255,b+55)})`
+  }
+
+  const boxPt = (n: ArchNode, tx: number, ty: number): [number,number] => {
+    const dx = tx-n.x, dy = ty-n.y
+    if (!dx && !dy) return [n.x, n.y]
+    const sx = (NW/2)/Math.abs(dx), sy = (NH(n)/2)/Math.abs(dy)
+    const s = Math.min(isFinite(sx)?sx:1e9, isFinite(sy)?sy:1e9)
+    return [n.x+dx*s, n.y+dy*s]
+  }
+
+  const PAD = 44
+  const xs = diagram.nodes.map(n=>n.x), ys = diagram.nodes.map(n=>n.y)
+  const x0 = Math.min(...xs)-NW/2-PAD, x1 = Math.max(...xs)+NW/2+PAD
+  const y0 = Math.min(...ys)-38-PAD,   y1 = Math.max(...ys)+38+PAD
+  const vw = Math.max(400, x1-x0), vh = Math.max(300, y1-y0)
+
   return (
-    <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px', marginBottom: '20px' }}>
-      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#94a3b8', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-        Correct Architecture: {diagram.label}
+    <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '14px', padding: '16px', marginBottom: '20px' }}>
+      <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#7c3aed', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        📐 Architecture Diagram
+        <span style={{ fontWeight: 500, color: '#94a3b8', textTransform: 'none', letterSpacing: 0, fontSize: '0.72rem' }}>— {diagram.label}</span>
       </div>
-      <svg width="400" height="320" viewBox="0 0 400 320" style={{ width: '100%', height: 'auto', maxHeight: '260px' }}>
+      <svg viewBox={`${x0} ${y0} ${vw} ${vh}`} style={{ width:'100%', height:'auto', maxHeight:'320px', display:'block' }}>
+        <defs>
+          <filter id="ans" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="3" stdDeviation="5" floodColor="#0f172a" floodOpacity="0.14"/>
+          </filter>
+          {diagram.nodes.map(n=>(
+            <linearGradient key={`ag-${n.id}`} id={`ag-${n.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor={lighten(n.color)}/>
+              <stop offset="100%" stopColor={n.color}/>
+            </linearGradient>
+          ))}
+          {diagram.nodes.map(n=>(
+            <marker key={`am-${n.id}`} id={`am-${n.id}`} markerWidth="11" markerHeight="9" refX="11" refY="4.5" orient="auto">
+              <path d="M0,0 L0,9 L11,4.5 z" fill={n.color}/>
+            </marker>
+          ))}
+          <pattern id="adg" width="22" height="22" patternUnits="userSpaceOnUse">
+            <circle cx="11" cy="11" r="1" fill="#d8dfe8"/>
+          </pattern>
+        </defs>
+
+        <rect x={x0} y={y0} width={vw} height={vh} rx="12" fill="#f1f5f9"/>
+        <rect x={x0} y={y0} width={vw} height={vh} rx="12" fill="url(#adg)"/>
+
         {/* Arrows */}
         {diagram.arrows.map((arrow, i) => {
-          const from = diagram.nodes.find(n => n.id === arrow.from)!
-          const to = diagram.nodes.find(n => n.id === arrow.to)!
+          const fn = diagram.nodes.find(n=>n.id===arrow.from)!
+          const tn = diagram.nodes.find(n=>n.id===arrow.to)!
+          const [ax,ay] = boxPt(fn, tn.x, tn.y)
+          const [bx,by] = boxPt(tn, fn.x, fn.y)
           return (
-            <line
-              key={i}
-              x1={from.x} y1={from.y + 24}
-              x2={to.x} y2={to.y - 10}
-              stroke="#cbd5e1" strokeWidth="1.5"
-              markerEnd="url(#arrow)"
+            <line key={i} x1={ax} y1={ay} x2={bx} y2={by}
+              stroke={fn.color} strokeWidth="2.2" strokeLinecap="round"
+              markerEnd={`url(#am-${fn.id})`}
             />
           )
         })}
-        <defs>
-          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L9,3 z" fill="#94a3b8" />
-          </marker>
-        </defs>
+
         {/* Nodes */}
-        {diagram.nodes.map(node => (
-          <g key={node.id}>
-            <rect x={node.x - 45} y={node.y - 14} width="90" height="40" rx="8"
-              fill={`${node.color}18`} stroke={node.color} strokeWidth="1.5" />
-            {node.label.split('\n').map((line, li) => (
-              <text key={li} x={node.x} y={node.y + (li * 14) + 2} textAnchor="middle"
-                fontSize="11" fill={node.color} fontWeight="600">
-                {line}
-              </text>
-            ))}
-          </g>
-        ))}
+        {diagram.nodes.map(n => {
+          const lines = n.label.split('\n'), h = NH(n)
+          return (
+            <g key={n.id} filter="url(#ans)">
+              <rect x={n.x-NW/2+1} y={n.y-h/2+3} width={NW} height={h} rx="12" fill="rgba(0,0,0,0.09)"/>
+              <rect x={n.x-NW/2} y={n.y-h/2} width={NW} height={h} rx="12"
+                fill={`url(#ag-${n.id})`} stroke="rgba(255,255,255,0.5)" strokeWidth="1.5"/>
+              <rect x={n.x-NW/2+7} y={n.y-h/2+4} width={NW-14} height={h*0.38} rx="7"
+                fill="rgba(255,255,255,0.2)"/>
+              {lines.map((line,li)=>(
+                <text key={li} x={n.x} y={n.y+(li-(lines.length-1)/2)*16+5}
+                  textAnchor="middle" fontSize="11.5" fontWeight="700" fill="#fff"
+                  fontFamily="system-ui,-apple-system,sans-serif" style={{letterSpacing:'0.01em'}}>
+                  {line}
+                </text>
+              ))}
+            </g>
+          )
+        })}
       </svg>
     </div>
   )
