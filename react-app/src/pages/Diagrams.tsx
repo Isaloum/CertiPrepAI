@@ -272,9 +272,9 @@ const DIAGRAMS: Diagram[] = [
       'Memcached: simple, multi-threaded, no persistence. Good for simple caching.',
     ],
     nodes: [
-      { id: 'app',   label: 'Application',       x: 310, y: 60,  color: '#475569' },
-      { id: 'cache', label: 'ElastiCache\n(Redis)', x: 140, y: 220, color: '#dc2626' },
-      { id: 'rds',   label: 'RDS\nDatabase',      x: 480, y: 220, color: '#1A73E8' },
+      { id: 'cache', label: 'ElastiCache\n(Redis)', x: 120, y: 90,  color: '#dc2626' },
+      { id: 'app',   label: 'Application',          x: 420, y: 90,  color: '#475569' },
+      { id: 'rds',   label: 'RDS\nDatabase',        x: 420, y: 290, color: '#1A73E8' },
     ],
     edges: [
       { from: 'app',   to: 'cache', label: 'check cache' },
@@ -503,8 +503,8 @@ function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge
         const mx = (lax + lbx) / 2, my = (lay + lby) / 2
         const sign = py < 0 ? 1 : py > 0 ? -1 : px < 0 ? -1 : 1
         const lw = e.label ? Math.max(e.label.length * 6.8 + 20, 40) : 0
-        // For near-horizontal offset (vertical lines), add half pill width so pill clears the line
-        const lo = Math.abs(px) > Math.abs(py) ? Math.max(42, lw / 2 + 14) : 42
+        // Offset must clear the pill's projected extent onto the perpendicular direction
+        const lo = Math.max(42, lw / 2 * Math.abs(px) + 11 * Math.abs(py) + 10)
         const llx = mx + sign * px * lo
         const lly = my + sign * py * lo
 
