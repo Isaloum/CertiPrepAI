@@ -272,9 +272,9 @@ const DIAGRAMS: Diagram[] = [
       'Memcached: simple, multi-threaded, no persistence. Good for simple caching.',
     ],
     nodes: [
-      { id: 'cache', label: 'ElastiCache\n(Redis)', x: 120, y: 90,  color: '#dc2626' },
-      { id: 'app',   label: 'Application',          x: 420, y: 90,  color: '#475569' },
-      { id: 'rds',   label: 'RDS\nDatabase',        x: 420, y: 290, color: '#1A73E8' },
+      { id: 'app',   label: 'Application',          x: 150, y: 90,  color: '#475569' },
+      { id: 'cache', label: 'ElastiCache\n(Redis)', x: 450, y: 90,  color: '#dc2626' },
+      { id: 'rds',   label: 'RDS\nDatabase',        x: 150, y: 290, color: '#1A73E8' },
     ],
     edges: [
       { from: 'app',   to: 'cache', label: 'check cache' },
@@ -432,7 +432,7 @@ function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge
     edges.findIndex(e2 => e2.from === e.to && e2.to === e.from)
 
   // Auto viewBox — fit all nodes with padding
-  const PAD = 48
+  const PAD = 70
   const xs = nodes.map(n => n.x), ys = nodes.map(n => n.y)
   const x0 = Math.min(...xs) - NW / 2 - PAD
   const x1 = Math.max(...xs) + NW / 2 + PAD
