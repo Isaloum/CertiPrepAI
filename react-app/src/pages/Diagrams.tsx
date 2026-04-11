@@ -46,12 +46,12 @@ const DIAGRAMS: Diagram[] = [
     ],
     nodes: [
       { id: 'igw',    label: 'Internet\nGateway',      x: 310, y: 60,  color: '#8B5CF6' },
-      { id: 'pub-a',  label: 'Public\nSubnet AZ-a',    x: 150, y: 190, color: '#2563eb' },
-      { id: 'pub-b',  label: 'Public\nSubnet AZ-b',    x: 470, y: 190, color: '#2563eb' },
-      { id: 'natgw',  label: 'NAT\nGateway',           x: 150, y: 320, color: '#8B5CF6' },
-      { id: 'alb',    label: 'ALB',                    x: 470, y: 320, color: '#8B5CF6' },
-      { id: 'priv-a', label: 'Private\nSubnet AZ-a',   x: 150, y: 440, color: '#475569' },
-      { id: 'priv-b', label: 'Private\nSubnet AZ-b',   x: 470, y: 440, color: '#475569' },
+      { id: 'pub-a',  label: 'Public\nSubnet AZ-a',    x: 110, y: 230, color: '#2563eb' },
+      { id: 'pub-b',  label: 'Public\nSubnet AZ-b',    x: 510, y: 230, color: '#2563eb' },
+      { id: 'natgw',  label: 'NAT\nGateway',           x: 110, y: 400, color: '#8B5CF6' },
+      { id: 'alb',    label: 'ALB',                    x: 510, y: 400, color: '#8B5CF6' },
+      { id: 'priv-a', label: 'Private\nSubnet AZ-a',   x: 110, y: 570, color: '#475569' },
+      { id: 'priv-b', label: 'Private\nSubnet AZ-b',   x: 510, y: 570, color: '#475569' },
     ],
     edges: [
       { from: 'igw',   to: 'pub-a' },
@@ -668,7 +668,7 @@ export default function Diagrams() {
                 </button>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'stretch' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: '24px', alignItems: 'stretch' }}>
                 {/* SVG */}
                 <div style={{ background: '#f8fafc', borderRadius: '12px', padding: '20px', border: '1px solid #e2e8f0' }}>
                   <DiagramSVG nodes={activeDiagram.nodes} edges={activeDiagram.edges} />
