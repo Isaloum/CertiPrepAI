@@ -106,10 +106,10 @@ const DIAGRAMS: Diagram[] = [
     ],
     nodes: [
       { id: 'app',      label: 'Application',         x: 310, y: 70,  color: '#475569' },
-      { id: 'primary',  label: 'RDS Primary\n(AZ-a)', x: 310, y: 250, color: '#1A73E8' },
-      { id: 'standby',  label: 'RDS Standby\n(AZ-b)', x: 630, y: 250, color: '#9ca3af' },
-      { id: 'replica1', label: 'Read\nReplica 1',     x: 130, y: 440, color: '#16a34a' },
-      { id: 'replica2', label: 'Read\nReplica 2',     x: 490, y: 440, color: '#16a34a' },
+      { id: 'primary',  label: 'RDS Primary\n(AZ-a)', x: 310, y: 260, color: '#1A73E8' },
+      { id: 'standby',  label: 'RDS Standby\n(AZ-b)', x: 660, y: 260, color: '#9ca3af' },
+      { id: 'replica1', label: 'Read\nReplica 1',     x: 110, y: 460, color: '#16a34a' },
+      { id: 'replica2', label: 'Read\nReplica 2',     x: 510, y: 460, color: '#16a34a' },
     ],
     edges: [
       { from: 'app',     to: 'primary',  label: 'writes',           labelFlip: true },
@@ -419,12 +419,12 @@ const CAT_COLORS: Record<string, string> = {
 }
 
 function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge[] }) {
-  const NW = 170 // node width
+  const NW = 200 // node width
 
   // Node height based on line count
   const NH = (n: DiagramNode) => {
     const lines = n.label.split('\n').length
-    return lines >= 3 ? 82 : lines === 2 ? 64 : 50
+    return lines >= 3 ? 92 : lines === 2 ? 74 : 58
   }
 
   // Gradient: lighter top to base color bottom
@@ -573,8 +573,8 @@ function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge
             {/* Text */}
             {lines.map((line, li) => (
               <text key={li}
-                x={n.x} y={n.y + (li - (lines.length - 1) / 2) * 19 + 6}
-                textAnchor="middle" fontSize="14" fontWeight="700" fill="#fff"
+                x={n.x} y={n.y + (li - (lines.length - 1) / 2) * 22 + 6}
+                textAnchor="middle" fontSize="16" fontWeight="700" fill="#fff"
                 fontFamily="system-ui, -apple-system, sans-serif"
                 style={{ letterSpacing: '0.015em' }}
               >
