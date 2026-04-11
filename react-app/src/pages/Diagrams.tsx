@@ -282,7 +282,7 @@ const DIAGRAMS: Diagram[] = [
     edges: [
       { from: 'app',   to: 'cache', label: 'check cache' },
       { from: 'cache', to: 'app',   label: 'hit: return' },
-      { from: 'app',   to: 'rds',   label: 'miss: query DB' },
+      { from: 'app',   to: 'rds',   label: 'miss: query DB', labelFlip: true },
       { from: 'rds',   to: 'cache', label: 'write to cache', labelFlip: true },
     ],
   },
