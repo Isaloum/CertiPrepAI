@@ -438,12 +438,17 @@ function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge
   const x1 = Math.max(...xs) + NW / 2 + PAD
   const y0 = Math.min(...ys) - 40 - PAD
   const y1 = Math.max(...ys) + 40 + PAD
-  const vw = Math.max(520, x1 - x0)
-  const vh = Math.max(320, y1 - y0)
+  const contentW = x1 - x0
+  const contentH = y1 - y0
+  const vw = Math.max(520, contentW)
+  const vh = Math.max(320, contentH)
+  // Centre content inside the viewBox by adding equal padding on both sides
+  const vx = x0 - (vw - contentW) / 2
+  const vy = y0 - (vh - contentH) / 2
 
   return (
     <svg
-      viewBox={`${x0} ${y0} ${vw} ${vh}`}
+      viewBox={`${vx} ${vy} ${vw} ${vh}`}
       style={{ width: '100%', height: 'auto', maxHeight: '500px', display: 'block' }}
     >
       <defs>
@@ -472,8 +477,8 @@ function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge
       </defs>
 
       {/* Background */}
-      <rect x={x0} y={y0} width={vw} height={vh} rx="16" fill="#f1f5f9" />
-      <rect x={x0} y={y0} width={vw} height={vh} rx="16" fill="url(#dg)" />
+      <rect x={vx} y={vy} width={vw} height={vh} rx="16" fill="#f1f5f9" />
+      <rect x={vx} y={vy} width={vw} height={vh} rx="16" fill="url(#dg)" />
 
       {/* ── Edges (drawn below nodes) ── */}
       {edges.map((e, i) => {
