@@ -6,5 +6,7 @@ Disallow: /mock-exam/
 Disallow: /diagrams
 Disallow: /study-guide
 Disallow: /payment-success
+Disallow: /visual-exam
+Disallow: /architecture-builder
 
 Sitemap: https://certiprepai.com/sitemap.xml
