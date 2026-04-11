@@ -1,10 +1,10 @@
 User-agent: *
 Allow: /
 Disallow: /dashboard
-Disallow: /login
-Disallow: /signup
-Disallow: /cert/
+Disallow: /quiz/
 Disallow: /mock-exam/
+Disallow: /diagrams
+Disallow: /study-guide
 Disallow: /payment-success
 
 Sitemap: https://certiprepai.com/sitemap.xml
