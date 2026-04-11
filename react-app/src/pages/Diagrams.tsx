@@ -151,10 +151,10 @@ const DIAGRAMS: Diagram[] = [
       'Visibility Timeout: hides a message from other consumers while being processed',
     ],
     nodes: [
-      { id: 'producer',  label: 'Producer\n(EC2/Lambda)', x: 90,  y: 180, color: '#FF9900' },
-      { id: 'sqs',       label: 'SQS Queue',              x: 310, y: 180, color: '#EA580C' },
-      { id: 'consumer',  label: 'Consumer\n(EC2/Lambda)', x: 530, y: 180, color: '#FF9900' },
-      { id: 'dlq',       label: 'Dead Letter\nQueue',     x: 310, y: 350, color: '#dc2626' },
+      { id: 'producer',  label: 'Producer\n(EC2/Lambda)', x: 310, y: 80,  color: '#FF9900' },
+      { id: 'sqs',       label: 'SQS Queue',              x: 310, y: 280, color: '#EA580C' },
+      { id: 'consumer',  label: 'Consumer\n(EC2/Lambda)', x: 310, y: 480, color: '#FF9900' },
+      { id: 'dlq',       label: 'Dead Letter\nQueue',     x: 630, y: 280, color: '#dc2626' },
     ],
     edges: [
       { from: 'producer', to: 'sqs',      label: 'send' },
