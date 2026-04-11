@@ -401,139 +401,124 @@ const CAT_COLORS: Record<string, string> = {
 }
 
 function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge[] }) {
-  const NODE_W = 136
-  const NODE_H_SINGLE = 38
-  const NODE_H_DOUBLE = 56
+  const NW = 140 // node width
 
-  const nodeH = (n: DiagramNode) => n.label.includes('\n') ? NODE_H_DOUBLE : NODE_H_SINGLE
+  // Node height based on line count
+  const NH = (n: DiagramNode) => {
+    const lines = n.label.split('\n').length
+    return lines >= 3 ? 68 : lines === 2 ? 54 : 40
+  }
 
-  // Lighten hex color for gradient top stop
+  // Gradient: lighter top to base color bottom
   const lighten = (hex: string) => {
     const r = parseInt(hex.slice(1, 3), 16)
     const g = parseInt(hex.slice(3, 5), 16)
     const b = parseInt(hex.slice(5, 7), 16)
-    const m = (v: number) => Math.min(255, v + 55)
-    return `rgb(${m(r)},${m(g)},${m(b)})`
+    return `rgb(${Math.min(255, r + 55)},${Math.min(255, g + 55)},${Math.min(255, b + 55)})`
   }
 
-  // Get clean exit/entry connection points on node boundaries
-  const getConnPoints = (from: DiagramNode, to: DiagramNode): [number, number, number, number] => {
-    const fh = nodeH(from), th = nodeH(to)
-    const dx = to.x - from.x
-    const dy = to.y - from.y
-    const isH = Math.abs(dx) > Math.abs(dy) * 1.2  // horizontal dominant
-    let x1: number, y1: number, x2: number, y2: number
-    if (isH) {
-      x1 = from.x + (dx > 0 ? NODE_W / 2 : -NODE_W / 2)
-      y1 = from.y
-      x2 = to.x   + (dx > 0 ? -NODE_W / 2 : NODE_W / 2)
-      y2 = to.y
-    } else {
-      x1 = from.x
-      y1 = from.y + (dy > 0 ? fh / 2 : -fh / 2)
-      x2 = to.x
-      y2 = to.y   + (dy > 0 ? -th / 2 : th / 2)
-    }
-    return [x1, y1, x2, y2]
+  // Ray-box intersection: point on node boundary facing toward (tx, ty)
+  const boxPt = (n: DiagramNode, tx: number, ty: number): [number, number] => {
+    const dx = tx - n.x, dy = ty - n.y
+    if (!dx && !dy) return [n.x, n.y]
+    const sx = NW / 2 / Math.abs(dx)
+    const sy = NH(n) / 2 / Math.abs(dy)
+    const s = Math.min(isFinite(sx) ? sx : 1e9, isFinite(sy) ? sy : 1e9)
+    return [n.x + dx * s, n.y + dy * s]
   }
 
-  // Build SVG path — arc over for horizontal, smooth S-curve for vertical
-  const buildPath = (x1: number, y1: number, x2: number, y2: number): { d: string; lx: number; ly: number } => {
-    const dx = x2 - x1
-    const dy = y2 - y1
-    const isH = Math.abs(dy) < 50
-    if (isH) {
-      // Arc above the two nodes — control points go upward
-      const arcH = Math.min(50, Math.abs(dx) * 0.3)
-      const mx = (x1 + x2) / 2
-      const my = Math.min(y1, y2) - arcH
-      return {
-        d: `M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`,
-        lx: mx,
-        ly: my - 6,  // label above the arc peak
-      }
-    }
-    // S-curve for vertical
-    const mx = (x1 + x2) / 2
-    const my = (y1 + y2) / 2
-    return {
-      d: `M${x1},${y1} C${x1},${y1 + dy * 0.45} ${x2},${y2 - dy * 0.45} ${x2},${y2}`,
-      lx: mx,
-      ly: my,
-    }
-  }
+  // Bidirectional edge detection — offset parallel lines apart
+  const mirrorIdx = (e: DiagramEdge) =>
+    edges.findIndex(e2 => e2.from === e.to && e2.to === e.from)
 
-  // Compute bounding box of all nodes to auto-scale viewBox
-  const minX = Math.min(...nodes.map(n => n.x)) - NODE_W / 2 - 20
-  const maxX = Math.max(...nodes.map(n => n.x)) + NODE_W / 2 + 20
-  const minY = Math.min(...nodes.map(n => n.y)) - 40
-  const maxY = Math.max(...nodes.map(n => n.y)) + 40
-  const vw = Math.max(560, maxX - minX)
-  const vh = Math.max(380, maxY - minY)
+  // Auto viewBox — fit all nodes with padding
+  const PAD = 48
+  const xs = nodes.map(n => n.x), ys = nodes.map(n => n.y)
+  const x0 = Math.min(...xs) - NW / 2 - PAD
+  const x1 = Math.max(...xs) + NW / 2 + PAD
+  const y0 = Math.min(...ys) - 40 - PAD
+  const y1 = Math.max(...ys) + 40 + PAD
+  const vw = Math.max(520, x1 - x0)
+  const vh = Math.max(320, y1 - y0)
 
   return (
     <svg
-      viewBox={`${minX} ${minY} ${vw} ${vh}`}
-      style={{ width: '100%', height: 'auto', maxHeight: '460px', display: 'block' }}
+      viewBox={`${x0} ${y0} ${vw} ${vh}`}
+      style={{ width: '100%', height: 'auto', maxHeight: '500px', display: 'block' }}
     >
       <defs>
-        <filter id="dshadow" x="-25%" y="-25%" width="150%" height="150%">
-          <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#0f172a" floodOpacity="0.16" />
+        <filter id="ns" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="0" dy="3" stdDeviation="5" floodColor="#0f172a" floodOpacity="0.15" />
         </filter>
-        <filter id="lshadow" x="-40%" y="-40%" width="180%" height="180%">
-          <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#0f172a" floodOpacity="0.3" />
+        <filter id="ls" x="-60%" y="-60%" width="220%" height="220%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#000" floodOpacity="0.28" />
         </filter>
         {nodes.map(n => (
-          <linearGradient key={`g-${n.id}`} id={`g-${n.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
+          <linearGradient key={`gr-${n.id}`} id={`gr-${n.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor={lighten(n.color)} />
             <stop offset="100%" stopColor={n.color} />
           </linearGradient>
         ))}
+        {/* Arrow marker per node color — tip at endpoint (refX = full width) */}
         {nodes.map(n => (
-          <marker key={`m-${n.id}`} id={`m-${n.id}`} markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
-            <path d="M0,1 L0,8 L9,4.5 z" fill={n.color} />
+          <marker key={`ar-${n.id}`} id={`ar-${n.id}`}
+            markerWidth="11" markerHeight="9" refX="11" refY="4.5" orient="auto">
+            <path d="M0,0 L0,9 L11,4.5 z" fill={n.color} />
           </marker>
         ))}
-        <pattern id="dotgrid" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
-          <circle cx="11" cy="11" r="1" fill="#dde3ec" />
+        <pattern id="dg" width="22" height="22" patternUnits="userSpaceOnUse">
+          <circle cx="11" cy="11" r="1" fill="#d8dfe8" />
         </pattern>
       </defs>
 
       {/* Background */}
-      <rect x={minX} y={minY} width={vw} height={vh} fill="#f1f5f9" rx="16" />
-      <rect x={minX} y={minY} width={vw} height={vh} fill="url(#dotgrid)" rx="16" />
+      <rect x={x0} y={y0} width={vw} height={vh} rx="16" fill="#f1f5f9" />
+      <rect x={x0} y={y0} width={vw} height={vh} rx="16" fill="url(#dg)" />
 
-      {/* Edges — drawn BELOW nodes */}
+      {/* ── Edges (drawn below nodes) ── */}
       {edges.map((e, i) => {
-        const from = nodes.find(n => n.id === e.from)
-        const to   = nodes.find(n => n.id === e.to)
-        if (!from || !to) return null
-        const [x1, y1, x2, y2] = getConnPoints(from, to)
-        const { d, lx, ly } = buildPath(x1, y1, x2, y2)
-        const labelW = e.label ? e.label.length * 6.8 + 18 : 0
+        const fn = nodes.find(n => n.id === e.from)
+        const tn = nodes.find(n => n.id === e.to)
+        if (!fn || !tn) return null
+
+        // Exact box-edge connection points
+        const [ax, ay] = boxPt(fn, tn.x, tn.y)
+        const [bx, by] = boxPt(tn, fn.x, fn.y)
+
+        // Offset bidirectional pairs so lines don't overlap
+        const mi = mirrorIdx(e)
+        const biOff = mi >= 0 ? (mi > i ? 9 : -9) : 0
+        const dx = bx - ax, dy = by - ay
+        const len = Math.sqrt(dx * dx + dy * dy) || 1
+        const px = -dy / len, py = dx / len // perpendicular unit vector
+        const lax = ax + px * biOff, lay = ay + py * biOff
+        const lbx = bx + px * biOff, lby = by + py * biOff
+
+        // Label position: midpoint offset perpendicular toward "upper" side
+        const mx = (lax + lbx) / 2, my = (lay + lby) / 2
+        const sign = py < 0 ? 1 : py > 0 ? -1 : px < 0 ? 1 : -1
+        const lo = 16
+        const llx = mx + sign * px * lo
+        const lly = my + sign * py * lo
+        const lw = e.label ? Math.max(e.label.length * 6.8 + 20, 40) : 0
+
         return (
           <g key={i}>
-            {/* Soft glow */}
-            <path d={d} fill="none" stroke={from.color} strokeWidth="6" strokeOpacity="0.1" strokeLinecap="round" />
-            {/* Line */}
-            <path d={d} fill="none" stroke={from.color} strokeWidth="2.2" strokeLinecap="round"
+            {/* Straight line — tail at FROM box edge, tip at TO box edge */}
+            <line
+              x1={lax} y1={lay} x2={lbx} y2={lby}
+              stroke={fn.color} strokeWidth="2.4" strokeLinecap="round"
               strokeDasharray={e.dashed ? '7 4' : undefined}
-              markerEnd={`url(#m-${from.id})`}
+              markerEnd={`url(#ar-${fn.id})`}
             />
-            {/* Label pill */}
+            {/* Label pill floating above/beside the line */}
             {e.label && (
-              <g filter="url(#lshadow)">
-                <rect
-                  x={lx - labelW / 2} y={ly - 11}
-                  width={labelW} height={22}
-                  rx="11"
-                  fill={from.color}
-                />
+              <g filter="url(#ls)">
+                <rect x={llx - lw / 2} y={lly - 11} width={lw} height={22} rx="11" fill={fn.color} />
                 <text
-                  x={lx} y={ly + 4.5}
-                  fontSize="10.5" fontWeight="700"
-                  fill="#fff" textAnchor="middle"
-                  fontFamily="system-ui, -apple-system, sans-serif"
+                  x={llx} y={lly + 4.5}
+                  fontSize="10.5" fontWeight="700" fill="#fff"
+                  textAnchor="middle" fontFamily="system-ui, -apple-system, sans-serif"
                 >
                   {e.label}
                 </text>
@@ -543,37 +528,28 @@ function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge
         )
       })}
 
-      {/* Nodes — drawn ON TOP of edges */}
+      {/* ── Nodes (drawn on top of edges) ── */}
       {nodes.map(n => {
         const lines = n.label.split('\n')
-        const h = nodeH(n)
-        const w = NODE_W
+        const h = NH(n)
         return (
-          <g key={n.id} filter="url(#dshadow)">
-            {/* Shadow base */}
-            <rect x={n.x - w / 2} y={n.y - h / 2} width={w} height={h} rx="13"
-              fill="rgba(0,0,0,0.08)" transform="translate(0,4)" />
+          <g key={n.id} filter="url(#ns)">
+            {/* Drop shadow offset */}
+            <rect x={n.x - NW / 2 + 1} y={n.y - h / 2 + 4} width={NW} height={h} rx="13"
+              fill="rgba(0,0,0,0.1)" />
             {/* Gradient body */}
-            <rect x={n.x - w / 2} y={n.y - h / 2} width={w} height={h} rx="13"
-              fill={`url(#g-${n.id})`} stroke="rgba(255,255,255,0.55)" strokeWidth="1.5"
-            />
-            {/* Gloss highlight */}
-            <rect x={n.x - w / 2 + 8} y={n.y - h / 2 + 4}
-              width={w - 16} height={h * 0.42} rx="9"
-              fill="rgba(255,255,255,0.2)"
-            />
-            {/* Label lines */}
+            <rect x={n.x - NW / 2} y={n.y - h / 2} width={NW} height={h} rx="13"
+              fill={`url(#gr-${n.id})`} stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" />
+            {/* Gloss shine */}
+            <rect x={n.x - NW / 2 + 8} y={n.y - h / 2 + 4} width={NW - 16} height={h * 0.38} rx="8"
+              fill="rgba(255,255,255,0.22)" />
+            {/* Text */}
             {lines.map((line, li) => (
-              <text
-                key={li}
-                x={n.x}
-                y={n.y + (li - (lines.length - 1) / 2) * 16 + 5}
-                textAnchor="middle"
-                fontSize="12"
-                fontWeight="700"
-                fill="#fff"
+              <text key={li}
+                x={n.x} y={n.y + (li - (lines.length - 1) / 2) * 16 + 5}
+                textAnchor="middle" fontSize="12" fontWeight="700" fill="#fff"
                 fontFamily="system-ui, -apple-system, sans-serif"
-                style={{ letterSpacing: '0.015em', textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}
+                style={{ letterSpacing: '0.015em' }}
               >
                 {line}
               </text>
