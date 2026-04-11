@@ -18,6 +18,7 @@ interface DiagramEdge {
   label?: string
   dashed?: boolean
   labelFlip?: boolean
+  color?: string
 }
 
 interface Diagram {
@@ -280,7 +281,7 @@ const DIAGRAMS: Diagram[] = [
       { id: 'rds',   label: 'RDS\nDatabase',        x: 150, y: 290, color: '#1A73E8' },
     ],
     edges: [
-      { from: 'app',   to: 'cache', label: 'check cache' },
+      { from: 'app',   to: 'cache', label: 'check cache', color: '#dc2626' },
       { from: 'cache', to: 'app',   label: 'hit: return' },
       { from: 'app',   to: 'rds',   label: 'miss: query DB', labelFlip: true },
       { from: 'rds',   to: 'cache', label: 'write to cache', labelFlip: true },
@@ -488,6 +489,8 @@ function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge
         const fn = nodes.find(n => n.id === e.from)
         const tn = nodes.find(n => n.id === e.to)
         if (!fn || !tn) return null
+        const edgeColor = e.color || fn.color
+        const markerNodeId = e.color ? (nodes.find(n => n.color === e.color)?.id || fn.id) : fn.id
 
         // Exact box-edge connection points
         const [ax, ay] = boxPt(fn, tn.x, tn.y)
@@ -516,14 +519,14 @@ function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge
             {/* Straight line — tail at FROM box edge, tip at TO box edge */}
             <line
               x1={lax} y1={lay} x2={lbx} y2={lby}
-              stroke={fn.color} strokeWidth="2.4" strokeLinecap="round"
+              stroke={edgeColor} strokeWidth="2.4" strokeLinecap="round"
               strokeDasharray={e.dashed ? '7 4' : undefined}
-              markerEnd={`url(#ar-${fn.id})`}
+              markerEnd={`url(#ar-${markerNodeId})`}
             />
             {/* Label pill floating above/beside the line */}
             {e.label && (
               <g filter="url(#ls)">
-                <rect x={llx - lw / 2} y={lly - 11} width={lw} height={22} rx="11" fill={fn.color} />
+                <rect x={llx - lw / 2} y={lly - 11} width={lw} height={22} rx="11" fill={edgeColor} />
                 <text
                   x={llx} y={lly + 4.5}
                   fontSize="10.5" fontWeight="700" fill="#fff"
