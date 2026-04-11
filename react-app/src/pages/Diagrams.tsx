@@ -73,12 +73,12 @@ const DIAGRAMS: Diagram[] = [
     ],
     nodes: [
       { id: 'users', label: 'Users',                    x: 310, y: 50,  color: '#475569' },
-      { id: 'alb',   label: 'Application\nLoad Balancer', x: 310, y: 170, color: '#8B5CF6' },
-      { id: 'ec2a',  label: 'EC2\n(AZ-a)',              x: 130, y: 310, color: '#FF9900' },
-      { id: 'ec2b',  label: 'EC2\n(AZ-b)',              x: 310, y: 310, color: '#FF9900' },
-      { id: 'ec2c',  label: 'EC2\n(AZ-c)',              x: 490, y: 310, color: '#FF9900' },
-      { id: 'asg',   label: 'Auto Scaling\nGroup',      x: 310, y: 430, color: '#16a34a' },
-      { id: 'cw',    label: 'CloudWatch\nAlarms',       x: 530, y: 430, color: '#0369A1' },
+      { id: 'alb',   label: 'Application\nLoad Balancer', x: 310, y: 180, color: '#8B5CF6' },
+      { id: 'ec2a',  label: 'EC2\n(AZ-a)',              x: 110, y: 330, color: '#FF9900' },
+      { id: 'ec2b',  label: 'EC2\n(AZ-b)',              x: 310, y: 330, color: '#FF9900' },
+      { id: 'ec2c',  label: 'EC2\n(AZ-c)',              x: 510, y: 330, color: '#FF9900' },
+      { id: 'asg',   label: 'Auto Scaling\nGroup',      x: 210, y: 470, color: '#16a34a' },
+      { id: 'cw',    label: 'CloudWatch\nAlarms',       x: 470, y: 470, color: '#0369A1' },
     ],
     edges: [
       { from: 'users', to: 'alb' },
