@@ -174,12 +174,12 @@ const DIAGRAMS: Diagram[] = [
       'Multi-Site Active-Active: full production in both regions. Near-zero RTO/RPO. Most expensive.',
     ],
     nodes: [
-      { id: 'speed', label: 'Recovery\nSpeed ↑', x: 90,  y: 60,  color: '#16a34a' },
-      { id: 'br',    label: 'Backup &\nRestore', x: 90,  y: 220, color: '#9ca3af' },
-      { id: 'pl',    label: 'Pilot\nLight',      x: 280, y: 220, color: '#475569' },
-      { id: 'ws',    label: 'Warm\nStandby',     x: 470, y: 220, color: '#2563eb' },
-      { id: 'aa',    label: 'Active-\nActive',   x: 660, y: 220, color: '#16a34a' },
-      { id: 'cost',  label: 'Cost ↑',            x: 660, y: 60,  color: '#dc2626' },
+      { id: 'speed', label: 'Recovery\nSpeed ↑', x: 60,  y: 80,  color: '#16a34a' },
+      { id: 'br',    label: 'Backup &\nRestore', x: 310, y: 80,  color: '#9ca3af' },
+      { id: 'pl',    label: 'Pilot\nLight',      x: 310, y: 280, color: '#475569' },
+      { id: 'ws',    label: 'Warm\nStandby',     x: 310, y: 480, color: '#2563eb' },
+      { id: 'aa',    label: 'Active-\nActive',   x: 310, y: 680, color: '#16a34a' },
+      { id: 'cost',  label: 'Cost ↑',            x: 560, y: 680, color: '#dc2626' },
     ],
     edges: [
       { from: 'speed', to: 'br' },
