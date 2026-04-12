@@ -23,9 +23,9 @@ const ck = (a: string, b: string): ConnKey => [a, b].sort().join(':')
 const QUESTIONS: Question[] = [
   {
     id: 1,
-    scenario: 'A company needs a highly available web app that auto-scales across 2 Availability Zones and distributes traffic evenly.',
-    task: 'Draw connections to show how traffic flows from users through the load balancer to EC2 instances managed by Auto Scaling.',
-    hint: 'Users → ALB → EC2 (AZ-A) + EC2 (AZ-B). ASG manages both EC2 instances.',
+    scenario: 'GlobalShop, an e-commerce platform with 8 million active users, suffers complete outages every Black Friday when traffic spikes 10× and their single EC2 instance in one AZ gets overwhelmed. Last year\'s 4-hour outage cost $2.4M in lost sales. The CTO mandates a redesign: traffic must be distributed across two Availability Zones, EC2 instances must scale out automatically when CPU exceeds 70%, scale in during off-peak hours to cut costs, and the app must remain online even if an entire AZ goes down.',
+    task: 'Map the high-availability architecture — connect traffic from users through the load balancer to auto-scaled EC2 instances in both AZs, and show how Auto Scaling Group manages them.',
+    hint: 'Users → ALB → EC2 (AZ-A) + EC2 (AZ-B). Auto Scaling Group manages both EC2 instances.',
     nodes: [
       { id: 'users', label: 'Users',              icon: '👥', color: '#475569', x: 340, y: 55  },
       { id: 'alb',   label: 'App Load\nBalancer', icon: '⚖️', color: '#2563eb', x: 340, y: 185 },
@@ -37,94 +37,194 @@ const QUESTIONS: Question[] = [
   },
   {
     id: 2,
-    scenario: 'A startup wants a fully serverless REST API that reads/writes to a NoSQL database — zero servers to manage.',
-    task: 'Connect the services to show the request flow from client all the way to the database.',
-    hint: 'Client → API Gateway → Lambda → DynamoDB',
+    scenario: 'SnapVault, a photo-sharing startup with 4 engineers and zero DevOps capacity, receives 2 million image uploads per day. Every uploaded image must be automatically resized to 3 formats (150px thumbnail, 800px medium, 1920px HD) and stored in a delivery bucket for CDN distribution. The team wants no EC2 instances to manage, zero cost when there are zero uploads, and automatic invocation on every new upload with millisecond trigger latency.',
+    task: 'Connect the serverless image processing pipeline from user upload through the event-driven trigger to the processing function and output storage.',
+    hint: 'User → S3 (uploads bucket triggers event) → Lambda (resize function) → S3 (processed bucket)',
     nodes: [
-      { id: 'client', label: 'Client',           icon: '💻', color: '#475569', x: 90,  y: 220 },
-      { id: 'apigw',  label: 'API\nGateway',     icon: '🔀', color: '#7c3aed', x: 270, y: 220 },
-      { id: 'lambda', label: 'Lambda\nFunction', icon: 'λ',  color: '#ea580c', x: 460, y: 220 },
-      { id: 'dynamo', label: 'DynamoDB',         icon: '🗄️', color: '#1A73E8', x: 630, y: 220 },
+      { id: 'user',     label: 'User\nUpload',      icon: '📤', color: '#475569', x: 90,  y: 220 },
+      { id: 's3in',     label: 'S3\n(raw uploads)', icon: '🪣', color: '#16a34a', x: 270, y: 220 },
+      { id: 'lambda',   label: 'Lambda\n(resize)',   icon: 'λ',  color: '#ea580c', x: 460, y: 220 },
+      { id: 's3out',    label: 'S3\n(processed)',    icon: '🪣', color: '#0891b2', x: 640, y: 220 },
     ],
-    correct: [ck('client','apigw'), ck('apigw','lambda'), ck('lambda','dynamo')],
+    correct: [ck('user','s3in'), ck('s3in','lambda'), ck('lambda','s3out')],
   },
   {
     id: 3,
-    scenario: 'A media company stores videos in S3 and needs to serve them globally with low latency using a Content Delivery Network.',
-    task: 'Connect the services to show how global users receive content through the CDN from the origin bucket.',
-    hint: 'Global Users → CloudFront → S3 Bucket',
+    scenario: 'DataStream Corp monitors 80,000 industrial IoT sensors across 500 factories, each emitting a temperature reading every 2 seconds — totalling 40,000 events per second. The ops team needs: (1) a managed, serverless ingestion layer that handles 40k events/sec without provisioning servers, (2) real-time SQL analytics computing rolling averages and spike anomalies every 60 seconds to trigger alerts, and (3) all raw sensor data retained in S3 for 90-day compliance audits — queryable by the data science team.',
+    task: 'Connect the real-time streaming analytics pipeline: from IoT sensors through managed ingestion, to live analytics, and raw data archival storage.',
+    hint: 'IoT Sensors → Kinesis Data Streams → Kinesis Data Analytics → Live Dashboard. Kinesis → S3 (via Firehose for archival).',
     nodes: [
-      { id: 'users', label: 'Global\nUsers',    icon: '🌍', color: '#475569', x: 110, y: 220 },
-      { id: 'cf',    label: 'CloudFront\n(CDN)',icon: '🌐', color: '#FF9900', x: 350, y: 220 },
-      { id: 's3',    label: 'S3\nBucket',       icon: '🪣', color: '#16a34a', x: 580, y: 220 },
+      { id: 'sensors',  label: 'IoT\nSensors',          icon: '📡', color: '#475569', x: 80,  y: 220 },
+      { id: 'kinesis',  label: 'Kinesis\nData Streams',  icon: '🌊', color: '#7c3aed', x: 270, y: 220 },
+      { id: 'kda',      label: 'Kinesis Data\nAnalytics', icon: '📊', color: '#2563eb', x: 470, y: 120 },
+      { id: 'dashboard',label: 'Live\nDashboard',        icon: '🖥️', color: '#16a34a', x: 640, y: 120 },
+      { id: 's3arch',   label: 'S3\n(archive)',          icon: '🪣', color: '#ea580c', x: 470, y: 350 },
     ],
-    correct: [ck('users','cf'), ck('cf','s3')],
+    correct: [ck('sensors','kinesis'), ck('kinesis','kda'), ck('kda','dashboard'), ck('kinesis','s3arch')],
   },
   {
     id: 4,
-    scenario: 'A 3-tier VPC app: web tier is public, app tier is private, database must be isolated from the internet.',
-    task: 'Connect internet traffic through the load balancer and app servers down to the isolated database.',
-    hint: 'Internet → ALB (public) → App EC2 (private) → RDS (isolated)',
+    scenario: 'SecureBank\'s customer portal handles sensitive financial transactions under PCI-DSS compliance. A recent pen test revealed the database was reachable from the internet via a misconfigured security group. The CISO mandates strict network isolation: the load balancer accepts inbound internet traffic in a public subnet, application servers containing business logic and encryption keys live in a private subnet with no inbound internet route, and the PostgreSQL database must only accept connections from app servers — isolated in its own subnet with no internet gateway or NAT routing.',
+    task: 'Connect the 3-tier VPC architecture showing the network path from internet traffic through each isolation boundary down to the database.',
+    hint: 'Internet → ALB (public subnet) → App EC2 (private subnet) → RDS PostgreSQL (isolated subnet, no internet route)',
     nodes: [
-      { id: 'inet', label: 'Internet',            icon: '🌍', color: '#475569', x: 100, y: 180 },
-      { id: 'alb',  label: 'App Load\nBalancer',  icon: '⚖️', color: '#2563eb', x: 290, y: 180 },
-      { id: 'app',  label: 'App EC2\n(private)',  icon: '🖥️', color: '#0891b2', x: 490, y: 180 },
-      { id: 'rds',  label: 'RDS\n(isolated)',     icon: '💾', color: '#7c3aed', x: 490, y: 370 },
+      { id: 'inet', label: 'Internet\nGateway',       icon: '🌍', color: '#475569', x: 90,  y: 195 },
+      { id: 'alb',  label: 'App Load\nBalancer',      icon: '⚖️', color: '#2563eb', x: 280, y: 195 },
+      { id: 'app',  label: 'App EC2\n(private)',       icon: '🖥️', color: '#0891b2', x: 490, y: 195 },
+      { id: 'rds',  label: 'RDS\nPostgreSQL',          icon: '💾', color: '#7c3aed', x: 490, y: 375 },
     ],
     correct: [ck('inet','alb'), ck('alb','app'), ck('app','rds')],
   },
   {
     id: 5,
-    scenario: 'Order events must reach three independent services (Billing, Inventory, Shipping) simultaneously — fan-out pattern.',
-    task: 'Connect the order service so every event is delivered to all three SQS queues via a pub/sub topic.',
-    hint: 'Order Service → SNS Topic → SQS (Billing), SQS (Inventory), SQS (Shipping)',
+    scenario: 'FleetCommerce processes 500,000 orders per hour on Black Friday. When an order is placed, three separate teams\' systems must each independently receive the order event: Billing charges the card, Inventory decrements stock, and Shipping schedules pickup. These teams deploy independently on different cadences. A billing outage must never block shipping. All three systems must receive every single order event — missed events mean lost revenue, unshipped packages, or inventory mismatches.',
+    task: 'Connect the fan-out architecture so that one order event is published once and independently delivered to all three downstream service queues.',
+    hint: 'Order Service → SNS Topic → SQS (Billing) + SQS (Inventory) + SQS (Shipping). Each SQS is an independent subscriber.',
     nodes: [
-      { id: 'prod',  label: 'Order\nService',    icon: '📡', color: '#475569', x: 100, y: 220 },
-      { id: 'sns',   label: 'SNS\nTopic',        icon: '📢', color: '#FF9900', x: 300, y: 220 },
-      { id: 'sqsa',  label: 'SQS\n(Billing)',    icon: '📬', color: '#dc2626', x: 520, y: 90  },
-      { id: 'sqsb',  label: 'SQS\n(Inventory)', icon: '📬', color: '#dc2626', x: 520, y: 220 },
-      { id: 'sqsc',  label: 'SQS\n(Shipping)',  icon: '📬', color: '#dc2626', x: 520, y: 355 },
+      { id: 'order', label: 'Order\nService',     icon: '🛒', color: '#475569', x: 90,  y: 220 },
+      { id: 'sns',   label: 'SNS\nTopic',         icon: '📢', color: '#FF9900', x: 290, y: 220 },
+      { id: 'sqsb',  label: 'SQS\n(Billing)',     icon: '📬', color: '#dc2626', x: 520, y: 90  },
+      { id: 'sqsi',  label: 'SQS\n(Inventory)',   icon: '📬', color: '#dc2626', x: 520, y: 220 },
+      { id: 'sqss',  label: 'SQS\n(Shipping)',    icon: '📬', color: '#dc2626', x: 520, y: 355 },
     ],
-    correct: [ck('prod','sns'), ck('sns','sqsa'), ck('sns','sqsb'), ck('sns','sqsc')],
+    correct: [ck('order','sns'), ck('sns','sqsb'), ck('sns','sqsi'), ck('sns','sqss')],
   },
   {
     id: 6,
-    scenario: 'Lambda processes jobs from a queue. Failed messages must be captured in a Dead Letter Queue for manual retry.',
-    task: 'Connect the message flow from producer through the queue to Lambda, and the failure path to the DLQ.',
-    hint: 'Producer → SQS → Lambda (success). SQS → DLQ (on failure).',
+    scenario: 'PayProcess Ltd handles credit card authorization jobs queued from 200 merchant APIs. Each job invokes a Lambda function that calls an external payment processor API. The external API fails 5% of the time during peak load. On-call engineers reported 3,000 silently lost transactions last month — jobs failed, were discarded, and merchants never knew. The fix must: retry failed jobs up to 3 times with exponential backoff, capture any job that still fails after retries into a separate durable queue for manual inspection, and alert the ops team within 5 minutes of DLQ activity.',
+    task: 'Connect the resilient message processing flow: producer to queue to Lambda processor, and the failure capture path to the dead-letter queue.',
+    hint: 'Producer → SQS Queue → Lambda (consumer). After maxReceiveCount exceeded: SQS → Dead Letter Queue (DLQ).',
     nodes: [
-      { id: 'prod',   label: 'Message\nProducer',  icon: '📡', color: '#475569', x: 100, y: 220 },
-      { id: 'sqs',    label: 'SQS\nQueue',         icon: '📬', color: '#FF9900', x: 300, y: 220 },
-      { id: 'lambda', label: 'Lambda\n(consumer)', icon: 'λ',  color: '#ea580c', x: 510, y: 110 },
-      { id: 'dlq',    label: 'Dead Letter\nQueue', icon: '⚠️', color: '#dc2626', x: 510, y: 340 },
+      { id: 'prod',   label: 'Merchant\nAPI',        icon: '📡', color: '#475569', x: 90,  y: 220 },
+      { id: 'sqs',    label: 'SQS\nQueue',           icon: '📬', color: '#FF9900', x: 300, y: 220 },
+      { id: 'lambda', label: 'Lambda\n(authorizer)', icon: 'λ',  color: '#ea580c', x: 510, y: 100 },
+      { id: 'dlq',    label: 'Dead Letter\nQueue',   icon: '⚠️', color: '#dc2626', x: 510, y: 345 },
     ],
     correct: [ck('prod','sqs'), ck('sqs','lambda'), ck('sqs','dlq')],
   },
   {
     id: 7,
-    scenario: 'A web app behind an ALB needs protection from SQL injection, XSS, and DDoS attacks using AWS managed services.',
-    task: 'Connect internet traffic through the security services before it reaches the web server.',
-    hint: 'Internet → WAF + Shield → ALB → EC2',
+    scenario: 'HealthPortal\'s patient-facing web app was hit by a SQL injection attack that exfiltrated 40,000 patient records, triggering a $3.2M HIPAA fine and 6-month regulatory investigation. The CISO mandates: Layer 7 filtering blocking OWASP Top 10 attacks (SQLi, XSS, CSRF), rate-limiting to 1,000 req/IP/min to prevent credential stuffing, SLA-backed DDoS mitigation with <1-second response, TLS termination and geographic blocking at the CDN edge — all traffic must traverse these security layers before reaching any compute resource.',
+    task: 'Connect the layered security architecture showing the exact order internet traffic passes through each protection service before reaching the application servers.',
+    hint: 'Internet → CloudFront (TLS + geo-block) → AWS WAF (OWASP rules + rate limit) → ALB → EC2',
     nodes: [
-      { id: 'inet', label: 'Internet',           icon: '🌍', color: '#475569', x: 90,  y: 220 },
-      { id: 'waf',  label: 'AWS WAF\n+ Shield',  icon: '🛡️', color: '#dc2626', x: 270, y: 220 },
-      { id: 'alb',  label: 'App Load\nBalancer', icon: '⚖️', color: '#2563eb', x: 460, y: 220 },
-      { id: 'ec2',  label: 'EC2\nWeb Server',    icon: '🖥️', color: '#0891b2', x: 630, y: 220 },
+      { id: 'inet', label: 'Internet',            icon: '🌍', color: '#475569', x: 70,  y: 220 },
+      { id: 'cf',   label: 'CloudFront\n(TLS/geo)',icon: '🌐', color: '#FF9900', x: 240, y: 130 },
+      { id: 'waf',  label: 'AWS WAF\n+ Shield',   icon: '🛡️', color: '#dc2626', x: 440, y: 130 },
+      { id: 'alb',  label: 'App Load\nBalancer',  icon: '⚖️', color: '#2563eb', x: 600, y: 220 },
+      { id: 'ec2',  label: 'EC2\nWeb Server',     icon: '🖥️', color: '#0891b2', x: 600, y: 360 },
     ],
-    correct: [ck('inet','waf'), ck('waf','alb'), ck('alb','ec2')],
+    correct: [ck('inet','cf'), ck('cf','waf'), ck('waf','alb'), ck('alb','ec2')],
   },
   {
     id: 8,
-    scenario: 'Logs are hot for 30 days, warm for 30–90 days, then cold. The company wants minimum-cost tiered storage using S3 lifecycle.',
-    task: 'Connect the storage tiers in the correct lifecycle order from hot to archival.',
-    hint: 'App → S3 Standard → S3 Standard-IA → S3 Glacier',
+    scenario: 'ComplianceLog Inc. stores application audit logs required for SOC 2 Type II and ISO 27001 certification — 7-year mandatory retention. The DevOps team analyzed access patterns: logs are queried multiple times daily during the first 30 days (live incident response), accessed for monthly compliance reports between 30–90 days, and almost never touched after 90 days but must remain restorable within 12 hours for external auditors. Current S3 Standard bill: $28,000/month. The CFO demands 85% cost reduction without deleting a single log.',
+    task: 'Connect the S3 lifecycle tiers in the correct order showing how log data automatically moves through storage classes as it ages, reducing cost at each stage.',
+    hint: 'App Logs → S3 Standard (0–30 days, frequent access) → S3 Standard-IA (30–90 days) → S3 Glacier (90+ days, archival)',
     nodes: [
-      { id: 'app',     label: 'App\nLogs',         icon: '📋', color: '#475569', x: 90,  y: 220 },
-      { id: 'std',     label: 'S3\nStandard',       icon: '🪣', color: '#16a34a', x: 270, y: 220 },
-      { id: 'ia',      label: 'S3\nStandard-IA',    icon: '🗃️', color: '#ea580c', x: 450, y: 220 },
-      { id: 'glacier', label: 'S3\nGlacier',        icon: '🏔️', color: '#64748b', x: 620, y: 220 },
+      { id: 'app',     label: 'App\nLogs',       icon: '📋', color: '#475569', x: 90,  y: 220 },
+      { id: 'std',     label: 'S3\nStandard',     icon: '🪣', color: '#16a34a', x: 270, y: 220 },
+      { id: 'ia',      label: 'S3\nStandard-IA',  icon: '🗃️', color: '#ea580c', x: 460, y: 220 },
+      { id: 'glacier', label: 'S3\nGlacier',      icon: '🏔️', color: '#64748b', x: 630, y: 220 },
     ],
     correct: [ck('app','std'), ck('std','ia'), ck('ia','glacier')],
+  },
+  {
+    id: 9,
+    scenario: 'MegaRetail\'s Chicago data center hosts an on-premises Oracle ERP with 8 years of inventory and financial transaction history. A pilot AWS migration requires AWS application servers to query the on-premises Oracle database in real time during an 18-month parallel-run period. The network team tested a Site-to-Site VPN but measured 180ms average latency and 2% packet loss under load — violating their 20ms SLA. A dedicated 10 Gbps AWS Direct Connect circuit has been provisioned at the colocation facility to provide a private, consistent, low-latency connection.',
+    task: 'Connect the hybrid architecture showing how AWS app servers access on-premises data through the dedicated private connection, through the VPC gateway, to the application and database layer.',
+    hint: 'On-Premises DC → Direct Connect → Virtual Private Gateway → VPC → App EC2 → RDS Aurora (for migrated data)',
+    nodes: [
+      { id: 'onprem',  label: 'On-Prem\nData Center', icon: '🏢', color: '#475569', x: 70,  y: 220 },
+      { id: 'dx',      label: 'Direct\nConnect',       icon: '🔌', color: '#FF9900', x: 240, y: 220 },
+      { id: 'vgw',     label: 'Virtual\nPrivate GW',   icon: '🔒', color: '#dc2626', x: 420, y: 220 },
+      { id: 'ec2',     label: 'App EC2\n(VPC)',         icon: '🖥️', color: '#0891b2', x: 590, y: 120 },
+      { id: 'rds',     label: 'RDS\nAurora',           icon: '💾', color: '#7c3aed', x: 590, y: 345 },
+    ],
+    correct: [ck('onprem','dx'), ck('dx','vgw'), ck('vgw','ec2'), ck('ec2','rds')],
+  },
+  {
+    id: 10,
+    scenario: 'MediScan AI trains a chest X-ray classification model that detects pneumonia with 94% accuracy across 3 hospital systems. FDA\'s 21 CFR Part 11 regulation requires full model lineage — every training run must be versioned with reproducible parameters. The MLOps team needs: automated weekly retraining as new labeled data accumulates in S3, every trained model registered with metadata before deployment, a real-time HTTPS inference endpoint the radiology software calls per scan, and continuous monitoring that alerts the ML team if inference accuracy drops below 90% (model drift).',
+    task: 'Connect the end-to-end MLOps pipeline from training data storage through training, model registry, deployment endpoint, and drift monitoring.',
+    hint: 'S3 (training data) → SageMaker Training Job → Model Registry → SageMaker Endpoint → CloudWatch (accuracy monitoring)',
+    nodes: [
+      { id: 's3',      label: 'S3\nTraining Data',     icon: '🪣', color: '#16a34a', x: 70,  y: 220 },
+      { id: 'smtrain', label: 'SageMaker\nTraining',   icon: '🤖', color: '#7c3aed', x: 250, y: 220 },
+      { id: 'modelreg',label: 'Model\nRegistry',       icon: '📦', color: '#2563eb', x: 440, y: 220 },
+      { id: 'endpoint',label: 'SageMaker\nEndpoint',   icon: '🔮', color: '#ea580c', x: 620, y: 120 },
+      { id: 'cw',      label: 'CloudWatch\n(monitor)', icon: '📊', color: '#475569', x: 620, y: 345 },
+    ],
+    correct: [ck('s3','smtrain'), ck('smtrain','modelreg'), ck('modelreg','endpoint'), ck('endpoint','cw')],
+  },
+  {
+    id: 11,
+    scenario: 'LogiTrack\'s fleet of 150,000 GPS-equipped delivery trucks emit location, speed, fuel consumption, and engine fault codes every 30 seconds — 5 million events per minute. The data engineering team needs to: ingest the stream with zero cluster management, store raw telemetry cheaply for 2-year regulatory retention, run automated ETL to cleanse GPS noise and enrich with road segment data, and make the curated dataset queryable by 200 supply-chain analysts using standard SQL without provisioning or managing any database clusters.',
+    task: 'Connect the serverless data lake pipeline from truck telemetry through stream ingestion, raw storage, ETL transformation, and SQL analytics.',
+    hint: 'Trucks → Kinesis Firehose → S3 (raw) → AWS Glue (ETL) → S3 (curated) → Amazon Athena (SQL queries)',
+    nodes: [
+      { id: 'trucks',  label: 'GPS\nTrucks',           icon: '🚚', color: '#475569', x: 70,  y: 220 },
+      { id: 'firehose',label: 'Kinesis\nFirehose',     icon: '🌊', color: '#7c3aed', x: 230, y: 220 },
+      { id: 's3raw',   label: 'S3\n(raw)',             icon: '🪣', color: '#FF9900', x: 400, y: 120 },
+      { id: 'glue',    label: 'AWS\nGlue ETL',         icon: '⚙️', color: '#ea580c', x: 400, y: 340 },
+      { id: 'athena',  label: 'Amazon\nAthena',        icon: '🔍', color: '#2563eb', x: 590, y: 220 },
+    ],
+    correct: [ck('trucks','firehose'), ck('firehose','s3raw'), ck('s3raw','glue'), ck('glue','athena')],
+  },
+  {
+    id: 12,
+    scenario: 'FitTrack\'s mobile fitness app has 3 million users syncing workout data to a REST API. After a breach where hardcoded API keys were found in a public GitHub repo, the security team mandates OAuth 2.0 for every API call. Requirements: users must authenticate via email or Google/Apple social login, receive a short-lived JWT (15-minute expiry), include the JWT in every API request header, and the API Gateway must validate the JWT using a Cognito Authorizer — rejecting all unauthenticated requests with HTTP 401 before any Lambda function is ever invoked, preventing unnecessary Lambda costs.',
+    task: 'Connect the secure authentication and API flow: mobile app authenticates with Cognito, then calls API Gateway — showing where JWT validation happens before the backend processes the request.',
+    hint: 'Mobile App → Amazon Cognito (authenticate, get JWT) → API Gateway (Cognito Authorizer validates JWT) → Lambda → DynamoDB',
+    nodes: [
+      { id: 'app',     label: 'Mobile\nApp',          icon: '📱', color: '#475569', x: 80,  y: 220 },
+      { id: 'cognito', label: 'Amazon\nCognito',      icon: '🔑', color: '#dc2626', x: 270, y: 110 },
+      { id: 'apigw',   label: 'API\nGateway',         icon: '🔀', color: '#7c3aed', x: 270, y: 340 },
+      { id: 'lambda',  label: 'Lambda\nFunction',     icon: 'λ',  color: '#ea580c', x: 470, y: 220 },
+      { id: 'dynamo',  label: 'DynamoDB',             icon: '🗄️', color: '#1A73E8', x: 640, y: 220 },
+    ],
+    correct: [ck('app','cognito'), ck('app','apigw'), ck('cognito','apigw'), ck('apigw','lambda'), ck('lambda','dynamo')],
+  },
+  {
+    id: 13,
+    scenario: 'InsureClaim Corp manually processes 10,000 insurance claims per day across a 5-step workflow: document validation → fraud ML scoring → payout calculation → manager approval (claims >$10K) → customer notification. Each step is a separate Lambda function owned by a different team. The current SQS-chain orchestration has caused 200 stuck claims this month — unhandled Lambda exceptions silently dropped jobs, leaving claimants waiting weeks. The solution needs durable state management, automatic retries with configurable backoff, conditional branching for high-value claims, and full execution history for compliance audits.',
+    task: 'Connect the Step Functions orchestration pipeline: from claim intake through the workflow engine, across the Lambda processing steps, to the final customer notification.',
+    hint: 'Claim Intake → Step Functions → Lambda (validate) → Lambda (fraud check) → Lambda (payout calc) → SNS (notify customer)',
+    nodes: [
+      { id: 'intake',  label: 'Claim\nIntake',         icon: '📄', color: '#475569', x: 80,  y: 220 },
+      { id: 'sfn',     label: 'Step\nFunctions',       icon: '🔄', color: '#FF9900', x: 260, y: 220 },
+      { id: 'lval',    label: 'Lambda\n(validate)',     icon: 'λ',  color: '#ea580c', x: 450, y: 100 },
+      { id: 'lfraud',  label: 'Lambda\n(fraud check)', icon: 'λ',  color: '#ea580c', x: 450, y: 340 },
+      { id: 'sns',     label: 'SNS\n(notify)',          icon: '📢', color: '#16a34a', x: 630, y: 220 },
+    ],
+    correct: [ck('intake','sfn'), ck('sfn','lval'), ck('sfn','lfraud'), ck('lval','sns'), ck('lfraud','sns')],
+  },
+  {
+    id: 14,
+    scenario: 'SportsBet\'s PostgreSQL database handles 80,000 queries/second during live Premier League matches. The DBA team discovered complex bet-settlement reports — running 45–60 seconds each — are causing table-level locks that degrade real-time bet placement from 50ms to 8 seconds. Separately, a single-AZ failure 3 months ago caused 22 minutes of downtime and £180,000 in lost bets before manual intervention restored service. The architecture must: (1) separate heavy read queries from write transactions, (2) auto-failover to a standby in a second AZ within 60 seconds, and (3) scale read capacity as match-day traffic grows.',
+    task: 'Connect the multi-AZ RDS architecture: show write traffic to the primary, the synchronous standby for automatic failover, and the async read replica for analytics queries.',
+    hint: 'App (writes) → RDS Primary → RDS Standby (Multi-AZ sync replication, auto-failover). RDS Primary → RDS Read Replica (async). App (reads/reports) → RDS Read Replica.',
+    nodes: [
+      { id: 'app',     label: 'App\nServers',         icon: '🖥️', color: '#475569', x: 80,  y: 220 },
+      { id: 'primary', label: 'RDS\nPrimary',         icon: '💾', color: '#2563eb', x: 290, y: 220 },
+      { id: 'standby', label: 'RDS\nStandby (AZ-B)', icon: '💾', color: '#16a34a', x: 520, y: 100 },
+      { id: 'replica', label: 'RDS\nRead Replica',    icon: '💾', color: '#7c3aed', x: 520, y: 355 },
+    ],
+    correct: [ck('app','primary'), ck('primary','standby'), ck('primary','replica'), ck('app','replica')],
+  },
+  {
+    id: 15,
+    scenario: 'MedInfo hosts a React patient-education portal serving 400,000 monthly users across 60 countries. The current setup — a single EC2 t3.medium in us-east-1 — produces p99 load times of 8.4 seconds in Southeast Asia and costs $340/month. HIPAA requires TLS 1.2+ for all connections. Since the site is a static SPA (HTML/CSS/JS bundles with no server-side processing), the infrastructure team wants to: eliminate the EC2 entirely, serve content from CDN edge locations in all 60 countries, enforce TLS 1.2+ via a managed SSL certificate, and reduce global p99 load time below 800ms while cutting infrastructure costs by 95%.',
+    task: 'Connect the serverless global delivery architecture: from users through DNS resolution, CDN edge delivery with TLS, static file storage, and managed certificate attachment.',
+    hint: 'Global Users → Route 53 (DNS) → CloudFront (CDN + TLS 1.2+) → S3 (static SPA files). CloudFront references ACM (SSL certificate).',
+    nodes: [
+      { id: 'users',   label: 'Global\nUsers',         icon: '🌍', color: '#475569', x: 80,  y: 220 },
+      { id: 'r53',     label: 'Route 53\n(DNS)',        icon: '🗺️', color: '#FF9900', x: 260, y: 120 },
+      { id: 'cf',      label: 'CloudFront\n(CDN+TLS)', icon: '🌐', color: '#2563eb', x: 460, y: 120 },
+      { id: 's3',      label: 'S3\n(static SPA)',       icon: '🪣', color: '#16a34a', x: 640, y: 220 },
+      { id: 'acm',     label: 'ACM\n(SSL cert)',        icon: '🔒', color: '#dc2626', x: 460, y: 340 },
+    ],
+    correct: [ck('users','r53'), ck('r53','cf'), ck('cf','s3'), ck('cf','acm')],
   },
 ]
 
@@ -190,9 +290,13 @@ export default function VisualExam() {
     const pt = toSvg(e)
     setSvgMouse(pt)
     if (dragRef.current) {
-      movedRef.current = true
-      const { id, ox, oy, mx, my } = dragRef.current
-      setNodePos(p => ({ ...p, [id]: { x: ox + pt.x - mx, y: oy + pt.y - my } }))
+      const dx = pt.x - dragRef.current.mx
+      const dy = pt.y - dragRef.current.my
+      if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+        movedRef.current = true
+        const { id, ox, oy } = dragRef.current
+        setNodePos(p => ({ ...p, [id]: { x: ox + dx, y: oy + dy } }))
+      }
     }
   }
 
@@ -216,11 +320,8 @@ export default function VisualExam() {
     if (submitted)        return
     if (movedRef.current) return   // was a drag — skip click logic
 
-    if (!selected) {
-      setSelected(n.id)
-    } else if (selected === n.id) {
-      setSelected(null)
-    } else {
+    // Single click: connect to already-selected node only
+    if (selected && selected !== n.id) {
       const key = ck(selected, n.id)
       setConns(prev => {
         const next = new Set(prev)
@@ -230,6 +331,12 @@ export default function VisualExam() {
       })
       setSelected(null)
     }
+  }
+
+  const onNodeDoubleClick = (e: React.MouseEvent, n: DNode) => {
+    e.stopPropagation()
+    if (submitted) return
+    setSelected(prev => prev === n.id ? null : n.id)
   }
 
   const removeConn = (key: ConnKey, e: React.MouseEvent) => {
@@ -451,8 +558,8 @@ export default function VisualExam() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
           <div style={{ display: 'flex', gap: '16px', fontSize: '0.8rem', color: '#64748b' }}>
             <span>🖱️ <strong>Drag</strong> to reposition</span>
-            <span>🔗 <strong>Click</strong> to select → connect</span>
-            <span>✂️ <strong>Click connection</strong> to remove</span>
+            <span>🔗 <strong>Double-click</strong> to select → <strong>click</strong> another to connect</span>
+            <span>✂️ <strong>Click arrow</strong> to remove</span>
           </div>
           <button
             onClick={() => setShowHint(h => !h)}
@@ -543,8 +650,9 @@ export default function VisualExam() {
               return (
                 <g
                   key={n.id}
-                  onMouseDown={e => onNodeDown(e, n)}
-                  onMouseUp={e   => onNodeUp(e, n)}
+                  onMouseDown={e    => onNodeDown(e, n)}
+                  onMouseUp={e      => onNodeUp(e, n)}
+                  onDoubleClick={e  => onNodeDoubleClick(e, n)}
                   style={{ cursor: submitted ? 'default' : 'pointer' }}
                 >
                   {/* Selection glow */}
@@ -636,7 +744,7 @@ export default function VisualExam() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '12px', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
           <div style={{ fontSize: '0.85rem', color: '#64748b' }}>
             {selected
-              ? <span style={{ color: '#2563eb', fontWeight: 600 }}>✔ Node selected — click another to connect</span>
+              ? <span style={{ color: '#2563eb', fontWeight: 600 }}>✔ Node selected — single-click another to connect</span>
               : <span>{conns.size} connection{conns.size !== 1 ? 's' : ''} drawn</span>
             }
           </div>
