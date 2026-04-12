@@ -56,10 +56,10 @@ const ARCH_DIAGRAMS: Record<number, { label: string; nodes: ArchNode[]; arrows: 
   1: {
     label: 'ALB + ASG across Multi-AZ',
     nodes: [
-      { id: 'users', label: 'Users',              x: 210, y: 50,  color: '#475569' },
-      { id: 'alb',   label: 'App Load\nBalancer', x: 210, y: 170, color: '#2563eb' },
-      { id: 'ec2a',  label: 'EC2\n(AZ-a)',        x: 100, y: 300, color: '#2563eb' },
-      { id: 'ec2b',  label: 'EC2\n(AZ-b)',        x: 320, y: 300, color: '#2563eb' },
+      { id: 'users', label: 'Users',               x: 210, y: 50,  color: '#475569' },
+      { id: 'alb',   label: 'App Load\nBalancer',  x: 210, y: 170, color: '#2563eb' },
+      { id: 'ec2a',  label: 'EC2\n(AZ-a)',         x: 100, y: 300, color: '#2563eb' },
+      { id: 'ec2b',  label: 'EC2\n(AZ-b)',         x: 320, y: 300, color: '#2563eb' },
       { id: 'asg',   label: 'Auto Scaling\nGroup', x: 210, y: 420, color: '#16a34a' },
     ],
     arrows: [
@@ -70,10 +70,22 @@ const ARCH_DIAGRAMS: Record<number, { label: string; nodes: ArchNode[]; arrows: 
       { from: 'asg',   to: 'ec2b' },
     ],
   },
+  2: {
+    label: 'S3 + SSE-KMS Customer-Managed Keys',
+    nodes: [
+      { id: 'app',  label: 'Application',          x: 210, y: 55,  color: '#475569' },
+      { id: 's3',   label: 'S3 Bucket',            x: 210, y: 185, color: '#16a34a' },
+      { id: 'kms',  label: 'AWS KMS\nCMK (yours)', x: 210, y: 315, color: '#7c3aed' },
+    ],
+    arrows: [
+      { from: 'app', to: 's3' },
+      { from: 's3',  to: 'kms' },
+    ],
+  },
   3: {
     label: 'RDS Multi-AZ with Automated Backups',
     nodes: [
-      { id: 'app',     label: 'Application',       x: 210, y: 55,  color: '#475569' },
+      { id: 'app',     label: 'Application',        x: 210, y: 55,  color: '#475569' },
       { id: 'rds',     label: 'RDS Primary\n(AZ-a)', x: 110, y: 190, color: '#1A73E8' },
       { id: 'standby', label: 'RDS Standby\n(AZ-b)', x: 320, y: 190, color: '#9ca3af' },
       { id: 's3',      label: 'S3 Backups\n(PITR)', x: 210, y: 330, color: '#16a34a' },
@@ -84,16 +96,223 @@ const ARCH_DIAGRAMS: Record<number, { label: string; nodes: ArchNode[]; arrows: 
       { from: 'rds', to: 's3' },
     ],
   },
-  8: {
-    label: 'CloudFront + S3 for Global CDN',
+  4: {
+    label: 'ElastiCache Redis in front of RDS',
     nodes: [
-      { id: 'users', label: 'Global\nUsers',            x: 210, y: 55,  color: '#475569' },
-      { id: 'cf',    label: 'CloudFront\nEdge Locations', x: 210, y: 195, color: '#8b5cf6' },
-      { id: 's3',    label: 'S3 Bucket\n(Origin)',      x: 210, y: 340, color: '#16a34a' },
+      { id: 'app',   label: 'Application',     x: 210, y: 55,  color: '#475569' },
+      { id: 'cache', label: 'ElastiCache\nRedis (cache)', x: 100, y: 200, color: '#dc2626' },
+      { id: 'rds',   label: 'RDS MySQL\n(source of truth)', x: 320, y: 200, color: '#1A73E8' },
+    ],
+    arrows: [
+      { from: 'app',   to: 'cache' },
+      { from: 'app',   to: 'rds' },
+      { from: 'cache', to: 'rds' },
+    ],
+  },
+  5: {
+    label: 'EC2 Spot Instances for Batch Jobs',
+    nodes: [
+      { id: 'batch', label: 'Batch Job\n(nightly)',     x: 210, y: 55,  color: '#475569' },
+      { id: 'spot',  label: 'EC2 Spot\n−90% cost',     x: 210, y: 185, color: '#EA580C' },
+      { id: 'save',  label: 'Cost Savings\nvs On-Demand', x: 210, y: 315, color: '#16a34a' },
+    ],
+    arrows: [
+      { from: 'batch', to: 'spot' },
+      { from: 'spot',  to: 'save' },
+    ],
+  },
+  6: {
+    label: 'Three-Tier VPC with Private DB Subnet',
+    nodes: [
+      { id: 'web', label: 'Web Tier\n(Public Subnet)',    x: 210, y: 55,  color: '#2563eb' },
+      { id: 'app', label: 'App Tier\n(Private Subnet)',   x: 210, y: 185, color: '#7c3aed' },
+      { id: 'db',  label: 'DB Tier\n(Private + SG rule)', x: 210, y: 315, color: '#dc2626' },
+    ],
+    arrows: [
+      { from: 'web', to: 'app' },
+      { from: 'app', to: 'db' },
+    ],
+  },
+  7: {
+    label: 'SQS FIFO Queue + Dead Letter Queue',
+    nodes: [
+      { id: 'iot',    label: 'IoT Sensors',       x: 210, y: 55,  color: '#475569' },
+      { id: 'fifo',   label: 'SQS FIFO\n(ordered)', x: 210, y: 190, color: '#EA580C' },
+      { id: 'lambda', label: 'Lambda\nConsumer',  x: 100, y: 330, color: '#FF9900' },
+      { id: 'dlq',    label: 'Dead Letter\nQueue', x: 320, y: 330, color: '#dc2626' },
+    ],
+    arrows: [
+      { from: 'iot',   to: 'fifo' },
+      { from: 'fifo',  to: 'lambda' },
+      { from: 'fifo',  to: 'dlq' },
+    ],
+  },
+  8: {
+    label: 'CloudFront CDN — Edge Caching',
+    nodes: [
+      { id: 'users', label: 'Global\nUsers',             x: 210, y: 55,  color: '#475569' },
+      { id: 'cf',    label: 'CloudFront\n400+ Edge PoPs', x: 210, y: 195, color: '#8b5cf6' },
+      { id: 's3',    label: 'S3 Bucket\n(Origin)',       x: 210, y: 340, color: '#16a34a' },
     ],
     arrows: [
       { from: 'users', to: 'cf' },
       { from: 'cf',    to: 's3' },
+    ],
+  },
+  9: {
+    label: 'CloudTrail + S3 Object Lock (WORM)',
+    nodes: [
+      { id: 'accts', label: 'Multi-Account\nOrg',       x: 100, y: 55,  color: '#2563eb' },
+      { id: 'ct',    label: 'CloudTrail\n(API logs)',   x: 100, y: 195, color: '#7c3aed' },
+      { id: 's3',    label: 'S3 + Object Lock\n(WORM tamper-proof)', x: 100, y: 340, color: '#16a34a' },
+    ],
+    arrows: [
+      { from: 'accts', to: 'ct' },
+      { from: 'ct',    to: 's3' },
+    ],
+  },
+  10: {
+    label: 'SNS Fan-Out to Multiple SQS Queues',
+    nodes: [
+      { id: 'pub',  label: 'Publisher\nService',  x: 210, y: 55,  color: '#475569' },
+      { id: 'sns',  label: 'SNS Topic',           x: 210, y: 185, color: '#FF9900' },
+      { id: 'sq1',  label: 'SQS Queue\nService A', x: 70,  y: 320, color: '#EA580C' },
+      { id: 'sq2',  label: 'SQS Queue\nService B', x: 210, y: 320, color: '#EA580C' },
+      { id: 'sq3',  label: 'SQS Queue\nService C', x: 350, y: 320, color: '#EA580C' },
+    ],
+    arrows: [
+      { from: 'pub', to: 'sns' },
+      { from: 'sns', to: 'sq1' },
+      { from: 'sns', to: 'sq2' },
+      { from: 'sns', to: 'sq3' },
+    ],
+  },
+  11: {
+    label: 'S3 Lifecycle Policy — Cost Tiering',
+    nodes: [
+      { id: 'std', label: 'S3 Standard\n0–30 days',  x: 210, y: 55,  color: '#1A73E8' },
+      { id: 'ia',  label: 'Standard-IA\n30–90 days', x: 210, y: 185, color: '#16a34a' },
+      { id: 'gl',  label: 'S3 Glacier\n90+ days',    x: 210, y: 315, color: '#7c3aed' },
+    ],
+    arrows: [
+      { from: 'std', to: 'ia' },
+      { from: 'ia',  to: 'gl' },
+    ],
+  },
+  12: {
+    label: 'S3 Transfer Acceleration via Edge',
+    nodes: [
+      { id: 'user', label: 'Remote User\n(far region)',     x: 90,  y: 185, color: '#475569' },
+      { id: 'edge', label: 'CloudFront\nEdge Location',    x: 260, y: 55,  color: '#7c3aed' },
+      { id: 'bb',   label: 'AWS Backbone\nNetwork',        x: 260, y: 185, color: '#FF9900' },
+      { id: 's3',   label: 'S3 Bucket\n(origin region)',   x: 260, y: 315, color: '#16a34a' },
+    ],
+    arrows: [
+      { from: 'user', to: 'edge' },
+      { from: 'edge', to: 'bb' },
+      { from: 'bb',   to: 's3' },
+    ],
+  },
+  13: {
+    label: 'Lambda IAM Execution Role — Least Privilege',
+    nodes: [
+      { id: 'lambda', label: 'Lambda\nFunction',      x: 210, y: 55,  color: '#FF9900' },
+      { id: 'role',   label: 'IAM Role\n(exec role)', x: 210, y: 185, color: '#475569' },
+      { id: 'sm',     label: 'Secrets\nManager',      x: 90,  y: 320, color: '#dc2626' },
+      { id: 'ddb',    label: 'DynamoDB\nTable',       x: 330, y: 320, color: '#1A73E8' },
+    ],
+    arrows: [
+      { from: 'lambda', to: 'role' },
+      { from: 'role',   to: 'sm' },
+      { from: 'role',   to: 'ddb' },
+    ],
+  },
+  14: {
+    label: 'SQS Buffer + Auto Scaling — No Message Loss',
+    nodes: [
+      { id: 'req', label: 'Traffic\nSpikes',         x: 210, y: 55,  color: '#475569' },
+      { id: 'sqs', label: 'SQS Queue\n(durable buffer)', x: 210, y: 185, color: '#EA580C' },
+      { id: 'asg', label: 'ASG Workers\n(scales with depth)', x: 210, y: 315, color: '#16a34a' },
+    ],
+    arrows: [
+      { from: 'req', to: 'sqs' },
+      { from: 'sqs', to: 'asg' },
+    ],
+  },
+  15: {
+    label: 'RDS Stop/Start Schedule — Cost Reduction',
+    nodes: [
+      { id: 'eb',     label: 'EventBridge\nSchedule',    x: 210, y: 55,  color: '#7c3aed' },
+      { id: 'lambda', label: 'Lambda\n(stop/start RDS)', x: 210, y: 185, color: '#FF9900' },
+      { id: 'rds',    label: 'RDS Instance\n(paused off-hours)', x: 210, y: 315, color: '#1A73E8' },
+    ],
+    arrows: [
+      { from: 'eb',     to: 'lambda' },
+      { from: 'lambda', to: 'rds' },
+    ],
+  },
+  16: {
+    label: 'AWS Direct Connect — Private Dedicated Link',
+    nodes: [
+      { id: 'dc',  label: 'On-Premises\nData Center', x: 80,  color: '#475569', y: 185 },
+      { id: 'dx',  label: 'Direct Connect\n(dedicated)', x: 250, color: '#dc2626', y: 185 },
+      { id: 'vpc', label: 'AWS VPC\nPrivate VIF',     x: 420, color: '#2563eb',  y: 185 },
+    ],
+    arrows: [
+      { from: 'dc',  to: 'dx' },
+      { from: 'dx',  to: 'vpc' },
+    ],
+  },
+  17: {
+    label: 'Kinesis Streams + Analytics — Real-Time',
+    nodes: [
+      { id: 'iot',  label: 'IoT Devices\n(thousands)', x: 210, y: 55,  color: '#475569' },
+      { id: 'kds',  label: 'Kinesis Data\nStreams',    x: 210, y: 185, color: '#EA580C' },
+      { id: 'kda',  label: 'Kinesis\nAnalytics (SQL)', x: 210, y: 315, color: '#7c3aed' },
+      { id: 'dash', label: 'Real-Time\nDashboard',    x: 380, y: 315, color: '#16a34a' },
+    ],
+    arrows: [
+      { from: 'iot',  to: 'kds' },
+      { from: 'kds',  to: 'kda' },
+      { from: 'kda',  to: 'dash' },
+    ],
+  },
+  18: {
+    label: 'Warm Standby DR — Sub-1hr RTO',
+    nodes: [
+      { id: 'prim', label: 'Primary Region\n(full load)',    x: 90,  y: 185, color: '#2563eb' },
+      { id: 'rep',  label: 'Continuous\nReplication',       x: 255, y: 55,  color: '#FF9900' },
+      { id: 'dr',   label: 'DR Region\n(scaled-down copy)', x: 420, y: 185, color: '#7c3aed' },
+    ],
+    arrows: [
+      { from: 'prim', to: 'rep' },
+      { from: 'rep',  to: 'dr' },
+    ],
+  },
+  19: {
+    label: 'WAF + Shield Advanced on ALB',
+    nodes: [
+      { id: 'atk',    label: 'DDoS\nAttack',         x: 90,  y: 55,  color: '#dc2626' },
+      { id: 'users',  label: 'Legit\nUsers',         x: 330, y: 55,  color: '#16a34a' },
+      { id: 'shield', label: 'Shield Adv\n+ WAF',    x: 210, y: 195, color: '#7c3aed' },
+      { id: 'alb',    label: 'App Load\nBalancer',   x: 210, y: 325, color: '#2563eb' },
+    ],
+    arrows: [
+      { from: 'atk',    to: 'shield' },
+      { from: 'users',  to: 'shield' },
+      { from: 'shield', to: 'alb' },
+    ],
+  },
+  20: {
+    label: 'Reserved + On-Demand Blended Strategy',
+    nodes: [
+      { id: 'ri',    label: 'Reserved (70%)\n−72% savings', x: 90,  y: 185, color: '#16a34a' },
+      { id: 'total', label: 'Total\nCapacity',              x: 255, y: 185, color: '#475569' },
+      { id: 'od',    label: 'On-Demand (30%)\nfor spikes',  x: 420, y: 185, color: '#2563eb' },
+    ],
+    arrows: [
+      { from: 'ri', to: 'total' },
+      { from: 'od', to: 'total' },
     ],
   },
 }
@@ -344,10 +563,7 @@ export default function VisualExam() {
 
             {/* Architecture diagram preview — always visible */}
             {ARCH_DIAGRAMS[q.id] && !answered && (
-              <div style={{ marginBottom: '20px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px' }}>
-                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px' }}>📐 Architecture Diagram</div>
-                <ArchDiagram questionId={q.id} />
-              </div>
+              <ArchDiagram questionId={q.id} />
             )}
 
             <p style={{ fontSize: '1rem', fontWeight: 600, color: '#1e293b', lineHeight: '1.6', margin: '0 0 20px' }}>
