@@ -203,10 +203,10 @@ const DIAGRAMS: Diagram[] = [
       'Least privilege: grant only the minimum permissions required',
     ],
     nodes: [
-      { id: 'policy', label: 'IAM\nPolicy',         x: 310, y: 80,  color: '#475569' },
-      { id: 'user',   label: 'IAM User\n(human)',   x: 120, y: 260, color: '#dc2626' },
-      { id: 'role',   label: 'IAM Role\n(service)', x: 310, y: 260, color: '#dc2626' },
-      { id: 'aws',    label: 'AWS\nServices',       x: 500, y: 260, color: '#FF9900' },
+      { id: 'policy', label: 'IAM\nPolicy',         x: 370, y: 80,  color: '#475569' },
+      { id: 'user',   label: 'IAM User\n(human)',   x: 110, y: 420, color: '#dc2626' },
+      { id: 'role',   label: 'IAM Role\n(service)', x: 370, y: 420, color: '#dc2626' },
+      { id: 'aws',    label: 'AWS\nServices',       x: 630, y: 420, color: '#FF9900' },
     ],
     edges: [
       { from: 'user', to: 'policy' },
