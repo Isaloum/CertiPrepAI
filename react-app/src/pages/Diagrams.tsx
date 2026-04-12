@@ -303,16 +303,16 @@ const DIAGRAMS: Diagram[] = [
     ],
     nodes: [
       { id: 'client', label: 'Client\n(Browser/App)', x: 310, y: 60,  color: '#475569' },
-      { id: 'apigw',  label: 'API Gateway',           x: 310, y: 190, color: '#8B5CF6' },
-      { id: 'lambda', label: 'Lambda\nFunction',      x: 310, y: 320, color: '#FF9900' },
-      { id: 'dynamo', label: 'DynamoDB\n(NoSQL)',      x: 140, y: 470, color: '#1A73E8' },
-      { id: 's3',     label: 'S3\n(files)',            x: 480, y: 470, color: '#3F8624' },
+      { id: 'apigw',  label: 'API Gateway',           x: 310, y: 210, color: '#8B5CF6' },
+      { id: 'lambda', label: 'Lambda\nFunction',      x: 310, y: 370, color: '#FF9900' },
+      { id: 'dynamo', label: 'DynamoDB\n(NoSQL)',      x: 100, y: 570, color: '#1A73E8' },
+      { id: 's3',     label: 'S3\n(files)',            x: 520, y: 570, color: '#3F8624' },
     ],
     edges: [
       { from: 'client', to: 'apigw',  label: 'HTTPS' },
       { from: 'apigw',  to: 'lambda', label: 'invoke' },
-      { from: 'lambda', to: 'dynamo', label: 'read/write',  labelFlip: true },
-      { from: 'lambda', to: 's3',     label: 'store files', labelFlip: true },
+      { from: 'lambda', to: 'dynamo', label: 'read/write' },
+      { from: 'lambda', to: 's3',     label: 'store files' },
     ],
   },
   {
@@ -463,7 +463,8 @@ function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge
   const contentW = x1 - x0
   const contentH = y1 - y0
   const vw = Math.max(520, contentW)
-  const vh = Math.max(320, contentH)
+  // Ensure height is at least 75% of width so wide/flat diagrams fill the card
+  const vh = Math.max(Math.round(vw * 0.75), contentH)
   // Centre content inside the viewBox by adding equal padding on both sides
   const vx = x0 - (vw - contentW) / 2
   const vy = y0 - (vh - contentH) / 2
