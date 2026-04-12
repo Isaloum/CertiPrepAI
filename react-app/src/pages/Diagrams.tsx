@@ -157,8 +157,8 @@ const DIAGRAMS: Diagram[] = [
       { id: 'dlq',       label: 'Dead Letter\nQueue',     x: 630, y: 280, color: '#dc2626' },
     ],
     edges: [
-      { from: 'producer', to: 'sqs',      label: 'send' },
-      { from: 'sqs',      to: 'consumer', label: 'poll' },
+      { from: 'producer', to: 'sqs',      label: 'send', labelFlip: true },
+      { from: 'sqs',      to: 'consumer', label: 'poll', labelFlip: true },
       { from: 'sqs',      to: 'dlq',      label: 'max retries' },
     ],
   },
