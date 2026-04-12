@@ -1,6 +1,10 @@
 wget-log
 node_modules/
 .env
+**/.env
+**/.env.*
+**/.env.local
+**/.env.production
 
 # Local Netlify folder
 .netlify

@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { signUp, confirmSignUp } from '../lib/cognito'
 
-const CHECKOUT_API = import.meta.env.VITE_CHECKOUT_API || 'https://34zglioc5a.execute-api.us-east-1.amazonaws.com/checkout'
+// Security: no hardcoded fallback — must be set via Amplify env vars (VITE_CHECKOUT_API)
+const CHECKOUT_API = import.meta.env.VITE_CHECKOUT_API as string
 
 const PAID_PLANS = new Set(['monthly', 'yearly', 'lifetime'])
 

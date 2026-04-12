@@ -15,11 +15,13 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider';
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const cognito = new CognitoIdentityProviderClient({ region: 'us-east-1' });
+// ── Security: fail hard if env vars are missing — no hardcoded fallbacks ──
+const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID;
+const CLIENT_ID    = process.env.COGNITO_CLIENT_ID;
+if (!USER_POOL_ID || !CLIENT_ID) throw new Error('Missing required Cognito env vars');
 
-const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID || 'us-east-1_bqEVRsi2b';
-const CLIENT_ID    = process.env.COGNITO_CLIENT_ID    || '4j9mnlkhtu023takbj0qb1g10h';
+const stripe  = new Stripe(process.env.STRIPE_SECRET_KEY);
+const cognito = new CognitoIdentityProviderClient({ region: 'us-east-1' });
 
 const verifier = CognitoJwtVerifier.create({
   userPoolId: USER_POOL_ID,
@@ -27,14 +29,27 @@ const verifier = CognitoJwtVerifier.create({
   clientId:   CLIENT_ID,
 });
 
-const CORS = {
-  'Access-Control-Allow-Origin':  '*',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Content-Type': 'application/json',
-};
+// ── Security: CORS restricted to known origins only — no wildcard ─────────
+const ALLOWED_ORIGINS = [
+  'https://certiprepai.com',
+  'https://www.certiprepai.com',
+  'https://main.d2pm3jfcsesli7.amplifyapp.com',
+];
+
+function corsHeaders(origin) {
+  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin':  allowed,
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Content-Type': 'application/json',
+  };
+}
 
 export const handler = async (event) => {
+  const origin = event.headers?.origin || event.headers?.Origin || '';
+  const CORS   = corsHeaders(origin);
+
   if (event.requestContext?.http?.method === 'OPTIONS') {
     return { statusCode: 200, headers: CORS, body: '' };
   }
@@ -50,7 +65,6 @@ export const handler = async (event) => {
     return { statusCode: 401, headers: CORS, body: JSON.stringify({ error: 'Unauthorized' }) };
   }
 
-  // Cognito username == email (per project config)
   const username = claims.username || claims.sub;
 
   try {
@@ -76,6 +90,8 @@ export const handler = async (event) => {
     }
 
     // ── Cancel active Stripe subscriptions at period end ─────────
+    // Security fix: cancel each sub individually, only downgrade Cognito
+    // AFTER all Stripe updates succeed to prevent state inconsistency.
     if (stripeCustomerId) {
       const subscriptions = await stripe.subscriptions.list({
         customer: stripeCustomerId,
@@ -83,18 +99,26 @@ export const handler = async (event) => {
         limit:    10,
       });
 
-      for (const sub of subscriptions.data) {
-        await stripe.subscriptions.update(sub.id, { cancel_at_period_end: true });
+      const results = await Promise.allSettled(
+        subscriptions.data.map(sub =>
+          stripe.subscriptions.update(sub.id, { cancel_at_period_end: true })
+        )
+      );
+
+      const failed = results.filter(r => r.status === 'rejected');
+      if (failed.length > 0) {
+        console.error('[cancel-subscription] Stripe update failed for some subscriptions:', failed);
+        return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'Failed to cancel subscription with Stripe. Please try again.' }) };
       }
 
       console.log(`[cancel-subscription] Scheduled cancellation for ${username} (${stripeCustomerId})`);
     }
 
-    // ── Downgrade Cognito plan to free ───────────────────────────
+    // ── Only downgrade Cognito after Stripe succeeded ────────────
     await cognito.send(new AdminUpdateUserAttributesCommand({
-      UserPoolId:      USER_POOL_ID,
-      Username:        username,
-      UserAttributes:  [{ Name: 'custom:plan', Value: 'free' }],
+      UserPoolId:     USER_POOL_ID,
+      Username:       username,
+      UserAttributes: [{ Name: 'custom:plan', Value: 'free' }],
     }));
 
     console.log(`[cancel-subscription] Downgraded ${username} -> free`);
@@ -105,7 +129,8 @@ export const handler = async (event) => {
       body:       JSON.stringify({ success: true, message: 'Subscription cancelled. Access continues until end of billing period.' }),
     };
   } catch (err) {
-    console.error('[cancel-subscription] Error:', err.message);
-    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: err.message }) };
+    // Security fix: never expose internal error details to the client
+    console.error('[cancel-subscription] Error:', err);
+    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'Internal server error' }) };
   }
 };

@@ -45,6 +45,7 @@ async function upgradeCognitoUser(email, tier) {
   });
   await cognito.send(updateCmd);
   console.log(`[verify-session] Upgraded ${email} -> ${tier}`);
+  console.log('[AUDIT] ' + JSON.stringify({ event: 'plan_upgraded', email, tier, ts: new Date().toISOString() }));
   return user.Username;
 }
 
@@ -72,6 +73,12 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers, body: JSON.stringify({ verified: false, error: 'Invalid product' }) };
     }
 
+    // Security: reject sessions older than 24 hours to prevent replay attacks
+    const sessionAge = Date.now() / 1000 - (session.created || 0);
+    if (sessionAge > 86400) {
+      return { statusCode: 400, headers, body: JSON.stringify({ verified: false, error: 'Session expired' }) };
+    }
+
     const tier = session.metadata?.tier || 'lifetime';
     const email = session.customer_details?.email || (typeof session.customer === 'object' ? session.customer?.email : null);
 
@@ -83,7 +90,8 @@ exports.handler = async (event) => {
 
     return { statusCode: 200, headers, body: JSON.stringify({ verified: true, tier }) };
   } catch (err) {
-    console.error('[verify-session] Error:', err.message);
-    return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
+    // Security: never expose internal error details to client
+    console.error('[verify-session] Error:', err);
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Internal server error' }) };
   }
 };

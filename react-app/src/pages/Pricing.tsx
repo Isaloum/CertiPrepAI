@@ -3,7 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
 
-const CHECKOUT_API = import.meta.env.VITE_CHECKOUT_API || 'https://34zglioc5a.execute-api.us-east-1.amazonaws.com/checkout'
+// Security: no hardcoded fallback — must be set via Amplify env vars (VITE_CHECKOUT_API)
+const CHECKOUT_API = import.meta.env.VITE_CHECKOUT_API as string
 const PAID_PLANS = new Set(['monthly', 'yearly', 'lifetime'])
 
 const TIER_RANK: Record<string, number> = { free: 0, monthly: 1, yearly: 2, lifetime: 3 }
