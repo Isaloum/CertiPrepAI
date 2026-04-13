@@ -134,11 +134,14 @@ export default function Signup() {
           </p>
           <form onSubmit={handleConfirm}>
             <input
+              id="verify-code"
+              name="code"
               type="text"
               placeholder="Enter 6-digit code"
               value={code}
               onChange={e => setCode(e.target.value)}
               maxLength={6}
+              autoComplete="one-time-code"
               style={{ width: '100%', padding: '0.75rem 1rem', fontSize: '1.2rem', letterSpacing: '0.3em', textAlign: 'center', border: '1.5px solid #d1d5db', borderRadius: '0.75rem', marginBottom: '1rem', boxSizing: 'border-box' }}
             />
             {error && <p style={{ color: '#dc2626', fontSize: '0.85rem', marginBottom: '0.75rem' }}>{error}</p>}
@@ -244,11 +247,14 @@ export default function Signup() {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
+            <label htmlFor="signup-email" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
               Email
             </label>
             <input
+              id="signup-email"
+              name="email"
               type="email"
+              autoComplete="email"
               value={email}
               onChange={e => setEmail(e.target.value.trim().toLowerCase())}
               onFocus={() => setFocusField('email')}
@@ -262,12 +268,15 @@ export default function Signup() {
             />
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
+            <label htmlFor="signup-password" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
               Password
             </label>
             <div style={{ position: 'relative' }}>
               <input
+                id="signup-password"
+                name="password"
                 type={showPassword ? 'text' : 'password'}
+                autoComplete="new-password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 onFocus={() => { setFocusField('password'); setPasswordTouched(true) }}

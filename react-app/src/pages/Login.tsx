@@ -142,12 +142,15 @@ export default function Login() {
             </div>
             <form onSubmit={handleMFASubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <input
+                id="mfa-code"
+                name="mfa-code"
                 type="text"
                 value={totpCode}
                 onChange={e => setTotpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                 placeholder="000000"
                 autoFocus
                 maxLength={6}
+                autoComplete="one-time-code"
                 style={{ width: '100%', padding: '0.85rem', fontSize: '1.5rem', letterSpacing: '0.4em', textAlign: 'center', border: '2px solid #e5e7eb', borderRadius: '0.75rem', outline: 'none', boxSizing: 'border-box' }}
               />
               {error && <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '0.5rem', padding: '0.6rem 0.85rem', fontSize: '0.83rem', color: '#b91c1c' }}>{error}</div>}
@@ -174,11 +177,14 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
+            <label htmlFor="login-email" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
               Email
             </label>
             <input
+              id="login-email"
+              name="email"
               type="email"
+              autoComplete="email"
               value={email}
               onChange={e => setEmail(e.target.value.trim().toLowerCase())}
               onFocus={() => setFocusField('email')}
@@ -193,12 +199,15 @@ export default function Login() {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
+            <label htmlFor="login-password" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
               Password
             </label>
             <div style={{ position: 'relative' }}>
               <input
+                id="login-password"
+                name="password"
                 type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 onFocus={() => setFocusField('password')}
