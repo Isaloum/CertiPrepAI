@@ -502,7 +502,7 @@ export default function ServiceGroups() {
                           )}
                         </div>
                         <Link
-                          to={`/practice?topic=${encodeURIComponent(service.name)}`}
+                          to="/cert/saa-c03"
                           style={{
                             display: 'inline-block',
                             marginTop: '1rem',
