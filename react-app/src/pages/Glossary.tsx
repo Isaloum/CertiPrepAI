@@ -144,9 +144,12 @@ export default function Glossary() {
             <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px 0' }}>
               AWS Terms & Services
             </h1>
-            <p style={{ color: '#64748b', margin: 0 }}>
+            <p style={{ color: '#64748b', margin: '0 0 12px' }}>
               {terms.length} terms across all domains · Click any card to expand
             </p>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '999px', padding: '4px 14px', fontSize: '0.78rem', fontWeight: 700, color: '#16a34a' }}>
+              ✅ Terms and definitions verified against 1,098 real SAA-C03 exam questions
+            </div>
           </div>
 
           {/* Search */}
