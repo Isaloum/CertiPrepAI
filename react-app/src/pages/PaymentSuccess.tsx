@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
 
-const VERIFY_API = import.meta.env.VITE_VERIFY_SESSION_URL as string || 'https://6ryf7eipwnxeus2xbekgvwykme0otufd.lambda-url.us-east-1.on.aws/'
+const VERIFY_API = import.meta.env.VITE_VERIFY_SESSION_URL as string || 'https://6ryf7eipwnxeus2xbekgvwykme0otufd.lambda-url.us-east-1.on.aws'
 
 export default function PaymentSuccess() {
   const [searchParams] = useSearchParams()
@@ -25,7 +25,7 @@ export default function PaymentSuccess() {
         })
         const data = await res.json()
         if (data.verified) {
-          setTier(data.tier || 'premium')
+          setTier(data.tier || 'monthly')
           await refreshUser()
           setStatus('success')
         } else {

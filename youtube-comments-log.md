@@ -1,3 +1,23 @@
+# YouTube Comment Run Log — Last Updated 2026-04-07
+
+---
+
+## Run: 2026-04-07
+
+**Status:** ❌ Blocked — YouTube not logged in
+
+The browser has no active YouTube/Google session. The `is-signed-in` attribute is absent from `ytd-app`, confirming the user is signed out. Comment posting requires authentication.
+
+**Action required:** Please log in to YouTube in Chrome, then re-run this scheduled task.
+
+### Videos identified (ready to post once logged in):
+| Video | Channel | Views | URL |
+|-------|---------|-------|-----|
+| AWS Solutions Architect Associate FULL EXAM with Explanations! (2025) | Alta3 Research | 17K+ | https://www.youtube.com/watch?v=yh1PvLI3IGg |
+| AWS SAA-C03 Exam-Style Practice Questions 2026 (Q1–10) | DailyDebian | N/A | https://www.youtube.com/watch?v=fr0XTdeeqI8 |
+
+---
+
 # YouTube Comment Run Log — 2026-03-30
 
 ## Summary

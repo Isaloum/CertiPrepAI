@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sign Up — AWSPrepAI</title>
+  <title>Sign Up — CertiPrepAI</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="navigation.css">
   <style>
@@ -44,7 +44,7 @@
   <div class="nav-container">
     <a href="index.html" class="nav-logo">
       <span class="nav-logo-icon">☁️</span>
-      <span class="nav-logo-text">AWSPrepAI</span>
+      <span class="nav-logo-text">CertiPrepAI</span>
     </a>
     <div class="nav-menu" id="navMenu">
       <a href="certifications.html" class="nav-link">Certifications</a>
@@ -59,7 +59,7 @@
 
 <main class="auth-page">
   <div class="auth-card">
-    <div class="auth-logo"><a href="index.html">☁️ AWSPrepAI</a></div>
+    <div class="auth-logo"><a href="index.html">☁️ CertiPrepAI</a></div>
     <h1 class="auth-title">Create your account</h1>
     <p class="auth-subtitle">Free account — no credit card required</p>
 
@@ -102,21 +102,36 @@
       <button class="btn-auth btn-submit" type="submit" id="submitBtn">Create Free Account →</button>
     </form>
 
+    <!-- Step 2: Email confirmation code -->
+    <div id="confirmStep" style="display:none">
+      <h2 style="font-size:1.2rem;font-weight:800;color:#1F2937;margin-bottom:.35rem;text-align:center">Check your email</h2>
+      <p style="color:#545b64;font-size:.88rem;text-align:center;margin-bottom:1.25rem">We sent a 6-digit code to <strong id="confirmEmail"></strong></p>
+      <div class="error-msg" id="confirmErrorMsg"></div>
+      <div class="form-group">
+        <label class="form-label" for="confirmCode">Verification Code</label>
+        <input class="form-input" type="text" id="confirmCode" placeholder="123456" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+      </div>
+      <button class="btn-auth btn-submit" onclick="handleConfirm()" id="confirmBtn">Verify Email →</button>
+    </div>
+
     <p class="terms-note">By signing up you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
     <div class="auth-footer">Already have an account? <a href="login.html">Log in →</a></div>
   </div>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.3.12/dist/amazon-cognito-identity.min.js"></script>
 <script>
-const SUPA_URL = 'https://swkqwqtgbxymyhcnhmfv.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3a3F3cXRnYnh5bXloY25obWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxNzEwNzcsImV4cCI6MjA4NTc0NzA3N30.RttI8lDSItgTLMR1QwstSfNakyXqsLgt5kEfmhEJxf4';
-const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+const POOL_ID   = 'us-east-1_bqEVRsi2b';
+const CLIENT_ID = '4j9mnlkhtu023takbj0qb1g10h';
+const userPool  = new AmazonCognitoIdentity.CognitoUserPool({ UserPoolId: POOL_ID, ClientId: CLIENT_ID });
+let _pendingEmail = '', _pendingPassword = '', _pendingName = '';
 
 // Already logged in → go to dashboard
-supa.auth.getSession().then(({ data }) => {
-  if (data.session) window.location.href = 'user-dashboard.html';
-});
+(function(){
+  var tok = localStorage.getItem('_apa_session');
+  var exp = parseInt(localStorage.getItem('_apa_session_exp') || '0');
+  if (tok && (!exp || Date.now() < exp)) window.location.href = 'user-dashboard.html';
+})();
 
 function checkStrength(val) {
   const fill = document.getElementById('strengthFill');
@@ -145,45 +160,68 @@ async function handleSignup(e) {
   const password  = document.getElementById('password').value;
   const password2 = document.getElementById('password2').value;
 
-  if (password !== password2) {
-    errorEl.textContent = 'Passwords do not match.';
-    errorEl.style.display = 'block';
-    return;
-  }
-  if (password.length < 8) {
-    errorEl.textContent = 'Password must be at least 8 characters.';
-    errorEl.style.display = 'block';
-    return;
-  }
+  if (password !== password2) { errorEl.textContent = 'Passwords do not match.'; errorEl.style.display = 'block'; return; }
+  if (password.length < 8)    { errorEl.textContent = 'Password must be at least 8 characters.'; errorEl.style.display = 'block'; return; }
 
   btn.disabled = true;
   btn.textContent = 'Creating account…';
 
-  const { data, error } = await supa.auth.signUp({
-    email,
-    password,
-    options: { data: { first_name: firstName, last_name: lastName, full_name: firstName + ' ' + lastName } }
+  const attrs = [
+    new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'email',      Value: email }),
+    new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'given_name', Value: firstName }),
+    new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'family_name',Value: lastName }),
+  ];
+
+  userPool.signUp(email, password, attrs, [], (err) => {
+    if (err) {
+      errorEl.textContent = err.message || 'Could not create account. Please try again.';
+      errorEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Create Free Account →';
+      return;
+    }
+    _pendingEmail    = email;
+    _pendingPassword = password;
+    _pendingName     = firstName;
+    document.getElementById('signupForm').style.display = 'none';
+    document.getElementById('confirmStep').style.display = 'block';
+    document.getElementById('confirmEmail').textContent = email;
   });
+}
 
-  if (error) {
-    errorEl.textContent = error.message || 'Could not create account. Please try again.';
-    errorEl.style.display = 'block';
-    btn.disabled = false;
-    btn.textContent = 'Create Free Account →';
-    return;
-  }
+function handleConfirm() {
+  const code = document.getElementById('confirmCode').value.trim();
+  const btn  = document.getElementById('confirmBtn');
+  const err  = document.getElementById('confirmErrorMsg');
+  err.style.display = 'none';
+  if (!code) { err.textContent = 'Enter the code from your email.'; err.style.display = 'block'; return; }
+  btn.disabled = true;
+  btn.textContent = 'Verifying…';
 
-  // Store session
-  const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
-  localStorage.setItem('_apa_session', data.session?.access_token || 'confirmed');
-  localStorage.setItem('_apa_session_exp', Date.now() + SESSION_TTL_MS);
-  localStorage.setItem('_apa_email', email);
-  localStorage.setItem('_apa_name', firstName);
-  localStorage.setItem('_apa_tier', 'free');
-
-  successEl.textContent = 'Account created! Redirecting…';
-  successEl.style.display = 'block';
-  setTimeout(() => window.location.href = 'user-dashboard.html', 900);
+  const cognitoUser = new AmazonCognitoIdentity.CognitoUser({ Username: _pendingEmail, Pool: userPool });
+  cognitoUser.confirmRegistration(code, true, (confirmErr) => {
+    if (confirmErr) {
+      err.textContent = confirmErr.message || 'Invalid code. Please try again.';
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Verify Email →';
+      return;
+    }
+    // Auto sign-in after confirmation
+    const authDetails = new AmazonCognitoIdentity.AuthenticationDetails({ Username: _pendingEmail, Password: _pendingPassword });
+    cognitoUser.authenticateUser(authDetails, {
+      onSuccess(session) {
+        const payload = session.getIdToken().payload;
+        localStorage.setItem('_apa_session',     session.getIdToken().getJwtToken());
+        localStorage.setItem('_apa_session_exp', String(Date.now() + 24 * 60 * 60 * 1000));
+        localStorage.setItem('_apa_email',       _pendingEmail);
+        localStorage.setItem('_apa_name',        _pendingName);
+        localStorage.setItem('_apa_tier',        payload['custom:plan'] || 'free');
+        window.location.href = 'user-dashboard.html';
+      },
+      onFailure() { window.location.href = 'login.html'; }
+    });
+  });
 }
 </script>
 <script src="navigation.js"></script>

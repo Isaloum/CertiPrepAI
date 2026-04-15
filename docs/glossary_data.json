@@ -1,0 +1,356 @@
+{
+  "Amazon Kinesis": {
+    "definition": "Real-time data streaming and analytics",
+    "category": "Analytics",
+    "domain": "high-perf-arch",
+    "frequency": 50
+  },
+  "AWS Glue": {
+    "definition": "Fully managed ETL service \u2014 data preparation for analytics",
+    "category": "Analytics",
+    "domain": "high-perf-arch",
+    "frequency": 35
+  },
+  "Amazon Athena": {
+    "definition": "Serverless SQL queries directly on S3 data",
+    "category": "Analytics",
+    "domain": "cost-optimized-arch",
+    "frequency": 26
+  },
+  "Amazon EMR": {
+    "definition": "Managed big data platform \u2014 Hadoop, Spark",
+    "category": "Analytics",
+    "domain": "high-perf-arch",
+    "frequency": 16
+  },
+  "Amazon EC2": {
+    "definition": "Elastic Compute Cloud \u2014 virtual servers in the cloud",
+    "category": "Compute",
+    "domain": "high-perf-arch",
+    "frequency": 305
+  },
+  "AWS Lambda": {
+    "definition": "Serverless compute \u2014 run code without managing servers",
+    "category": "Compute",
+    "domain": "high-perf-arch",
+    "frequency": 125
+  },
+  "AMI": {
+    "definition": "Amazon Machine Image \u2014 template for EC2 instances",
+    "category": "Compute",
+    "domain": "high-perf-arch",
+    "frequency": 91
+  },
+  "Amazon ECS": {
+    "definition": "Elastic Container Service \u2014 managed Docker containers",
+    "category": "Compute",
+    "domain": "high-perf-arch",
+    "frequency": 51
+  },
+  "AWS Fargate": {
+    "definition": "Serverless container engine for ECS and EKS",
+    "category": "Compute",
+    "domain": "high-perf-arch",
+    "frequency": 32
+  },
+  "Amazon EKS": {
+    "definition": "Elastic Kubernetes Service \u2014 managed Kubernetes",
+    "category": "Compute",
+    "domain": "high-perf-arch",
+    "frequency": 26
+  },
+  "Instance Store": {
+    "definition": "Temporary block storage physically attached to EC2 host",
+    "category": "Compute",
+    "domain": "high-perf-arch",
+    "frequency": 15
+  },
+  "Placement Group": {
+    "definition": "Logical grouping of EC2 instances for network/fault control",
+    "category": "Compute",
+    "domain": "high-perf-arch",
+    "frequency": 11
+  },
+  "AWS Batch": {
+    "definition": "Fully managed batch processing at any scale",
+    "category": "Compute",
+    "domain": "high-perf-arch",
+    "frequency": 9
+  },
+  "Amazon RDS": {
+    "definition": "Relational Database Service \u2014 managed MySQL, PostgreSQL, Oracle, SQL Server",
+    "category": "Database",
+    "domain": "resilient-arch",
+    "frequency": 110
+  },
+  "Amazon Aurora": {
+    "definition": "AWS-built MySQL/PostgreSQL compatible DB \u2014 5x faster than MySQL",
+    "category": "Database",
+    "domain": "high-perf-arch",
+    "frequency": 71
+  },
+  "Amazon DynamoDB": {
+    "definition": "Managed NoSQL key-value and document database",
+    "category": "Database",
+    "domain": "high-perf-arch",
+    "frequency": 69
+  },
+  "Amazon Redshift": {
+    "definition": "Fully managed data warehouse for analytics",
+    "category": "Database",
+    "domain": "high-perf-arch",
+    "frequency": 38
+  },
+  "Amazon ElastiCache": {
+    "definition": "In-memory cache \u2014 Redis and Memcached",
+    "category": "Database",
+    "domain": "high-perf-arch",
+    "frequency": 28
+  },
+  "Amazon Neptune": {
+    "definition": "Fully managed graph database",
+    "category": "Database",
+    "domain": "high-perf-arch",
+    "frequency": 12
+  },
+  "Amazon SQS": {
+    "definition": "Simple Queue Service \u2014 decouple distributed systems",
+    "category": "Integration",
+    "domain": "resilient-arch",
+    "frequency": 77
+  },
+  "Amazon SNS": {
+    "definition": "Simple Notification Service \u2014 pub/sub messaging",
+    "category": "Integration",
+    "domain": "high-perf-arch",
+    "frequency": 52
+  },
+  "Amazon EventBridge": {
+    "definition": "Serverless event bus \u2014 connect apps with AWS services",
+    "category": "Integration",
+    "domain": "high-perf-arch",
+    "frequency": 43
+  },
+  "Amazon API Gateway": {
+    "definition": "Create, manage and secure REST and WebSocket APIs",
+    "category": "Integration",
+    "domain": "high-perf-arch",
+    "frequency": 34
+  },
+  "AWS Step Functions": {
+    "definition": "Orchestrate multi-step serverless workflows",
+    "category": "Integration",
+    "domain": "high-perf-arch",
+    "frequency": 13
+  },
+  "Amazon MQ": {
+    "definition": "Managed message broker for AMQP, MQTT, STOMP protocols",
+    "category": "Integration",
+    "domain": "resilient-arch",
+    "frequency": 8
+  },
+  "Amazon CloudWatch": {
+    "definition": "Monitoring, logging, and alerting for AWS resources",
+    "category": "Management",
+    "domain": "resilient-arch",
+    "frequency": 70
+  },
+  "AWS CloudTrail": {
+    "definition": "Audit log of all AWS API calls",
+    "category": "Management",
+    "domain": "secure-arch",
+    "frequency": 30
+  },
+  "AWS Organizations": {
+    "definition": "Centrally manage multiple AWS accounts",
+    "category": "Management",
+    "domain": "secure-arch",
+    "frequency": 28
+  },
+  "AWS Config": {
+    "definition": "Track and audit AWS resource configurations over time",
+    "category": "Management",
+    "domain": "secure-arch",
+    "frequency": 25
+  },
+  "AWS Systems Manager": {
+    "definition": "Manage and automate EC2 and hybrid infrastructure",
+    "category": "Management",
+    "domain": "resilient-arch",
+    "frequency": 25
+  },
+  "AWS CloudFormation": {
+    "definition": "Infrastructure as Code \u2014 provision AWS resources via templates",
+    "category": "Management",
+    "domain": "resilient-arch",
+    "frequency": 10
+  },
+  "Amazon CloudFront": {
+    "definition": "Global CDN \u2014 cache and deliver content from edge locations",
+    "category": "Network",
+    "domain": "high-perf-arch",
+    "frequency": 58
+  },
+  "AWS Direct Connect": {
+    "definition": "Dedicated private connection from on-premises to AWS",
+    "category": "Network",
+    "domain": "high-perf-arch",
+    "frequency": 41
+  },
+  "Amazon VPC": {
+    "definition": "Virtual Private Cloud \u2014 isolated network in AWS",
+    "category": "Network",
+    "domain": "secure-arch",
+    "frequency": 35
+  },
+  "Amazon Route 53": {
+    "definition": "Scalable DNS and domain registration service",
+    "category": "Network",
+    "domain": "resilient-arch",
+    "frequency": 33
+  },
+  "NAT Gateway": {
+    "definition": "Allows private subnet instances to access internet (outbound only)",
+    "category": "Network",
+    "domain": "secure-arch",
+    "frequency": 30
+  },
+  "AWS Global Accelerator": {
+    "definition": "Improves performance using AWS global network (non-HTTP)",
+    "category": "Network",
+    "domain": "high-perf-arch",
+    "frequency": 27
+  },
+  "Internet Gateway": {
+    "definition": "Allows public internet access to/from VPC",
+    "category": "Network",
+    "domain": "secure-arch",
+    "frequency": 26
+  },
+  "VPC Peering": {
+    "definition": "Direct private connection between two VPCs",
+    "category": "Network",
+    "domain": "secure-arch",
+    "frequency": 20
+  },
+  "AWS Transit Gateway": {
+    "definition": "Hub connecting multiple VPCs and on-premises networks",
+    "category": "Network",
+    "domain": "high-perf-arch",
+    "frequency": 19
+  },
+  "AWS VPN": {
+    "definition": "Encrypted internet connection to AWS (Site-to-Site or Client)",
+    "category": "Network",
+    "domain": "secure-arch",
+    "frequency": 8
+  },
+  "Elastic Load Balancing": {
+    "definition": "Distributes incoming traffic across multiple targets",
+    "category": "Network",
+    "domain": "resilient-arch",
+    "frequency": 8
+  },
+  "AWS KMS": {
+    "definition": "Key Management Service \u2014 create and manage encryption keys",
+    "category": "Security",
+    "domain": "secure-arch",
+    "frequency": 37
+  },
+  "AWS WAF": {
+    "definition": "Web Application Firewall \u2014 protect against SQL injection, XSS",
+    "category": "Security",
+    "domain": "secure-arch",
+    "frequency": 26
+  },
+  "AWS IAM": {
+    "definition": "Identity and Access Management \u2014 users, roles, policies",
+    "category": "Security",
+    "domain": "secure-arch",
+    "frequency": 24
+  },
+  "Amazon GuardDuty": {
+    "definition": "Intelligent threat detection using ML and threat intelligence",
+    "category": "Security",
+    "domain": "secure-arch",
+    "frequency": 18
+  },
+  "Amazon Macie": {
+    "definition": "ML-based sensitive data discovery in S3",
+    "category": "Security",
+    "domain": "secure-arch",
+    "frequency": 13
+  },
+  "AWS Shield": {
+    "definition": "DDoS protection \u2014 Standard (free) and Advanced",
+    "category": "Security",
+    "domain": "secure-arch",
+    "frequency": 11
+  },
+  "Amazon Inspector": {
+    "definition": "Automated security assessment for EC2 and containers",
+    "category": "Security",
+    "domain": "secure-arch",
+    "frequency": 10
+  },
+  "AWS CloudHSM": {
+    "definition": "Hardware Security Module \u2014 dedicated key storage",
+    "category": "Security",
+    "domain": "secure-arch",
+    "frequency": 8
+  },
+  "AWS ACM": {
+    "definition": "Certificate Manager \u2014 free SSL/TLS certificates",
+    "category": "Security",
+    "domain": "secure-arch",
+    "frequency": 2
+  },
+  "AWS Cognito": {
+    "definition": "User authentication and authorization for web/mobile apps",
+    "category": "Security",
+    "domain": "secure-arch",
+    "frequency": 0
+  },
+  "Amazon S3": {
+    "definition": "Simple Storage Service \u2014 object storage with unlimited scale",
+    "category": "Storage",
+    "domain": "cost-optimized-arch",
+    "frequency": 336
+  },
+  "Amazon EBS": {
+    "definition": "Elastic Block Store \u2014 persistent block storage for EC2",
+    "category": "Storage",
+    "domain": "high-perf-arch",
+    "frequency": 62
+  },
+  "Amazon FSx": {
+    "definition": "Fully managed third-party file systems (Windows, Lustre, ONTAP)",
+    "category": "Storage",
+    "domain": "high-perf-arch",
+    "frequency": 45
+  },
+  "S3 Glacier": {
+    "definition": "Low-cost archive storage with retrieval times of minutes to hours",
+    "category": "Storage",
+    "domain": "cost-optimized-arch",
+    "frequency": 45
+  },
+  "Amazon EFS": {
+    "definition": "Elastic File System \u2014 managed NFS file storage for Linux",
+    "category": "Storage",
+    "domain": "high-perf-arch",
+    "frequency": 40
+  },
+  "AWS Storage Gateway": {
+    "definition": "Hybrid cloud storage connecting on-premises to AWS",
+    "category": "Storage",
+    "domain": "resilient-arch",
+    "frequency": 37
+  },
+  "AWS DataSync": {
+    "definition": "Automated data transfer between on-premises and AWS",
+    "category": "Storage",
+    "domain": "high-perf-arch",
+    "frequency": 36
+  }
+}

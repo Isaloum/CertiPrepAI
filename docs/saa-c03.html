@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SAA-C03 Solutions Architect Associate - AWSPrepAI</title>
+  <title>SAA-C03 Solutions Architect Associate - CertiPrepAI</title>
   <meta name="description" content="Master the AWS Solutions Architect Associate (SAA-C03) certification with 260 scenario-based practice questions covering secure architectures, resilient architectures, high-performing architectures, and cost-optimized architectures.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
@@ -142,7 +142,7 @@
 
     <nav class="main-nav" role="navigation">
     <div class="nav-container">
-      <a href="index.html" class="nav-logo" aria-label="AWSPrepAI Home"><img src="logo.svg" alt="AWSPrepAI"></a>
+      <a href="index.html" class="nav-logo" aria-label="CertiPrepAI Home"><img src="logo.svg" alt="CertiPrepAI"></a>
       <div class="nav-menu" id="navMenu">
         <div class="nav-item-dropdown">
           <button class="nav-link" aria-haspopup="true" aria-expanded="false">Practice<svg class="dropdown-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></button>
@@ -154,7 +154,7 @@
         <div class="nav-item-dropdown">
           <button class="nav-link" aria-haspopup="true" aria-expanded="false">Study<svg class="dropdown-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></button>
           <div class="dropdown-menu" role="menu">
-            <a href="index.html#study-guide" class="dropdown-item"><span class="item-icon">📚</span><div class="item-content"><div class="item-title">Study Guide</div><div class="item-desc">Exam tips &amp; strategies</div></div></a>
+            <a href="index.html#study-guide" class="dropdown-item"><span class="item-icon">📚</span><div class="item-content"><div class="item-title">Study Guide</div><div class="item-desc">Domain strategy &amp; what to focus on</div></div></a>
             <a href="index.html#hints-keywords" class="dropdown-item"><span class="item-icon">💡</span><div class="item-content"><div class="item-title">Keywords &amp; Hints</div><div class="item-desc">Scenario identifiers</div></div></a>
             <a href="index.html#services" class="dropdown-item"><span class="item-icon">☁️</span><div class="item-content"><div class="item-title">AWS Services</div><div class="item-desc">40+ service reference</div></div></a>
             <a href="glossary.html" class="dropdown-item"><span class="item-icon">📖</span><div class="item-content"><div class="item-title">Glossary</div><div class="item-desc">AWS terminology</div></div></a>
@@ -401,7 +401,7 @@
   <div class="container">
     <div class="footer-content">
       <div>
-        <div class="footer-title">AWSPrepAI</div>
+        <div class="footer-title">CertiPrepAI</div>
         <div class="footer-sub">AWS Solutions Architect Associate (SAA-C03) Practice</div>
       </div>
       <div class="footer-links">
@@ -582,7 +582,9 @@ function renderPracticeQ() {
 
   const exp = document.getElementById('p-explanation');
   if (alreadyAnswered) {
-    exp.innerHTML = `<strong>Explanation:</strong> ${q.explain}`;
+    const hintBlock = q.hint ? `<div style="margin-top:.65rem;padding:.5rem .75rem;background:#FEF9C3;border-left:3px solid #EAB308;border-radius:4px;font-size:.85rem"><strong>💡 Hint:</strong> ${q.hint}</div>` : '';
+    const termsBlock = q.terms && q.terms.length ? `<div style="margin-top:.55rem;font-size:.82rem;color:#374151"><strong>🔑 Key Terms:</strong> <span style="color:#1D4ED8">${q.terms.join(' · ')}</span></div>` : '';
+    exp.innerHTML = `<strong>Explanation:</strong> ${q.explain}${hintBlock}${termsBlock}`;
     exp.classList.add('show');
   } else {
     exp.innerHTML = '';
@@ -761,6 +763,8 @@ function submitMock() {
       <div style="font-weight:600;margin-bottom:.35rem;font-size:.88rem">${i+1}. ${q.q}</div>
       <div style="font-size:.82rem;color:var(--muted)">Your answer: <b>${chosen!==undefined?LETTERS[chosen]:'—'}</b> · Correct: <b>${LETTERS[q.answer]}</b></div>
       <div style="font-size:.82rem;color:var(--muted);margin-top:.3rem">${q.explain}</div>
+      ${q.hint ? `<div style="margin-top:.4rem;padding:.35rem .6rem;background:#FEF9C3;border-left:3px solid #EAB308;border-radius:4px;font-size:.8rem"><strong>💡</strong> ${q.hint}</div>` : ''}
+      ${q.terms && q.terms.length ? `<div style="margin-top:.3rem;font-size:.78rem;color:#1D4ED8"><strong>🔑</strong> ${q.terms.join(' · ')}</div>` : ''}
     </div>`;
   });
 }

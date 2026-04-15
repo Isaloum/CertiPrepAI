@@ -1,0 +1,152 @@
+[
+  {
+    "service_a": "Lambda",
+    "service_b": "EC2",
+    "label": "Serverless vs Server",
+    "question_count": 65
+  },
+  {
+    "service_a": "Aurora",
+    "service_b": "RDS",
+    "label": "Managed vs Standard Relational",
+    "question_count": 36
+  },
+  {
+    "service_a": "Multi-AZ",
+    "service_b": "Read Replica",
+    "label": "High Availability vs Read Scaling",
+    "question_count": 31
+  },
+  {
+    "service_a": "RDS",
+    "service_b": "DynamoDB",
+    "label": "Relational vs NoSQL",
+    "question_count": 31
+  },
+  {
+    "service_a": "SQS",
+    "service_b": "SNS",
+    "label": "Queue vs Pub/Sub",
+    "question_count": 29
+  },
+  {
+    "service_a": "SQS",
+    "service_b": "Kinesis",
+    "label": "Queuing vs Streaming",
+    "question_count": 23
+  },
+  {
+    "service_a": "S3 Glacier",
+    "service_b": "S3 Glacier Deep Archive",
+    "label": "Archive tiers",
+    "question_count": 21
+  },
+  {
+    "service_a": "EBS",
+    "service_b": "EFS",
+    "label": "Block vs File Storage",
+    "question_count": 19
+  },
+  {
+    "service_a": "Spot",
+    "service_b": "On-Demand",
+    "label": "Cost vs Availability",
+    "question_count": 18
+  },
+  {
+    "service_a": "Direct Connect",
+    "service_b": "VPN",
+    "label": "Dedicated vs Encrypted Internet",
+    "question_count": 18
+  },
+  {
+    "service_a": "Reserved",
+    "service_b": "On-Demand",
+    "label": "Commitment vs Flexibility",
+    "question_count": 17
+  },
+  {
+    "service_a": "ECS",
+    "service_b": "EKS",
+    "label": "AWS Container vs Kubernetes",
+    "question_count": 14
+  },
+  {
+    "service_a": "S3 Standard",
+    "service_b": "S3 Standard-IA",
+    "label": "Frequent vs Infrequent Access",
+    "question_count": 13
+  },
+  {
+    "service_a": "NAT Gateway",
+    "service_b": "Internet Gateway",
+    "label": "Private vs Public",
+    "question_count": 13
+  },
+  {
+    "service_a": "DataSync",
+    "service_b": "Storage Gateway",
+    "label": "Migration vs Hybrid",
+    "question_count": 13
+  },
+  {
+    "service_a": "CloudFront",
+    "service_b": "Global Accelerator",
+    "label": "CDN vs Network Accelerator",
+    "question_count": 11
+  },
+  {
+    "service_a": "EBS",
+    "service_b": "Instance Store",
+    "label": "Persistent vs Ephemeral",
+    "question_count": 11
+  },
+  {
+    "service_a": "ALB",
+    "service_b": "NLB",
+    "label": "Layer 7 vs Layer 4",
+    "question_count": 9
+  },
+  {
+    "service_a": "WAF",
+    "service_b": "Shield",
+    "label": "App vs Network DDoS protection",
+    "question_count": 7
+  },
+  {
+    "service_a": "Gateway Endpoint",
+    "service_b": "Interface Endpoint",
+    "label": "Free vs Paid VPC Endpoint",
+    "question_count": 6
+  },
+  {
+    "service_a": "SSE-S3",
+    "service_b": "SSE-KMS",
+    "label": "Managed vs Customer Key Encryption",
+    "question_count": 4
+  },
+  {
+    "service_a": "GuardDuty",
+    "service_b": "Inspector",
+    "label": "Threat Detection vs Vulnerability Assessment",
+    "question_count": 3
+  },
+  {
+    "service_a": "Geolocation",
+    "service_b": "Geoproximity",
+    "label": "Route 53 routing policies",
+    "question_count": 2
+  },
+  {
+    "service_a": "Security Group",
+    "service_b": "NACL",
+    "label": "Stateful vs Stateless",
+    "question_count": 0
+  },
+  {
+    "service_a": "Kinesis Data Streams",
+    "service_b": "Kinesis Firehose",
+    "label": "Custom vs Managed Streaming",
+    "question_count": 0
+  }
+]

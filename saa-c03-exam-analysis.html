@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAA-C03 Exam Analysis — Ihab</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
+  .hero { background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%); padding: 3rem 2rem; text-align: center; border-bottom: 1px solid #1e3a5f; }
+  .hero h1 { font-size: 2rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.5rem; }
+  .hero .sub { color: #94a3b8; font-size: 0.95rem; margin-bottom: 2rem; }
+  .score-row { display: flex; gap: 2rem; justify-content: center; align-items: center; flex-wrap: wrap; }
+  .score-ring { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 140px; height: 140px; border-radius: 50%; background: #1e293b; }
+  .score-ring.bad { border: 8px solid #ef4444; }
+  .score-ring.worst { border: 8px solid #7f1d1d; }
+  .score-num { font-size: 2.2rem; font-weight: 900; }
+  .score-label { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+  .score-date { font-size: 0.75rem; color: #64748b; margin-top: 0.2rem; }
+  .pass-line { display: inline-block; background: #16a34a22; border: 1px solid #16a34a; color: #4ade80; padding: 0.4rem 1.2rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; margin-top: 1rem; }
+  .container { max-width: 960px; margin: 0 auto; padding: 2rem; }
+  .section { margin-bottom: 2.5rem; }
+  .section-title { font-size: 1.1rem; font-weight: 700; color: #f1f5f9; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #1e3a5f; }
+  .alert { border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .alert.red { background: #7f1d1d22; border: 1px solid #7f1d1d; border-left: 4px solid #ef4444; }
+  .alert.orange { background: #78350f22; border: 1px solid #78350f; border-left: 4px solid #f97316; }
+  .alert-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.3rem; }
+  .alert.red .alert-title { color: #f87171; }
+  .alert.orange .alert-title { color: #fb923c; }
+  .alert p { font-size: 0.85rem; }
+  .alert.red p { color: #fca5a5; }
+  .alert.orange p { color: #fdba74; }
+  .topic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  @media (max-width: 600px) { .topic-grid { grid-template-columns: 1fr; } }
+  .topic-card { background: #1e293b; border: 1px solid #1e3a5f; border-radius: 0.75rem; padding: 1rem 1.25rem; }
+  .topic-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .topic-name { font-weight: 600; font-size: 0.9rem; }
+  .topic-score-row { display: flex; gap: 1rem; align-items: center; margin-bottom: 0.4rem; }
+  .exam-badge { font-size: 0.75rem; font-weight: 700; padding: 0.1rem 0.5rem; border-radius: 4px; }
+  .e1 { background: #1e3a5f; color: #7dd3fc; }
+  .e2 { background: #3b0764; color: #d8b4fe; }
+  .progress-bar { height: 5px; background: #0f172a; border-radius: 999px; overflow: hidden; margin-bottom: 0.2rem; }
+  .progress-fill { height: 100%; border-radius: 999px; }
+  .topic-meta { font-size: 0.75rem; color: #64748b; margin-top: 0.4rem; }
+  .red { color: #f87171; }
+  .purple { color: #c084fc; }
+  .study-plan { background: #1e293b; border: 1px solid #1e3a5f; border-radius: 0.75rem; padding: 1.5rem; }
+  .week { margin-bottom: 1.5rem; }
+  .week-label { font-weight: 700; color: #38bdf8; font-size: 0.9rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+  .week-label span { background: #0ea5e9; color: #fff; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.75rem; }
+  .task-list { list-style: none; }
+  .task-list li { padding: 0.5rem 0; border-bottom: 1px solid #1e3a5f; font-size: 0.875rem; display: flex; gap: 0.5rem; align-items: flex-start; }
+  .task-list li:last-child { border-bottom: none; }
+  .tag { display: inline-block; background: #0f172a; border: 1px solid #1e3a5f; border-radius: 4px; padding: 0.1rem 0.4rem; font-size: 0.7rem; color: #94a3b8; white-space: nowrap; }
+  .concepts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  @media (max-width: 600px) { .concepts-grid { grid-template-columns: 1fr; } }
+  .concept-item { background: #1e293b; border: 1px solid #1e3a5f; border-radius: 0.5rem; padding: 0.6rem 0.8rem; font-size: 0.82rem; }
+  .concept-item .service { color: #38bdf8; font-weight: 700; font-size: 0.8rem; }
+  .concept-item .rule { color: #e2e8f0; }
+  .stat-row { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .stat-card { background: #1e293b; border: 1px solid #1e3a5f; border-radius: 0.75rem; padding: 1rem 1.5rem; flex: 1; min-width: 100px; text-align: center; }
+  .stat-card .val { font-size: 1.6rem; font-weight: 800; }
+  .stat-card .lbl { font-size: 0.72rem; color: #64748b; margin-top: 0.2rem; }
+  .tip-box { background: #064e3b22; border: 1px solid #064e3b; border-left: 4px solid #10b981; border-radius: 0.5rem; padding: 1rem 1.25rem; margin-top: 1rem; }
+  .tip-box h4 { color: #34d399; font-size: 0.9rem; margin-bottom: 0.5rem; }
+  .tip-box p { font-size: 0.84rem; color: #6ee7b7; }
+  .trend { display: flex; align-items: center; gap: 0.5rem; background: #1e293b; border: 1px solid #1e3a5f; border-radius: 0.75rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
+  .trend-arrow { font-size: 2rem; }
+  .comparison-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+  .comparison-table th { background: #1e3a5f; padding: 0.5rem 0.75rem; text-align: left; font-weight: 600; color: #94a3b8; }
+  .comparison-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #1e3a5f; }
+  .comparison-table tr:hover td { background: #1e293b; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🎯 SAA-C03 Exam Performance Tracker</h1>
+  <p class="sub">Tutorials Dojo Practice Exams · April 2026 · 65 Questions each</p>
+  <div class="score-row">
+    <div>
+      <div class="score-ring bad">
+        <span class="score-num red">30%</span>
+        <span class="score-label">Exam 1</span>
+      </div>
+      <div class="score-date">20/65 correct</div>
+    </div>
+    <div style="font-size:2rem;color:#475569">→</div>
+    <div>
+      <div class="score-ring worst">
+        <span class="score-num" style="color:#7f1d1d">0%</span>
+        <span class="score-label">Exam 2</span>
+      </div>
+      <div class="score-date">0/65 correct</div>
+    </div>
+    <div style="font-size:2rem;color:#475569">→</div>
+    <div>
+      <div class="score-ring worst">
+        <span class="score-num" style="color:#7f1d1d">0%</span>
+        <span class="score-label">Exam 3</span>
+      </div>
+      <div class="score-date">0/65 correct</div>
+    </div>
+    <div style="font-size:2rem;color:#475569">vs</div>
+    <div>
+      <div class="score-ring" style="border:8px solid #16a34a;">
+        <span class="score-num" style="color:#4ade80">72%</span>
+        <span class="score-label">Pass Mark</span>
+      </div>
+      <div class="score-date">~47/65 needed</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Reality Check -->
+  <div class="section">
+    <div class="alert red">
+      <div class="alert-title">🚨 Three Exams: 30% → 0% → 0% — You Must Stop Taking Practice Exams Right Now</div>
+      <p>Exam 3 included questions that are considered SAA-C03 lesson 1 material: "SSH uses port 22" (Q1), "use S3 lifecycle to move to Glacier" (Q5), "use IAM Groups for multiple users" (Q6), "Spot instances are for interruptible workloads" (Q23 &amp; Q52), "bastion host needs SG TCP/22 with /32 CIDR" (Q19). Getting these wrong means the fundamentals are not in place yet. Taking more practice exams will not fix this. You are testing without having studied.</p>
+    </div>
+    <div class="alert orange">
+      <div class="alert-title">⚠️ The Only Fix: Stop Exams. Watch a Video Course. Come Back in 2 Weeks.</div>
+      <p>Practice exams are a <strong>measurement tool</strong>, not a learning tool. You cannot learn by taking exams repeatedly. Watch Stephane Maarek's SAA-C03 Udemy course (or Adrian Cantrill's). All of it. Every section. No skipping. Then come back to practice exams. You will go from 0% to 60%+ just by watching the course once.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="val red">30%</div>
+        <div class="lbl">Exam 1</div>
+      </div>
+      <div class="stat-card">
+        <div class="val" style="color:#7f1d1d">0%</div>
+        <div class="lbl">Exam 2</div>
+      </div>
+      <div class="stat-card">
+        <div class="val" style="color:#7f1d1d">0%</div>
+        <div class="lbl">Exam 3</div>
+      </div>
+      <div class="stat-card">
+        <div class="val" style="color:#fbbf24">72%</div>
+        <div class="lbl">Need to Pass</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topic Comparison -->
+  <div class="section">
+    <div class="section-title">📊 Topic Performance — Exam 1 vs Exam 2</div>
+    <div class="topic-grid">
+
+      <div class="topic-card">
+        <div class="topic-header"><span class="topic-name">🗄️ Database</span></div>
+        <div class="topic-score-row">
+          <span class="exam-badge e1">Exam 1</span>
+          <span class="red">22% · 5/22</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:22%;background:#ef4444"></div></div>
+        <div class="topic-score-row" style="margin-top:0.4rem">
+          <span class="exam-badge e2">Exam 2</span>
+          <span class="red">0% · 0/14</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:#7f1d1d"></div></div>
+        <div class="topic-meta">RDS Multi-AZ CNAME, DMS CDC, DynamoDB endpoint, Secrets Manager, RDS Proxy</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-header"><span class="topic-name">💾 Storage</span></div>
+        <div class="topic-score-row">
+          <span class="exam-badge e1">Exam 1</span>
+          <span class="red">38% · 5/13</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:38%;background:#ef4444"></div></div>
+        <div class="topic-score-row" style="margin-top:0.4rem">
+          <span class="exam-badge e2">Exam 2</span>
+          <span class="red">0% · 0/16</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:#7f1d1d"></div></div>
+        <div class="topic-meta">S3 static hosting, DLM, DataSync, Tape GW→Glacier Deep Archive, S3 Standard-IA, Object Lock, SSE header</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-header"><span class="topic-name">🌐 Networking</span></div>
+        <div class="topic-score-row">
+          <span class="exam-badge e1">Exam 1</span>
+          <span class="red">16% · 1/6</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:16%;background:#ef4444"></div></div>
+        <div class="topic-score-row" style="margin-top:0.4rem">
+          <span class="exam-badge e2">Exam 2</span>
+          <span class="red">0% · 0/12</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:#7f1d1d"></div></div>
+        <div class="topic-meta">ALB+gRPC, ENI failover, VPC peering no edge-to-edge, EIP on NLB, IPv6-only subnet, Network Firewall, WAF</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-header"><span class="topic-name">🏢 Governance</span></div>
+        <div class="topic-score-row">
+          <span class="exam-badge e1">Exam 1</span>
+          <span style="color:#4ade80">100% · 1/1</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%;background:#4ade80"></div></div>
+        <div class="topic-score-row" style="margin-top:0.4rem">
+          <span class="exam-badge e2">Exam 2</span>
+          <span class="red">0% · 0/3</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:#7f1d1d"></div></div>
+        <div class="topic-meta">STS tokens, AWS Organizations + IAM Identity Center, Control Tower</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-header"><span class="topic-name">🖥️ EC2 & Auto Scaling</span></div>
+        <div class="topic-score-row">
+          <span class="exam-badge e1">Exam 1</span>
+          <span class="red">16% · 1/6</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:16%;background:#ef4444"></div></div>
+        <div class="topic-score-row" style="margin-top:0.4rem">
+          <span class="exam-badge e2">Exam 2</span>
+          <span class="red">0% · 0/6</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:#7f1d1d"></div></div>
+        <div class="topic-meta">Cooldown period (300s default), bastion host placement, IAM role vs access keys on EC2</div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-header"><span class="topic-name">📨 Messaging & Events</span></div>
+        <div class="topic-score-row">
+          <span class="exam-badge e1">Exam 1</span>
+          <span style="color:#4ade80">100% · 1/1</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%;background:#4ade80"></div></div>
+        <div class="topic-score-row" style="margin-top:0.4rem">
+          <span class="exam-badge e2">Exam 2</span>
+          <span class="red">0% · 0/2</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%;background:#7f1d1d"></div></div>
+        <div class="topic-meta">SNS filter policies, Kinesis→Lambda async, SQS priority queues (two separate queues)</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Critical Concepts to Memorize -->
+  <div class="section">
+    <div class="section-title">🧠 The 40 Core Concepts You Must Memorize First</div>
+    <p style="font-size:0.84rem;color:#94a3b8;margin-bottom:1rem;">These appeared across both exams. Master these before taking another practice exam.</p>
+    <div class="concepts-grid">
+
+      <div class="concept-item">
+        <div class="service">RDS Multi-AZ Failover</div>
+        <div class="rule">CNAME switches from primary to standby. IP does NOT move. New instance is NOT created.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">RDS Multi-AZ vs Read Replica</div>
+        <div class="rule">Multi-AZ = HA, synchronous, automatic failover. Read Replica = async, for read scaling only.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">Aurora Reader Endpoint</div>
+        <div class="rule">Load balances automatically across ALL read replicas. Use this instead of individual replica endpoints.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">RDS Proxy</div>
+        <div class="rule">Connection pooling for Lambda→RDS. Fixes "too many connections" errors. Sits between Lambda and RDS.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">Aurora native Lambda</div>
+        <div class="rule">lambda_sync / lambda_async — invoke Lambda directly from Aurora MySQL stored procedures.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">DMS CDC</div>
+        <div class="rule">Full load + Change Data Capture = ongoing replication. SSL via CA certificate on DMS endpoint.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">DynamoDB Gateway Endpoint</div>
+        <div class="rule">VPC → DynamoDB without internet. Routes via route table. NOT an interface endpoint. Use AWS Backup for cross-account copies.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">ElastiCache Redis AUTH</div>
+        <div class="rule">Password-protect Redis with AUTH command. NOT IAM, NOT security groups alone.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">S3 Static Website Hosting</div>
+        <div class="rule">Bucket name MUST match domain name. Enable website hosting. Point Route 53 Alias record to S3 endpoint.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">S3 + CloudFront</div>
+        <div class="rule">OAI (Origin Access Identity) restricts S3 to CloudFront only. Use pre-signed URLs for time-limited access.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">S3 Object Lock</div>
+        <div class="rule">WORM model. Compliance mode = no one can delete (incl. root). Governance = selected users can override.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">S3 Standard-IA</div>
+        <div class="rule">Infrequent access but RAPID retrieval. Low latency, high throughput. NOT for archiving (that's Glacier).</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">S3 Encryption Headers</div>
+        <div class="rule">SSE-S3: x-amz-server-side-encryption. SSE-C uses 3 other headers (customer-key, algorithm, key-MD5).</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">AWS DataSync</div>
+        <div class="rule">Bulk on-prem→AWS data migration. Can target S3 Glacier Deep Archive directly. Faster than Storage Gateway for one-time moves.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">Storage Gateway Tape Gateway</div>
+        <div class="rule">Replace physical tapes. Virtual tapes → S3 → S3 Glacier Deep Archive. Best for existing tape backup workflows.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">Amazon DLM</div>
+        <div class="rule">Data Lifecycle Manager. Automates EBS snapshot creation + retention. No extra cost, no custom scripts needed.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">FSx for Lustre</div>
+        <div class="rule">High-performance parallel file system for ML/HPC. NOT EFS. Handles hot/warm data at massive throughput.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">CloudFront Lambda@Edge</div>
+        <div class="rule">Runs Lambda at edge locations. Use for: dynamic content based on User-Agent, A/B testing, auth. CF Functions = simpler/faster, no network calls.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">CloudWatch Metrics</div>
+        <div class="rule">Built-in EC2: CPU, Network, Disk I/O. NOT Memory, NOT Swap. Install CloudWatch Agent for custom metrics.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">Route 53 Routing Policies</div>
+        <div class="rule">Geolocation = fixed by country. Geoproximity = bias to expand/shrink coverage. Latency = lowest latency. Weighted = % split.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">Route 53 Failover</div>
+        <div class="rule">Active-passive with health checks. Healthy primary → DNS points to primary. Primary down → DNS points to secondary (e.g., S3 static site).</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">ALB vs NLB vs GLB</div>
+        <div class="rule">ALB = L7 (HTTP/HTTPS/gRPC, path/host routing). NLB = L4 (TCP/UDP, EIP support). GLB = L3/L4 (GENEVE, 3rd-party appliances).</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">EIP on Load Balancer</div>
+        <div class="rule">EIP can ONLY be attached to NLB, NOT ALB. ALB uses DNS names only. Use NLB + EIP when clients whitelist IP addresses.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">ENI Failover</div>
+        <div class="rule">Secondary ENI retains private IP/MAC. Detach from failed instance, attach to standby → traffic resumes. No DNS change needed.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">VPC Peering — No Transitive Routing</div>
+        <div class="rule">VPC-A peers VPC-B. VPC-B peers VPC-C. VPC-A CANNOT reach VPC-C via VPC-B. No edge-to-edge routing.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">Egress-Only IGW</div>
+        <div class="rule">IPv6 outbound only from private subnet. Like NAT Gateway but for IPv6. Cannot be used for IPv4.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">AWS Network Firewall</div>
+        <div class="rule">Stateful L3-L7 inspection for VPC. Blocks malicious URLs and FQDNs. ALB+WAF = L7. Network Firewall = deeper VPC-level filtering.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">WAF</div>
+        <div class="rule">L7 rules: SQL injection, XSS, rate-based, geo-match. Attaches to: ALB, CloudFront, API Gateway. NOT NLB.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">Auto Scaling Cooldown</div>
+        <div class="rule">Default: 300 seconds. Prevents ASG from launching/terminating before previous activity takes effect. Does NOT mean instances "cool down."</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">IAM Role on EC2</div>
+        <div class="rule">ALWAYS use IAM roles for EC2 to access AWS services. NEVER store access keys on the instance. MFA for extra admin protection.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">AWS STS</div>
+        <div class="rule">Issues temporary credentials via AssumeRole. Cross-account access. NOT Cognito (that's for app users). NOT IAM Identity Center (that's SSO).</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">AWS Organizations + Control Tower</div>
+        <div class="rule">Organizations = multi-account management + consolidated billing. Control Tower = automated landing zone with guardrails. IAM Identity Center = SSO with directory.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">SNS Filter Policies</div>
+        <div class="rule">One SNS topic → multiple SQS queues with filter policies. Each queue only receives matching messages. Fan-out pattern.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">SQS Priority Queue Pattern</div>
+        <div class="rule">No built-in priority in SQS. Solution: two separate queues (premium + free). EC2 polls premium first, then free if empty.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">AWS Glue for ETL</div>
+        <div class="rule">Crawler discovers schema in S3. ETL job converts CSV→Parquet. Scheduled or on-demand. Fully serverless.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">EMR + Redshift</div>
+        <div class="rule">"Big data processing frameworks" = EMR. "Standard SQL + BI tools" = Redshift. EMR→Redshift is the analytics pipeline.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">Secrets Manager</div>
+        <div class="rule">Stores and ROTATES secrets automatically. SSM Parameter Store does NOT auto-rotate. KMS = encryption keys only.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">GuardDuty</div>
+        <div class="rule">Threat detection using ML/anomaly detection. Detects suspicious S3 access, malicious IPs. Config = compliance rules. CloudTrail = API audit log.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">AWS Config</div>
+        <div class="rule">Continuous audit of resource configurations. Create rules to detect non-compliance (e.g., public S3 buckets). Config ≠ CloudTrail.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">Snowball vs DataSync vs Direct Connect</div>
+        <div class="rule">Snowball/Edge = large one-time physical migration (TB-PB). DataSync = online transfer (fast, but uses network). Direct Connect = permanent dedicated line.</div>
+      </div>
+      <div class="concept-item">
+        <div class="service">Amazon Rekognition</div>
+        <div class="rule">Content moderation, face detection, object recognition. Interface VPC endpoint for private access. Kinesis Video Streams feeds live video to Rekognition.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Exam 3 New Concepts -->
+  <div class="section">
+    <div class="section-title">🆕 Exam 3 — New Concepts That Also Failed</div>
+    <p style="font-size:0.84rem;color:#94a3b8;margin-bottom:1rem;">These appeared in Exam 3 and are in addition to the 40 concepts from Exams 1 &amp; 2. Many are SAA-C03 basics.</p>
+    <div class="concepts-grid">
+      <div class="concept-item"><div class="service">SSH = Port 22, RDP = Port 3389</div><div class="rule">Allow TCP 22 inbound in Security Group to enable SSH. /32 = single IP, /0 = all IPs.</div></div>
+      <div class="concept-item"><div class="service">S3 Lifecycle Policy</div><div class="rule">Automatically transition objects to cheaper storage (Glacier) or delete them after N days. No EC2, no Lambda needed.</div></div>
+      <div class="concept-item"><div class="service">IAM Groups</div><div class="rule">Create group per department. Attach policy to group. Add users to group. NEVER attach policies to individual users at scale.</div></div>
+      <div class="concept-item"><div class="service">Spot Instances</div><div class="rule">Cheapest option. Use for interruptible, fault-tolerant workloads (batch, video transcoding, HPC). Can be interrupted with 2-min notice.</div></div>
+      <div class="concept-item"><div class="service">EC2 Stop/Start Behavior</div><div class="rule">Instance store data = LOST on stop. EBS = persists. Host may change. EIP stays associated (in VPC). ENI stays attached.</div></div>
+      <div class="concept-item"><div class="service">Amazon Data Firehose</div><div class="rule">Loads streaming data to S3, Redshift, OpenSearch, Splunk. Fully managed. Use for near-real-time analytics. NOT for reading/processing — that's Kinesis Data Streams + Lambda.</div></div>
+      <div class="concept-item"><div class="service">Direct Connect + Transit Gateway</div><div class="rule">One DX + Transit Gateway = connect multiple VPCs/accounts. Avoid setting up separate DX per account (expensive). VPC peering doesn't support edge-to-edge.</div></div>
+      <div class="concept-item"><div class="service">Kinesis Data Streams — Retention</div><div class="rule">Default: 24 hours. Max: 365 days. If consumer processes every other day → data expires. Increase retention period or process more frequently.</div></div>
+      <div class="concept-item"><div class="service">S3 + Athena for Log Analysis</div><div class="rule">ELB/ALB access logs → S3. Analyze with Athena (serverless SQL). No EC2, no custom app needed. Cheapest and simplest.</div></div>
+      <div class="concept-item"><div class="service">EC2 vCPU Limit</div><div class="rule">EC2 limits are per REGION (not per AZ). Submit limit increase form via Service Quotas. You don't need to change regions.</div></div>
+      <div class="concept-item"><div class="service">NACL Ephemeral Ports</div><div class="rule">NACLs are stateless. Inbound 443 allowed → also need outbound 32768-65535 for return traffic. Security Groups are stateful (auto-allow return).</div></div>
+      <div class="concept-item"><div class="service">EBS DeleteOnTermination</div><div class="rule">Default: root volume deleted on instance termination. Set DeleteOnTermination=false to preserve root volume. Set at launch or via CLI.</div></div>
+      <div class="concept-item"><div class="service">EC2 Cluster Placement Group</div><div class="rule">Packs instances close in ONE AZ for low-latency, high-throughput node-to-node communication. Required for HPC. Cannot span regions.</div></div>
+      <div class="concept-item"><div class="service">EC2 Hibernation</div><div class="rule">Must be enabled at LAUNCH. Cannot enable after. Saves RAM to EBS. Faster restart. Pay only for EBS + EIP while hibernated.</div></div>
+      <div class="concept-item"><div class="service">VPC Subnet Facts</div><div class="rule">Each subnet = 1 AZ only (cannot span). New subnets linked to main route table by default. VPC CIDR: /16 (65536 IPs) to /28 (16 IPs).</div></div>
+      <div class="concept-item"><div class="service">AWS Glue Job Bookmark</div><div class="rule">Tracks last processed data. Next run only processes NEW data. Prevents reprocessing old data. Enable in ETL job settings.</div></div>
+      <div class="concept-item"><div class="service">S3 Object Lambda</div><div class="rule">Transform S3 data on GET request. Lambda receives bucket name + object KEY. Use key (filename) to identify and process correct object.</div></div>
+      <div class="concept-item"><div class="service">RDS Read Replica</div><div class="rule">Async replication. Read-only. Scales read traffic. Multiple replicas = scale further. Multi-AZ = sync, for HA/failover only.</div></div>
+      <div class="concept-item"><div class="service">SQS + Auto Scaling</div><div class="rule">Scale EC2 based on ApproximateNumberOfMessages. Backlog per instance = queue depth / running instances. Target value = max latency / processing time.</div></div>
+      <div class="concept-item"><div class="service">Lambda KMS Decrypt</div><div class="rule">Add kms:decrypt to Lambda EXECUTION ROLE (not resource policy). Also update KMS key policy to grant the execution role ARN permission.</div></div>
+      <div class="concept-item"><div class="service">Lambda Container Image</div><div class="rule">Fully serverless. Can be up to 10 GB. Ephemeral storage: default 512MB, up to 10 GB configurable. Use EFS for persistent shared storage.</div></div>
+      <div class="concept-item"><div class="service">AWS Backup for RDS</div><div class="rule">RDS automated backup max = 35 days. For 90+ days: use AWS Backup plan. Supports cross-account, cross-region copies.</div></div>
+      <div class="concept-item"><div class="service">VPC Peering — Direct Only</div><div class="rule">No transitive routing. DEV↔UAT and UAT↔PROD does NOT mean DEV↔PROD. Must create direct DEV↔PROD peering connection.</div></div>
+      <div class="concept-item"><div class="service">AWS Config Tag Rule</div><div class="rule">required-tags managed rule checks for missing tags. Least effort for tag compliance. SCP = prevents actions, doesn't detect non-compliance.</div></div>
+      <div class="concept-item"><div class="service">RDS Storage Autoscaling</div><div class="rule">Enable autoscaling on RDS to expand storage automatically. Zero downtime. Least overhead vs manually increasing allocated storage.</div></div>
+      <div class="concept-item"><div class="service">EC2 Billing Edge Cases</div><div class="rule">Stopping to HIBERNATE = still billed. Stopping normally = not billed. Reserved Instance in terminated state = still billed until term ends.</div></div>
+      <div class="concept-item"><div class="service">SSM Parameter Store vs Secrets Manager</div><div class="rule">SSM SecureString = cheap, KMS encrypted, no auto-rotation. Secrets Manager = auto-rotation, more expensive ($0.40/secret/mo). Use SSM for static config, Secrets Manager for rotating credentials.</div></div>
+      <div class="concept-item"><div class="service">Storage Gateway File Gateway</div><div class="rule">On-prem SMB/NFS → S3. Supports local caching for low-latency access. Use for on-prem backup to cloud with existing protocols.</div></div>
+      <div class="concept-item"><div class="service">Glacier Expedited + Provisioned</div><div class="rule">Expedited = 1-5 min retrieval. Provisioned Capacity = guarantees 3 expedited retrievals per 5 min + 150 MB/s. Required for guaranteed SLA.</div></div>
+      <div class="concept-item"><div class="service">S3 Transfer Acceleration</div><div class="rule">Global uploads via CloudFront edge locations. Best for users uploading to a centralized S3 bucket from around the world. Not for downloads.</div></div>
+      <div class="concept-item"><div class="service">Reserved Instance Marketplace</div><div class="rule">Sell unused Standard Reserved Instances. Terminate instances to stop new charges. RIs still bill until term ends unless sold in Marketplace.</div></div>
+      <div class="concept-item"><div class="service">Auto Scaling Launch Template</div><div class="rule">Cannot modify existing launch template. Create a NEW launch template to use a new AMI. Target groups are for load balancers, not ASGs.</div></div>
+      <div class="concept-item"><div class="service">Lambda in VPC — ENI Exhaustion</div><div class="rule">Lambda needs ENIs + private IPs to connect to VPC. If subnet has limited IPs or VPC hits ENI quota → EC2ThrottledException. Use larger subnet CIDR.</div></div>
+      <div class="concept-item"><div class="service">S3 Event Types</div><div class="rule">ObjectCreated:* = all uploads. ObjectRemoved:Delete = permanent delete. ObjectRemoved:DeleteMarkerCreated = versioned object marker only.</div></div>
+      <div class="concept-item"><div class="service">Transcribe → Translate → Comprehend</div><div class="rule">Audio→Text: Amazon Transcribe. Text translation: Amazon Translate. Sentiment analysis: Amazon Comprehend. No ML training needed — all managed APIs.</div></div>
+      <div class="concept-item"><div class="service">ALB SNI — Multiple Certs</div><div class="rule">Upload all SSL certs to ALB. Bind multiple certs to same HTTPS listener. ALB uses SNI to pick the right cert per client. Free. No re-auth needed.</div></div>
+      <div class="concept-item"><div class="service">S3 Cross-Account Copy</div><div class="rule">Source bucket policy + destination IAM policy. Use IAM role in destination account to perform copy. Destination account owns the copied object.</div></div>
+      <div class="concept-item"><div class="service">CloudFormation CreationPolicy</div><div class="rule">Prevents stack from completing until cfn-signal sends success signal. Use with EC2 instances to wait for app install. DependsOn = just ordering, not success.</div></div>
+      <div class="concept-item"><div class="service">S3 Gateway Endpoint</div><div class="rule">FREE. Private subnet → S3 without internet/NAT. Add to route table. Interface endpoint costs hourly. NAT Gateway costs hourly + data. Gateway = cheapest.</div></div>
+      <div class="concept-item"><div class="service">DynamoDB + AppSync</div><div class="rule">Real-time, schemaless voting/social app = DynamoDB. AppSync provides real-time GraphQL API with subscriptions. Schema changes = no ALTER TABLE needed.</div></div>
+      <div class="concept-item"><div class="service">EKS + Fargate</div><div class="rule">Serverless Kubernetes. No EC2 node management. Cluster Autoscaler handles pod scaling. Each pod = isolated compute. Pay per pod resource.</div></div>
+      <div class="concept-item"><div class="service">NACL First-Match Rule</div><div class="rule">NACLs evaluate rules in order (lowest number first). First match wins. Rule 100 allows all → rule 101 deny never reached. Unlike Security Groups (all rules evaluated).</div></div>
+      <div class="concept-item"><div class="service">Route 53 Active-Active</div><div class="rule">All resources available simultaneously. Use weighted/latency/geolocation routing. Active-Passive = primary + standby. Active-Active = everyone serves traffic.</div></div>
+      <div class="concept-item"><div class="service">Client-Side Encryption — Two Options</div><div class="rule">1. Client-Side with KMS key (AWS manages key rotation). 2. Client-Side with client-side master key (you manage rotation). Both encrypt BEFORE sending to S3.</div></div>
+      <div class="concept-item"><div class="service">SCP Restricts AWS Config</div><div class="rule">SCPs set guardrails for entire OU. Even admins can't override SCP. Attach SCP to OU to block access to AWS Config for all accounts in it.</div></div>
+      <div class="concept-item"><div class="service">Cost Explorer API</div><div class="rule">Programmatic access to cost + usage data. Supports pagination for large datasets. Use for building automated cost reports. Budgets = alerts only.</div></div>
+    </div>
+  </div>
+
+  <!-- The Real Study Plan -->
+  <div class="section">
+    <div class="section-title">📅 The Actual Plan — Study First, Exam Later</div>
+    <div class="alert orange">
+      <div class="alert-title">⚠️ Stop Taking Practice Exams Until Week 3</div>
+      <p>You are currently testing without having studied. Taking more practice exams now will not help — you'll keep scoring 0–30% and wasting time. Spend weeks 1–2 reading the material, then test in week 3.</p>
+    </div>
+    <div class="study-plan">
+
+      <div class="week">
+        <div class="week-label">Week 1 — Days 1-3 <span>Read + Understand (no practice exams)</span></div>
+        <ul class="task-list">
+          <li>📖 <div><strong>Day 1: Storage</strong> — Read AWS docs or Tutorials Dojo cheat sheets for: S3 (all storage classes, encryption, Object Lock, static hosting, access points, pre-signed URLs), EBS (types, DLM snapshots), FSx (Lustre vs Windows vs NetApp), DataSync, Storage Gateway types <span class="tag">16 Qs in Exam 2</span></div></li>
+          <li>📖 <div><strong>Day 2: Databases</strong> — RDS (Multi-AZ failover = CNAME flip, Enhanced Monitoring, Multi-AZ vs Read Replica), Aurora (Reader Endpoint, native Lambda, RDS Proxy, Global DB), DynamoDB (GSI/LSI, gateway endpoint, AWS Backup), ElastiCache (Redis AUTH, encryption), Secrets Manager vs SSM <span class="tag">14 Qs in Exam 2</span></div></li>
+          <li>📖 <div><strong>Day 3: Networking</strong> — ALB vs NLB vs GLB (gRPC=ALB, EIP=NLB), VPC peering (no transitive), NAT GW, Egress-Only IGW, ENI failover, Network Firewall vs WAF vs NACLs, VPC endpoints (gateway vs interface), site-to-site VPN (customer gateway = static IP) <span class="tag">12 Qs in Exam 2</span></div></li>
+        </ul>
+      </div>
+
+      <div class="week">
+        <div class="week-label">Week 1 — Days 4-6 <span>Read + Understand (continued)</span></div>
+        <ul class="task-list">
+          <li>📖 <div><strong>Day 4: Compute + Monitoring</strong> — EC2 (IAM roles, bastion host in public subnet, EBS vs instance store), Auto Scaling (cooldown=300s, scheduled vs target tracking, lifecycle hooks), CloudWatch (built-in vs custom metrics, CloudWatch Agent), DLM for EBS <span class="tag">6 Qs in Exam 2</span></div></li>
+          <li>📖 <div><strong>Day 5: Governance + Security</strong> — STS (AssumeRole, temp credentials), IAM Identity Center + Organizations + Control Tower, AWS Config (compliance rules), GuardDuty (threat detection), CloudTrail (API audit), AWS Backup (cross-account) <span class="tag">Governance was 100% in Exam 1 → dropped to 0% in Exam 2</span></div></li>
+          <li>📖 <div><strong>Day 6: Messaging + Analytics</strong> — SQS (FIFO, cooldown, priority = two queues), SNS (filter policies, fan-out), EventBridge vs S3 triggers, Kinesis (Video Streams + Rekognition), AWS Glue (Crawler + ETL), EMR + Redshift pattern, Route 53 (all routing policies + failover) <span class="tag">Messaging was 100% Exam 1 → 0% Exam 2</span></div></li>
+        </ul>
+      </div>
+
+      <div class="week">
+        <div class="week-label">Week 2 <span>Active Recall — Flash Cards, Not Exams</span></div>
+        <ul class="task-list">
+          <li>🃏 <div>Create flash cards for every concept in the list above. Front: scenario. Back: service + reason. Use Anki or physical cards.</div></li>
+          <li>🃏 <div>Practice "which service" decisions: given a scenario, pick the right AWS service without looking up. Focus on pairs that are commonly confused (DLM vs AWS Backup, DataSync vs Storage Gateway, WAF vs Network Firewall, Geolocation vs Geoproximity).</div></li>
+          <li>🃏 <div>Write out in your own words: the RDS Multi-AZ failover sequence, the S3 static website setup, the SNS→SQS fan-out pattern, the VPC peering edge-to-edge limitation. Writing = retention.</div></li>
+          <li>✅ <div>End of Week 2: Take ONE 20-question mini-quiz (not a full 65-question exam). Target: 50%+. If below 50%, go back to Week 1 material.</div></li>
+        </ul>
+      </div>
+
+      <div class="week">
+        <div class="week-label">Week 3 <span>Practice Exams With Immediate Review</span></div>
+        <ul class="task-list">
+          <li>📝 <div>Take full 65-question practice exam. After EACH wrong answer, immediately write the correct answer in one sentence. Do not continue until you understand why you got it wrong.</div></li>
+          <li>📝 <div>Target: 55%+ (36/65 correct). If you hit this, you've made real progress.</div></li>
+          <li>📝 <div>Take second exam 2 days later. Target: 65%+ (42/65 correct).</div></li>
+          <li>📝 <div>Focus on the 40 concepts from the list above — they account for roughly 70% of exam questions.</div></li>
+        </ul>
+      </div>
+
+      <div class="week">
+        <div class="week-label">Week 4 <span>Final Push to 72%</span></div>
+        <ul class="task-list">
+          <li>🎯 <div>Take 2 full exams. Review every wrong answer immediately.</div></li>
+          <li>🎯 <div>Final cram: S3 Object Lock, RDS Multi-AZ CNAME, ALB for gRPC, EIP on NLB, Lambda@Edge, SNS filter policies, Auto Scaling cooldown (300s), DLM, DataSync vs Storage Gateway, Geoproximity vs Geolocation.</div></li>
+          <li>🎯 <div>Target for exam day: 75%+ on practice exams before booking real exam.</div></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="tip-box">
+      <h4>💡 Why You're Scoring 0–30%: The Real Reason</h4>
+      <p>On Exam 2, you missed questions about basics like RDS Multi-AZ failover (Q9), CloudWatch agent for swap metrics (Q20), IAM roles on EC2 (Q38), Route 53 Geolocation (Q50), and S3+CloudFront as CDN (Q44). These are SAA-C03 "gimme" questions that every study guide covers in Chapter 1. This tells me you haven't read any study guide yet — you're going straight to practice exams. The fix is simple: read a study guide (Tutorials Dojo, Stephane Maarek's course, or Adrian Cantrill's course) before taking any more practice exams. Two weeks of reading will move you from 0% to 65%+.</p>
+    </div>
+  </div>
+
+  <!-- Resources -->
+  <div class="section">
+    <div class="section-title">📚 Study Resources (Ranked by Impact)</div>
+    <div style="background:#1e293b;border:1px solid #1e3a5f;border-radius:0.75rem;padding:1.25rem;">
+      <div style="display:grid;gap:0.75rem;">
+        <div style="padding:0.75rem;background:#0f172a;border-radius:0.5rem;border-left:3px solid #4ade80;">
+          <div style="font-weight:700;color:#4ade80;font-size:0.85rem;">1. Stephane Maarek's SAA-C03 Course (Udemy)</div>
+          <div style="font-size:0.8rem;color:#94a3b8;margin-top:0.2rem;">Most comprehensive. Watch it at 1.5x speed. ~27 hours. This alone will get you to 60%+.</div>
+        </div>
+        <div style="padding:0.75rem;background:#0f172a;border-radius:0.5rem;border-left:3px solid #38bdf8;">
+          <div style="font-weight:700;color:#38bdf8;font-size:0.85rem;">2. Tutorials Dojo Cheat Sheets (tutorialsdojo.com)</div>
+          <div style="font-size:0.8rem;color:#94a3b8;margin-top:0.2rem;">Read the cheat sheet for every service that appeared in these two exams. Fast and exam-focused.</div>
+        </div>
+        <div style="padding:0.75rem;background:#0f172a;border-radius:0.5rem;border-left:3px solid #fbbf24;">
+          <div style="font-weight:700;color:#fbbf24;font-size:0.85rem;">3. AWS SAA-C03 Exam Guide (aws.amazon.com)</div>
+          <div style="font-size:0.8rem;color:#94a3b8;margin-top:0.2rem;">Official domain breakdown: Secure (30%), Resilient (26%), Performant (24%), Cost (20%). Study in that order.</div>
+        </div>
+        <div style="padding:0.75rem;background:#0f172a;border-radius:0.5rem;border-left:3px solid #c084fc;">
+          <div style="font-weight:700;color:#c084fc;font-size:0.85rem;">4. Tutorials Dojo Practice Exams — AFTER Week 2 only</div>
+          <div style="font-size:0.8rem;color:#94a3b8;margin-top:0.2rem;">Don't take more until you've read the material. Practice exams are for testing, not for learning.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:2rem 0;color:#475569;font-size:0.8rem;">
+    Generated by CertiPrepAI · April 2026<br>
+    <span style="color:#38bdf8">certiprepai.com</span>
+  </div>
+
+</div>
+</body>
+</html>

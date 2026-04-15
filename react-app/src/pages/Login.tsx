@@ -21,7 +21,17 @@ export default function Login() {
       await signIn(email, password)
       navigate('/dashboard')
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Sign in failed.')
+      const msg = err instanceof Error ? err.message : 'Sign in failed.'
+      // Cognito returns "User does not exist" when password reset is required — translate it
+      if (msg.includes('User does not exist') || msg.includes('PasswordResetRequired') || msg.includes('Password reset required')) {
+        setError('You need to reset your password first. Click "Forgot password?" below.')
+      } else if (msg.includes('Incorrect username or password')) {
+        setError('Incorrect email or password.')
+      } else if (msg.includes('User is not confirmed')) {
+        setError('Please confirm your email first. Check your inbox for the verification code.')
+      } else {
+        setError(msg)
+      }
     }
     setLoading(false)
   }
@@ -125,7 +135,7 @@ export default function Login() {
             <input
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value.trim().toLowerCase())}
               onFocus={() => setFocusField('email')}
               onBlur={() => setFocusField(null)}
               placeholder="you@example.com"

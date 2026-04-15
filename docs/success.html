@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Payment Successful - AWSPrepAI</title>
+  <title>Payment Successful - CertiPrepAI</title>
   <link rel="stylesheet" href="styles.css">
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
@@ -105,42 +105,25 @@
     <!-- Share Card -->
     <div class="share-card">
       <h3>📣 Know Someone Studying for AWS?</h3>
-      <p>Share AWSPrepAI with a colleague — help them pass too.</p>
+      <p>Share CertiPrepAI with a colleague — help them pass too.</p>
       <div class="share-buttons">
-        <a class="share-btn share-btn--twitter" href="https://twitter.com/intent/tweet?text=Just+unlocked+AWSPrepAI+Premium+%E2%80%94+3%2C120+practice+questions+across+12+AWS+certs+%F0%9F%9A%80+Check+it+out%3A+https%3A%2F%2Fawsprepai.netlify.app" target="_blank">🐦 Twitter</a>
-        <a class="share-btn share-btn--linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fawsprepai.netlify.app&title=AWSPrepAI%20%E2%80%94%20Pass%20Your%20AWS%20Certs&summary=3%2C120+practice+questions+across+12+AWS+certifications" target="_blank">💼 LinkedIn</a>
+        <a class="share-btn share-btn--twitter" href="https://twitter.com/intent/tweet?text=Just+unlocked+CertiPrepAI+Premium+%E2%80%94+3%2C120+practice+questions+across+12+AWS+certs+%F0%9F%9A%80+Check+it+out%3A+https%3A%2F%2Fawsprepai.netlify.app" target="_blank">🐦 Twitter</a>
+        <a class="share-btn share-btn--linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fawsprepai.netlify.app&title=CertiPrepAI%20%E2%80%94%20Pass%20Your%20AWS%20Certs&summary=3%2C120+practice+questions+across+12+AWS+certifications" target="_blank">💼 LinkedIn</a>
         <button class="share-btn share-btn--copy" onclick="copyLink()">🔗 Copy Link</button>
       </div>
     </div>
 
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="payment-system.js"></script>
   <script>
-    // Supabase client — updates user_metadata.tier after payment
-    const SUPA_URL = 'https://swkqwqtgbxymyhcnhmfv.supabase.co';
-    const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3a3F3cXRnYnh5bXloY25obWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxNzEwNzcsImV4cCI6MjA4NTc0NzA3N30.RttI8lDSItgTLMR1QwstSfNakyXqsLgt5kEfmhEJxf4';
-    const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
-
-    async function updateSupabaseTier(tier) {
-      try {
-        const { data: { session } } = await supa.auth.getSession();
-        if (!session) return; // not logged in — skip
-        await supa.auth.updateUser({ data: { tier } });
-        // Also refresh localStorage so dashboard reads it correctly on next load
-        localStorage.setItem('_apa_tier', tier);
-      } catch (e) {
-        console.warn('[success] Could not update Supabase tier:', e.message);
-      }
-    }
-
     // Verify session and grant access — only on confirmed Stripe payment
+    // Note: Cognito custom:plan attribute is updated by the stripe-webhook Lambda.
+    // We update localStorage here so the dashboard reflects the new tier immediately.
     async function verifyAndGrant() {
       const params = new URLSearchParams(window.location.search);
       const sessionId = params.get('session_id');
       if (!sessionId) {
-        // No session ID means someone navigated here directly — do NOT grant
         document.querySelector('.success-card h1').textContent = 'Verifying Payment...';
         document.querySelector('.subtitle').textContent = 'If you just paid, your access will activate shortly.';
         return;
@@ -154,12 +137,11 @@
         const data = await response.json();
         if (data.verified) {
           await grantPremiumAccessWithTier(data.tier || 'lifetime', data.paymentIntentId, data.accessToken);
-          await updateSupabaseTier(data.tier || 'lifetime');
+          localStorage.setItem('_apa_tier', data.tier || 'lifetime');
         } else {
           document.querySelector('.subtitle').textContent = 'Payment could not be verified. Please contact support@awsprepai.com.';
         }
       } catch (e) {
-        // Network error — show message, do NOT grant access
         document.querySelector('.subtitle').textContent = 'Verification failed. Please refresh or contact support@awsprepai.com.';
       }
     }

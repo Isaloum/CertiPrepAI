@@ -1,0 +1,730 @@
+{
+  "cost-optimized-arch": [
+    {
+      "question_snippet": "A leading social media analytics company is contemplating moving its dockerized application stack into AWS Cloud. The co",
+      "correct": "Correct answer",
+      "common_wrong": "Amazon ECS with EC2 launch type is charged based on EC2 instances and EBS volumes used. Amazon ECS w",
+      "explain_hint": "Amazon ECS with EC2 launch type is charged based on EC2 instances and EBS volumes used. Amazon ECS with Fargate launch type is charged based on vCPU a"
+    },
+    {
+      "question_snippet": "A leading social media analytics company is contemplating moving its dockerized application stack into AWS Cloud. The co",
+      "correct": "Correct answer",
+      "common_wrong": "Both Amazon ECS with EC2 launch type and Amazon ECS with Fargate launch type are just charged based ",
+      "explain_hint": "Amazon ECS with EC2 launch type is charged based on EC2 instances and EBS volumes used. Amazon ECS with Fargate launch type is charged based on vCPU a"
+    },
+    {
+      "question_snippet": "A financial services company is looking to move its on-premises IT infrastructure to AWS Cloud. The company has multiple",
+      "correct": "Use Amazon EC2 dedicated hosts",
+      "common_wrong": "Use Amazon EC2 on-demand instances",
+      "explain_hint": "Use Amazon EC2 dedicated hosts\nYou can use Dedicated Hosts to launch Amazon EC2 instances on physical servers that are dedicated for your use. Dedicat"
+    },
+    {
+      "question_snippet": "A financial services company is looking to move its on-premises IT infrastructure to AWS Cloud. The company has multiple",
+      "correct": "Use Amazon EC2 dedicated hosts",
+      "common_wrong": "Use Amazon EC2 reserved instances (RI)",
+      "explain_hint": "Use Amazon EC2 dedicated hosts\nYou can use Dedicated Hosts to launch Amazon EC2 instances on physical servers that are dedicated for your use. Dedicat"
+    },
+    {
+      "question_snippet": "A startup's cloud infrastructure consists of a few Amazon EC2 instances, Amazon RDS instances and Amazon S3 storage. A y",
+      "correct": "",
+      "common_wrong": "Use Amazon S3 Storage class analysis to get recommendations for transitions of objects to Amazon S3 ",
+      "explain_hint": "Use AWS Cost Explorer Resource Optimization to get a report of Amazon EC2 instances that are either idle or have low utilization and use AWS Compute O"
+    },
+    {
+      "question_snippet": "A startup's cloud infrastructure consists of a few Amazon EC2 instances, Amazon RDS instances and Amazon S3 storage. A y",
+      "correct": "",
+      "common_wrong": "Use AWS Trusted Advisor checks on Amazon EC2 Reserved Instances to automatically renew reserved inst",
+      "explain_hint": "Use AWS Cost Explorer Resource Optimization to get a report of Amazon EC2 instances that are either idle or have low utilization and use AWS Compute O"
+    },
+    {
+      "question_snippet": "An Electronic Design Automation (EDA) application produces massive volumes of data that can be divided into two categori",
+      "correct": "AWS Glue",
+      "common_wrong": "Amazon FSx for Lustre",
+      "explain_hint": "Amazon FSx for Lustre\nAmazon FSx for Lustre makes it easy and cost-effective to launch and run the world\u2019s most popular high-performance file system. "
+    },
+    {
+      "question_snippet": "An Electronic Design Automation (EDA) application produces massive volumes of data that can be divided into two categori",
+      "correct": "AWS Glue",
+      "common_wrong": "Amazon FSx for Windows File Server",
+      "explain_hint": "Amazon FSx for Lustre\nAmazon FSx for Lustre makes it easy and cost-effective to launch and run the world\u2019s most popular high-performance file system. "
+    },
+    {
+      "question_snippet": "A media agency stores its re-creatable assets on Amazon Simple Storage Service (Amazon S3) buckets. The assets are acces",
+      "correct": "Configure a lifecycle policy to transition the objects to Amazon S3 One Zone-Infrequent Access (S3 O",
+      "common_wrong": "Configure a lifecycle policy to transition the objects to Amazon S3 Standard-Infrequent Access (S3 S",
+      "explain_hint": "Configure a lifecycle policy to transition the objects to Amazon S3 One Zone-Infrequent Access (S3 One Zone-IA) after 30 days\nAmazon S3 One Zone-IA is"
+    },
+    {
+      "question_snippet": "The engineering team at an e-commerce company is working on cost optimizations for Amazon Elastic Compute Cloud (Amazon ",
+      "correct": "You can only use a launch template to provision capacity across multiple instance types using both O",
+      "common_wrong": "You can use a launch configuration or a launch template to provision capacity across multiple instan",
+      "explain_hint": "You can only use a launch template to provision capacity across multiple instance types using both On-Demand Instances and Spot Instances to achieve t"
+    },
+    {
+      "question_snippet": "The engineering team at an e-commerce company is working on cost optimizations for Amazon Elastic Compute Cloud (Amazon ",
+      "correct": "You can only use a launch template to provision capacity across multiple instance types using both O",
+      "common_wrong": "You can neither use a launch configuration nor a launch template to provision capacity across multip",
+      "explain_hint": "You can only use a launch template to provision capacity across multiple instance types using both On-Demand Instances and Spot Instances to achieve t"
+    },
+    {
+      "question_snippet": "A medium-sized business has a taxi dispatch application deployed on an Amazon EC2 instance. Because of an unknown bug, t",
+      "correct": "Setup an Amazon CloudWatch alarm to monitor the health status of the instance. In case of an Instanc",
+      "common_wrong": "Setup an Amazon CloudWatch alarm to monitor the health status of the instance. In case of an Instanc",
+      "explain_hint": "Setup an Amazon CloudWatch alarm to monitor the health status of the instance. In case of an Instance Health Check failure, an EC2 Reboot CloudWatch A"
+    },
+    {
+      "question_snippet": "A medium-sized business has a taxi dispatch application deployed on an Amazon EC2 instance. Because of an unknown bug, t",
+      "correct": "Setup an Amazon CloudWatch alarm to monitor the health status of the instance. In case of an Instanc",
+      "common_wrong": "Use Amazon EventBridge events to trigger an AWS Lambda function to reboot the instance status every ",
+      "explain_hint": "Setup an Amazon CloudWatch alarm to monitor the health status of the instance. In case of an Instance Health Check failure, an EC2 Reboot CloudWatch A"
+    },
+    {
+      "question_snippet": "A media company wants to get out of the business of owning and maintaining its own IT infrastructure. As part of this di",
+      "correct": "Setup AWS direct connect between the on-premises data center and AWS Cloud. Use this connection to t",
+      "common_wrong": "Transfer the on-premises data into multiple AWS Snowball Edge Storage Optimized devices. Copy the AW",
+      "explain_hint": "Transfer the on-premises data into multiple AWS Snowball Edge Storage Optimized devices. Copy the AWS Snowball Edge data into Amazon S3 and create a l"
+    },
+    {
+      "question_snippet": "A mobile gaming company is experiencing heavy read traffic to its Amazon Relational Database Service (Amazon RDS) databa",
+      "correct": "Setup Amazon ElastiCache in front of Amazon RDS",
+      "common_wrong": "Setup Amazon RDS Read Replicas",
+      "explain_hint": "Setup Amazon ElastiCache in front of Amazon RDS\nAmazon ElastiCache is an ideal front-end for data stores such as Amazon RDS, providing a high-performa"
+    },
+    {
+      "question_snippet": "A mobile gaming company is experiencing heavy read traffic to its Amazon Relational Database Service (Amazon RDS) databa",
+      "correct": "Setup Amazon ElastiCache in front of Amazon RDS",
+      "common_wrong": "Switch application code to AWS Lambda for better performance",
+      "explain_hint": "Setup Amazon ElastiCache in front of Amazon RDS\nAmazon ElastiCache is an ideal front-end for data stores such as Amazon RDS, providing a high-performa"
+    },
+    {
+      "question_snippet": "Your e-commerce application is using an Amazon RDS PostgreSQL database and an analytics workload also runs on the same d",
+      "correct": "Enable Multi-AZ for the Amazon RDS database and run the analytics workload on the standby database",
+      "common_wrong": "Create a Read Replica in another Region as the Master database and point the analytics workload ther",
+      "explain_hint": "Create a Read Replica in the same Region as the Master database and point the analytics workload there\nAmazon RDS Read Replicas provide enhanced perfo"
+    },
+    {
+      "question_snippet": "Your e-commerce application is using an Amazon RDS PostgreSQL database and an analytics workload also runs on the same d",
+      "correct": "Enable Multi-AZ for the Amazon RDS database and run the analytics workload on the standby database",
+      "common_wrong": "Create a Read Replica in the same Region as the Master database and point the analytics workload the",
+      "explain_hint": "Create a Read Replica in the same Region as the Master database and point the analytics workload there\nAmazon RDS Read Replicas provide enhanced perfo"
+    },
+    {
+      "question_snippet": "A tech enterprise operates several workloads using Amazon EC2, AWS Fargate, and AWS Lambda across various teams. To opti",
+      "correct": "Use AWS Budgets to create a daily coverage budget specifically for Compute Savings Plans. Define a c",
+      "common_wrong": "Configure a custom script that queries the Savings Plans utilization API and pushes results to an Am",
+      "explain_hint": "Use AWS Budgets to create a daily coverage budget specifically for Compute Savings Plans. Define a coverage threshold and configure notifications to a"
+    },
+    {
+      "question_snippet": "A tech enterprise operates several workloads using Amazon EC2, AWS Fargate, and AWS Lambda across various teams. To opti",
+      "correct": "Use AWS Budgets to create a daily coverage budget specifically for Compute Savings Plans. Define a c",
+      "common_wrong": "Create a standalone dashboard in Amazon CloudWatch to track EC2 and Fargate usage. Use metric math t",
+      "explain_hint": "Use AWS Budgets to create a daily coverage budget specifically for Compute Savings Plans. Define a coverage threshold and configure notifications to a"
+    },
+    {
+      "question_snippet": "The engineering team at a social media company has noticed that while some of the images stored in Amazon S3 are frequen",
+      "correct": "Store the images using the Amazon S3 Intelligent-Tiering storage class",
+      "common_wrong": "Create a data monitoring application on an Amazon EC2 instance in the same region as the bucket stor",
+      "explain_hint": "Store the images using the Amazon S3 Intelligent-Tiering storage class\nThe Amazon S3 Intelligent-Tiering storage class is designed to optimize costs b"
+    },
+    {
+      "question_snippet": "You have deployed a database technology that has a synchronous replication mode to survive disasters in data centers. Th",
+      "correct": "Use the Amazon EC2 instances private IP for the replication",
+      "common_wrong": "Create a Private Link between the two Amazon EC2 instances",
+      "explain_hint": "Use the Amazon EC2 instances private IP for the replication\nThe source of the cost is that traffic between two EC2 instances is going over the public "
+    },
+    {
+      "question_snippet": "You have deployed a database technology that has a synchronous replication mode to survive disasters in data centers. Th",
+      "correct": "Use the Amazon EC2 instances private IP for the replication",
+      "common_wrong": "Assign elastic IP address (EIP) to the Amazon EC2 instances and use them for the replication",
+      "explain_hint": "Use the Amazon EC2 instances private IP for the replication\nThe source of the cost is that traffic between two EC2 instances is going over the public "
+    },
+    {
+      "question_snippet": "The development team at a company manages a Python based nightly process with a runtime of 30 minutes. The process can w",
+      "correct": "Run on AWS Lambda",
+      "common_wrong": "Run on an Application Load Balancer",
+      "explain_hint": "Run on a Spot Instance with a persistent request type\nA Spot Instance is an unused Amazon EC2 instance that is available for less than the On-Demand p"
+    },
+    {
+      "question_snippet": "A development team is looking for a solution that saves development time and deployment costs for an application that us",
+      "correct": "Amazon Simple Queue Service (Amazon SQS) temporary queues",
+      "common_wrong": "Amazon Simple Queue Service (Amazon SQS) FIFO queues",
+      "explain_hint": "Amazon Simple Queue Service (Amazon SQS) temporary queues\nTemporary queues help you save development time and deployment costs when using common messa"
+    },
+    {
+      "question_snippet": "A big data analytics company is looking to archive the on-premises data into a POSIX compliant file storage system on AW",
+      "correct": "Amazon EFS Infrequent Access",
+      "common_wrong": "Amazon S3 Standard-IA",
+      "explain_hint": "Amazon EFS Infrequent Access\nAmazon Elastic File System (Amazon EFS) provides a simple, scalable, fully managed, elastic, NFS file system for use with"
+    },
+    {
+      "question_snippet": "A Solutions Architect needs to make sure that the On-Demand Amazon EC2 instance can only be accessed from this IP addres",
+      "correct": "Security Group Inbound Rule: Protocol \u2013 TCP, Port Range \u2013 22, Source 110.238.98.71/32",
+      "common_wrong": "Security Group Outbound Rule: Protocol \u2013 UDP, Port Range \u2013 22, Destination 0.0.0.0/0",
+      "explain_hint": "A security group acts as a virtual firewall for your instance to control inbound and outbound traffic. When you launch an instance in a VPC, you can a"
+    },
+    {
+      "question_snippet": "A Solutions Architect needs to make sure that the On-Demand Amazon EC2 instance can only be accessed from this IP addres",
+      "correct": "Security Group Inbound Rule: Protocol \u2013 TCP, Port Range \u2013 22, Source 110.238.98.71/32",
+      "common_wrong": "Security Group Inbound Rule: Protocol \u2013 UDP, Port Range \u2013 22, Source 110.238.98.71/32",
+      "explain_hint": "A security group acts as a virtual firewall for your instance to control inbound and outbound traffic. When you launch an instance in a VPC, you can a"
+    },
+    {
+      "question_snippet": "An e-commerce company utilizes a regional Amazon API Gateway to host its public REST APIs. The API Gateway endpoint is a",
+      "correct": "Implement a canary release deployment strategy for the API Gateway. Deploy the latest version of the",
+      "common_wrong": "Modify the existing API Gateway with the updated version of the APIs, but keep the same custom domai",
+      "explain_hint": "Amazon API Gateway is a fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs at any scale. I"
+    },
+    {
+      "question_snippet": "An e-commerce company utilizes a regional Amazon API Gateway to host its public REST APIs. The API Gateway endpoint is a",
+      "correct": "Implement a canary release deployment strategy for the API Gateway. Deploy the latest version of the",
+      "common_wrong": "Create a new API Gateway with the updated version of the APIs in OpenAPI JSON or YAML file format, b",
+      "explain_hint": "Amazon API Gateway is a fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs at any scale. I"
+    }
+  ],
+  "high-perf-arch": [
+    {
+      "question_snippet": "A Big Data analytics company wants to set up an AWS cloud architecture that throttles requests in case of sudden traffic",
+      "correct": "Amazon API Gateway, Amazon Simple Queue Service (Amazon SQS) and Amazon Kinesis",
+      "common_wrong": "Amazon Gateway Endpoints, Amazon Simple Queue Service (Amazon SQS) and Amazon Kinesis",
+      "explain_hint": "Throttling is the process of limiting the number of requests an authorized program can submit to a given operation in a given amount of time.\nAmazon A"
+    },
+    {
+      "question_snippet": "A Big Data analytics company wants to set up an AWS cloud architecture that throttles requests in case of sudden traffic",
+      "correct": "Amazon API Gateway, Amazon Simple Queue Service (Amazon SQS) and Amazon Kinesis",
+      "common_wrong": "Elastic Load Balancer, Amazon Simple Queue Service (Amazon SQS), AWS Lambda",
+      "explain_hint": "Throttling is the process of limiting the number of requests an authorized program can submit to a given operation in a given amount of time.\nAmazon A"
+    },
+    {
+      "question_snippet": "A big data analytics company is using Amazon Kinesis Data Streams (KDS) to process IoT data from the field devices of an",
+      "correct": "",
+      "common_wrong": "Swap out Amazon Kinesis Data Streams with Amazon Kinesis Data Firehose",
+      "explain_hint": "Use Enhanced Fanout feature of Amazon Kinesis Data Streams\nAmazon Kinesis Data Streams (KDS) is a massively scalable and durable real-time data stream"
+    },
+    {
+      "question_snippet": "A big data analytics company is using Amazon Kinesis Data Streams (KDS) to process IoT data from the field devices of an",
+      "correct": "",
+      "common_wrong": "Swap out Amazon Kinesis Data Streams with Amazon SQS Standard queues",
+      "explain_hint": "Use Enhanced Fanout feature of Amazon Kinesis Data Streams\nAmazon Kinesis Data Streams (KDS) is a massively scalable and durable real-time data stream"
+    },
+    {
+      "question_snippet": "A Big Data analytics company writes data and log files in Amazon S3 buckets. The company now wants to stream the existin",
+      "correct": "Leverage AWS Database Migration Service (AWS DMS) as a bridge between Amazon S3 and Amazon Kinesis D",
+      "common_wrong": "Leverage Amazon S3 event notification to trigger an AWS Lambda function for the file create event. T",
+      "explain_hint": "Leverage AWS Database Migration Service (AWS DMS) as a bridge between Amazon S3 and Amazon Kinesis Data Streams\nYou can achieve this by using AWS Data"
+    },
+    {
+      "question_snippet": "A Big Data analytics company writes data and log files in Amazon S3 buckets. The company now wants to stream the existin",
+      "correct": "Leverage AWS Database Migration Service (AWS DMS) as a bridge between Amazon S3 and Amazon Kinesis D",
+      "common_wrong": "Amazon S3 bucket actions can be directly configured to write data into Amazon Simple Notification Se",
+      "explain_hint": "Leverage AWS Database Migration Service (AWS DMS) as a bridge between Amazon S3 and Amazon Kinesis Data Streams\nYou can achieve this by using AWS Data"
+    },
+    {
+      "question_snippet": "You have been hired as a Solutions Architect to advise a company on the various authentication/authorization mechanisms ",
+      "correct": "Use AWS Lambda authorizer for Amazon API Gateway",
+      "common_wrong": "Use AWS_IAM authorization",
+      "explain_hint": "Use Amazon Cognito User Pools\nA user pool is a user directory in Amazon Cognito. You can leverage Amazon Cognito User Pools to either provide built-in"
+    },
+    {
+      "question_snippet": "You have been hired as a Solutions Architect to advise a company on the various authentication/authorization mechanisms ",
+      "correct": "Use AWS Lambda authorizer for Amazon API Gateway",
+      "common_wrong": "Use Amazon Cognito User Pools",
+      "explain_hint": "Use Amazon Cognito User Pools\nA user pool is a user directory in Amazon Cognito. You can leverage Amazon Cognito User Pools to either provide built-in"
+    },
+    {
+      "question_snippet": "A company has grown from a small startup to an enterprise employing over 1000 people. As the team size has grown, the co",
+      "correct": "Use AWS CloudTrail to analyze API calls",
+      "common_wrong": "Implement an IAM policy to forbid users to change Amazon S3 bucket settings",
+      "explain_hint": "Use AWS CloudTrail to analyze API calls\nAWS CloudTrail is a service that enables governance, compliance, operational auditing, and risk auditing of yo"
+    },
+    {
+      "question_snippet": "A development team has deployed a microservice to the Amazon Elastic Container Service (Amazon ECS). The application lay",
+      "correct": "Distribute the dynamic content through Amazon S3",
+      "common_wrong": "Distribute the dynamic content through Amazon EFS",
+      "explain_hint": "Distribute the static content through Amazon S3\nYou can use Amazon S3 to host a static website. On a static website, individual web pages include stat"
+    },
+    {
+      "question_snippet": "A development team has deployed a microservice to the Amazon Elastic Container Service (Amazon ECS). The application lay",
+      "correct": "Distribute the dynamic content through Amazon S3",
+      "common_wrong": "Distribute the static content through Amazon S3",
+      "explain_hint": "Distribute the static content through Amazon S3\nYou can use Amazon S3 to host a static website. On a static website, individual web pages include stat"
+    },
+    {
+      "question_snippet": "A Big Data processing company has created a distributed data processing framework that performs best if the network perf",
+      "correct": "Use a Cluster placement group",
+      "common_wrong": "Optimize the Amazon EC2 kernel using EC2 User Data",
+      "explain_hint": "When you launch a new Amazon EC2 instance, the EC2 service attempts to place the instance in such a way that all of your instances are spread out acro"
+    },
+    {
+      "question_snippet": "A Big Data processing company has created a distributed data processing framework that performs best if the network perf",
+      "correct": "Use a Cluster placement group",
+      "common_wrong": "Use a Spread placement group",
+      "explain_hint": "When you launch a new Amazon EC2 instance, the EC2 service attempts to place the instance in such a way that all of your instances are spread out acro"
+    },
+    {
+      "question_snippet": "A retail company wants to rollout and test a blue-green deployment for its global application in the next 48 hours. Most",
+      "correct": "Use Elastic Load Balancing (ELB) to distribute traffic across deployments",
+      "common_wrong": "Use Amazon Route 53 weighted routing to spread traffic across different deployments",
+      "explain_hint": "Blue/green deployment is a technique for releasing applications by shifting traffic between two identical environments running different versions of t"
+    },
+    {
+      "question_snippet": "A retail company wants to rollout and test a blue-green deployment for its global application in the next 48 hours. Most",
+      "correct": "Use Elastic Load Balancing (ELB) to distribute traffic across deployments",
+      "common_wrong": "Use AWS Global Accelerator to distribute a portion of traffic to a particular deployment",
+      "explain_hint": "Blue/green deployment is a technique for releasing applications by shifting traffic between two identical environments running different versions of t"
+    },
+    {
+      "question_snippet": "A media company wants a low-latency way to distribute live sports results which are delivered via a proprietary applicat",
+      "correct": "Use Elastic Load Balancing (ELB) to provide a low latency way to distribute live sports results",
+      "common_wrong": "Use AWS Global Accelerator to provide a low latency way to distribute live sports results",
+      "explain_hint": "Use AWS Global Accelerator to provide a low latency way to distribute live sports results\nAWS Global Accelerator is a networking service that helps yo"
+    },
+    {
+      "question_snippet": "A media company wants a low-latency way to distribute live sports results which are delivered via a proprietary applicat",
+      "correct": "Use Elastic Load Balancing (ELB) to provide a low latency way to distribute live sports results",
+      "common_wrong": "Use Amazon CloudFront to provide a low latency way to distribute live sports results",
+      "explain_hint": "Use AWS Global Accelerator to provide a low latency way to distribute live sports results\nAWS Global Accelerator is a networking service that helps yo"
+    },
+    {
+      "question_snippet": "A developer needs to implement an AWS Lambda function in AWS account A that accesses an Amazon Simple Storage Service (A",
+      "correct": "The Amazon S3 bucket owner should make the bucket public so that it can be accessed by the AWS Lambd",
+      "common_wrong": "Create an IAM role for the AWS Lambda function that grants access to the Amazon S3 bucket. Set the I",
+      "explain_hint": "Create an IAM role for the AWS Lambda function that grants access to the Amazon S3 bucket. Set the IAM role as the AWS Lambda function's execution rol"
+    },
+    {
+      "question_snippet": "A developer needs to implement an AWS Lambda function in AWS account A that accesses an Amazon Simple Storage Service (A",
+      "correct": "The Amazon S3 bucket owner should make the bucket public so that it can be accessed by the AWS Lambd",
+      "common_wrong": "Create an IAM role for the AWS Lambda function that grants access to the Amazon S3 bucket. Set the I",
+      "explain_hint": "Create an IAM role for the AWS Lambda function that grants access to the Amazon S3 bucket. Set the IAM role as the AWS Lambda function's execution rol"
+    },
+    {
+      "question_snippet": "A financial services firm uses a high-frequency trading system and wants to write the log files into Amazon S3. The syst",
+      "correct": "A process replaces an existing object and immediately tries to read it. Amazon S3 always returns the",
+      "common_wrong": "A process replaces an existing object and immediately tries to read it. Until the change is fully pr",
+      "explain_hint": "A process replaces an existing object and immediately tries to read it. Amazon S3 always returns the latest version of the object\nAmazon S3 delivers s"
+    },
+    {
+      "question_snippet": "A financial services firm uses a high-frequency trading system and wants to write the log files into Amazon S3. The syst",
+      "correct": "A process replaces an existing object and immediately tries to read it. Amazon S3 always returns the",
+      "common_wrong": "A process replaces an existing object and immediately tries to read it. Until the change is fully pr",
+      "explain_hint": "A process replaces an existing object and immediately tries to read it. Amazon S3 always returns the latest version of the object\nAmazon S3 delivers s"
+    },
+    {
+      "question_snippet": "A financial services company wants to identify any sensitive data stored on its Amazon S3 buckets. The company also want",
+      "correct": "Use Amazon GuardDuty to monitor any malicious activity on data stored in Amazon S3. Use Amazon Macie",
+      "common_wrong": "Use Amazon GuardDuty to monitor any malicious activity on data stored in Amazon S3 as well as to ide",
+      "explain_hint": "Use Amazon GuardDuty to monitor any malicious activity on data stored in Amazon S3. Use Amazon Macie to identify any sensitive data stored on Amazon S"
+    },
+    {
+      "question_snippet": "A financial services company wants to identify any sensitive data stored on its Amazon S3 buckets. The company also want",
+      "correct": "Use Amazon GuardDuty to monitor any malicious activity on data stored in Amazon S3. Use Amazon Macie",
+      "common_wrong": "Use Amazon Macie to monitor any malicious activity on data stored in Amazon S3. Use Amazon GuardDuty",
+      "explain_hint": "Use Amazon GuardDuty to monitor any malicious activity on data stored in Amazon S3. Use Amazon Macie to identify any sensitive data stored on Amazon S"
+    },
+    {
+      "question_snippet": "A retail company maintains an AWS Direct Connect connection to AWS and has recently migrated its data warehouse to AWS. ",
+      "correct": "Deploy the visualization tool in the same AWS region as the data warehouse. Access the visualization",
+      "common_wrong": "Deploy the visualization tool on-premises. Query the data warehouse directly over an AWS Direct Conn",
+      "explain_hint": "Deploy the visualization tool in the same AWS region as the data warehouse. Access the visualization tool over a Direct Connect connection at a locati"
+    },
+    {
+      "question_snippet": "A retail company maintains an AWS Direct Connect connection to AWS and has recently migrated its data warehouse to AWS. ",
+      "correct": "Deploy the visualization tool in the same AWS region as the data warehouse. Access the visualization",
+      "common_wrong": "Deploy the visualization tool on-premises. Query the data warehouse over the internet at a location ",
+      "explain_hint": "Deploy the visualization tool in the same AWS region as the data warehouse. Access the visualization tool over a Direct Connect connection at a locati"
+    },
+    {
+      "question_snippet": "An Internet of Things (IoT) company would like to have a streaming system that performs real-time analytics on the inges",
+      "correct": "Amazon Simple Queue Service (Amazon SQS) with Amazon Simple Notification Service (Amazon SNS)",
+      "common_wrong": "Amazon Kinesis with Amazon Simple Notification Service (Amazon SNS)",
+      "explain_hint": "Amazon Kinesis with Amazon Simple Notification Service (Amazon SNS)\nAmazon Kinesis makes it easy to collect, process, and analyze real-time, streaming"
+    },
+    {
+      "question_snippet": "An Internet of Things (IoT) company would like to have a streaming system that performs real-time analytics on the inges",
+      "correct": "Amazon Simple Queue Service (Amazon SQS) with Amazon Simple Notification Service (Amazon SNS)",
+      "common_wrong": "Amazon Kinesis with Amazon Simple Queue Service (Amazon SQS)",
+      "explain_hint": "Amazon Kinesis with Amazon Simple Notification Service (Amazon SNS)\nAmazon Kinesis makes it easy to collect, process, and analyze real-time, streaming"
+    },
+    {
+      "question_snippet": "A social photo-sharing web application is hosted on Amazon Elastic Compute Cloud (Amazon EC2) instances behind an Elasti",
+      "correct": "Attach the appropriate IAM role to the Amazon EC2 instance profile so that the instance can access A",
+      "common_wrong": "Save the AWS credentials (access key Id and secret access token) in a configuration file within the ",
+      "explain_hint": "Attach the appropriate IAM role to the Amazon EC2 instance profile so that the instance can access Amazon S3 and Amazon DynamoDB\nApplications that run"
+    },
+    {
+      "question_snippet": "A social photo-sharing web application is hosted on Amazon Elastic Compute Cloud (Amazon EC2) instances behind an Elasti",
+      "correct": "Attach the appropriate IAM role to the Amazon EC2 instance profile so that the instance can access A",
+      "common_wrong": "Configure AWS CLI on the Amazon EC2 instances using a valid IAM user's credentials. The application ",
+      "explain_hint": "Attach the appropriate IAM role to the Amazon EC2 instance profile so that the instance can access Amazon S3 and Amazon DynamoDB\nApplications that run"
+    },
+    {
+      "question_snippet": "A company wants to store business-critical data on Amazon Elastic Block Store (Amazon EBS) volumes which provide persist",
+      "correct": "The Amazon EBS volumes were not backed up on Amazon S3 storage, resulting in the loss of volume",
+      "common_wrong": "On termination of an Amazon EC2 instance, all the attached Amazon EBS volumes are always terminated",
+      "explain_hint": "The Amazon EBS volume was configured as the root volume of Amazon EC2 instance. On termination of the instance, the default behavior is to also termin"
+    }
+  ],
+  "secure-arch": [
+    {
+      "question_snippet": "A media company has its corporate headquarters in Los Angeles with an on-premises data center using an AWS Direct Connec",
+      "correct": "AWS VPN CloudHub",
+      "common_wrong": "VPC Peering connection",
+      "explain_hint": "AWS VPN CloudHub\nIf you have multiple AWS Site-to-Site VPN connections, you can provide secure communication between sites using the AWS VPN CloudHub."
+    },
+    {
+      "question_snippet": "An IT company has built a custom data warehousing solution for a retail organization by using Amazon Redshift. As part o",
+      "correct": "Use AWS Glue ETL job to load the Amazon S3 based historical data into Redshift. Once the ad-hoc quer",
+      "common_wrong": "Use the Amazon Redshift COPY command to load the Amazon S3 based historical data into Amazon Redshif",
+      "explain_hint": "Use Amazon Redshift Spectrum to create Amazon Redshift cluster tables pointing to the underlying historical data in Amazon S3. The analytics team can "
+    },
+    {
+      "question_snippet": "An IT company has built a custom data warehousing solution for a retail organization by using Amazon Redshift. As part o",
+      "correct": "Use AWS Glue ETL job to load the Amazon S3 based historical data into Redshift. Once the ad-hoc quer",
+      "common_wrong": "Setup access to the historical data via Amazon Athena. The analytics team can run historical data qu",
+      "explain_hint": "Use Amazon Redshift Spectrum to create Amazon Redshift cluster tables pointing to the underlying historical data in Amazon S3. The analytics team can "
+    },
+    {
+      "question_snippet": "A retail company uses AWS Cloud to manage its technology infrastructure. The company has deployed its consumer-focused w",
+      "correct": "Configure Amazon RDS to use SSL for data in transit",
+      "common_wrong": "Create a new network access control list (network ACL) that blocks SSH from the entire Amazon EC2 su",
+      "explain_hint": "Configure Amazon RDS to use SSL for data in transit\nYou can use Secure Socket Layer / Transport Layer Security (SSL/TLS) connections to encrypt data i"
+    },
+    {
+      "question_snippet": "An e-commerce application uses an Amazon Aurora Multi-AZ deployment for its database. While analyzing the performance me",
+      "correct": "Activate read-through caching on the Amazon Aurora database",
+      "common_wrong": "Provision another Amazon Aurora database and link it to the primary database as a read replica",
+      "explain_hint": "Set up a read replica and modify the application to use the appropriate endpoint\nAn Amazon Aurora DB cluster consists of one or more DB instances and "
+    },
+    {
+      "question_snippet": "An e-commerce application uses an Amazon Aurora Multi-AZ deployment for its database. While analyzing the performance me",
+      "correct": "Activate read-through caching on the Amazon Aurora database",
+      "common_wrong": "Configure the application to read from the Multi-AZ standby instance",
+      "explain_hint": "Set up a read replica and modify the application to use the appropriate endpoint\nAn Amazon Aurora DB cluster consists of one or more DB instances and "
+    },
+    {
+      "question_snippet": "A financial services company has deployed its flagship application on Amazon EC2 instances. Since the application handle",
+      "correct": "Monitor the `days to expiry` Amazon CloudWatch metric for certificates created via ACM. Create a Clo",
+      "common_wrong": "Leverage AWS Config managed rule to check if any SSL/TLS certificates created via ACM are marked for",
+      "explain_hint": "Leverage AWS Config managed rule to check if any third-party SSL/TLS certificates imported into ACM are marked for expiration within 30 days. Configur"
+    },
+    {
+      "question_snippet": "An IT company has an Access Control Management (ACM) application that uses Amazon RDS for MySQL but is running into perf",
+      "correct": "Use Amazon Aurora Global Database to enable fast local reads with low latency in each region",
+      "common_wrong": "Spin up Amazon EC2 instances in each AWS region, install MySQL databases and migrate the existing da",
+      "explain_hint": "Use Amazon Aurora Global Database to enable fast local reads with low latency in each region\nAmazon Aurora is a MySQL and PostgreSQL-compatible relati"
+    },
+    {
+      "question_snippet": "An IT company has an Access Control Management (ACM) application that uses Amazon RDS for MySQL but is running into perf",
+      "correct": "Use Amazon Aurora Global Database to enable fast local reads with low latency in each region",
+      "common_wrong": "Use Amazon DynamoDB Global Tables to provide fast, local, read and write performance in each region",
+      "explain_hint": "Use Amazon Aurora Global Database to enable fast local reads with low latency in each region\nAmazon Aurora is a MySQL and PostgreSQL-compatible relati"
+    },
+    {
+      "question_snippet": "The infrastructure team at a company maintains 5 different VPCs (let's call these VPCs A, B, C, D, E) for resource isola",
+      "correct": "Establish VPC peering connections between all VPCs",
+      "common_wrong": "Use AWS transit gateway to interconnect the VPCs",
+      "explain_hint": "Use AWS transit gateway to interconnect the VPCs\nAn AWS transit gateway is a network transit hub that you can use to interconnect your virtual private"
+    },
+    {
+      "question_snippet": "The infrastructure team at a company maintains 5 different VPCs (let's call these VPCs A, B, C, D, E) for resource isola",
+      "correct": "Establish VPC peering connections between all VPCs",
+      "common_wrong": "Use a VPC endpoint to interconnect the VPCs",
+      "explain_hint": "Use AWS transit gateway to interconnect the VPCs\nAn AWS transit gateway is a network transit hub that you can use to interconnect your virtual private"
+    },
+    {
+      "question_snippet": "A retail company uses AWS Cloud to manage its IT infrastructure. The company has set up AWS Organizations to manage seve",
+      "correct": "Use VPC sharing to share one or more subnets with other AWS accounts belonging to the same parent or",
+      "common_wrong": "Use VPC sharing to share a VPC with other AWS accounts belonging to the same parent organization fro",
+      "explain_hint": "Use VPC sharing to share one or more subnets with other AWS accounts belonging to the same parent organization from AWS Organizations\nVPC sharing (par"
+    },
+    {
+      "question_snippet": "A retail company uses Amazon Elastic Compute Cloud (Amazon EC2) instances, Amazon API Gateway, Amazon RDS, Elastic Load ",
+      "correct": "VPC Flow Logs, Domain Name System (DNS) logs, AWS CloudTrail events",
+      "common_wrong": "Amazon CloudFront logs, Amazon API Gateway logs, AWS CloudTrail events",
+      "explain_hint": "VPC Flow Logs, Domain Name System (DNS) logs, AWS CloudTrail events\nAmazon GuardDuty is a threat detection service that continuously monitors for mali"
+    },
+    {
+      "question_snippet": "A retail company uses Amazon Elastic Compute Cloud (Amazon EC2) instances, Amazon API Gateway, Amazon RDS, Elastic Load ",
+      "correct": "VPC Flow Logs, Domain Name System (DNS) logs, AWS CloudTrail events",
+      "common_wrong": "Elastic Load Balancing logs, Domain Name System (DNS) logs, AWS CloudTrail events",
+      "explain_hint": "VPC Flow Logs, Domain Name System (DNS) logs, AWS CloudTrail events\nAmazon GuardDuty is a threat detection service that continuously monitors for mali"
+    },
+    {
+      "question_snippet": "A company has hired you as an AWS Certified Solutions Architect \u2013 Associate to help with redesigning a real-time data pr",
+      "correct": "Use Amazon Kinesis Data Streams to process the data streams as well as decouple the producers and co",
+      "common_wrong": "Use Amazon Kinesis Data Firehose to process the data streams as well as decouple the producers and c",
+      "explain_hint": "Use Amazon Kinesis Data Streams to process the data streams as well as decouple the producers and consumers for the real-time data processor\nAmazon Ki"
+    },
+    {
+      "question_snippet": "A company has hired you as an AWS Certified Solutions Architect \u2013 Associate to help with redesigning a real-time data pr",
+      "correct": "Use Amazon Kinesis Data Streams to process the data streams as well as decouple the producers and co",
+      "common_wrong": "Use Amazon Simple Notification Service (Amazon SNS) to process the data streams as well as decouple ",
+      "explain_hint": "Use Amazon Kinesis Data Streams to process the data streams as well as decouple the producers and consumers for the real-time data processor\nAmazon Ki"
+    },
+    {
+      "question_snippet": "A financial services company recently launched an initiative to improve the security of its AWS resources and it had ena",
+      "correct": "Savings Plans has not been enabled for the AWS Shield Advanced service across all the AWS accounts",
+      "common_wrong": "AWS Shield Advanced is being used for custom servers, that are not part of AWS Cloud, thereby result",
+      "explain_hint": "Consolidated billing has not been enabled. All the AWS accounts should fall under a single consolidated billing for the monthly fee to be charged only"
+    },
+    {
+      "question_snippet": "A financial services company recently launched an initiative to improve the security of its AWS resources and it had ena",
+      "correct": "Savings Plans has not been enabled for the AWS Shield Advanced service across all the AWS accounts",
+      "common_wrong": "Consolidated billing has not been enabled. All the AWS accounts should fall under a single consolida",
+      "explain_hint": "Consolidated billing has not been enabled. All the AWS accounts should fall under a single consolidated billing for the monthly fee to be charged only"
+    },
+    {
+      "question_snippet": "A healthcare startup needs to enforce compliance and regulatory guidelines for objects stored in Amazon S3. One of the k",
+      "correct": "Change the configuration on Amazon S3 console so that the user needs to provide additional confirmat",
+      "common_wrong": "Enable multi-factor authentication (MFA) delete on the Amazon S3 bucket",
+      "explain_hint": "Enable versioning on the Amazon S3 bucket\nVersioning is a means of keeping multiple variants of an object in the same bucket. You can use versioning t"
+    },
+    {
+      "question_snippet": "An organization wants to delegate access to a set of users from the development environment so that they can access some",
+      "correct": "It is not possible to access cross-account resources",
+      "common_wrong": "Both IAM roles and IAM users can be used interchangeably for cross-account access",
+      "explain_hint": "Create a new IAM role with the required permissions to access the resources in the production environment. The users can then assume this IAM role whi"
+    },
+    {
+      "question_snippet": "An organization wants to delegate access to a set of users from the development environment so that they can access some",
+      "correct": "It is not possible to access cross-account resources",
+      "common_wrong": "Create a new IAM role with the required permissions to access the resources in the production enviro",
+      "explain_hint": "Create a new IAM role with the required permissions to access the resources in the production environment. The users can then assume this IAM role whi"
+    },
+    {
+      "question_snippet": "A retail organization is moving some of its on-premises data to AWS Cloud. The DevOps team at the organization has set u",
+      "correct": "Create a virtual private gateway (VGW) on the AWS side of the VPN and a Customer Gateway on the on-p",
+      "common_wrong": "Create a Customer Gateway on both the AWS side of the VPN as well as the on-premises side of the VPN",
+      "explain_hint": "Create a virtual private gateway (VGW) on the AWS side of the VPN and a Customer Gateway on the on-premises side of the VPN\nAmazon VPC provides the fa"
+    },
+    {
+      "question_snippet": "An IT company provides Amazon Simple Storage Service (Amazon S3) bucket access to specific users within the same account",
+      "correct": "Use Amazon S3 Bucket Policies",
+      "common_wrong": "Use Identity and Access Management (IAM) policies",
+      "explain_hint": "Use Amazon S3 Bucket Policies\nBucket policies in Amazon S3 can be used to add or deny permissions across some or all of the objects within a single bu"
+    },
+    {
+      "question_snippet": "A healthcare company uses its on-premises infrastructure to run legacy applications that require specialized customizati",
+      "correct": "Leverage multi-AZ configuration of Amazon RDS for Oracle that allows the Database Administrator (DBA",
+      "common_wrong": "Leverage cross AZ read-replica configuration of Amazon RDS for Oracle that allows the Database Admin",
+      "explain_hint": "Leverage multi-AZ configuration of Amazon RDS Custom for Oracle that allows the Database Administrator (DBA) to access and customize the database envi"
+    },
+    {
+      "question_snippet": "A healthcare company uses its on-premises infrastructure to run legacy applications that require specialized customizati",
+      "correct": "Leverage multi-AZ configuration of Amazon RDS for Oracle that allows the Database Administrator (DBA",
+      "common_wrong": "Deploy the Oracle database layer on multiple Amazon EC2 instances spread across two Availability Zon",
+      "explain_hint": "Leverage multi-AZ configuration of Amazon RDS Custom for Oracle that allows the Database Administrator (DBA) to access and customize the database envi"
+    },
+    {
+      "question_snippet": "A global enterprise has onboarded multiple departments into isolated AWS accounts that are part of a unified AWS Organiz",
+      "correct": "Assign each AWS account\u2019s root user email to a single designated member of the respective department",
+      "common_wrong": "Configure each AWS account\u2019s root user to use an alias that redirects messages to a centralized mail",
+      "explain_hint": "Configure each AWS account\u2019s root user to use an alias that redirects messages to a centralized mailbox monitored by platform administrators. Then ass"
+    },
+    {
+      "question_snippet": "An organization has rolled out a multi-account architecture using AWS Control Tower to isolate development environments.",
+      "correct": "Correct answer",
+      "common_wrong": "Use AWS Budgets to define spending thresholds for each developer\u2019s account. Configure budget alerts ",
+      "explain_hint": "Use AWS Budgets to define spending thresholds for each developer\u2019s account. Configure budget alerts to notify developers when actual or forecasted usa"
+    },
+    {
+      "question_snippet": "An organization has rolled out a multi-account architecture using AWS Control Tower to isolate development environments.",
+      "correct": "Correct answer",
+      "common_wrong": "Deploy an AWS Lambda function to run daily in each developer\u2019s account. Use the function to analyze ",
+      "explain_hint": "Use AWS Budgets to define spending thresholds for each developer\u2019s account. Configure budget alerts to notify developers when actual or forecasted usa"
+    },
+    {
+      "question_snippet": "A startup wants to create a highly available architecture for its multi-tier application. Currently, the startup manages",
+      "correct": "Create an Auto-Scaling group with a desired capacity of a total of two Amazon EC2 instances in a sin",
+      "common_wrong": "Create an Auto-Scaling group with a desired capacity of a total of two Amazon EC2 instances across t",
+      "explain_hint": "Create an Auto-Scaling group with a desired capacity of a total of two Amazon EC2 instances across two Availability Zones. Configure an Application Lo"
+    },
+    {
+      "question_snippet": "A startup wants to create a highly available architecture for its multi-tier application. Currently, the startup manages",
+      "correct": "Create an Auto-Scaling group with a desired capacity of a total of two Amazon EC2 instances in a sin",
+      "common_wrong": "Provision a second Amazon EC2 instance in another Availability Zone. Provision a second Amazon RDS M",
+      "explain_hint": "Create an Auto-Scaling group with a desired capacity of a total of two Amazon EC2 instances across two Availability Zones. Configure an Application Lo"
+    }
+  ],
+  "resilient-arch": [
+    {
+      "question_snippet": "A leading online gaming company is migrating its flagship application to AWS Cloud for delivering its online games to us",
+      "correct": "Traffic is routed to instances using the primary elastic IP address specified in the primary network",
+      "common_wrong": "Traffic is routed to instances using the primary public IP address specified in the primary network ",
+      "explain_hint": "Traffic is routed to instances using the primary private IP address specified in the primary network interface for the instance\nA Network Load Balance"
+    },
+    {
+      "question_snippet": "A media company has created an AWS Direct Connect connection for migrating its flagship application to the AWS Cloud. Th",
+      "correct": "Correct answer",
+      "common_wrong": "Configure an AWS DataSync agent on the on-premises server that has access to the NFS file system. Tr",
+      "explain_hint": "Configure an AWS DataSync agent on the on-premises server that has access to the NFS file system. Transfer data over the AWS Direct Connect connection"
+    },
+    {
+      "question_snippet": "A media company has created an AWS Direct Connect connection for migrating its flagship application to the AWS Cloud. Th",
+      "correct": "Correct answer",
+      "common_wrong": "Configure an AWS DataSync agent on the on-premises server that has access to the NFS file system. Tr",
+      "explain_hint": "Configure an AWS DataSync agent on the on-premises server that has access to the NFS file system. Transfer data over the AWS Direct Connect connection"
+    },
+    {
+      "question_snippet": "A retail company has developed a REST API which is deployed in an Auto Scaling group behind an Application Load Balancer",
+      "correct": "Enable ElastiCache Redis for DynamoDB and Amazon CloudFront for Amazon S3",
+      "common_wrong": "Enable Amazon DynamoDB Accelerator (DAX) for Amazon DynamoDB and ElastiCache Memcached for Amazon S3",
+      "explain_hint": "Enable Amazon DynamoDB Accelerator (DAX) for Amazon DynamoDB and Amazon CloudFront for Amazon S3\nAmazon DynamoDB Accelerator (DAX) is a fully managed,"
+    },
+    {
+      "question_snippet": "A retail company has developed a REST API which is deployed in an Auto Scaling group behind an Application Load Balancer",
+      "correct": "Enable ElastiCache Redis for DynamoDB and Amazon CloudFront for Amazon S3",
+      "common_wrong": "Enable ElastiCache Redis for DynamoDB and ElastiCache Memcached for Amazon S3",
+      "explain_hint": "Enable Amazon DynamoDB Accelerator (DAX) for Amazon DynamoDB and Amazon CloudFront for Amazon S3\nAmazon DynamoDB Accelerator (DAX) is a fully managed,"
+    },
+    {
+      "question_snippet": "The engineering team at a company wants to use Amazon Simple Queue Service (Amazon SQS) to decouple components of the un",
+      "correct": "Use VPC endpoint to access Amazon SQS",
+      "common_wrong": "Use Internet Gateway to access Amazon SQS",
+      "explain_hint": "Use VPC endpoint to access Amazon SQS\nAWS customers can access Amazon Simple Queue Service (Amazon SQS) from their Amazon Virtual Private Cloud (Amazo"
+    },
+    {
+      "question_snippet": "The business analytics team at a company has been running ad-hoc queries on Oracle and PostgreSQL services on Amazon RDS",
+      "correct": "Use AWS Database Migration Service (AWS DMS) to replicate the data from the databases into Amazon Re",
+      "common_wrong": "Use Amazon Kinesis Data Streams to replicate the data from the databases into Amazon Redshift",
+      "explain_hint": "Use AWS Database Migration Service (AWS DMS) to replicate the data from the databases into Amazon Redshift\nAWS Database Migration Service helps you mi"
+    },
+    {
+      "question_snippet": "An IT company wants to review its security best-practices after an incident was reported where a new developer on the te",
+      "correct": "The CTO should review the permissions for each new developer's IAM user so that such incidents don't",
+      "common_wrong": "Only root user should have full database access in the organization",
+      "explain_hint": "Use permissions boundary to control the maximum permissions employees can grant to the IAM principals\nA permissions boundary can be used to control th"
+    },
+    {
+      "question_snippet": "An IT company wants to review its security best-practices after an incident was reported where a new developer on the te",
+      "correct": "The CTO should review the permissions for each new developer's IAM user so that such incidents don't",
+      "common_wrong": "Use permissions boundary to control the maximum permissions employees can grant to the IAM principal",
+      "explain_hint": "Use permissions boundary to control the maximum permissions employees can grant to the IAM principals\nA permissions boundary can be used to control th"
+    },
+    {
+      "question_snippet": "A company has noticed that its application performance has deteriorated after a new Auto Scaling group was deployed a fe",
+      "correct": "No need to modify the launch configuration. Just modify the Auto Scaling group to use more number of",
+      "common_wrong": "Modify the launch configuration to use the correct instance type and continue to use the existing Au",
+      "explain_hint": "Create a new launch configuration to use the correct instance type. Modify the Auto Scaling group to use this new launch configuration. Delete the old"
+    },
+    {
+      "question_snippet": "A company has noticed that its application performance has deteriorated after a new Auto Scaling group was deployed a fe",
+      "correct": "No need to modify the launch configuration. Just modify the Auto Scaling group to use more number of",
+      "common_wrong": "No need to modify the launch configuration. Just modify the Auto Scaling group to use the correct in",
+      "explain_hint": "Create a new launch configuration to use the correct instance type. Modify the Auto Scaling group to use this new launch configuration. Delete the old"
+    },
+    {
+      "question_snippet": "A financial services firm operates a mission-critical transaction processing platform hosted in the AWS us-east-2 Region",
+      "correct": "Convert the Aurora cluster to an Aurora global database, with the secondary cluster deployed in us-w",
+      "common_wrong": "Provision a separate Aurora MySQL-compatible cluster in us-west-2, and configure AWS Database Migrat",
+      "explain_hint": "Convert the Aurora cluster to an Aurora global database, with the secondary cluster deployed in us-west-2. Rely on Aurora global database managed fail"
+    },
+    {
+      "question_snippet": "The engineering team at an IT company is deploying an Online Transactional Processing (OLTP) application that needs to s",
+      "correct": "Amazon Aurora Serverless",
+      "common_wrong": "Amazon DynamoDB with On-Demand Capacity",
+      "explain_hint": "Amazon Aurora Serverless\nAmazon Aurora Serverless is an on-demand, auto-scaling configuration for Amazon Aurora (MySQL-compatible and PostgreSQL-compa"
+    },
+    {
+      "question_snippet": "A retail startup runs a high-traffic order processing system on AWS. The architecture includes a frontend web tier using",
+      "correct": "",
+      "common_wrong": "Use scheduled Auto Scaling for the processing tier based on past peak periods. Use average CPU utili",
+      "explain_hint": "Use an EC2 Auto Scaling group with a target tracking policy to automatically scale the processing tier. Configure the policy to monitor the Approximat"
+    },
+    {
+      "question_snippet": "A retail startup runs a high-traffic order processing system on AWS. The architecture includes a frontend web tier using",
+      "correct": "",
+      "common_wrong": "Use Amazon EventBridge to schedule batch processing jobs for the queue. Configure the event rule to ",
+      "explain_hint": "Use an EC2 Auto Scaling group with a target tracking policy to automatically scale the processing tier. Configure the policy to monitor the Approximat"
+    },
+    {
+      "question_snippet": "A startup uses a fleet of Amazon EC2 servers to manage its CRM application. These Amazon EC2 servers are behind Elastic ",
+      "correct": "Use the Elastic Load Balancing to distribute traffic for four Amazon EC2 instances. All the four ins",
+      "common_wrong": "Use the Elastic Load Balancing to distribute traffic for four Amazon EC2 instances. All the four ins",
+      "explain_hint": "Use the Elastic Load Balancing to distribute traffic for four Amazon EC2 instances. Two of these instances are deployed in Availability Zone A of us-e"
+    },
+    {
+      "question_snippet": "A startup uses a fleet of Amazon EC2 servers to manage its CRM application. These Amazon EC2 servers are behind Elastic ",
+      "correct": "Use the Elastic Load Balancing to distribute traffic for four Amazon EC2 instances. All the four ins",
+      "common_wrong": "Use the Elastic Load Balancing to distribute traffic for four Amazon EC2 instances. Two of these ins",
+      "explain_hint": "Use the Elastic Load Balancing to distribute traffic for four Amazon EC2 instances. Two of these instances are deployed in Availability Zone A of us-e"
+    },
+    {
+      "question_snippet": "An application is hosted on multiple Amazon EC2 instances in the same Availability Zone (AZ). The engineering team wants",
+      "correct": "",
+      "common_wrong": "Cold HDD Amazon EBS volumes",
+      "explain_hint": "Provisioned IOPS SSD Amazon EBS volumes\nAmazon EBS Multi-Attach enables you to attach a single Provisioned IOPS SSD (io1 or io2) volume to multiple in"
+    },
+    {
+      "question_snippet": "An application is hosted on multiple Amazon EC2 instances in the same Availability Zone (AZ). The engineering team wants",
+      "correct": "",
+      "common_wrong": "General-purpose SSD-based Amazon EBS volumes",
+      "explain_hint": "Provisioned IOPS SSD Amazon EBS volumes\nAmazon EBS Multi-Attach enables you to attach a single Provisioned IOPS SSD (io1 or io2) volume to multiple in"
+    },
+    {
+      "question_snippet": "A media company is relocating its legacy infrastructure to AWS. The on-premises environment consists of multiple virtual",
+      "correct": "Correct answer",
+      "common_wrong": "Generate an Amazon Machine Image (AMI) for each legacy server. Launch two EC2 instances from this AM",
+      "explain_hint": "Generate an Amazon Machine Image (AMI) for each legacy server. Launch two EC2 instances from this AMI, placing one instance in each of two different A"
+    },
+    {
+      "question_snippet": "A media company is relocating its legacy infrastructure to AWS. The on-premises environment consists of multiple virtual",
+      "correct": "Correct answer",
+      "common_wrong": "Use AWS Backup to schedule hourly backups of each EC2 instance to Amazon S3 in a separate Availabili",
+      "explain_hint": "Generate an Amazon Machine Image (AMI) for each legacy server. Launch two EC2 instances from this AMI, placing one instance in each of two different A"
+    },
+    {
+      "question_snippet": "Your application is deployed on Amazon EC2 instances fronted by an Application Load Balancer. Recently, your infrastruct",
+      "correct": "Use AWS Shield Advanced and setup a rate-based rule",
+      "common_wrong": "Use an AWS Web Application Firewall (AWS WAF) and setup a rate-based rule",
+      "explain_hint": "Use an AWS Web Application Firewall (AWS WAF) and setup a rate-based rule\nAWS Web Application Firewall (AWS WAF) is a web application firewall that he"
+    },
+    {
+      "question_snippet": "Your application is deployed on Amazon EC2 instances fronted by an Application Load Balancer. Recently, your infrastruct",
+      "correct": "Use AWS Shield Advanced and setup a rate-based rule",
+      "common_wrong": "Configure Sticky Sessions on the Application Load Balancer",
+      "explain_hint": "Use an AWS Web Application Firewall (AWS WAF) and setup a rate-based rule\nAWS Web Application Firewall (AWS WAF) is a web application firewall that he"
+    },
+    {
+      "question_snippet": "An e-commerce application uses a relational database that runs several queries that perform joins on multiple tables. Th",
+      "correct": "Amazon ElastiCache for Memcached",
+      "common_wrong": "AWS Global Accelerator",
+      "explain_hint": "Amazon ElastiCache for Memcached\nAmazon ElastiCache is a web service that makes it easy to deploy, operate, and scale an in-memory data store and cach"
+    },
+    {
+      "question_snippet": "The systems administrator at a company wants to set up a highly available architecture for a bastion host solution.\nAs a",
+      "correct": "Create a public Network Load Balancer that links to Amazon EC2 instances that are bastion hosts mana",
+      "common_wrong": "Create a public Application Load Balancer that links to Amazon EC2 instances that are bastion hosts ",
+      "explain_hint": "Create a public Network Load Balancer that links to Amazon EC2 instances that are bastion hosts managed by an Auto Scaling Group\nNetwork Load Balancer"
+    },
+    {
+      "question_snippet": "The systems administrator at a company wants to set up a highly available architecture for a bastion host solution.\nAs a",
+      "correct": "Create a public Network Load Balancer that links to Amazon EC2 instances that are bastion hosts mana",
+      "common_wrong": "Create an elastic IP address (EIP) and assign it to all Amazon EC2 instances that are bastion hosts ",
+      "explain_hint": "Create a public Network Load Balancer that links to Amazon EC2 instances that are bastion hosts managed by an Auto Scaling Group\nNetwork Load Balancer"
+    },
+    {
+      "question_snippet": "A healthcare company runs a fleet of Amazon EC2 instances in two private subnets (named PR1 and PR2) across two Availabi",
+      "correct": "Set up a total of two NAT gateways. NAT gateway N1 should be set up in public subnet PU1 in Availabi",
+      "common_wrong": "Set up a total of two NAT gateways. Both NAT gateways N1 and N2 should be set up in a single public ",
+      "explain_hint": "Set up a total of two NAT gateways. NAT gateway N1 should be set up in public subnet PU1 in Availability Zone A1. NAT gateway N2 should be set up in p"
+    },
+    {
+      "question_snippet": "A digital media firm is scaling its cloud footprint and wants to isolate development, testing, and production workloads ",
+      "correct": "Use AWS Control Tower to create and govern accounts. Deploy a centralized VPC in a shared networking",
+      "common_wrong": "Use AWS Control Tower to launch accounts. Deploy separate VPCs in each workload account and centrali",
+      "explain_hint": "Use AWS Control Tower to create and govern accounts. Deploy a centralized VPC in a shared networking account and share its subnets across workload acc"
+    },
+    {
+      "question_snippet": "A company is developing a document management application on AWS. The application runs on Amazon EC2 instances in multip",
+      "correct": "Set up Amazon EBS as the Amazon EC2 instance root volume and then configure the application to use A",
+      "common_wrong": "Create snapshots for the Amazon EBS volumes regularly and then build new volumes using those snapsho",
+      "explain_hint": "Set up Amazon EBS as the Amazon EC2 instance root volume and then configure the application to use Amazon S3 as the document store\nInstances that use "
+    },
+    {
+      "question_snippet": "An online learning company hosts its Microsoft .NET e-Learning application on a Windows Server in its on-premises data c",
+      "correct": "Use AWS Application Migration Service (AWS MGN) to migrate the on-premises Oracle database server to",
+      "common_wrong": "Perform a homogeneous migration by moving the Oracle database to Amazon RDS for Oracle in a Multi-AZ",
+      "explain_hint": "AWS Database Migration Service (AWS DMS) is a cloud service that makes it easy to migrate relational databases, data warehouses, NoSQL databases, and "
+    }
+  ]
+}

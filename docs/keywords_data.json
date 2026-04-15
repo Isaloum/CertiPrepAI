@@ -1,0 +1,257 @@
+{
+  "Availability": {
+    "definition": "System is accessible when needed (S3: 99.99%)",
+    "domain": "resilient-arch",
+    "frequency": 219
+  },
+  "Auto Scaling": {
+    "definition": "Automatically add/remove EC2 based on demand",
+    "domain": "high-perf-arch",
+    "frequency": 150
+  },
+  "RPO": {
+    "definition": "Recovery Point Objective \u2014 max acceptable data loss measured in time",
+    "domain": "resilient-arch",
+    "frequency": 103
+  },
+  "Throughput": {
+    "definition": "Amount of data transferred per second (MiB/s)",
+    "domain": "high-perf-arch",
+    "frequency": 70
+  },
+  "Security Group": {
+    "definition": "Stateful firewall at instance level \u2014 allows only",
+    "domain": "secure-arch",
+    "frequency": 66
+  },
+  "Multi-AZ": {
+    "definition": "Synchronous replication across 2+ AZs for high availability",
+    "domain": "resilient-arch",
+    "frequency": 62
+  },
+  "Read Replica": {
+    "definition": "Asynchronous copy of DB for read scaling \u2014 NOT for HA",
+    "domain": "high-perf-arch",
+    "frequency": 52
+  },
+  "Durability": {
+    "definition": "Data will not be lost (S3: 99.999999999%)",
+    "domain": "resilient-arch",
+    "frequency": 36
+  },
+  "VPC Endpoint": {
+    "definition": "Private connection to AWS services without internet",
+    "domain": "secure-arch",
+    "frequency": 35
+  },
+  "Spot Instance": {
+    "definition": "Unused EC2 capacity at up to 90% discount \u2014 can be interrupted",
+    "domain": "cost-optimized-arch",
+    "frequency": 31
+  },
+  "IOPS": {
+    "definition": "Input/Output Operations Per Second \u2014 storage performance metric",
+    "domain": "high-perf-arch",
+    "frequency": 28
+  },
+  "Health Check": {
+    "definition": "ELB or Route 53 verifies endpoint is reachable",
+    "domain": "resilient-arch",
+    "frequency": 28
+  },
+  "TTL": {
+    "definition": "Time To Live \u2014 auto-expire items in DynamoDB",
+    "domain": "high-perf-arch",
+    "frequency": 26
+  },
+  "Reserved Instance": {
+    "definition": "1 or 3 year commitment for up to 75% discount",
+    "domain": "cost-optimized-arch",
+    "frequency": 23
+  },
+  "Signed URL": {
+    "definition": "Temporary URL granting access to private CloudFront/S3 content",
+    "domain": "secure-arch",
+    "frequency": 19
+  },
+  "Provisioned IOPS": {
+    "definition": "io1/io2 EBS \u2014 guaranteed IOPS for databases",
+    "domain": "high-perf-arch",
+    "frequency": 19
+  },
+  "MFA": {
+    "definition": "Multi-Factor Authentication \u2014 extra layer of security",
+    "domain": "secure-arch",
+    "frequency": 16
+  },
+  "Cross-Region Replication": {
+    "definition": "S3 automatically copies objects to another region",
+    "domain": "resilient-arch",
+    "frequency": 16
+  },
+  "Target Tracking": {
+    "definition": "Scale to maintain a specific metric value (e.g. 70% CPU)",
+    "domain": "high-perf-arch",
+    "frequency": 10
+  },
+  "Scheduled Scaling": {
+    "definition": "Scale at specific times for predictable load",
+    "domain": "high-perf-arch",
+    "frequency": 10
+  },
+  "Visibility Timeout": {
+    "definition": "Time a message is hidden after being received from SQS",
+    "domain": "resilient-arch",
+    "frequency": 9
+  },
+  "Step Scaling": {
+    "definition": "Scale in steps based on CloudWatch alarm thresholds",
+    "domain": "high-perf-arch",
+    "frequency": 9
+  },
+  "Stateless": {
+    "definition": "Application stores no session data on the server",
+    "domain": "resilient-arch",
+    "frequency": 8
+  },
+  "POSIX": {
+    "definition": "Unix-style file system interface \u2014 required for EFS",
+    "domain": "high-perf-arch",
+    "frequency": 8
+  },
+  "Encryption at Rest": {
+    "definition": "Data encrypted when stored on disk",
+    "domain": "secure-arch",
+    "frequency": 8
+  },
+  "NACL": {
+    "definition": "Stateless firewall at subnet level \u2014 allows and denies",
+    "domain": "secure-arch",
+    "frequency": 8
+  },
+  "Cluster Placement Group": {
+    "definition": "Pack instances together for low-latency HPC",
+    "domain": "high-perf-arch",
+    "frequency": 8
+  },
+  "Fanout": {
+    "definition": "SNS \u2192 multiple SQS queues pattern",
+    "domain": "high-perf-arch",
+    "frequency": 7
+  },
+  "RTO": {
+    "definition": "Recovery Time Objective \u2014 max acceptable downtime after a failure",
+    "domain": "resilient-arch",
+    "frequency": 6
+  },
+  "Ephemeral": {
+    "definition": "Temporary storage \u2014 lost when instance stops (Instance Store)",
+    "domain": "resilient-arch",
+    "frequency": 6
+  },
+  "Least Privilege": {
+    "definition": "Grant only minimum permissions needed",
+    "domain": "secure-arch",
+    "frequency": 6
+  },
+  "Savings Plan": {
+    "definition": "Flexible pricing model \u2014 commit to $/hr spend",
+    "domain": "cost-optimized-arch",
+    "frequency": 6
+  },
+  "Long Polling": {
+    "definition": "SQS waits for messages before responding \u2014 reduces empty polls",
+    "domain": "cost-optimized-arch",
+    "frequency": 6
+  },
+  "Origin Access Control": {
+    "definition": "Restricts S3 to only serve via CloudFront (OAC)",
+    "domain": "secure-arch",
+    "frequency": 6
+  },
+  "Enhanced Networking": {
+    "definition": "Higher bandwidth, lower latency for EC2",
+    "domain": "high-perf-arch",
+    "frequency": 6
+  },
+  "S3 Lifecycle Policy": {
+    "definition": "Automatically transition objects between storage classes",
+    "domain": "cost-optimized-arch",
+    "frequency": 5
+  },
+  "Sticky Session": {
+    "definition": "ELB routes user to same backend instance",
+    "domain": "high-perf-arch",
+    "frequency": 5
+  },
+  "Cross-Zone Load Balancing": {
+    "definition": "Distribute traffic evenly across all AZs",
+    "domain": "high-perf-arch",
+    "frequency": 5
+  },
+  "SAML 2.0": {
+    "definition": "Standard for identity federation with external IdP",
+    "domain": "secure-arch",
+    "frequency": 4
+  },
+  "Warm Standby": {
+    "definition": "DR strategy: scaled-down copy always running",
+    "domain": "resilient-arch",
+    "frequency": 4
+  },
+  "Strong Consistency": {
+    "definition": "Read always returns most recent write",
+    "domain": "high-perf-arch",
+    "frequency": 4
+  },
+  "Dead Letter Queue": {
+    "definition": "SQS queue for failed messages after max retries",
+    "domain": "resilient-arch",
+    "frequency": 2
+  },
+  "Pilot Light": {
+    "definition": "DR strategy: minimal core services always running",
+    "domain": "resilient-arch",
+    "frequency": 2
+  },
+  "gp3": {
+    "definition": "Latest gen SSD EBS \u2014 cost-effective, configurable IOPS",
+    "domain": "cost-optimized-arch",
+    "frequency": 2
+  },
+  "Federated Identity": {
+    "definition": "Using external credentials to access AWS",
+    "domain": "secure-arch",
+    "frequency": 1
+  },
+  "Encryption in Transit": {
+    "definition": "Data encrypted while moving over network (SSL/TLS)",
+    "domain": "secure-arch",
+    "frequency": 1
+  },
+  "Active-Active": {
+    "definition": "All resources serving traffic simultaneously",
+    "domain": "resilient-arch",
+    "frequency": 1
+  },
+  "Blue/Green Deployment": {
+    "definition": "Run two environments, switch traffic instantly",
+    "domain": "resilient-arch",
+    "frequency": 1
+  },
+  "Idempotent": {
+    "definition": "Operation that produces same result no matter how many times executed",
+    "domain": "resilient-arch",
+    "frequency": 0
+  },
+  "Eventual Consistency": {
+    "definition": "Data will be consistent eventually \u2014 not immediately",
+    "domain": "high-perf-arch",
+    "frequency": 0
+  },
+  "Canary Deployment": {
+    "definition": "Route small % of traffic to new version first",
+    "domain": "resilient-arch",
+    "frequency": 0
+  }
+}

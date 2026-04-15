@@ -4,6 +4,8 @@ import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
 import { getMonthlyCert } from '../lib/db'
 
+const CANCEL_API = import.meta.env.VITE_CANCEL_API as string
+
 const CERT_META: Record<string, { name: string; code: string; icon: string }> = {
   'clf-c02': { name: 'Cloud Practitioner', code: 'CLF-C02', icon: '☁️' },
   'aif-c01': { name: 'AI Practitioner', code: 'AIF-C01', icon: '🤖' },
@@ -42,9 +44,13 @@ const tierInfo: Record<string, { label: string; color: string; bg: string; desc:
 }
 
 export default function Dashboard() {
-  const { user, isFullAccess, tier, loading, signOut } = useAuth()
+  const { user, isFullAccess, tier, loading, signOut, refreshUser } = useAuth()
   const navigate = useNavigate()
   const [monthlyCert, setMonthlyCert] = useState<{ cert_id: string; selected_at: string } | null | undefined>(undefined)
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false)
+  const [cancelLoading, setCancelLoading] = useState(false)
+  const [cancelDone, setCancelDone] = useState(false)
+  const [cancelError, setCancelError] = useState('')
 
   useEffect(() => {
     if (!loading && !user) navigate('/login')
@@ -77,6 +83,29 @@ export default function Dashboard() {
     navigate('/')
   }
 
+  const handleCancel = async () => {
+    if (!user) return
+    setCancelLoading(true)
+    setCancelError('')
+    try {
+      const res = await fetch(CANCEL_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${user.accessToken}` },
+        body: JSON.stringify({}),
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || `Error ${res.status}`)
+      setCancelDone(true)
+      setShowCancelConfirm(false)
+      // Refresh auth so tier flips to free
+      await refreshUser()
+    } catch (err: unknown) {
+      setCancelError(err instanceof Error ? err.message : 'Cancellation failed')
+    } finally {
+      setCancelLoading(false)
+    }
+  }
+
   return (
     <Layout>
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '2rem 1rem' }}>
@@ -97,25 +126,77 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Plan card */}
-        <div style={{ background: info.bg, border: `1px solid ${info.color}30`, borderRadius: '1rem', padding: '1.25rem 1.5rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-          <div>
-            <div style={{ fontWeight: 800, color: info.color, fontSize: '1rem' }}>{info.label}</div>
-            <div style={{ color: '#6b7280', fontSize: '0.875rem', marginTop: '0.2rem' }}>{info.desc}</div>
+        {/* Cancel success banner */}
+        {cancelDone && (
+          <div style={{ background: '#f0fdf4', border: '1px solid #86efac', borderRadius: '0.75rem', padding: '1rem 1.25rem', marginBottom: '1rem', color: '#166534', fontWeight: 600 }}>
+            ✅ Your subscription has been cancelled. Your plan is now Free.
           </div>
-          {tier === 'free' && (
-            <Link to="/pricing" style={{ padding: '0.6rem 1.25rem', background: '#2563eb', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none' }}>
-              ⚡ Upgrade
-            </Link>
-          )}
-          {tier === 'monthly' && (
-            <Link to="/pricing?highlight=yearly" style={{ padding: '0.6rem 1.25rem', background: '#2563eb', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none' }}>
-              ↑ Upgrade to Yearly
-            </Link>
-          )}
-          {isFullAccess && (
-            <div style={{ padding: '0.5rem 1rem', background: '#ffffff80', borderRadius: '0.75rem', fontSize: '0.875rem', fontWeight: 600, color: info.color }}>
-              ✅ Full Access Unlocked
+        )}
+
+        {/* Plan card */}
+        <div style={{ background: info.bg, border: `1px solid ${info.color}30`, borderRadius: '1rem', padding: '1.25rem 1.5rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+            <div>
+              <div style={{ fontWeight: 800, color: info.color, fontSize: '1rem' }}>{info.label}</div>
+              <div style={{ color: '#6b7280', fontSize: '0.875rem', marginTop: '0.2rem' }}>{info.desc}</div>
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              {tier === 'free' && (
+                <Link to="/pricing" style={{ padding: '0.6rem 1.25rem', background: '#2563eb', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none' }}>
+                  ⚡ Upgrade
+                </Link>
+              )}
+              {tier === 'monthly' && (
+                <Link to="/pricing?highlight=yearly" style={{ padding: '0.6rem 1.25rem', background: '#2563eb', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none' }}>
+                  ↑ Upgrade to Yearly
+                </Link>
+              )}
+              {isFullAccess && (
+                <div style={{ padding: '0.5rem 1rem', background: '#ffffff80', borderRadius: '0.75rem', fontSize: '0.875rem', fontWeight: 600, color: info.color }}>
+                  ✅ Full Access Unlocked
+                </div>
+              )}
+              {(tier === 'monthly' || tier === 'yearly') && !cancelDone && (
+                <button
+                  onClick={() => { setShowCancelConfirm(true); setCancelError('') }}
+                  style={{ padding: '0.5rem 1rem', background: 'transparent', border: '1px solid #fca5a5', borderRadius: '0.75rem', color: '#dc2626', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}
+                >
+                  Cancel Plan
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Cancel confirmation inline */}
+          {showCancelConfirm && (
+            <div style={{ marginTop: '1rem', padding: '1rem', background: '#fff1f2', border: '1px solid #fecaca', borderRadius: '0.75rem' }}>
+              <p style={{ margin: '0 0 0.75rem', fontWeight: 700, color: '#991b1b', fontSize: '0.9rem' }}>
+                Cancel your subscription?
+              </p>
+              <p style={{ margin: '0 0 0.75rem', color: '#b91c1c', fontSize: '0.82rem' }}>
+                Your plan will revert to Free immediately. This cannot be undone.
+              </p>
+              {cancelError && (
+                <p style={{ margin: '0 0 0.75rem', color: '#dc2626', fontSize: '0.82rem', fontWeight: 600 }}>
+                  ⚠️ {cancelError}
+                </p>
+              )}
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button
+                  onClick={handleCancel}
+                  disabled={cancelLoading}
+                  style={{ padding: '0.5rem 1.1rem', background: '#dc2626', color: '#fff', border: 'none', borderRadius: '0.6rem', fontWeight: 700, fontSize: '0.85rem', cursor: cancelLoading ? 'not-allowed' : 'pointer', opacity: cancelLoading ? 0.7 : 1 }}
+                >
+                  {cancelLoading ? 'Cancelling...' : 'Yes, Cancel'}
+                </button>
+                <button
+                  onClick={() => { setShowCancelConfirm(false); setCancelError('') }}
+                  disabled={cancelLoading}
+                  style={{ padding: '0.5rem 1.1rem', background: '#fff', color: '#374151', border: '1px solid #e5e7eb', borderRadius: '0.6rem', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer' }}
+                >
+                  Keep Plan
+                </button>
+              </div>
             </div>
           )}
         </div>

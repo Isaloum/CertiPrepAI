@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AWSPrepAI - AWS Certification Study Tool</title>
+  <title>CertiPrepAI - AWS Certification Study Tool</title>
   <meta name="description" content="Master AWS Solutions Architect Associate (SAA-C03) certification with 3,120 practice questions, AI-powered study guide, and mock exams.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
@@ -297,8 +297,8 @@
   <!-- Professional Navigation Bar -->
   <nav class="main-nav" role="navigation">
     <div class="nav-container">
-      <a href="index.html" class="nav-logo" aria-label="AWSPrepAI Home" onclick="showTab('home'); return false;">
-        <img src="logo.svg" alt="AWSPrepAI">
+      <a href="index.html" class="nav-logo" aria-label="CertiPrepAI Home" onclick="showTab('home'); return false;">
+        <img src="logo.svg" alt="CertiPrepAI">
       </a>
 
       <div class="nav-menu" id="navMenu">
@@ -342,7 +342,7 @@
           <div class="dropdown-menu" role="menu">
             <a href="#" class="dropdown-item" onclick="closeDropdowns(); showTab('study-guide'); return false;">
               <span class="item-icon">📚</span>
-              <div class="item-content"><div class="item-title">Study Guide</div><div class="item-desc">Exam tips &amp; strategies</div></div>
+              <div class="item-content"><div class="item-title">Study Guide</div><div class="item-desc">Domain strategy &amp; what to focus on</div></div>
             </a>
             <a href="#" class="dropdown-item" onclick="closeDropdowns(); showTab('hints-keywords'); return false;">
               <span class="item-icon">💡</span>
@@ -2054,8 +2054,8 @@
   <footer>
     <div class="footer-content">
       <div class="footer-left">
-        <div class="footer-title">☁️ AWSPrepAI</div>
-        <div class="footer-subtitle">© 2025 AWSPrepAI · All rights reserved</div>
+        <div class="footer-title">☁️ CertiPrepAI</div>
+        <div class="footer-subtitle">© 2025 CertiPrepAI · All rights reserved</div>
         <div style="display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap">
           <span class="tech-badge">3,120 Questions</span>
           <span class="tech-badge">4 Domains</span>
@@ -2079,7 +2079,7 @@
 
     // Tab Navigation
     const tabTitles = {
-      'home': 'AWSPrepAI',
+      'home': 'CertiPrepAI',
       'dashboard': '📊 Dashboard',
       'quiz': 'Practice Quiz ❓',
       'exam': '📝 Mock Exam',
@@ -2101,7 +2101,7 @@
     }
 
     function updatePageTitle(tabName) {
-      const baseTitle = 'AWSPrepAI - AWS Certification Study Tool';
+      const baseTitle = 'CertiPrepAI - AWS Certification Study Tool';
       const tabTitle = tabTitles[tabName];
       if (tabTitle) {
         document.title = `${tabTitle} | ${baseTitle}`;

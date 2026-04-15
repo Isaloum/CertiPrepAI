@@ -8,18 +8,11 @@ const { CognitoIdentityProviderClient, ListUsersCommand, AdminUpdateUserAttribut
 const cognito = new CognitoIdentityProviderClient({ region: 'us-east-1' });
 const USER_POOL_ID = process.env.COGNITO_USER_POOL_ID;
 
-const ALLOWED_ORIGINS = [
-  'https://awsprepai.isaloumapps.com',
-  'https://main.d2pm3jfcsesli7.amplifyapp.com',
-  'https://awsprepai.netlify.app',
-];
-
-function corsHeaders(origin) {
-  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+function corsHeaders() {
   return {
-    'Access-Control-Allow-Origin': allowed,
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'POST,OPTIONS',
     'Content-Type': 'application/json',
   };
 }
@@ -47,8 +40,7 @@ async function upgradeCognitoUser(email, tier) {
 }
 
 exports.handler = async (event) => {
-  const origin = event.headers?.origin || event.headers?.Origin || '';
-  const headers = corsHeaders(origin);
+  const headers = corsHeaders();
 
   if (event.requestContext?.http?.method === 'OPTIONS' || event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers, body: '' };
@@ -74,10 +66,11 @@ exports.handler = async (event) => {
     const tier = session.metadata?.tier || 'lifetime';
     const email = session.customer_details?.email || (typeof session.customer === 'object' ? session.customer?.email : null);
 
-    if (email) {
-      try { await upgradeCognitoUser(email, tier); }
-      catch (err) { console.error('[verify-session] Cognito upgrade failed:', err.message); }
+    if (!email) {
+      return { statusCode: 400, headers, body: JSON.stringify({ verified: false, error: 'No email found in session' }) };
     }
+
+    await upgradeCognitoUser(email, tier);
 
     return { statusCode: 200, headers, body: JSON.stringify({ verified: true, tier }) };
   } catch (err) {
