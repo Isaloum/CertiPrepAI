@@ -160,9 +160,8 @@ const CAT_LABELS: Record<string, string> = {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function ArchitectureBuilder() {
-  const { user } = useAuth()
+  const { user, tier } = useAuth()
   const navigate = useNavigate()
-  const tier = (user as any)?.user_metadata?.tier
   const isPremium = tier === 'monthly' || tier === 'yearly' || tier === 'lifetime'
 
   const [challengeIdx, setChallengeIdx] = useState(0)

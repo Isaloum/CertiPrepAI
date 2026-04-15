@@ -95,7 +95,6 @@ const plans = [
     highlight: false,
     features: [
       'Everything in Yearly',
-      'AI Coach (exclusive — lifetime only)',
       'All future certifications included',
       'Pay once, use forever',
       'No recurring fees, ever',
@@ -172,7 +171,7 @@ export default function Pricing() {
         {/* Plans Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
           gap: '1.25rem',
           marginBottom: '4rem',
           alignItems: 'stretch',
@@ -356,6 +355,46 @@ export default function Pricing() {
           })}
         </div>
 
+
+        {/* FAQ */}
+        <div id="faq" style={{ marginBottom: '4rem' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 900, color: '#111827', textAlign: 'center', marginBottom: '2rem' }}>
+            Frequently Asked Questions
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '720px', margin: '0 auto' }}>
+            {[
+              {
+                q: 'Can I cancel my Monthly plan anytime?',
+                a: 'Yes. Cancel at any time from your account settings. You keep access until the end of your billing period. No questions asked.',
+              },
+              {
+                q: 'What is the difference between Monthly and Yearly?',
+                a: 'Monthly gives you 1 certification at a time (switch once every 30 days). Yearly unlocks all 12 certifications simultaneously at ~$5.60/month.',
+              },
+              {
+                q: 'Does Lifetime include future certifications?',
+                a: 'Yes. Lifetime plan includes all certifications we add in the future, forever. Pay once and you\'re covered.',
+              },
+              {
+                q: 'Are questions scenario-based or just memorization?',
+                a: 'All 3,120 questions are scenario-based — the same style AWS uses on its real exams. Each answer includes a detailed explanation.',
+              },
+              {
+                q: 'What is the timed mock exam?',
+                a: '65 questions, 130 minutes — identical to the real AWS exam format. Great for checking your readiness before exam day.',
+              },
+              {
+                q: 'Do I need a credit card for the free plan?',
+                a: 'No. The free plan gives you 20 questions across any certification with zero sign-up or payment required.',
+              },
+            ].map(({ q, a }) => (
+              <div key={q} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '0.875rem', padding: '1.25rem 1.5rem' }}>
+                <div style={{ fontWeight: 700, color: '#111827', fontSize: '0.95rem', marginBottom: '0.5rem' }}>{q}</div>
+                <div style={{ color: '#6b7280', fontSize: '0.875rem', lineHeight: 1.6 }}>{a}</div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Bottom CTA */}
         <div style={{ background: '#111827', borderRadius: '1rem', padding: '2.5rem', textAlign: 'center', color: '#fff' }}>

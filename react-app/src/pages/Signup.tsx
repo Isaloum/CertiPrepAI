@@ -10,7 +10,7 @@ const perks = [
   { icon: '📋', text: '3,120 scenario-based questions' },
   { icon: '⏱️', text: 'Timed mock exams — 65q / 130 min' },
   { icon: '🗺️', text: 'Architecture diagrams & visual exam' },
-  { icon: '🤖', text: 'AI Coach (Lifetime plan)' },
+  { icon: '🎯', text: 'Domain filtering — focus weak areas' },
   { icon: '🏆', text: 'All 12 active AWS certifications' },
 ]
 
@@ -27,6 +27,16 @@ export default function Signup() {
   const [confirming, setConfirming] = useState(false)
   const [focusField, setFocusField] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
+  const [passwordTouched, setPasswordTouched] = useState(false)
+
+  const pwChecks = {
+    length:    password.length >= 8,
+    uppercase: /[A-Z]/.test(password),
+    lowercase: /[a-z]/.test(password),
+    number:    /[0-9]/.test(password),
+    symbol:    /[^A-Za-z0-9]/.test(password),
+  }
+  const pwValid = Object.values(pwChecks).every(Boolean)
 
   const planLabel =
     plan === 'lifetime' ? '🔥 Lifetime — pay once, use forever'
@@ -38,7 +48,7 @@ export default function Signup() {
     e.preventDefault()
     setError('')
     if (!email || !password) { setError('Please fill in all fields.'); return }
-    if (password.length < 8) { setError('Password must be at least 8 characters.'); return }
+    if (!pwValid) { setPasswordTouched(true); setError('Password does not meet all requirements.'); return }
 
     setLoading(true)
     try {
@@ -62,10 +72,10 @@ export default function Signup() {
       } catch {
         setError('Network error. Please try again.')
       }
-      setLoading(false)
       return
     }
 
+    // Always verify email first before any redirect (including paid plans)
     setLoading(false)
     setConfirmSent(true)
   }
@@ -78,11 +88,45 @@ export default function Signup() {
       setError('')
       try {
         await confirmSignUp(email, code)
-        navigate('/login?verified=1')
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : 'Invalid code. Please try again.')
+        setConfirming(false)
+        return
       }
-      setConfirming(false)
+
+      // Email verified — now redirect to payment if paid plan, otherwise to login
+      if (plan !== 'free' && PAID_PLANS.has(plan)) {
+        try {
+          const res = await fetch(CHECKOUT_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ plan, email }),
+          })
+          const data = await res.json()
+          if (data.url) { window.location.href = data.url; return }
+          setError(data.error || 'Checkout failed. Please try again.')
+        } catch {
+          setError('Network error. Please try again.')
+        }
+        setConfirming(false)
+        return
+      }
+
+      navigate('/login?verified=1')
+    }
+
+    const handleResend = async () => {
+      try {
+        const { CognitoUser } = await import('amazon-cognito-identity-js')
+        const { userPool } = await import('../lib/cognito')
+        const user = new CognitoUser({ Username: email, Pool: userPool })
+        user.resendConfirmationCode((err) => {
+          if (err) setError('Could not resend code. Please try again.')
+          else setError('')
+        })
+      } catch {
+        setError('Could not resend code.')
+      }
     }
 
     return (
@@ -92,23 +136,38 @@ export default function Signup() {
           <h2 style={{ fontSize: '1.4rem', fontWeight: 900, color: '#111827', marginBottom: '0.5rem' }}>Check your email</h2>
           <p style={{ color: '#6b7280', fontSize: '0.9rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
             We sent a 6-digit code to <strong>{email}</strong>. Enter it below to activate your account.
+            {plan !== 'free' && PAID_PLANS.has(plan) && (
+              <span style={{ display: 'block', marginTop: '0.5rem', color: '#2563eb', fontWeight: 600 }}>
+                After verification you'll be taken to payment.
+              </span>
+            )}
           </p>
           <form onSubmit={handleConfirm}>
             <input
+              id="verify-code"
+              name="code"
               type="text"
               placeholder="Enter 6-digit code"
               value={code}
               onChange={e => setCode(e.target.value)}
               maxLength={6}
+              autoComplete="one-time-code"
               style={{ width: '100%', padding: '0.75rem 1rem', fontSize: '1.2rem', letterSpacing: '0.3em', textAlign: 'center', border: '1.5px solid #d1d5db', borderRadius: '0.75rem', marginBottom: '1rem', boxSizing: 'border-box' }}
             />
             {error && <p style={{ color: '#dc2626', fontSize: '0.85rem', marginBottom: '0.75rem' }}>{error}</p>}
             <button
               type="submit"
               disabled={confirming}
-              style={{ width: '100%', padding: '0.75rem', background: '#2563eb', color: '#fff', fontWeight: 700, borderRadius: '0.75rem', border: 'none', cursor: 'pointer', fontSize: '0.95rem' }}
+              style={{ width: '100%', padding: '0.75rem', background: '#2563eb', color: '#fff', fontWeight: 700, borderRadius: '0.75rem', border: 'none', cursor: 'pointer', fontSize: '0.95rem', marginBottom: '0.75rem' }}
             >
-              {confirming ? 'Verifying…' : 'Verify & Log In'}
+              {confirming ? 'Verifying…' : plan !== 'free' && PAID_PLANS.has(plan) ? 'Verify & Continue to Payment →' : 'Verify & Log In'}
+            </button>
+            <button
+              type="button"
+              onClick={handleResend}
+              style={{ background: 'none', border: 'none', color: '#6b7280', fontSize: '0.82rem', cursor: 'pointer', textDecoration: 'underline' }}
+            >
+              Didn't get the code? Resend it
             </button>
           </form>
         </div>
@@ -198,11 +257,14 @@ export default function Signup() {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
+            <label htmlFor="signup-email" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
               Email
             </label>
             <input
+              id="signup-email"
+              name="email"
               type="email"
+              autoComplete="email"
               value={email}
               onChange={e => setEmail(e.target.value.trim().toLowerCase())}
               onFocus={() => setFocusField('email')}
@@ -216,15 +278,18 @@ export default function Signup() {
             />
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
+            <label htmlFor="signup-password" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
               Password
             </label>
             <div style={{ position: 'relative' }}>
               <input
+                id="signup-password"
+                name="password"
                 type={showPassword ? 'text' : 'password'}
+                autoComplete="new-password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                onFocus={() => setFocusField('password')}
+                onFocus={() => { setFocusField('password'); setPasswordTouched(true) }}
                 onBlur={() => setFocusField(null)}
                 placeholder="Min 8 characters"
                 style={{
@@ -245,11 +310,36 @@ export default function Signup() {
                 }
               </button>
             </div>
+            {passwordTouched && (
+              <div style={{ marginTop: '0.5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.3rem 1rem' }}>
+                {([
+                  ['length',    '8+ characters'],
+                  ['uppercase', 'Uppercase letter'],
+                  ['lowercase', 'Lowercase letter'],
+                  ['number',    'Number'],
+                  ['symbol',    'Symbol (!@#$…)'],
+                ] as [keyof typeof pwChecks, string][]).map(([key, label]) => (
+                  <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.75rem', color: pwChecks[key] ? '#15803d' : '#9ca3af' }}>
+                    <span style={{ fontWeight: 700 }}>{pwChecks[key] ? '✓' : '✗'}</span>
+                    {label}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          {error && (
+          {error && error !== '__EXISTS__' && (
             <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '0.5rem', padding: '0.6rem 0.85rem', fontSize: '0.83rem', color: '#b91c1c' }}>
               {error}
+            </div>
+          )}
+          {error === '__EXISTS__' && (
+            <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '0.75rem', padding: '0.85rem 1rem', fontSize: '0.85rem', color: '#1d4ed8', textAlign: 'center' }}>
+              <strong>Account already exists.</strong>
+              <br />
+              <Link to={`/login`} style={{ color: '#1d4ed8', fontWeight: 700, textDecoration: 'underline', marginTop: '0.35rem', display: 'inline-block' }}>
+                Log in instead →
+              </Link>
             </div>
           )}
 

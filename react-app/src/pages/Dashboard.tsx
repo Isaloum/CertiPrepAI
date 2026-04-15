@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
-import { getMonthlyCert } from '../lib/db'
+import { getMonthlyCert, getAllProgress, type CertProgress } from '../lib/db'
+import { getMFAStatus, setupTOTP, verifyAndEnableTOTP, disableTOTP } from '../lib/cognito'
+import QRCode from 'qrcode'
+
+const CANCEL_API = "https://hpcdl0ft8a.execute-api.us-east-1.amazonaws.com"
 
 const CANCEL_API = import.meta.env.VITE_CANCEL_API as string
 
@@ -58,8 +62,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!user || tier !== 'monthly') { setMonthlyCert(null); return }
-    getMonthlyCert(user.accessToken).then((data) => setMonthlyCert(data ?? null))
+    getMonthlyCert(user.accessToken).then((data) => setMonthlyCert(data ?? null)).catch(() => setMonthlyCert(null))
   }, [user, tier])
+
+  useEffect(() => {
+    if (!user) return
+    getAllProgress(user.accessToken).then(setProgress).catch(() => {})
+    getMFAStatus().then(setMfaEnabled).catch(() => setMfaEnabled(false))
+  }, [user])
 
   if (loading || !user) {
     return (
@@ -202,7 +212,14 @@ export default function Dashboard() {
         </div>
 
         {/* Monthly: current cert card */}
-        {tier === 'monthly' && monthlyCert !== undefined && (() => {
+        {tier === 'monthly' && (() => {
+          if (monthlyCert === undefined) return (
+            <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '1rem', padding: '1.25rem 1.5rem', marginBottom: '1.5rem' }}>
+              <div style={{ background: '#e5e7eb', borderRadius: '0.5rem', height: '1rem', width: '55%', marginBottom: '0.5rem' }} />
+              <div style={{ background: '#e5e7eb', borderRadius: '0.5rem', height: '0.75rem', width: '75%', marginBottom: '0.75rem' }} />
+              <div style={{ background: '#e5e7eb', borderRadius: '0.6rem', height: '2rem', width: '9rem' }} />
+            </div>
+          )
           if (!monthlyCert) {
             return (
               <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '1rem', padding: '1.25rem 1.5rem', marginBottom: '1.5rem' }}>
@@ -254,7 +271,7 @@ export default function Dashboard() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
           {[
             { label: 'Certifications', value: '12', icon: '📋' },
-            { label: 'Total Questions', value: '3,120', icon: '❓' },
+            { label: 'Total Questions', value: '3,120', icon: '📝' },
             { label: 'Available to you', value: isFullAccess ? '3,120' : tier === 'monthly' ? '260' : '20', icon: '🔓' },
           ].map(stat => (
             <div key={stat.label} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '0.875rem', padding: '1rem 1.25rem', textAlign: 'center' }}>
@@ -264,6 +281,42 @@ export default function Dashboard() {
             </div>
           ))}
         </div>
+
+        {/* Progress section */}
+        {progress.length > 0 && (
+          <>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#111827', marginBottom: '1rem' }}>Your Progress</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '2rem' }}>
+              {progress
+                .sort((a, b) => new Date(b.last_practiced).getTime() - new Date(a.last_practiced).getTime())
+                .map(p => {
+                  const meta = CERT_META[p.cert_id]
+                  if (!meta) return null
+                  const pct = p.questions_attempted > 0 ? Math.round((p.correct_answers / p.questions_attempted) * 100) : 0
+                  const scoreColor = pct >= 72 ? '#16a34a' : pct >= 50 ? '#d97706' : '#dc2626'
+                  const practiced = new Date(p.last_practiced).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                  return (
+                    <Link key={p.cert_id} to={`/cert/${p.cert_id}`} style={{ display: 'flex', alignItems: 'center', gap: '0.875rem', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '0.875rem', padding: '0.875rem 1.125rem', textDecoration: 'none' }}>
+                      <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>{meta.icon}</span>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                          <span style={{ fontWeight: 700, color: '#111827', fontSize: '0.85rem' }}>{meta.name}</span>
+                          <span style={{ fontSize: '0.75rem', color: '#6b7280', flexShrink: 0, marginLeft: '0.5rem' }}>Last: {practiced}</span>
+                        </div>
+                        <div style={{ background: '#f3f4f6', borderRadius: '999px', height: '6px', overflow: 'hidden' }}>
+                          <div style={{ width: `${Math.min(pct, 100)}%`, height: '100%', background: scoreColor, borderRadius: '999px', transition: 'width 0.4s ease' }} />
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.25rem' }}>
+                          <span style={{ fontSize: '0.72rem', color: '#6b7280' }}>{p.questions_attempted} answered</span>
+                          <span style={{ fontSize: '0.72rem', fontWeight: 700, color: scoreColor }}>{pct}% correct</span>
+                        </div>
+                      </div>
+                    </Link>
+                  )
+                })}
+            </div>
+          </>
+        )}
 
         {/* Certifications grid */}
         <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#111827', marginBottom: '1rem' }}>Practice by Certification</h2>
@@ -299,6 +352,107 @@ export default function Dashboard() {
         </div>
 
       </div>
+
+      {/* Security / MFA section */}
+      {(
+        <div style={{ marginTop: '2rem', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '1rem', padding: '1.25rem 1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+            <div>
+              <div style={{ fontWeight: 700, color: '#111827', fontSize: '0.95rem' }}>🔐 Two-Factor Authentication</div>
+              <div style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.2rem' }}>
+                {mfaEnabled ? '✅ Enabled — Google Authenticator / Authy' : 'Add an extra layer of security to your account'}
+              </div>
+            </div>
+            {!mfaSetup && (
+              <button
+                onClick={mfaEnabled ? handleDisableMFA : handleEnableMFA}
+                disabled={mfaLoading}
+                style={{ padding: '0.5rem 1.1rem', background: mfaEnabled ? '#fff' : '#2563eb', color: mfaEnabled ? '#dc2626' : '#fff', border: mfaEnabled ? '1px solid #fca5a5' : 'none', borderRadius: '0.65rem', fontWeight: 600, fontSize: '0.82rem', cursor: mfaLoading ? 'not-allowed' : 'pointer' }}
+              >
+                {mfaLoading ? '…' : mfaEnabled ? 'Disable MFA' : 'Enable MFA'}
+              </button>
+            )}
+          </div>
+
+          {mfaSetup && mfaSecret && (
+            <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #f3f4f6' }}>
+              <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '0.5rem', padding: '0.65rem 0.85rem', marginBottom: '0.85rem', fontSize: '0.78rem', color: '#1e40af' }}>
+                <strong>Step 1:</strong> Open <strong>Google Authenticator</strong> or <strong>Authy</strong> on your phone<br />
+                <strong>Step 2:</strong> Tap <strong>+</strong> → <strong>Scan QR code</strong><br />
+                <strong>Step 3:</strong> Point your phone at the code below
+              </div>
+              {qrCodeUrl && (
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+                  <img src={qrCodeUrl} alt="MFA QR Code" style={{ width: '180px', height: '180px', borderRadius: '0.5rem', border: '1px solid #e5e7eb' }} />
+                </div>
+              )}
+              <p style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.4rem', textAlign: 'center' }}>
+                Can't scan? Enter this key manually:
+              </p>
+              <div style={{ background: '#f3f4f6', borderRadius: '0.5rem', padding: '0.75rem 1rem', fontFamily: 'monospace', fontSize: '0.85rem', letterSpacing: '0.1em', wordBreak: 'break-all', marginBottom: '1rem', color: '#1d4ed8', fontWeight: 700, textAlign: 'center' }}>
+                {mfaSecret}
+              </div>
+              <p style={{ fontSize: '0.78rem', color: '#6b7280', marginBottom: '0.75rem' }}>
+                Then enter the 6-digit code your app shows:
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <input
+                  type="text"
+                  value={mfaCode}
+                  onChange={e => setMfaCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  placeholder="000000"
+                  maxLength={6}
+                  style={{ flex: 1, padding: '0.6rem 0.75rem', fontSize: '1.1rem', letterSpacing: '0.3em', textAlign: 'center', border: '2px solid #e5e7eb', borderRadius: '0.5rem', outline: 'none' }}
+                />
+                <button onClick={handleVerifyMFA} disabled={mfaLoading || mfaCode.length < 6}
+                  style={{ padding: '0.6rem 1rem', background: mfaCode.length < 6 ? '#93c5fd' : '#2563eb', color: '#fff', border: 'none', borderRadius: '0.5rem', fontWeight: 700, fontSize: '0.83rem', cursor: mfaCode.length < 6 ? 'not-allowed' : 'pointer' }}>
+                  {mfaLoading ? '…' : 'Verify'}
+                </button>
+                <button onClick={() => { setMfaSetup(false); setMfaSecret(''); setMfaCode(''); setMfaError('') }}
+                  style={{ padding: '0.6rem 0.75rem', background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb', borderRadius: '0.5rem', fontWeight: 600, fontSize: '0.83rem', cursor: 'pointer' }}>
+                  Cancel
+                </button>
+              </div>
+              {mfaError && <p style={{ color: '#dc2626', fontSize: '0.8rem', marginTop: '0.5rem' }}>{mfaError}</p>}
+            </div>
+          )}
+          {mfaError && !mfaSetup && <p style={{ color: '#dc2626', fontSize: '0.8rem', marginTop: '0.5rem' }}>{mfaError}</p>}
+        </div>
+      )}
+
+      {/* Cancel Subscription Modal */}
+      {showCancelModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem' }}>
+          <div style={{ background: '#fff', borderRadius: '1rem', padding: '2rem', maxWidth: '420px', width: '100%', boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
+            <div style={{ fontSize: '2.5rem', textAlign: 'center', marginBottom: '1rem' }}>⚠️</div>
+            <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#111827', textAlign: 'center', marginBottom: '0.5rem' }}>Cancel your subscription?</h2>
+            <p style={{ color: '#6b7280', fontSize: '0.875rem', textAlign: 'center', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+              You'll keep full access until the end of your current billing period. After that, your account will revert to the free plan.
+            </p>
+            {cancelError && (
+              <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '0.5rem', padding: '0.6rem 0.85rem', fontSize: '0.83rem', color: '#b91c1c', marginBottom: '1rem', textAlign: 'center' }}>
+                {cancelError}
+              </div>
+            )}
+            <div style={{ display: 'flex', gap: '0.75rem' }}>
+              <button
+                onClick={() => setShowCancelModal(false)}
+                disabled={cancelling}
+                style={{ flex: 1, padding: '0.75rem', background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb', borderRadius: '0.75rem', fontWeight: 700, fontSize: '0.875rem', cursor: 'pointer' }}
+              >
+                Keep My Plan
+              </button>
+              <button
+                onClick={handleCancelSubscription}
+                disabled={cancelling}
+                style={{ flex: 1, padding: '0.75rem', background: cancelling ? '#fca5a5' : '#dc2626', color: '#fff', border: 'none', borderRadius: '0.75rem', fontWeight: 700, fontSize: '0.875rem', cursor: cancelling ? 'not-allowed' : 'pointer' }}
+              >
+                {cancelling ? 'Cancelling…' : 'Yes, Cancel'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   )
 }

@@ -157,7 +157,7 @@ export default function Home() {
             { n: '12', label: 'Certifications' },
             { n: '3,120', label: 'Questions' },
             { n: '65', label: 'Questions / Mock Exam' },
-            { n: '90', label: 'Min Timer' },
+            { n: '130', label: 'Min Timer' },
             { n: '72%', label: 'AWS Pass Mark' },
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center', padding: '0.5rem' }}>
@@ -278,7 +278,7 @@ export default function Home() {
                 id: 'monthly', label: 'Monthly', price: '$7', period: '/mo',
                 badge: '⚡ Flexible',
                 bg: 'rgba(96,165,250,0.16)', border: 'rgba(96,165,250,0.32)',
-                features: ['All 12 certs', '3,120 questions', 'Mock exams', 'Cancel anytime'],
+                features: ['1 cert at a time', '260 questions', 'Mock exams', 'Cancel anytime'],
               },
               {
                 id: 'yearly', label: 'Yearly', price: '$67', period: '/yr',
@@ -290,7 +290,7 @@ export default function Home() {
                 id: 'lifetime', label: 'Lifetime', price: '$147', period: '/once',
                 badge: '🔥 Best Value',
                 bg: 'rgba(29,78,216,0.42)', border: 'rgba(29,78,216,0.7)',
-                features: ['Pay once forever', 'AI Coach included', 'All future certs', 'No fees ever'],
+                features: ['Pay once forever', 'All future certs included', 'No recurring fees ever', 'Best ROI'],
               },
             ].map(p => {
               const isHov = hoveredPlan === p.id

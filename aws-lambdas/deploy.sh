@@ -6,11 +6,12 @@
 set -e
 
 REGION="us-east-1"
-ROLE_ARN="arn:aws:iam::441393059130:role/awsprepai-checkout-role"
-COGNITO_USER_POOL_ID="us-east-1_bqEVRsi2b"
-COGNITO_CLIENT_ID="4j9mnlkhtu023takbj0qb1g10h"
+# Security: all sensitive values must be set as env vars before running this script.
+ROLE_ARN="${ROLE_ARN:?Set ROLE_ARN env var (arn:aws:iam::<account-id>:role/<role-name>)}"
+COGNITO_USER_POOL_ID="${COGNITO_USER_POOL_ID:?Set COGNITO_USER_POOL_ID env var}"
+COGNITO_CLIENT_ID="${COGNITO_CLIENT_ID:?Set COGNITO_CLIENT_ID env var}"
 STRIPE_SECRET_KEY="${STRIPE_SECRET_KEY:?Set STRIPE_SECRET_KEY env var before running}"
-STRIPE_WEBHOOK_SECRET="whsec_YOUR_WEBHOOK_SECRET"  # Update this
+STRIPE_WEBHOOK_SECRET="${STRIPE_WEBHOOK_SECRET:?Set STRIPE_WEBHOOK_SECRET env var}"
 
 echo "=== Deploying awsprepai-verify-session ==="
 cd verify-session

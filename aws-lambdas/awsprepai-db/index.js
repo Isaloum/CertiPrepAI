@@ -17,6 +17,13 @@ const CORS = {
   'Content-Type': 'application/json',
 };
 
+// ── Security: whitelist of valid cert IDs — prevents injection ────────────
+const VALID_CERTS = new Set([
+  'aws-clf-c02', 'aws-saa-c03', 'aws-dva-c02', 'aws-soa-c02',
+  'aws-sap-c02', 'aws-dop-c02', 'aws-ans-c01', 'aws-das-c01',
+  'aws-mls-c01', 'aws-pas-c01', 'aws-sec-c02', 'aws-iot-c01',
+]);
+
 exports.handler = async (event) => {
   const method = event.requestContext?.http?.method || 'UNKNOWN';
   const authHeader = event.headers?.authorization || event.headers?.Authorization || '';

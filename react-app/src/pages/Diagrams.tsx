@@ -16,6 +16,9 @@ interface DiagramEdge {
   from: string
   to: string
   label?: string
+  dashed?: boolean
+  labelFlip?: boolean
+  color?: string
 }
 
 interface Diagram {
@@ -42,21 +45,21 @@ const DIAGRAMS: Diagram[] = [
       'Deploy across 2+ AZs for high availability',
     ],
     nodes: [
-      { id: 'igw', label: 'Internet\nGateway', x: 250, y: 30, color: '#8B5CF6' },
-      { id: 'pub-a', label: 'Public\nSubnet AZ-a', x: 100, y: 120, color: '#2563eb' },
-      { id: 'pub-b', label: 'Public\nSubnet AZ-b', x: 400, y: 120, color: '#2563eb' },
-      { id: 'natgw', label: 'NAT\nGateway', x: 100, y: 220, color: '#8B5CF6' },
-      { id: 'alb', label: 'ALB', x: 400, y: 220, color: '#8B5CF6' },
-      { id: 'priv-a', label: 'Private\nSubnet AZ-a', x: 100, y: 320, color: '#6b7280' },
-      { id: 'priv-b', label: 'Private\nSubnet AZ-b', x: 400, y: 320, color: '#6b7280' },
+      { id: 'igw',    label: 'Internet\nGateway',      x: 310, y: 60,  color: '#8B5CF6' },
+      { id: 'pub-a',  label: 'Public\nSubnet AZ-a',    x: 110, y: 230, color: '#2563eb' },
+      { id: 'pub-b',  label: 'Public\nSubnet AZ-b',    x: 510, y: 230, color: '#2563eb' },
+      { id: 'natgw',  label: 'NAT\nGateway',           x: 110, y: 400, color: '#8B5CF6' },
+      { id: 'alb',    label: 'ALB',                    x: 510, y: 400, color: '#8B5CF6' },
+      { id: 'priv-a', label: 'Private\nSubnet AZ-a',   x: 110, y: 570, color: '#475569' },
+      { id: 'priv-b', label: 'Private\nSubnet AZ-b',   x: 510, y: 570, color: '#475569' },
     ],
     edges: [
-      { from: 'igw', to: 'pub-a' },
-      { from: 'igw', to: 'pub-b' },
+      { from: 'igw',   to: 'pub-a' },
+      { from: 'igw',   to: 'pub-b' },
       { from: 'pub-a', to: 'natgw' },
       { from: 'pub-b', to: 'alb' },
       { from: 'natgw', to: 'priv-a', label: 'outbound only' },
-      { from: 'alb', to: 'priv-b' },
+      { from: 'alb',   to: 'priv-b' },
     ],
   },
   {
@@ -71,23 +74,23 @@ const DIAGRAMS: Diagram[] = [
       'Health checks remove unhealthy instances from the target group',
     ],
     nodes: [
-      { id: 'users', label: 'Users', x: 250, y: 20, color: '#6b7280' },
-      { id: 'alb', label: 'Application\nLoad Balancer', x: 250, y: 110, color: '#8B5CF6' },
-      { id: 'ec2a', label: 'EC2\n(AZ-a)', x: 100, y: 220, color: '#FF9900' },
-      { id: 'ec2b', label: 'EC2\n(AZ-b)', x: 250, y: 220, color: '#FF9900' },
-      { id: 'ec2c', label: 'EC2\n(AZ-c)', x: 400, y: 220, color: '#FF9900' },
-      { id: 'asg', label: 'Auto Scaling\nGroup', x: 250, y: 320, color: '#16a34a' },
-      { id: 'cw', label: 'CloudWatch\nAlarms', x: 450, y: 320, color: '#0369A1' },
+      { id: 'users', label: 'Users',                    x: 310, y: 50,  color: '#475569' },
+      { id: 'alb',   label: 'Application\nLoad Balancer', x: 310, y: 180, color: '#8B5CF6' },
+      { id: 'ec2a',  label: 'EC2\n(AZ-a)',              x: 110, y: 330, color: '#FF9900' },
+      { id: 'ec2b',  label: 'EC2\n(AZ-b)',              x: 310, y: 330, color: '#FF9900' },
+      { id: 'ec2c',  label: 'EC2\n(AZ-c)',              x: 510, y: 330, color: '#FF9900' },
+      { id: 'asg',   label: 'Auto Scaling\nGroup',      x: 310, y: 470, color: '#16a34a' },
+      { id: 'cw',    label: 'CloudWatch\nAlarms',       x: 590, y: 470, color: '#0369A1' },
     ],
     edges: [
       { from: 'users', to: 'alb' },
-      { from: 'alb', to: 'ec2a' },
-      { from: 'alb', to: 'ec2b' },
-      { from: 'alb', to: 'ec2c' },
-      { from: 'asg', to: 'ec2a' },
-      { from: 'asg', to: 'ec2b' },
-      { from: 'asg', to: 'ec2c' },
-      { from: 'cw', to: 'asg', label: 'scale trigger' },
+      { from: 'alb',   to: 'ec2a' },
+      { from: 'alb',   to: 'ec2b' },
+      { from: 'alb',   to: 'ec2c' },
+      { from: 'asg',   to: 'ec2a' },
+      { from: 'asg',   to: 'ec2b' },
+      { from: 'asg',   to: 'ec2c' },
+      { from: 'cw',    to: 'asg',  label: 'scale trigger', labelFlip: true },
     ],
   },
   {
@@ -102,15 +105,15 @@ const DIAGRAMS: Diagram[] = [
       'Can have both: Multi-AZ primary + Read Replicas for reads',
     ],
     nodes: [
-      { id: 'app', label: 'Application', x: 250, y: 20, color: '#6b7280' },
-      { id: 'primary', label: 'RDS Primary\n(AZ-a)', x: 150, y: 130, color: '#1A73E8' },
-      { id: 'standby', label: 'RDS Standby\n(AZ-b)', x: 350, y: 130, color: '#9ca3af' },
-      { id: 'replica1', label: 'Read\nReplica 1', x: 50, y: 270, color: '#16a34a' },
-      { id: 'replica2', label: 'Read\nReplica 2', x: 250, y: 270, color: '#16a34a' },
+      { id: 'app',      label: 'Application',         x: 310, y: 70,  color: '#475569' },
+      { id: 'primary',  label: 'RDS Primary\n(AZ-a)', x: 310, y: 260, color: '#1A73E8' },
+      { id: 'standby',  label: 'RDS Standby\n(AZ-b)', x: 660, y: 260, color: '#9ca3af' },
+      { id: 'replica1', label: 'Read\nReplica 1',     x: 110, y: 460, color: '#16a34a' },
+      { id: 'replica2', label: 'Read\nReplica 2',     x: 510, y: 460, color: '#16a34a' },
     ],
     edges: [
-      { from: 'app', to: 'primary', label: 'writes' },
-      { from: 'primary', to: 'standby', label: 'sync replication' },
+      { from: 'app',     to: 'primary',  label: 'writes',           labelFlip: true },
+      { from: 'primary', to: 'standby',  label: 'sync replication' },
       { from: 'primary', to: 'replica1', label: 'async' },
       { from: 'primary', to: 'replica2', label: 'async' },
     ],
@@ -127,13 +130,13 @@ const DIAGRAMS: Diagram[] = [
       'Invalidate cache manually or use versioned filenames (best practice)',
     ],
     nodes: [
-      { id: 'users', label: 'Global\nUsers', x: 250, y: 20, color: '#6b7280' },
-      { id: 'edge', label: 'CloudFront\nEdge Location', x: 250, y: 130, color: '#8B5CF6' },
-      { id: 's3', label: 'S3 Bucket\n(Origin)', x: 250, y: 280, color: '#3F8624' },
+      { id: 'users', label: 'Global\nUsers',           x: 310, y: 60,  color: '#475569' },
+      { id: 'edge',  label: 'CloudFront\nEdge Location', x: 310, y: 210, color: '#8B5CF6' },
+      { id: 's3',    label: 'S3 Bucket\n(Origin)',     x: 310, y: 380, color: '#3F8624' },
     ],
     edges: [
       { from: 'users', to: 'edge', label: 'request' },
-      { from: 'edge', to: 's3', label: 'cache miss only' },
+      { from: 'edge',  to: 's3',   label: 'cache miss only' },
     ],
   },
   {
@@ -148,15 +151,15 @@ const DIAGRAMS: Diagram[] = [
       'Visibility Timeout: hides a message from other consumers while being processed',
     ],
     nodes: [
-      { id: 'producer', label: 'Producer\n(EC2/Lambda)', x: 80, y: 160, color: '#FF9900' },
-      { id: 'sqs', label: 'SQS Queue', x: 280, y: 160, color: '#EA580C' },
-      { id: 'consumer', label: 'Consumer\n(EC2/Lambda)', x: 460, y: 160, color: '#FF9900' },
-      { id: 'dlq', label: 'Dead Letter\nQueue', x: 280, y: 300, color: '#dc2626' },
+      { id: 'producer',  label: 'Producer\n(EC2/Lambda)', x: 310, y: 80,  color: '#FF9900' },
+      { id: 'sqs',       label: 'SQS Queue',              x: 310, y: 280, color: '#EA580C' },
+      { id: 'consumer',  label: 'Consumer\n(EC2/Lambda)', x: 310, y: 480, color: '#FF9900' },
+      { id: 'dlq',       label: 'Dead Letter\nQueue',     x: 630, y: 280, color: '#dc2626' },
     ],
     edges: [
-      { from: 'producer', to: 'sqs', label: 'send' },
-      { from: 'sqs', to: 'consumer', label: 'poll' },
-      { from: 'sqs', to: 'dlq', label: 'max retries' },
+      { from: 'producer', to: 'sqs',      label: 'send', labelFlip: true },
+      { from: 'sqs',      to: 'consumer', label: 'poll', labelFlip: true },
+      { from: 'sqs',      to: 'dlq',      label: 'max retries' },
     ],
   },
   {
@@ -171,17 +174,19 @@ const DIAGRAMS: Diagram[] = [
       'Multi-Site Active-Active: full production in both regions. Near-zero RTO/RPO. Most expensive.',
     ],
     nodes: [
-      { id: 'br', label: 'Backup &\nRestore', x: 80, y: 160, color: '#9ca3af' },
-      { id: 'pl', label: 'Pilot\nLight', x: 210, y: 160, color: '#6b7280' },
-      { id: 'ws', label: 'Warm\nStandby', x: 350, y: 160, color: '#2563eb' },
-      { id: 'aa', label: 'Active-\nActive', x: 470, y: 160, color: '#16a34a' },
-      { id: 'cost', label: 'Cost →', x: 250, y: 300, color: '#dc2626' },
-      { id: 'speed', label: '← Recovery Speed', x: 250, y: 60, color: '#16a34a' },
+      { id: 'speed', label: 'Recovery\nSpeed ↑', x: 60,  y: 80,  color: '#16a34a' },
+      { id: 'br',    label: 'Backup &\nRestore', x: 310, y: 80,  color: '#9ca3af' },
+      { id: 'pl',    label: 'Pilot\nLight',      x: 310, y: 280, color: '#475569' },
+      { id: 'ws',    label: 'Warm\nStandby',     x: 310, y: 480, color: '#2563eb' },
+      { id: 'aa',    label: 'Active-\nActive',   x: 310, y: 680, color: '#16a34a' },
+      { id: 'cost',  label: 'Cost ↑',            x: 560, y: 680, color: '#dc2626' },
     ],
     edges: [
-      { from: 'br', to: 'pl' },
-      { from: 'pl', to: 'ws' },
-      { from: 'ws', to: 'aa' },
+      { from: 'speed', to: 'br' },
+      { from: 'br',    to: 'pl' },
+      { from: 'pl',    to: 'ws' },
+      { from: 'ws',    to: 'aa' },
+      { from: 'cost',  to: 'aa' },
     ],
   },
 
@@ -192,21 +197,24 @@ const DIAGRAMS: Diagram[] = [
     category: 'secure',
     description: 'IAM manages who (authentication) can do what (authorization) in AWS. Users are for humans. Roles are for services and cross-account access. Policies define permissions.',
     keyPoints: [
-      'IAM Users: long-term credentials (access keys + password). Use for humans.',
-      'IAM Roles: temporary credentials. Use for EC2, Lambda, cross-account access.',
+      'IAM Users: long-term credentials (access keys + password) — for humans',
+      'IAM Groups: attach one policy to many users at once — easier to manage',
+      'IAM Roles: temporary credentials — for EC2, Lambda, cross-account access',
       'Policies: JSON documents defining Allow/Deny on Actions and Resources',
       'Least privilege: grant only the minimum permissions required',
     ],
     nodes: [
-      { id: 'user', label: 'IAM User\n(human)', x: 80, y: 150, color: '#dc2626' },
-      { id: 'role', label: 'IAM Role\n(service)', x: 280, y: 150, color: '#dc2626' },
-      { id: 'policy', label: 'IAM\nPolicy', x: 180, y: 280, color: '#6b7280' },
-      { id: 'aws', label: 'AWS\nServices', x: 420, y: 150, color: '#FF9900' },
+      { id: 'user',   label: 'IAM User\n(human)',   x: 110, y: 100, color: '#dc2626' },
+      { id: 'role',   label: 'IAM Role\n(service)', x: 630, y: 100, color: '#dc2626' },
+      { id: 'policy', label: 'IAM Policy\n(JSON)',  x: 370, y: 280, color: '#475569' },
+      { id: 'group',  label: 'IAM Group\n(users)',  x: 110, y: 460, color: '#7c3aed' },
+      { id: 'aws',    label: 'AWS\nServices',       x: 630, y: 460, color: '#FF9900' },
     ],
     edges: [
-      { from: 'user', to: 'policy', label: 'attached to' },
-      { from: 'role', to: 'policy', label: 'attached to' },
-      { from: 'role', to: 'aws', label: 'assumes →\ncan access' },
+      { from: 'user',  to: 'group',  label: 'member of', labelFlip: true },
+      { from: 'group', to: 'policy', label: 'attaches' },
+      { from: 'role',  to: 'policy', label: 'attaches',  labelFlip: true },
+      { from: 'role',  to: 'aws',    label: 'assumes' },
     ],
   },
   {
@@ -221,15 +229,15 @@ const DIAGRAMS: Diagram[] = [
       'Best practice: use SGs for fine-grained control, NACLs for subnet-wide blocks',
     ],
     nodes: [
-      { id: 'internet', label: 'Internet', x: 250, y: 20, color: '#6b7280' },
-      { id: 'nacl', label: 'NACL\n(Subnet level)', x: 250, y: 130, color: '#7c3aed' },
-      { id: 'sg', label: 'Security Group\n(Instance level)', x: 250, y: 240, color: '#dc2626' },
-      { id: 'ec2', label: 'EC2\nInstance', x: 250, y: 340, color: '#FF9900' },
+      { id: 'internet', label: 'Internet',                  x: 310, y: 60,  color: '#475569' },
+      { id: 'nacl',     label: 'NACL\n(Subnet level)',      x: 310, y: 200, color: '#7c3aed' },
+      { id: 'sg',       label: 'Security Group\n(Instance)', x: 310, y: 350, color: '#dc2626' },
+      { id: 'ec2',      label: 'EC2\nInstance',             x: 310, y: 490, color: '#FF9900' },
     ],
     edges: [
       { from: 'internet', to: 'nacl', label: 'subnet traffic' },
-      { from: 'nacl', to: 'sg', label: 'allowed traffic' },
-      { from: 'sg', to: 'ec2', label: 'instance traffic' },
+      { from: 'nacl',     to: 'sg',   label: 'allowed traffic' },
+      { from: 'sg',       to: 'ec2',  label: 'instance traffic' },
     ],
   },
   {
@@ -244,17 +252,17 @@ const DIAGRAMS: Diagram[] = [
       'CloudFront absorbs volumetric DDoS at edge — protects origin',
     ],
     nodes: [
-      { id: 'attacker', label: 'DDoS\nAttacker', x: 80, y: 150, color: '#dc2626' },
-      { id: 'users', label: 'Legitimate\nUsers', x: 80, y: 280, color: '#16a34a' },
-      { id: 'shield', label: 'Shield\nAdvanced', x: 250, y: 150, color: '#7c3aed' },
-      { id: 'cf', label: 'CloudFront\n+ WAF', x: 380, y: 200, color: '#8B5CF6' },
-      { id: 'origin', label: 'Origin\n(ALB/EC2)', x: 500, y: 200, color: '#FF9900' },
+      { id: 'attacker', label: 'DDoS\nAttacker',    x: 120, y: 100, color: '#dc2626' },
+      { id: 'shield',   label: 'Shield\nAdvanced',  x: 400, y: 100, color: '#7c3aed' },
+      { id: 'users',    label: 'Legitimate\nUsers', x: 120, y: 270, color: '#16a34a' },
+      { id: 'cf',       label: 'CloudFront\n+ WAF', x: 400, y: 270, color: '#8B5CF6' },
+      { id: 'origin',   label: 'Origin\n(ALB/EC2)', x: 640, y: 270, color: '#FF9900' },
     ],
     edges: [
       { from: 'attacker', to: 'shield', label: 'blocked' },
-      { from: 'users', to: 'cf', label: 'allowed' },
-      { from: 'shield', to: 'cf' },
-      { from: 'cf', to: 'origin', label: 'clean traffic' },
+      { from: 'shield',   to: 'cf' },
+      { from: 'users',    to: 'cf',     label: 'allowed' },
+      { from: 'cf',       to: 'origin', label: 'clean traffic' },
     ],
   },
 
@@ -271,15 +279,15 @@ const DIAGRAMS: Diagram[] = [
       'Memcached: simple, multi-threaded, no persistence. Good for simple caching.',
     ],
     nodes: [
-      { id: 'app', label: 'Application', x: 250, y: 20, color: '#6b7280' },
-      { id: 'cache', label: 'ElastiCache\n(Redis)', x: 120, y: 160, color: '#dc2626' },
-      { id: 'rds', label: 'RDS\nDatabase', x: 380, y: 160, color: '#1A73E8' },
+      { id: 'app',   label: 'Application',          x: 150, y: 90,  color: '#475569' },
+      { id: 'cache', label: 'ElastiCache\n(Redis)', x: 450, y: 90,  color: '#dc2626' },
+      { id: 'rds',   label: 'RDS\nDatabase',        x: 150, y: 290, color: '#1A73E8' },
     ],
     edges: [
-      { from: 'app', to: 'cache', label: '1. check cache' },
-      { from: 'cache', to: 'app', label: 'hit: return' },
-      { from: 'app', to: 'rds', label: 'miss: query DB' },
-      { from: 'rds', to: 'cache', label: 'write to cache' },
+      { from: 'app',   to: 'cache', label: 'check cache', color: '#dc2626' },
+      { from: 'cache', to: 'app',   label: 'hit: return' },
+      { from: 'app',   to: 'rds',   label: 'miss: query DB', labelFlip: true },
+      { from: 'rds',   to: 'cache', label: 'write to cache', labelFlip: true },
     ],
   },
   {
@@ -294,17 +302,17 @@ const DIAGRAMS: Diagram[] = [
       'Entire stack scales to zero — pay only for what you use',
     ],
     nodes: [
-      { id: 'client', label: 'Client\n(Browser/App)', x: 250, y: 20, color: '#6b7280' },
-      { id: 'apigw', label: 'API Gateway', x: 250, y: 120, color: '#8B5CF6' },
-      { id: 'lambda', label: 'Lambda\nFunction', x: 250, y: 230, color: '#FF9900' },
-      { id: 'dynamo', label: 'DynamoDB', x: 150, y: 340, color: '#1A73E8' },
-      { id: 's3', label: 'S3\n(files)', x: 350, y: 340, color: '#3F8624' },
+      { id: 'client', label: 'Client\n(Browser/App)', x: 310, y: 60,  color: '#475569' },
+      { id: 'apigw',  label: 'API Gateway',           x: 310, y: 210, color: '#8B5CF6' },
+      { id: 'lambda', label: 'Lambda\nFunction',      x: 310, y: 370, color: '#FF9900' },
+      { id: 'dynamo', label: 'DynamoDB\n(NoSQL)',      x: 100, y: 570, color: '#1A73E8' },
+      { id: 's3',     label: 'S3\n(files)',            x: 520, y: 570, color: '#3F8624' },
     ],
     edges: [
-      { from: 'client', to: 'apigw', label: 'HTTPS' },
-      { from: 'apigw', to: 'lambda', label: 'invoke' },
+      { from: 'client', to: 'apigw',  label: 'HTTPS' },
+      { from: 'apigw',  to: 'lambda', label: 'invoke' },
       { from: 'lambda', to: 'dynamo', label: 'read/write' },
-      { from: 'lambda', to: 's3', label: 'store files' },
+      { from: 'lambda', to: 's3',     label: 'store files' },
     ],
   },
   {
@@ -319,20 +327,20 @@ const DIAGRAMS: Diagram[] = [
       'Use for: order events processed by multiple services (inventory, shipping, email)',
     ],
     nodes: [
-      { id: 'producer', label: 'Producer', x: 250, y: 20, color: '#6b7280' },
-      { id: 'sns', label: 'SNS Topic', x: 250, y: 130, color: '#EA580C' },
-      { id: 'sqs1', label: 'SQS Queue\n(Service A)', x: 80, y: 260, color: '#EA580C' },
-      { id: 'sqs2', label: 'SQS Queue\n(Service B)', x: 250, y: 260, color: '#EA580C' },
-      { id: 'sqs3', label: 'SQS Queue\n(Service C)', x: 420, y: 260, color: '#EA580C' },
-      { id: 'svcA', label: 'Lambda A', x: 80, y: 370, color: '#FF9900' },
-      { id: 'svcB', label: 'Lambda B', x: 250, y: 370, color: '#FF9900' },
-      { id: 'svcC', label: 'Lambda C', x: 420, y: 370, color: '#FF9900' },
+      { id: 'producer', label: 'Producer',             x: 310, y: 50,  color: '#475569' },
+      { id: 'sns',      label: 'SNS Topic',            x: 310, y: 170, color: '#EA580C' },
+      { id: 'sqs1',     label: 'SQS Queue\n(Service A)', x: 100, y: 320, color: '#EA580C' },
+      { id: 'sqs2',     label: 'SQS Queue\n(Service B)', x: 310, y: 320, color: '#EA580C' },
+      { id: 'sqs3',     label: 'SQS Queue\n(Service C)', x: 520, y: 320, color: '#EA580C' },
+      { id: 'svcA',     label: 'Lambda A',              x: 100, y: 450, color: '#FF9900' },
+      { id: 'svcB',     label: 'Lambda B',              x: 310, y: 450, color: '#FF9900' },
+      { id: 'svcC',     label: 'Lambda C',              x: 520, y: 450, color: '#FF9900' },
     ],
     edges: [
       { from: 'producer', to: 'sns' },
-      { from: 'sns', to: 'sqs1' },
-      { from: 'sns', to: 'sqs2' },
-      { from: 'sns', to: 'sqs3' },
+      { from: 'sns',  to: 'sqs1' },
+      { from: 'sns',  to: 'sqs2' },
+      { from: 'sns',  to: 'sqs3' },
       { from: 'sqs1', to: 'svcA' },
       { from: 'sqs2', to: 'svcB' },
       { from: 'sqs3', to: 'svcC' },
@@ -342,25 +350,34 @@ const DIAGRAMS: Diagram[] = [
   // ── Cost Optimized ────────────────────────────────────────────────────────
   {
     id: 's3-lifecycle',
-    title: 'S3 Storage Classes — Lifecycle Policy',
+    title: 'S3 Storage Classes — All 7 Tiers',
     category: 'cost',
-    description: 'S3 Lifecycle policies automatically transition objects between storage classes based on age. This optimizes cost by using cheaper storage for older, less-accessed data.',
+    description: 'AWS S3 has 7 storage classes. Lifecycle policies transition objects automatically based on age — moving from expensive fast-access tiers to cheap archive tiers over time.',
     keyPoints: [
-      'S3 Standard: frequent access. Most expensive. Millisecond retrieval.',
-      'S3 Standard-IA: infrequent access. ~46% cheaper. Retrieval fee applies.',
-      'S3 Glacier Instant Retrieval: archive, ms retrieval. Good for quarterly access.',
-      'S3 Glacier Deep Archive: cheapest. 12-48 hr retrieval. For compliance archives.',
+      '① S3 Standard: frequent access, ms retrieval. Most expensive.',
+      '② Intelligent-Tiering: auto-moves data between access tiers. No retrieval fee.',
+      '③ S3 Standard-IA: infrequent access, cheaper than Standard. Retrieval fee applies.',
+      '④ One Zone-IA: same as Standard-IA but single AZ — cheaper, less resilient.',
+      '⑤ Glacier Instant: archive tier, still millisecond retrieval.',
+      '⑥ Glacier Flexible: archive, minutes–hours retrieval. Lower cost.',
+      '⑦ Glacier Deep Archive: cheapest of all. 12–48 hr retrieval. Compliance archives.',
     ],
     nodes: [
-      { id: 'std', label: 'S3 Standard\n(0-30 days)', x: 80, y: 150, color: '#1A73E8' },
-      { id: 'ia', label: 'S3 Standard-IA\n(30-90 days)', x: 230, y: 150, color: '#16a34a' },
-      { id: 'glacier', label: 'S3 Glacier\n(90-365 days)', x: 380, y: 150, color: '#6b7280' },
-      { id: 'deep', label: 'Glacier\nDeep Archive\n(365+ days)', x: 490, y: 150, color: '#374151' },
+      { id: 'std',      label: 'S3 Standard\n0+ days',             x: 310, y: 80,  color: '#1A73E8' },
+      { id: 'int-tier', label: 'Intelligent\nTiering',             x: 310, y: 220, color: '#0891b2' },
+      { id: 'std-ia',   label: 'S3 Standard-IA\nafter 30 days',    x: 310, y: 360, color: '#16a34a' },
+      { id: 'one-zone', label: 'One Zone-IA\nSingle AZ',           x: 310, y: 500, color: '#ca8a04' },
+      { id: 'gl-inst',  label: 'Glacier Instant\nafter 90 days',   x: 310, y: 640, color: '#7C3AED' },
+      { id: 'gl-flex',  label: 'Glacier Flexible\nafter 180 days', x: 310, y: 780, color: '#475569' },
+      { id: 'deep',     label: 'Glacier Deep\nArchive\n365+ days', x: 310, y: 930, color: '#374151' },
     ],
     edges: [
-      { from: 'std', to: 'ia', label: '30 days' },
-      { from: 'ia', to: 'glacier', label: '90 days' },
-      { from: 'glacier', to: 'deep', label: '365 days' },
+      { from: 'std',      to: 'int-tier', label: 'auto-tier' },
+      { from: 'int-tier', to: 'std-ia' },
+      { from: 'std-ia',   to: 'one-zone', label: 'single AZ' },
+      { from: 'one-zone', to: 'gl-inst' },
+      { from: 'gl-inst',  to: 'gl-flex' },
+      { from: 'gl-flex',  to: 'deep' },
     ],
   },
   {
@@ -369,18 +386,23 @@ const DIAGRAMS: Diagram[] = [
     category: 'cost',
     description: 'AWS offers multiple EC2 pricing models. The right choice depends on workload predictability, duration, and fault tolerance. Mixing models is the optimal strategy.',
     keyPoints: [
-      'On-Demand: pay per second. No commitment. Most expensive. Best for unpredictable short-term.',
-      'Reserved (1 or 3 yr): up to 72% off. Best for steady, predictable 24/7 workloads.',
-      'Spot: up to 90% off. Can be interrupted with 2-min notice. Best for batch/fault-tolerant.',
-      'Savings Plans: like Reserved but more flexible — commit to $/hr spend, not specific instance type.',
+      'On-Demand: pay per second, no commitment. Most expensive. Best for unpredictable workloads.',
+      'Savings Plans: commit to a $/hr spend (1 or 3 yr). Flexible — any instance type or region. Saves up to 66%.',
+      'Reserved Instances: commit to specific instance type + region (1 or 3 yr). Saves up to 72%.',
+      'Spot: bid on spare AWS capacity. Up to 90% off — but AWS can interrupt with 2-min notice.',
+      'Mix models: use Reserved/Savings Plans for baseline, On-Demand for spikes, Spot for batch jobs.',
     ],
     nodes: [
-      { id: 'od', label: 'On-Demand\n(baseline)', x: 80, y: 160, color: '#6b7280' },
-      { id: 'sp', label: 'Savings Plans\n(-up to 66%)', x: 210, y: 160, color: '#2563eb' },
-      { id: 'ri', label: 'Reserved\n(-up to 72%)', x: 350, y: 160, color: '#16a34a' },
-      { id: 'spot', label: 'Spot\n(-up to 90%)', x: 470, y: 160, color: '#EA580C' },
+      { id: 'od',   label: 'On-Demand\nPay per second',          x: 310, y: 80,  color: '#475569' },
+      { id: 'sp',   label: 'Savings Plans\n−66% vs On-Demand',   x: 310, y: 250, color: '#2563eb' },
+      { id: 'ri',   label: 'Reserved Instance\n−72% vs On-Demand', x: 310, y: 420, color: '#16a34a' },
+      { id: 'spot', label: 'Spot Instances\n−90% vs On-Demand',  x: 310, y: 590, color: '#EA580C' },
     ],
-    edges: [],
+    edges: [
+      { from: 'od',   to: 'sp',   label: 'commit $/hr' },
+      { from: 'sp',   to: 'ri',   label: 'commit type' },
+      { from: 'ri',   to: 'spot', label: 'accept risk' },
+    ],
   },
 ]
 
@@ -400,61 +422,165 @@ const CAT_COLORS: Record<string, string> = {
 }
 
 function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge[] }) {
-  const width = 560
-  const height = 420
+  const NW = 200 // node width
+
+  // Node height based on line count
+  const NH = (n: DiagramNode) => {
+    const lines = n.label.split('\n').length
+    return lines >= 3 ? 92 : lines === 2 ? 74 : 58
+  }
+
+  // Gradient: lighter top to base color bottom
+  const lighten = (hex: string) => {
+    const r = parseInt(hex.slice(1, 3), 16)
+    const g = parseInt(hex.slice(3, 5), 16)
+    const b = parseInt(hex.slice(5, 7), 16)
+    return `rgb(${Math.min(255, r + 55)},${Math.min(255, g + 55)},${Math.min(255, b + 55)})`
+  }
+
+  // Ray-box intersection: point on node boundary facing toward (tx, ty)
+  const boxPt = (n: DiagramNode, tx: number, ty: number): [number, number] => {
+    const dx = tx - n.x, dy = ty - n.y
+    if (!dx && !dy) return [n.x, n.y]
+    const sx = NW / 2 / Math.abs(dx)
+    const sy = NH(n) / 2 / Math.abs(dy)
+    const s = Math.min(isFinite(sx) ? sx : 1e9, isFinite(sy) ? sy : 1e9)
+    return [n.x + dx * s, n.y + dy * s]
+  }
+
+  // Bidirectional edge detection — offset parallel lines apart
+  const mirrorIdx = (e: DiagramEdge) =>
+    edges.findIndex(e2 => e2.from === e.to && e2.to === e.from)
+
+  // Auto viewBox — fit all nodes with padding
+  const PAD = 70
+  const xs = nodes.map(n => n.x), ys = nodes.map(n => n.y)
+  const maxHH = Math.max(...nodes.map(n => NH(n) / 2))
+  const x0 = Math.min(...xs) - NW / 2 - PAD
+  const x1 = Math.max(...xs) + NW / 2 + PAD
+  const y0 = Math.min(...ys) - maxHH - PAD
+  const y1 = Math.max(...ys) + maxHH + PAD
+  const contentW = x1 - x0
+  const contentH = y1 - y0
+  const vw = Math.max(520, contentW)
+  // Ensure height is at least 75% of width so wide/flat diagrams fill the card
+  const vh = Math.max(Math.round(vw * 0.75), contentH)
+  // Centre content inside the viewBox by adding equal padding on both sides
+  const vx = x0 - (vw - contentW) / 2
+  const vy = y0 - (vh - contentH) / 2
 
   return (
     <svg
-      width={width} height={height}
-      viewBox={`0 0 ${width} ${height}`}
-      style={{ width: '100%', height: 'auto', maxHeight: '360px', display: 'block' }}
+      viewBox={`${vx} ${vy} ${vw} ${vh}`}
+      style={{ width: '100%', height: 'auto', maxHeight: '700px', display: 'block' }}
     >
       <defs>
-        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#94a3b8" />
-        </marker>
+        <filter id="ns" x="-30%" y="-30%" width="160%" height="160%">
+          <feDropShadow dx="0" dy="3" stdDeviation="5" floodColor="#0f172a" floodOpacity="0.15" />
+        </filter>
+        <filter id="ls" x="-60%" y="-60%" width="220%" height="220%">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#000" floodOpacity="0.28" />
+        </filter>
+        {nodes.map(n => (
+          <linearGradient key={`gr-${n.id}`} id={`gr-${n.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor={lighten(n.color)} />
+            <stop offset="100%" stopColor={n.color} />
+          </linearGradient>
+        ))}
+        {/* Arrow marker per node color — tip at endpoint (refX = full width) */}
+        {nodes.map(n => (
+          <marker key={`ar-${n.id}`} id={`ar-${n.id}`}
+            markerWidth="11" markerHeight="9" refX="11" refY="4.5" orient="auto">
+            <path d="M0,0 L0,9 L11,4.5 z" fill={n.color} />
+          </marker>
+        ))}
+        <pattern id="dg" width="22" height="22" patternUnits="userSpaceOnUse">
+          <circle cx="11" cy="11" r="1" fill="#d8dfe8" />
+        </pattern>
       </defs>
 
-      {/* Edges */}
+      {/* Background */}
+      <rect x={vx} y={vy} width={vw} height={vh} rx="16" fill="#f1f5f9" />
+      <rect x={vx} y={vy} width={vw} height={vh} rx="16" fill="url(#dg)" />
+
+      {/* ── Edges (drawn below nodes) ── */}
       {edges.map((e, i) => {
-        const from = nodes.find(n => n.id === e.from)
-        const to = nodes.find(n => n.id === e.to)
-        if (!from || !to) return null
-        const mx = (from.x + to.x) / 2
-        const my = (from.y + to.y) / 2
+        const fn = nodes.find(n => n.id === e.from)
+        const tn = nodes.find(n => n.id === e.to)
+        if (!fn || !tn) return null
+        const edgeColor = e.color || fn.color
+        const markerNodeId = e.color ? (nodes.find(n => n.color === e.color)?.id || fn.id) : fn.id
+
+        // Exact box-edge connection points
+        const [ax, ay] = boxPt(fn, tn.x, tn.y)
+        const [bx, by] = boxPt(tn, fn.x, fn.y)
+
+        // Offset bidirectional pairs so lines don't overlap
+        const mi = mirrorIdx(e)
+        const biOff = mi >= 0 ? (mi > i ? 9 : -9) : 0
+        const dx = bx - ax, dy = by - ay
+        const len = Math.sqrt(dx * dx + dy * dy) || 1
+        const px = -dy / len, py = dx / len // perpendicular unit vector
+        const lax = ax + px * biOff, lay = ay + py * biOff
+        const lbx = bx + px * biOff, lby = by + py * biOff
+
+        // Label position: midpoint offset perpendicular toward "upper" side
+        const mx = (lax + lbx) / 2, my = (lay + lby) / 2
+        const sign = (py < 0 ? 1 : py > 0 ? -1 : px < 0 ? -1 : 1) * (e.labelFlip ? -1 : 1)
+        const lw = e.label ? Math.max(e.label.length * 8.2 + 28, 50) : 0
+        // Offset must clear the pill's projected extent onto the perpendicular direction
+        const lo = Math.max(55, lw / 2 * Math.abs(px) + 13 * Math.abs(py) + 10)
+        const llx = mx + sign * px * lo
+        const lly = my + sign * py * lo
+
         return (
           <g key={i}>
+            {/* Straight line — tail at FROM box edge, tip at TO box edge */}
             <line
-              x1={from.x} y1={from.y + 20}
-              x2={to.x} y2={to.y - 20}
-              stroke="#cbd5e1" strokeWidth="1.5"
-              markerEnd="url(#arr)"
+              x1={lax} y1={lay} x2={lbx} y2={lby}
+              stroke={edgeColor} strokeWidth="2.4" strokeLinecap="round"
+              strokeDasharray={e.dashed ? '7 4' : undefined}
+              markerEnd={`url(#ar-${markerNodeId})`}
             />
+            {/* Label pill floating above/beside the line */}
             {e.label && (
-              <text x={mx + 4} y={my} fontSize="9" fill="#94a3b8" textAnchor="middle">{e.label}</text>
+              <g filter="url(#ls)">
+                <rect x={llx - lw / 2} y={lly - 14} width={lw} height={28} rx="14" fill={edgeColor} />
+                <text
+                  x={llx} y={lly + 5}
+                  fontSize="13" fontWeight="700" fill="#fff"
+                  textAnchor="middle" fontFamily="system-ui, -apple-system, sans-serif"
+                >
+                  {e.label}
+                </text>
+              </g>
             )}
           </g>
         )
       })}
 
-      {/* Nodes */}
+      {/* ── Nodes (drawn on top of edges) ── */}
       {nodes.map(n => {
         const lines = n.label.split('\n')
-        const h = lines.length > 1 ? 48 : 34
+        const h = NH(n)
         return (
-          <g key={n.id}>
-            <rect
-              x={n.x - 58} y={n.y - h / 2}
-              width="116" height={h} rx="10"
-              fill={`${n.color}15`} stroke={n.color} strokeWidth="1.5"
-            />
+          <g key={n.id} filter="url(#ns)">
+            {/* Drop shadow offset */}
+            <rect x={n.x - NW / 2 + 1} y={n.y - h / 2 + 4} width={NW} height={h} rx="13"
+              fill="rgba(0,0,0,0.1)" />
+            {/* Gradient body */}
+            <rect x={n.x - NW / 2} y={n.y - h / 2} width={NW} height={h} rx="13"
+              fill={`url(#gr-${n.id})`} stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" />
+            {/* Gloss shine */}
+            <rect x={n.x - NW / 2 + 8} y={n.y - h / 2 + 4} width={NW - 16} height={h * 0.38} rx="8"
+              fill="rgba(255,255,255,0.22)" />
+            {/* Text */}
             {lines.map((line, li) => (
-              <text
-                key={li}
-                x={n.x}
-                y={n.y + (li - (lines.length - 1) / 2) * 14 + 1}
-                textAnchor="middle" fontSize="11"
-                fill={n.color} fontWeight="600"
+              <text key={li}
+                x={n.x} y={n.y + (li - (lines.length - 1) / 2) * 22 + 6}
+                textAnchor="middle" fontSize="16" fontWeight="700" fill="#fff"
+                fontFamily="system-ui, -apple-system, sans-serif"
+                style={{ letterSpacing: '0.015em' }}
               >
                 {line}
               </text>
@@ -467,9 +593,8 @@ function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge
 }
 
 export default function Diagrams() {
-  const { user } = useAuth()
+  const { user, tier } = useAuth()
   const navigate = useNavigate()
-  const tier = (user as any)?.user_metadata?.tier
   const isPremium = tier === 'monthly' || tier === 'yearly' || tier === 'lifetime'
 
   const [category, setCategory] = useState('all')
@@ -548,23 +673,23 @@ export default function Diagrams() {
                 </button>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: '24px', alignItems: 'stretch' }}>
                 {/* SVG */}
-                <div style={{ background: '#f8fafc', borderRadius: '12px', padding: '20px', border: '1px solid #e2e8f0' }}>
+                <div style={{ background: '#f8fafc', borderRadius: '12px', padding: '20px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <DiagramSVG nodes={activeDiagram.nodes} edges={activeDiagram.edges} />
                 </div>
 
                 {/* Info */}
-                <div>
-                  <p style={{ color: '#475569', lineHeight: '1.7', fontSize: '0.93rem', marginBottom: '20px' }}>{activeDiagram.description}</p>
-                  <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <p style={{ color: '#475569', lineHeight: '1.7', fontSize: '1rem', marginBottom: '20px' }}>{activeDiagram.description}</p>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
                     Key Exam Points
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', flexGrow: 1, gap: '4px' }}>
                     {activeDiagram.keyPoints.map((point, i) => (
-                      <div key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                      <div key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', padding: '10px 0', borderBottom: '1px solid #f1f5f9' }}>
                         <span style={{ color: '#2563eb', fontWeight: 700, flexShrink: 0, marginTop: '2px' }}>→</span>
-                        <span style={{ color: '#374151', fontSize: '0.88rem', lineHeight: '1.5' }}>{point}</span>
+                        <span style={{ color: '#374151', fontSize: '0.97rem', lineHeight: '1.55' }}>{point}</span>
                       </div>
                     ))}
                   </div>

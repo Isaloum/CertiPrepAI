@@ -1,8 +1,13 @@
 /**
+ * @deprecated This Cloudflare Worker was used by the legacy GitHub Pages / Netlify
+ * version of AWSPrepAI (awsprepai.netlify.app / isaloum.github.io).
+ * The production app at https://certiprepai.com uses AWS Lambda + DynamoDB instead.
+ * This worker is NO LONGER CALLED by any production code and can be safely ignored.
+ *
  * AWSPrepAI Progress Sync Worker
  * Cloudflare Worker backed by D1 — stores quiz progress server-side.
  * Auth: validates RS256 JWT in Authorization header (same key as Netlify functions).
- * 
+ *
  * Routes:
  *   POST /sync   — save progress for a cert
  *   GET  /sync   — load all progress for the user

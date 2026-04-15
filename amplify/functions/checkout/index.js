@@ -17,14 +17,30 @@ const PLAN_MODES = {
   lifetime: 'payment',
 };
 
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Content-Type': 'application/json',
-};
+// ── Security: CORS restricted to known origins only — no wildcard ─────────
+const ALLOWED_ORIGINS = [
+  'https://certiprepai.com',
+  'https://www.certiprepai.com',
+  'https://main.d2pm3jfcsesli7.amplifyapp.com',
+];
+
+function corsHeaders(origin) {
+  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin':  allowed,
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Content-Type': 'application/json',
+  };
+}
+
+// Security: basic email format validation
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 exports.handler = async (event) => {
+  const origin = event.headers?.origin || event.headers?.Origin || '';
+  const CORS   = corsHeaders(origin);
+
   if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers: CORS, body: '' };
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, headers: CORS, body: JSON.stringify({ error: 'Method not allowed' }) };
@@ -35,6 +51,11 @@ exports.handler = async (event) => {
 
     if (!plan || !PRICE_IDS[plan]) {
       return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid plan' }) };
+    }
+
+    // Security: validate email format if provided
+    if (email && !EMAIL_RE.test(email)) {
+      return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid email format' }) };
     }
 
     const mode = PLAN_MODES[plan];
@@ -63,7 +84,8 @@ exports.handler = async (event) => {
       body: JSON.stringify({ url: session.url }),
     };
   } catch (err) {
-    console.error('[checkout]', err.message);
-    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: err.message }) };
+    // Security: never expose internal error details to client
+    console.error('[checkout]', err);
+    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'Internal server error' }) };
   }
 };

@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom'
 import Layout from '../components/Layout'
 import Paywall from '../components/Paywall'
 import { useAuth } from '../contexts/AuthContext'
-import { getFreeUsage, updateFreeUsage, getMonthlyCert, setMonthlyCert } from '../lib/db'
+import { getFreeUsage, updateFreeUsage, getMonthlyCert, setMonthlyCert, updateProgress } from '../lib/db'
 
 interface Question {
   cat: string
@@ -44,7 +44,8 @@ export default function CertDetail() {
   const [revealed, setRevealed] = useState(false)
   const [score, setScore] = useState(0)
   const [answered, setAnswered] = useState(0)
-  const [domainFilter, setDomainFilter] = useState('all')
+  const [searchParams] = useSearchParams()
+  const [domainFilter, setDomainFilter] = useState(searchParams.get('domain') || 'all')
   const [showResults, setShowResults] = useState(false)
   const [showPaywall, setShowPaywall] = useState(false)
   const [_wrongQuestions, setWrongQuestions] = useState<Question[]>([])
@@ -82,6 +83,10 @@ export default function CertDetail() {
     getFreeUsage(user.accessToken).then((data) => {
       setUsedCount(data?.count ?? 0)
       setUsageLoaded(true)
+    }).catch(() => {
+      // DB unavailable — default to 0 usage, let user practice
+      setUsedCount(0)
+      setUsageLoaded(true)
     })
   }, [user, tier])
 
@@ -90,6 +95,10 @@ export default function CertDetail() {
     if (!user || tier !== 'monthly') { setMonthlyLoaded(true); return }
     getMonthlyCert(user.accessToken).then((data) => {
       setMonthlySelection(data)
+      setMonthlyLoaded(true)
+    }).catch(() => {
+      // DB unavailable — allow access without cert lock
+      setMonthlySelection(null)
       setMonthlyLoaded(true)
     })
   }, [user, tier])
@@ -136,7 +145,12 @@ export default function CertDetail() {
       setUsedCount(newCount)
       await updateFreeUsage(certId || '', newCount, user.accessToken)
     }
-  }, [selected, revealed, filtered, current, tier, usedCount, user])
+
+    // Track progress for all authenticated users
+    if (user && certId) {
+      updateProgress(certId, selected === filtered[current].answer, user.accessToken).catch(() => {})
+    }
+  }, [selected, revealed, filtered, current, tier, usedCount, user, certId])
 
   const handleNext = useCallback(() => {
     if (tier === 'free' && usedCount >= FREE_LIMIT) { setShowPaywall(true); return }
@@ -315,6 +329,7 @@ export default function CertDetail() {
         </button>
         <span style={{ color: '#d1d5db' }}>|</span>
         <span style={{ fontWeight: 800, color: '#111827', fontSize: '0.875rem' }}>{meta.icon} {meta.code} — {meta.name}</span>
+        <span style={{ fontSize: '0.6rem', fontWeight: 800, background: '#dcfce7', color: '#15803d', padding: '2px 8px', borderRadius: '4px', letterSpacing: '0.08em', textTransform: 'uppercase', border: '1px solid #bbf7d0' }}>PRACTICE</span>
         {tier === 'monthly' && (
           <span style={{ fontSize: '0.7rem', fontWeight: 700, background: '#dbeafe', color: '#1d4ed8', padding: '0.2rem 0.6rem', borderRadius: '999px' }}>Monthly — Active Cert</span>
         )}

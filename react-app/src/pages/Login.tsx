@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { signIn, forgotPassword } from '../lib/cognito'
+import { signIn, forgotPassword, completeMFASignIn } from '../lib/cognito'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Login() {
   const navigate = useNavigate()
+  const { refreshUser } = useAuth()
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
   const [error, setError]       = useState('')
@@ -11,6 +13,8 @@ export default function Login() {
   const [resetSent, setResetSent] = useState(false)
   const [focusField, setFocusField] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
+  const [mfaRequired, setMfaRequired] = useState(false)
+  const [totpCode, setTotpCode] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -18,7 +22,13 @@ export default function Login() {
     if (!email || !password) { setError('Please fill in all fields.'); return }
     setLoading(true)
     try {
-      await signIn(email, password)
+      const result = await signIn(email, password)
+      if (result === 'MFA_REQUIRED') {
+        setMfaRequired(true)
+        setLoading(false)
+        return
+      }
+      await refreshUser()
       navigate('/dashboard')
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Sign in failed.'
@@ -32,6 +42,21 @@ export default function Login() {
       } else {
         setError(msg)
       }
+    }
+    setLoading(false)
+  }
+
+  const handleMFASubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!totpCode) { setError('Enter your 6-digit code.'); return }
+    setLoading(true)
+    setError('')
+    try {
+      await completeMFASignIn(totpCode)
+      await refreshUser()
+      navigate('/dashboard')
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Invalid code. Try again.')
     }
     setLoading(false)
   }
@@ -84,7 +109,7 @@ export default function Login() {
               { icon: '📋', text: '3,120 questions across 12 certifications' },
               { icon: '⏱️', text: 'Timed mock exams — 65 questions, 130 min' },
               { icon: '📊', text: 'Track your scores domain by domain' },
-              { icon: '🤖', text: 'AI Coach available on Lifetime plan' },
+              { icon: '🎯', text: 'Domain filtering — focus your weak areas' },
             ].map(p => (
               <div key={p.text} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem', flexShrink: 0 }}>
@@ -118,6 +143,39 @@ export default function Login() {
         justifyContent: 'center',
         padding: '3rem',
       }}>
+        {mfaRequired ? (
+          <>
+            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+              <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>🔐</div>
+              <h1 style={{ fontSize: '1.4rem', fontWeight: 900, color: '#111827', marginBottom: '0.4rem' }}>Two-factor authentication</h1>
+              <p style={{ color: '#6b7280', fontSize: '0.88rem' }}>Enter the 6-digit code from your authenticator app.</p>
+            </div>
+            <form onSubmit={handleMFASubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <input
+                id="mfa-code"
+                name="mfa-code"
+                type="text"
+                value={totpCode}
+                onChange={e => setTotpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                placeholder="000000"
+                autoFocus
+                maxLength={6}
+                autoComplete="one-time-code"
+                style={{ width: '100%', padding: '0.85rem', fontSize: '1.5rem', letterSpacing: '0.4em', textAlign: 'center', border: '2px solid #e5e7eb', borderRadius: '0.75rem', outline: 'none', boxSizing: 'border-box' }}
+              />
+              {error && <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '0.5rem', padding: '0.6rem 0.85rem', fontSize: '0.83rem', color: '#b91c1c' }}>{error}</div>}
+              <button type="submit" disabled={loading || totpCode.length < 6}
+                style={{ width: '100%', padding: '0.85rem', background: loading || totpCode.length < 6 ? '#93c5fd' : '#2563eb', color: '#fff', fontWeight: 700, fontSize: '0.95rem', border: 'none', borderRadius: '0.75rem', cursor: loading || totpCode.length < 6 ? 'not-allowed' : 'pointer' }}>
+                {loading ? 'Verifying…' : 'Verify & Log In'}
+              </button>
+              <button type="button" onClick={() => { setMfaRequired(false); setTotpCode(''); setError('') }}
+                style={{ background: 'none', border: 'none', color: '#6b7280', fontSize: '0.83rem', cursor: 'pointer', textDecoration: 'underline' }}>
+                ← Back to login
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
         <div style={{ marginBottom: '2rem' }}>
           <h1 style={{ fontSize: '1.6rem', fontWeight: 900, color: '#111827', marginBottom: '0.4rem' }}>
             Log in to your account
@@ -129,11 +187,14 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
+            <label htmlFor="login-email" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
               Email
             </label>
             <input
+              id="login-email"
+              name="email"
               type="email"
+              autoComplete="email"
               value={email}
               onChange={e => setEmail(e.target.value.trim().toLowerCase())}
               onFocus={() => setFocusField('email')}
@@ -148,12 +209,15 @@ export default function Login() {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
+            <label htmlFor="login-password" style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '0.4rem' }}>
               Password
             </label>
             <div style={{ position: 'relative' }}>
               <input
+                id="login-password"
+                name="password"
                 type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 onFocus={() => setFocusField('password')}
@@ -220,6 +284,8 @@ export default function Login() {
             <Link to="/signup" style={{ color: '#2563eb', fontWeight: 700, textDecoration: 'none' }}>Sign up free</Link>
           </p>
         </div>
+          </>
+        )}
       </div>
 
     </div>
