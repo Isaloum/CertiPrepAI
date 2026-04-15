@@ -36,7 +36,8 @@ const resources = [
     color: '#dcfce7',
     text: '#15803d',
     items: [
-      { title: 'TutorialsDojo', url: 'https://tutorialsdojo.com/', desc: 'High-quality practice exams and cheat sheets — very close to real exam style', free: false },
+      { title: 'Tutorials Dojo SAA-C03 Video Course (Jon Bonso)', url: 'https://portal.tutorialsdojo.com/courses/aws-certified-solutions-architect-associate-exam-video-course/', desc: '⭐ The course behind the 1,098 questions on this platform. 1,031 slides, full SAA-C03 coverage. Highly recommended.', free: false },
+      { title: 'TutorialsDojo Practice Exams', url: 'https://tutorialsdojo.com/', desc: 'High-quality timed practice exams — very close to real exam style. The gold standard for SAA-C03 practice.', free: false },
       { title: 'Neal Davis Practice Tests', url: 'https://www.udemy.com/user/n-davis-5/', desc: 'Excellent timed practice exams on Udemy for multiple certs', free: false },
       { title: 'Examtopics AWS', url: 'https://www.examtopics.com/exams/amazon/', desc: 'Community-sourced questions — use as a supplement, not a primary source', free: true },
       { title: 'AWS Flashcards (Anki)', url: 'https://ankiweb.net/shared/info/1806131571', desc: 'Spaced-repetition flashcards for AWS services and terms', free: true },
@@ -100,9 +101,12 @@ export default function Resources() {
           <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 900, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.02em' }}>
             Everything I Used to Study AWS
           </h1>
-          <p style={{ color: '#93c5fd', fontSize: '1rem', lineHeight: 1.7, maxWidth: '480px', margin: '0 auto' }}>
+          <p style={{ color: '#93c5fd', fontSize: '1rem', lineHeight: 1.7, maxWidth: '480px', margin: '0 auto 1rem' }}>
             The best courses, practice tools, cheat sheets, and communities — all in one place so you don't have to hunt.
           </p>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)', borderRadius: '999px', padding: '4px 14px', fontSize: '0.78rem', fontWeight: 700, color: '#4ade80' }}>
+            ✅ This platform is backed by 1,098 real questions from Tutorials Dojo &amp; Udemy
+          </div>
         </div>
       </div>
 
