@@ -37,6 +37,9 @@ export default function Signup() {
     symbol:    /[^A-Za-z0-9]/.test(password),
   }
   const pwValid = Object.values(pwChecks).every(Boolean)
+  const strengthScore = Object.values(pwChecks).filter(Boolean).length
+  const strengthLabel = strengthScore <= 1 ? 'Weak' : strengthScore <= 3 ? 'Fair' : strengthScore === 4 ? 'Good' : 'Strong'
+  const strengthColor = strengthScore <= 1 ? '#ef4444' : strengthScore <= 3 ? '#f59e0b' : strengthScore === 4 ? '#3b82f6' : '#16a34a'
 
   const planLabel =
     plan === 'lifetime' ? '🔥 Lifetime — pay once, use forever'
@@ -310,7 +313,23 @@ export default function Signup() {
                 }
               </button>
             </div>
-            {passwordTouched && (
+            {password.length > 0 && (
+              <div style={{ marginTop: '0.5rem' }}>
+                <div style={{ display: 'flex', gap: '3px', marginBottom: '0.2rem' }}>
+                  {[1, 2, 3, 4, 5].map(i => (
+                    <div key={i} style={{
+                      flex: 1, height: '4px', borderRadius: '2px',
+                      background: i <= strengthScore ? strengthColor : '#e5e7eb',
+                      transition: 'background 0.2s',
+                    }} />
+                  ))}
+                </div>
+                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: strengthColor, textAlign: 'right', transition: 'color 0.2s' }}>
+                  {strengthLabel}
+                </div>
+              </div>
+            )}
+            {(passwordTouched || password.length > 0) && (
               <div style={{ marginTop: '0.5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.3rem 1rem' }}>
                 {([
                   ['length',    '8+ characters'],
