@@ -5,6 +5,18 @@ import { useAuth } from '../contexts/AuthContext'
 import { getMonthlyCert, getAllProgress, type CertProgress } from '../lib/db'
 import { getMFAStatus, setupTOTP, verifyAndEnableTOTP, disableTOTP } from '../lib/cognito'
 import QRCode from 'qrcode'
+import SkillRadarChart, { type DomainScore } from '../components/SkillRadarChart'
+
+// Static exam weights (SAA-C03 service domain breakdown)
+// TODO: replace userScore with live data from awsprepai-progress
+const MOCK_RADAR_DATA: DomainScore[] = [
+  { domain: 'Compute',    examWeight: 25, userScore: 65 },
+  { domain: 'Storage',    examWeight: 20, userScore: 80 },
+  { domain: 'Networking', examWeight: 20, userScore: 45 },
+  { domain: 'Security',   examWeight: 20, userScore: 70 },
+  { domain: 'Database',   examWeight: 10, userScore: 55 },
+  { domain: 'Monitoring', examWeight:  5, userScore: 40 },
+]
 
 const CANCEL_API = "https://hpcdl0ft8a.execute-api.us-east-1.amazonaws.com"
 
@@ -280,6 +292,9 @@ export default function Dashboard() {
             </div>
           ))}
         </div>
+
+        {/* Skill Radar Chart */}
+        <SkillRadarChart data={MOCK_RADAR_DATA} isMock={true} />
 
         {/* Progress section */}
         {progress.length > 0 && (
