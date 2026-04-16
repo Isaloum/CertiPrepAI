@@ -41,8 +41,11 @@ exports.handler = async (event) => {
   const origin = event.headers?.origin || event.headers?.Origin || '';
   const CORS   = corsHeaders(origin);
 
-  if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers: CORS, body: '' };
-  if (event.httpMethod !== 'POST') {
+  // Support both API Gateway v1 (httpMethod) and v2 (requestContext.http.method)
+  const method = event.httpMethod || event.requestContext?.http?.method || '';
+
+  if (method === 'OPTIONS') return { statusCode: 200, headers: CORS, body: '' };
+  if (method !== 'POST') {
     return { statusCode: 405, headers: CORS, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
