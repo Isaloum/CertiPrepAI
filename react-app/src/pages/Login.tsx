@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { signIn, forgotPassword, completeMFASignIn } from '../lib/cognito'
+import { signIn, completeMFASignIn } from '../lib/cognito'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Login() {
@@ -10,7 +10,6 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError]       = useState('')
   const [loading, setLoading]   = useState(false)
-  const [resetSent, setResetSent] = useState(false)
   const [focusField, setFocusField] = useState<string | null>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [mfaRequired, setMfaRequired] = useState(false)
@@ -51,16 +50,6 @@ export default function Login() {
     setLoading(false)
   }
 
-  const handleForgotPassword = async () => {
-    if (!email) { setError('Enter your email above first.'); return }
-    setError('')
-    try {
-      await forgotPassword(email)
-      setResetSent(true)
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to send reset email.')
-    }
-  }
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex' }}>
@@ -236,11 +225,6 @@ export default function Login() {
           {error && (
             <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '0.5rem', padding: '0.6rem 0.85rem', fontSize: '0.83rem', color: '#b91c1c' }}>
               {error}
-            </div>
-          )}
-          {resetSent && (
-            <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '0.5rem', padding: '0.6rem 0.85rem', fontSize: '0.83rem', color: '#15803d' }}>
-              Reset email sent — check your inbox.
             </div>
           )}
 
