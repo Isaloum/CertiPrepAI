@@ -36,7 +36,7 @@ const resources = [
     color: '#dcfce7',
     text: '#15803d',
     items: [
-      { title: 'Tutorials Dojo SAA-C03 Video Course (Jon Bonso)', url: 'https://portal.tutorialsdojo.com/courses/aws-certified-solutions-architect-associate-exam-video-course/', desc: '⭐ The course behind the 1,098 questions on this platform. 1,031 slides, full SAA-C03 coverage. Highly recommended.', free: false },
+      { title: 'Tutorials Dojo Practice Exams (Jon Bonso)', url: 'https://portal.tutorialsdojo.com/courses/aws-certified-solutions-architect-associate-exam-video-course/', desc: '⭐ Full SAA-C03 video course — 1,031 slides, comprehensive coverage. One of the best available.', free: false },
       { title: 'TutorialsDojo Practice Exams', url: 'https://tutorialsdojo.com/', desc: 'High-quality timed practice exams — very close to real exam style. The gold standard for SAA-C03 practice.', free: false },
       { title: 'Neal Davis Practice Tests', url: 'https://www.udemy.com/user/n-davis-5/', desc: 'Excellent timed practice exams on Udemy for multiple certs', free: false },
       { title: 'Examtopics AWS', url: 'https://www.examtopics.com/exams/amazon/', desc: 'Community-sourced questions — use as a supplement, not a primary source', free: true },
@@ -105,7 +105,7 @@ export default function Resources() {
             The best courses, practice tools, cheat sheets, and communities — all in one place so you don't have to hunt.
           </p>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)', borderRadius: '999px', padding: '4px 14px', fontSize: '0.78rem', fontWeight: 700, color: '#4ade80' }}>
-            ✅ This platform is backed by 1,098 real questions from Tutorials Dojo &amp; Udemy
+            ✅ 3,221 practice questions derived from AWS official documentation and exam objectives
           </div>
         </div>
       </div>

@@ -148,7 +148,7 @@ export default function Glossary() {
               {terms.length} terms across all domains · Click any card to expand
             </p>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '999px', padding: '4px 14px', fontSize: '0.78rem', fontWeight: 700, color: '#16a34a' }}>
-              ✅ Terms and definitions verified against 1,098 real SAA-C03 exam questions
+              ✅ Derived from AWS official documentation, exam guide objectives, and AWS whitepapers
             </div>
           </div>
 
