@@ -67,6 +67,11 @@ export default function CertDetail() {
     if (!loading && !user) navigate('/signup')
   }, [loading, user, navigate])
 
+  // Free users → pricing page (no exam access)
+  useEffect(() => {
+    if (!loading && user && tier === 'free') navigate('/pricing')
+  }, [loading, user, tier, navigate])
+
   // Load questions
   useEffect(() => {
     if (!certId || !certMeta[certId]) { navigate('/certifications'); return }

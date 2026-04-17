@@ -379,21 +379,35 @@ export default function Dashboard() {
         </div>
 
         {/* Certifications grid */}
-        <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#111827', marginBottom: '1rem' }}>Practice by Certification</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '0.875rem' }}>
-          {CERTS.map(cert => (
-            <Link key={cert.id} to={`/cert/${cert.id}`} style={{ display: 'flex', alignItems: 'center', gap: '0.875rem', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '0.875rem', padding: '1rem 1.125rem', textDecoration: 'none', transition: 'border-color 0.15s', cursor: 'pointer' }}
-              onMouseEnter={e => (e.currentTarget.style.borderColor = '#93c5fd')}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = '#e5e7eb')}
-            >
-              <span style={{ fontSize: '1.75rem' }}>{cert.icon}</span>
-              <div>
-                <div style={{ fontWeight: 700, color: '#111827', fontSize: '0.875rem', lineHeight: 1.3 }}>{cert.name}</div>
-                <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.2rem' }}>{cert.code} · {cert.level}</div>
-              </div>
-              <span style={{ marginLeft: 'auto', color: '#93c5fd', fontSize: '1.125rem' }}>→</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#111827', margin: 0 }}>Practice by Certification</h2>
+          {tier === 'free' && (
+            <Link to="/pricing" style={{ fontSize: '0.78rem', fontWeight: 700, color: '#2563eb', textDecoration: 'none', background: '#eff6ff', border: '1px solid #bfdbfe', padding: '0.25rem 0.75rem', borderRadius: '999px' }}>
+              ⚡ Upgrade to unlock
             </Link>
-          ))}
+          )}
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '0.875rem' }}>
+          {CERTS.map(cert => {
+            const certLink = tier === 'free' ? '/pricing' : `/cert/${cert.id}`
+            const isLocked = tier === 'free'
+            return (
+              <Link key={cert.id} to={certLink}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.875rem', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '0.875rem', padding: '1rem 1.125rem', textDecoration: 'none', transition: 'border-color 0.15s', cursor: 'pointer', opacity: isLocked ? 0.7 : 1 }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = isLocked ? '#fca5a5' : '#93c5fd')}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = '#e5e7eb')}
+              >
+                <span style={{ fontSize: '1.75rem' }}>{cert.icon}</span>
+                <div>
+                  <div style={{ fontWeight: 700, color: '#111827', fontSize: '0.875rem', lineHeight: 1.3 }}>{cert.name}</div>
+                  <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.2rem' }}>{cert.code} · {cert.level}</div>
+                </div>
+                <span style={{ marginLeft: 'auto', fontSize: '1.125rem', color: isLocked ? '#fca5a5' : '#93c5fd' }}>
+                  {isLocked ? '🔒' : '→'}
+                </span>
+              </Link>
+            )
+          })}
         </div>
 
         {/* Quick links */}
