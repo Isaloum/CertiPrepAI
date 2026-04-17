@@ -298,40 +298,85 @@ export default function Dashboard() {
         />
 
         {/* Progress section */}
-        {progress.length > 0 && (
-          <>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#111827', marginBottom: '1rem' }}>Your Progress</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '2rem' }}>
+        <div style={{ marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#111827', margin: 0 }}>Your Progress</h2>
+            {progress.filter(p => p.questions_attempted > 0).length > 0 && (
+              <span style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 600 }}>
+                {progress.filter(p => p.questions_attempted > 0).length} cert{progress.filter(p => p.questions_attempted > 0).length > 1 ? 's' : ''} practiced
+              </span>
+            )}
+          </div>
+
+          {progress.filter(p => p.questions_attempted > 0).length === 0 ? (
+            /* Empty state */
+            <div style={{ background: '#f9fafb', border: '1px dashed #d1d5db', borderRadius: '0.875rem', padding: '2rem', textAlign: 'center' }}>
+              <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🎯</div>
+              <p style={{ fontWeight: 700, color: '#374151', margin: '0 0 0.25rem' }}>No practice yet</p>
+              <p style={{ fontSize: '0.82rem', color: '#6b7280', margin: '0 0 1rem' }}>
+                Answer questions in any cert below — your scores will appear here.
+              </p>
+              <Link to={`/cert/saa-c03`} style={{ display: 'inline-block', padding: '0.5rem 1.25rem', background: '#2563eb', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none' }}>
+                Start with SAA-C03 →
+              </Link>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
               {progress
+                .filter(p => p.questions_attempted > 0)
                 .sort((a, b) => new Date(b.last_practiced).getTime() - new Date(a.last_practiced).getTime())
                 .map(p => {
                   const meta = CERT_META[p.cert_id]
                   if (!meta) return null
-                  const pct = p.questions_attempted > 0 ? Math.round((p.correct_answers / p.questions_attempted) * 100) : 0
+                  const pct = Math.round((p.correct_answers / p.questions_attempted) * 100)
                   const scoreColor = pct >= 72 ? '#16a34a' : pct >= 50 ? '#d97706' : '#dc2626'
+                  const scoreBg   = pct >= 72 ? '#f0fdf4' : pct >= 50 ? '#fffbeb' : '#fef2f2'
                   const practiced = new Date(p.last_practiced).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                  const passing = pct >= 72
+
                   return (
-                    <Link key={p.cert_id} to={`/cert/${p.cert_id}`} style={{ display: 'flex', alignItems: 'center', gap: '0.875rem', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '0.875rem', padding: '0.875rem 1.125rem', textDecoration: 'none' }}>
+                    <Link
+                      key={p.cert_id}
+                      to={`/cert/${p.cert_id}`}
+                      style={{ display: 'flex', alignItems: 'center', gap: '0.875rem', background: '#fff', border: `1px solid ${passing ? '#bbf7d0' : '#e5e7eb'}`, borderRadius: '0.875rem', padding: '0.875rem 1.125rem', textDecoration: 'none', transition: 'border-color 0.15s' }}
+                      onMouseEnter={e => (e.currentTarget.style.borderColor = '#93c5fd')}
+                      onMouseLeave={e => (e.currentTarget.style.borderColor = passing ? '#bbf7d0' : '#e5e7eb')}
+                    >
                       <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>{meta.icon}</span>
+
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
-                          <span style={{ fontWeight: 700, color: '#111827', fontSize: '0.85rem' }}>{meta.name}</span>
-                          <span style={{ fontSize: '0.75rem', color: '#6b7280', flexShrink: 0, marginLeft: '0.5rem' }}>Last: {practiced}</span>
+                        {/* Top row */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                          <span style={{ fontWeight: 700, color: '#111827', fontSize: '0.875rem' }}>{meta.name}</span>
+                          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexShrink: 0, marginLeft: '0.5rem' }}>
+                            {passing && <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#16a34a', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '0.1rem 0.5rem', borderRadius: '999px' }}>✓ Passing</span>}
+                            <span style={{ fontSize: '0.72rem', color: '#9ca3af' }}>Last: {practiced}</span>
+                          </div>
                         </div>
-                        <div style={{ background: '#f3f4f6', borderRadius: '999px', height: '6px', overflow: 'hidden' }}>
-                          <div style={{ width: `${Math.min(pct, 100)}%`, height: '100%', background: scoreColor, borderRadius: '999px', transition: 'width 0.4s ease' }} />
+
+                        {/* Progress bar with 72% threshold marker */}
+                        <div style={{ position: 'relative', background: '#f3f4f6', borderRadius: '999px', height: '8px', overflow: 'visible' }}>
+                          <div style={{ width: `${Math.min(pct, 100)}%`, height: '100%', background: scoreColor, borderRadius: '999px', transition: 'width 0.5s ease' }} />
+                          {/* 72% passing line */}
+                          <div style={{ position: 'absolute', top: '-3px', left: '72%', width: '2px', height: '14px', background: '#6b7280', borderRadius: '1px', opacity: 0.4 }} />
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.25rem' }}>
-                          <span style={{ fontSize: '0.72rem', color: '#6b7280' }}>{p.questions_attempted} answered</span>
-                          <span style={{ fontSize: '0.72rem', fontWeight: 700, color: scoreColor }}>{pct}% correct</span>
+
+                        {/* Bottom row */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.3rem' }}>
+                          <span style={{ fontSize: '0.72rem', color: '#6b7280' }}>
+                            {p.correct_answers}/{p.questions_attempted} correct
+                          </span>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: scoreColor, background: scoreBg, padding: '0.1rem 0.5rem', borderRadius: '999px' }}>
+                            {pct}%
+                          </span>
                         </div>
                       </div>
                     </Link>
                   )
                 })}
             </div>
-          </>
-        )}
+          )}
+        </div>
 
         {/* Certifications grid */}
         <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#111827', marginBottom: '1rem' }}>Practice by Certification</h2>
