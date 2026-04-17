@@ -1,100 +1,95 @@
 import { useState } from 'react'
 import {
-  RadarChart,
-  Radar,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Legend,
-  ResponsiveContainer,
-  Tooltip,
+  RadarChart, Radar, PolarGrid, PolarAngleAxis,
+  PolarRadiusAxis, Legend, ResponsiveContainer, Tooltip,
 } from 'recharts'
+import type { DomainScore as DBDomainScore } from '../lib/db'
 
-export interface DomainScore {
-  domain: string
-  examWeight: number   // 0–100, official exam guide %
-  userScore: number    // 0–100, user's correct % (overall for cert)
+// ── Official exam domain breakdown ───────────────────────────────
+// catKey matches the `cat` field in question JSON files
+interface DomainDef {
+  catKey: string    // matches question JSON `cat` field
+  label: string     // display label on radar
+  examWeight: number // official exam guide weight %
 }
 
-// Official exam domain breakdowns (from AWS exam guides)
-const CERT_DOMAINS: Record<string, DomainScore[]> = {
+const CERT_DOMAINS: Record<string, DomainDef[]> = {
   'saa-c03': [
-    { domain: 'Resilient Arch',    examWeight: 30, userScore: 0 },
-    { domain: 'High-Performing',   examWeight: 28, userScore: 0 },
-    { domain: 'Secure Arch',       examWeight: 24, userScore: 0 },
-    { domain: 'Cost-Optimized',    examWeight: 18, userScore: 0 },
+    { catKey: 'resilient-arch',      label: 'Resilient Arch',  examWeight: 30 },
+    { catKey: 'high-perf-arch',      label: 'High-Performing', examWeight: 28 },
+    { catKey: 'secure-arch',         label: 'Secure Arch',     examWeight: 24 },
+    { catKey: 'cost-optimized-arch', label: 'Cost-Optimized',  examWeight: 18 },
   ],
   'clf-c02': [
-    { domain: 'Cloud Concepts',    examWeight: 24, userScore: 0 },
-    { domain: 'Security',          examWeight: 30, userScore: 0 },
-    { domain: 'Cloud Technology',  examWeight: 34, userScore: 0 },
-    { domain: 'Billing & Pricing', examWeight: 12, userScore: 0 },
+    { catKey: 'cloud-concepts',    label: 'Cloud Concepts',    examWeight: 24 },
+    { catKey: 'security-compliance', label: 'Security',        examWeight: 30 },
+    { catKey: 'cloud-technology',  label: 'Cloud Technology',  examWeight: 34 },
+    { catKey: 'billing-pricing',   label: 'Billing & Pricing', examWeight: 12 },
   ],
   'dva-c02': [
-    { domain: 'Development',       examWeight: 32, userScore: 0 },
-    { domain: 'Security',          examWeight: 26, userScore: 0 },
-    { domain: 'Deployment',        examWeight: 24, userScore: 0 },
-    { domain: 'Troubleshooting',   examWeight: 18, userScore: 0 },
+    { catKey: 'development',    label: 'Development',    examWeight: 32 },
+    { catKey: 'security',       label: 'Security',       examWeight: 26 },
+    { catKey: 'deployment',     label: 'Deployment',     examWeight: 24 },
+    { catKey: 'troubleshooting', label: 'Troubleshooting', examWeight: 18 },
   ],
   'soa-c02': [
-    { domain: 'Monitoring',        examWeight: 20, userScore: 0 },
-    { domain: 'Reliability',       examWeight: 16, userScore: 0 },
-    { domain: 'Deployment',        examWeight: 18, userScore: 0 },
-    { domain: 'Security',          examWeight: 16, userScore: 0 },
-    { domain: 'Networking',        examWeight: 18, userScore: 0 },
-    { domain: 'Cost & Perf',       examWeight: 12, userScore: 0 },
+    { catKey: 'monitoring',       label: 'Monitoring',    examWeight: 20 },
+    { catKey: 'reliability',      label: 'Reliability',   examWeight: 16 },
+    { catKey: 'deployment',       label: 'Deployment',    examWeight: 18 },
+    { catKey: 'security',         label: 'Security',      examWeight: 16 },
+    { catKey: 'networking',       label: 'Networking',    examWeight: 18 },
+    { catKey: 'cost-performance', label: 'Cost & Perf',   examWeight: 12 },
   ],
   'dea-c01': [
-    { domain: 'Ingestion & Transform', examWeight: 34, userScore: 0 },
-    { domain: 'Store & Manage',        examWeight: 26, userScore: 0 },
-    { domain: 'Operate Pipelines',     examWeight: 22, userScore: 0 },
-    { domain: 'Security',              examWeight: 18, userScore: 0 },
+    { catKey: 'data-ingestion-transformation', label: 'Ingestion & Transform', examWeight: 34 },
+    { catKey: 'data-store-management',         label: 'Store & Manage',        examWeight: 26 },
+    { catKey: 'data-operations',               label: 'Operate Pipelines',     examWeight: 22 },
+    { catKey: 'data-security-governance',      label: 'Security',              examWeight: 18 },
   ],
   'mla-c01': [
-    { domain: 'Data Preparation',  examWeight: 28, userScore: 0 },
-    { domain: 'Model Development', examWeight: 26, userScore: 0 },
-    { domain: 'Deployment',        examWeight: 22, userScore: 0 },
-    { domain: 'Monitoring',        examWeight: 24, userScore: 0 },
+    { catKey: 'data-preparation',        label: 'Data Preparation',  examWeight: 28 },
+    { catKey: 'model-development',       label: 'Model Development', examWeight: 26 },
+    { catKey: 'deployment-orchestration', label: 'Deployment',       examWeight: 22 },
+    { catKey: 'monitoring-governance',   label: 'Monitoring',        examWeight: 24 },
   ],
   'scs-c03': [
-    { domain: 'Threat Detection',  examWeight: 14, userScore: 0 },
-    { domain: 'Logging',           examWeight: 18, userScore: 0 },
-    { domain: 'Infrastructure',    examWeight: 20, userScore: 0 },
-    { domain: 'Identity & Access', examWeight: 16, userScore: 0 },
-    { domain: 'Data Protection',   examWeight: 32, userScore: 0 },
+    { catKey: 'threat-detection',    label: 'Threat Detection', examWeight: 14 },
+    { catKey: 'security-logging',    label: 'Logging',          examWeight: 18 },
+    { catKey: 'infrastructure-security', label: 'Infrastructure', examWeight: 20 },
+    { catKey: 'iam',                 label: 'Identity & Access', examWeight: 16 },
+    { catKey: 'data-protection',     label: 'Data Protection',  examWeight: 32 },
   ],
   'ans-c01': [
-    { domain: 'Network Design',    examWeight: 30, userScore: 0 },
-    { domain: 'Implementation',    examWeight: 26, userScore: 0 },
-    { domain: 'Management',        examWeight: 20, userScore: 0 },
-    { domain: 'Security',          examWeight: 24, userScore: 0 },
+    { catKey: 'network-design',          label: 'Network Design',  examWeight: 30 },
+    { catKey: 'network-implementation',  label: 'Implementation',  examWeight: 26 },
+    { catKey: 'network-management',      label: 'Management',      examWeight: 20 },
+    { catKey: 'network-security',        label: 'Security',        examWeight: 24 },
   ],
   'sap-c02': [
-    { domain: 'Org Complexity',    examWeight: 26, userScore: 0 },
-    { domain: 'New Solutions',     examWeight: 29, userScore: 0 },
-    { domain: 'Improvement',       examWeight: 25, userScore: 0 },
-    { domain: 'Migration',         examWeight: 20, userScore: 0 },
+    { catKey: 'complex-org-design',      label: 'Org Complexity', examWeight: 26 },
+    { catKey: 'new-solutions',           label: 'New Solutions',  examWeight: 29 },
+    { catKey: 'cost-complexity',         label: 'Improvement',    examWeight: 25 },
+    { catKey: 'migration-modernization', label: 'Migration',      examWeight: 20 },
   ],
   'dop-c02': [
-    { domain: 'SDLC Automation',   examWeight: 22, userScore: 0 },
-    { domain: 'Config & IaC',      examWeight: 17, userScore: 0 },
-    { domain: 'Resilience',        examWeight: 15, userScore: 0 },
-    { domain: 'Monitoring',        examWeight: 15, userScore: 0 },
-    { domain: 'Incident Response', examWeight: 14, userScore: 0 },
-    { domain: 'Security',          examWeight: 17, userScore: 0 },
+    { catKey: 'sdlc-automation',          label: 'SDLC Automation',   examWeight: 22 },
+    { catKey: 'configuration-management', label: 'Config & IaC',      examWeight: 17 },
+    { catKey: 'high-availability',        label: 'Resilience',        examWeight: 15 },
+    { catKey: 'monitoring-logging',       label: 'Monitoring',        examWeight: 15 },
+    { catKey: 'incident-event-response',  label: 'Incident Response', examWeight: 14 },
   ],
   'aif-c01': [
-    { domain: 'AI & ML Basics',    examWeight: 20, userScore: 0 },
-    { domain: 'Generative AI',     examWeight: 24, userScore: 0 },
-    { domain: 'Foundation Models', examWeight: 28, userScore: 0 },
-    { domain: 'Responsible AI',    examWeight: 14, userScore: 0 },
-    { domain: 'Security',          examWeight: 14, userScore: 0 },
+    { catKey: 'ai-fundamentals',   label: 'AI & ML Basics',    examWeight: 20 },
+    { catKey: 'generative-ai',     label: 'Generative AI',     examWeight: 24 },
+    { catKey: 'foundation-models', label: 'Foundation Models', examWeight: 28 },
+    { catKey: 'responsible-ai',    label: 'Responsible AI',    examWeight: 14 },
+    { catKey: 'ai-security',       label: 'Security',          examWeight: 14 },
   ],
   'gai-c01': [
-    { domain: 'Gen AI Design',     examWeight: 30, userScore: 0 },
-    { domain: 'Model Selection',   examWeight: 20, userScore: 0 },
-    { domain: 'Optimization',      examWeight: 25, userScore: 0 },
-    { domain: 'Responsible AI',    examWeight: 25, userScore: 0 },
+    { catKey: 'gen-ai-fundamentals', label: 'Gen AI Design',   examWeight: 30 },
+    { catKey: 'foundation-models',   label: 'Model Selection', examWeight: 20 },
+    { catKey: 'prompt-engineering',  label: 'Optimization',    examWeight: 25 },
+    { catKey: 'responsible-ai',      label: 'Responsible AI',  examWeight: 25 },
   ],
 }
 
@@ -106,18 +101,16 @@ interface CertOption {
 
 interface Props {
   certOptions: CertOption[]
-  /** cert_id → correct% (0–100). Only certs with real attempts. */
+  /** cert_id → overall correct% (0–100). Used as fallback. */
   progressMap: Record<string, number>
+  /** cert_id → domain_catKey → { attempted, correct } from DynamoDB */
+  domainScoresMap: Record<string, Record<string, DBDomainScore>>
 }
 
 const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: { name: string; value: number }[] }) => {
   if (!active || !payload?.length) return null
   return (
-    <div style={{
-      background: '#1e293b', border: '1px solid #334155',
-      borderRadius: '0.5rem', padding: '0.5rem 0.85rem',
-      fontSize: '0.78rem', color: '#f1f5f9', lineHeight: 1.7,
-    }}>
+    <div style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '0.5rem', padding: '0.5rem 0.85rem', fontSize: '0.78rem', color: '#f1f5f9', lineHeight: 1.7 }}>
       {payload.map(p => (
         <div key={p.name}>
           <span style={{ color: p.name === 'Exam Weight' ? '#60a5fa' : '#f87171' }}>■ </span>
@@ -128,30 +121,35 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: { name
   )
 }
 
-export default function SkillRadarChart({ certOptions, progressMap }: Props) {
+export default function SkillRadarChart({ certOptions, progressMap, domainScoresMap }: Props) {
   const [selectedId, setSelectedId] = useState(certOptions[0]?.id ?? 'saa-c03')
 
-  const userPct = progressMap[selectedId] ?? 0
   const hasPracticed = selectedId in progressMap
+  const domains = CERT_DOMAINS[selectedId] ?? CERT_DOMAINS['saa-c03']
+  const certDomainScores = domainScoresMap[selectedId] ?? {}
+  const overallPct = progressMap[selectedId] ?? 0
 
-  // Inject user's overall score into each domain
-  const data: DomainScore[] = (CERT_DOMAINS[selectedId] ?? CERT_DOMAINS['saa-c03']).map(d => ({
-    ...d,
-    userScore: userPct,
-  }))
+  const data = domains.map(d => {
+    const ds = certDomainScores[d.catKey]
+    // Use real per-domain score if available, else fall back to overall %
+    const userScore = ds && ds.attempted > 0
+      ? Math.round((ds.correct / ds.attempted) * 100)
+      : (hasPracticed ? overallPct : 0)
+    return {
+      domain: d.label,
+      examWeight: d.examWeight,
+      userScore,
+      hasRealData: !!(ds && ds.attempted > 0),
+    }
+  })
+
+  const hasRealDomainData = data.some(d => d.hasRealData)
 
   return (
-    <div style={{
-      background: '#fff', border: '1px solid #e5e7eb',
-      borderRadius: '1rem', padding: '1.5rem', marginBottom: '2rem',
-    }}>
+    <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '1rem', padding: '1.5rem', marginBottom: '2rem' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-        <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#111827', margin: 0 }}>
-          🕸️ Skill Radar
-        </h2>
-
-        {/* Cert dropdown — replaces "Sample data" badge */}
+        <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#111827', margin: 0 }}>🕸️ Skill Radar</h2>
         <select
           value={selectedId}
           onChange={e => setSelectedId(e.target.value)}
@@ -166,16 +164,18 @@ export default function SkillRadarChart({ certOptions, progressMap }: Props) {
         >
           {certOptions.map(c => (
             <option key={c.id} value={c.id}>
-              {c.code}{progressMap[c.id] !== undefined ? ` ✓` : ''}
+              {c.code}{progressMap[c.id] !== undefined ? ' ✓' : ''}
             </option>
           ))}
         </select>
       </div>
 
       <p style={{ fontSize: '0.78rem', color: '#6b7280', marginBottom: '1.25rem', marginTop: '0.2rem' }}>
-        {hasPracticed
-          ? `Your overall score: ${userPct}% · blue = exam focus areas`
-          : 'No practice yet for this cert · blue = what the exam tests'}
+        {hasRealDomainData
+          ? `Real per-domain scores from your practice · blue = exam focus`
+          : hasPracticed
+            ? `Overall score: ${overallPct}% · Take more exams to see per-domain scores`
+            : 'No practice yet · blue = what the exam tests'}
       </p>
 
       <ResponsiveContainer width="100%" height={320}>
@@ -197,11 +197,7 @@ export default function SkillRadarChart({ certOptions, progressMap }: Props) {
           const gapColor = gap >= 0 ? '#16a34a' : gap >= -15 ? '#d97706' : '#dc2626'
           const gapLabel = hasPracticed ? (gap >= 0 ? `+${gap}%` : `${gap}%`) : '—'
           return (
-            <div key={d.domain} style={{
-              background: '#f9fafb', border: '1px solid #f3f4f6',
-              borderRadius: '0.65rem', padding: '0.6rem 0.85rem',
-              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            }}>
+            <div key={d.domain} style={{ background: '#f9fafb', border: '1px solid #f3f4f6', borderRadius: '0.65rem', padding: '0.6rem 0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#374151' }}>{d.domain}</span>
               <span style={{ fontSize: '0.72rem', fontWeight: 800, color: hasPracticed ? gapColor : '#9ca3af' }}>{gapLabel}</span>
             </div>

@@ -16,6 +16,15 @@ function buildProgressMap(rows: CertProgress[]): Record<string, number> {
   )
 }
 
+/** Build domain scores map: cert_id → domain_catKey → { attempted, correct } */
+function buildDomainScoresMap(rows: CertProgress[]): Record<string, Record<string, { attempted: number; correct: number }>> {
+  return Object.fromEntries(
+    rows
+      .filter(r => r.domain_scores && Object.keys(r.domain_scores).length > 0)
+      .map(r => [r.cert_id, r.domain_scores!])
+  )
+}
+
 const CANCEL_API = "https://hpcdl0ft8a.execute-api.us-east-1.amazonaws.com"
 
 const CERT_META: Record<string, { name: string; code: string; icon: string }> = {
@@ -295,6 +304,7 @@ export default function Dashboard() {
         <SkillRadarChart
           certOptions={CERTS.map(c => ({ id: c.id, code: c.code, name: c.name }))}
           progressMap={buildProgressMap(progress)}
+          domainScoresMap={buildDomainScoresMap(progress)}
         />
 
         {/* Progress section */}

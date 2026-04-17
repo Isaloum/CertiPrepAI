@@ -1,7 +1,7 @@
 /**
  * awsprepai-db Lambda
- * Auth via Cognito GetUser (no external packages).
- * DynamoDB CRUD for monthly_cert and free_usage.
+ * Auth via Cognito GetUser (access token).
+ * DynamoDB CRUD for monthly_cert, free_usage, and progress.
  */
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
@@ -17,25 +17,16 @@ const CORS = {
   'Content-Type': 'application/json',
 };
 
-// ── Security: whitelist of valid cert IDs — prevents injection ────────────
-const VALID_CERTS = new Set([
-  'aws-clf-c02', 'aws-saa-c03', 'aws-dva-c02', 'aws-soa-c02',
-  'aws-sap-c02', 'aws-dop-c02', 'aws-ans-c01', 'aws-das-c01',
-  'aws-mls-c01', 'aws-pas-c01', 'aws-sec-c02', 'aws-iot-c01',
-]);
-
 exports.handler = async (event) => {
   const method = event.requestContext?.http?.method || 'UNKNOWN';
   const authHeader = event.headers?.authorization || event.headers?.Authorization || '';
   const token = authHeader.replace('Bearer ', '').trim();
-  console.log(`[db] method=${method} hasToken=${!!token} authHeader="${authHeader.substring(0, 20)}..."`);
 
   if (method === 'OPTIONS') {
     return { statusCode: 200, headers: CORS, body: '' };
   }
 
   if (!token) {
-    console.log('[db] 401 Missing token');
     return { statusCode: 401, headers: CORS, body: JSON.stringify({ error: 'Missing token' }) };
   }
 
@@ -51,6 +42,7 @@ exports.handler = async (event) => {
   try {
     const { action, data } = JSON.parse(event.body || '{}');
 
+    // ── Monthly cert ─────────────────────────────────────────────
     if (action === 'get_monthly_cert') {
       const res = await dynamo.send(new GetCommand({ TableName: 'awsprepai-monthly-cert', Key: { user_id: userId } }));
       return { statusCode: 200, headers: CORS, body: JSON.stringify({ data: res.Item || null }) };
@@ -64,6 +56,7 @@ exports.handler = async (event) => {
       return { statusCode: 200, headers: CORS, body: JSON.stringify({ success: true }) };
     }
 
+    // ── Free usage ────────────────────────────────────────────────
     if (action === 'get_free_usage') {
       const res = await dynamo.send(new GetCommand({ TableName: 'awsprepai-free-usage', Key: { user_id: userId } }));
       return { statusCode: 200, headers: CORS, body: JSON.stringify({ data: res.Item || null }) };
@@ -77,6 +70,7 @@ exports.handler = async (event) => {
       return { statusCode: 200, headers: CORS, body: JSON.stringify({ success: true }) };
     }
 
+    // ── Progress: get all ─────────────────────────────────────────
     if (action === 'get_progress') {
       const res = await dynamo.send(new QueryCommand({
         TableName: 'awsprepai-progress',
@@ -86,14 +80,65 @@ exports.handler = async (event) => {
       return { statusCode: 200, headers: CORS, body: JSON.stringify({ data: res.Items || [] }) };
     }
 
-    if (action === 'update_progress') {
+    // ── Progress: save full exam result (accumulates across exams) ─
+    if (action === 'save_exam_result') {
+      // data = { cert_id, questions_attempted, correct_answers, domain_scores }
+      // domain_scores = { [domainKey]: { attempted: N, correct: N } }
+      const { cert_id, questions_attempted, correct_answers, domain_scores } = data;
+
+      // Fetch existing record to accumulate
+      const existing = await dynamo.send(new GetCommand({
+        TableName: 'awsprepai-progress',
+        Key: { user_id: userId, cert_id },
+      }));
+      const prev = existing.Item || {};
+
+      // Accumulate overall counts
+      const newAttempted = (prev.questions_attempted || 0) + (questions_attempted || 0);
+      const newCorrect   = (prev.correct_answers || 0) + (correct_answers || 0);
+
+      // Accumulate per-domain counts
+      const prevDomains = prev.domain_scores || {};
+      const newDomains  = { ...prevDomains };
+      for (const [domain, scores] of Object.entries(domain_scores || {})) {
+        const p = newDomains[domain] || { attempted: 0, correct: 0 };
+        newDomains[domain] = {
+          attempted: p.attempted + (scores.attempted || 0),
+          correct:   p.correct   + (scores.correct   || 0),
+        };
+      }
+
       await dynamo.send(new PutCommand({
         TableName: 'awsprepai-progress',
         Item: {
           user_id: userId,
-          cert_id: data.cert_id,
-          correct: data.correct,
-          updated_at: new Date().toISOString(),
+          cert_id,
+          questions_attempted: newAttempted,
+          correct_answers: newCorrect,
+          domain_scores: newDomains,
+          last_practiced: new Date().toISOString(),
+        },
+      }));
+      return { statusCode: 200, headers: CORS, body: JSON.stringify({ success: true }) };
+    }
+
+    // Legacy: single-question update (keep for backward compat)
+    if (action === 'update_progress') {
+      const { cert_id, correct } = data;
+      const existing = await dynamo.send(new GetCommand({
+        TableName: 'awsprepai-progress',
+        Key: { user_id: userId, cert_id },
+      }));
+      const prev = existing.Item || {};
+      await dynamo.send(new PutCommand({
+        TableName: 'awsprepai-progress',
+        Item: {
+          user_id: userId,
+          cert_id,
+          questions_attempted: (prev.questions_attempted || 0) + 1,
+          correct_answers: (prev.correct_answers || 0) + (correct ? 1 : 0),
+          domain_scores: prev.domain_scores || {},
+          last_practiced: new Date().toISOString(),
         },
       }));
       return { statusCode: 200, headers: CORS, body: JSON.stringify({ success: true }) };

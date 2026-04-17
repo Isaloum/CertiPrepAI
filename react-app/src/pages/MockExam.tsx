@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
+import { saveExamResult } from '../lib/db'
 
 interface Question {
   cat: string
@@ -49,7 +50,7 @@ function formatTime(seconds: number) {
 export default function MockExam() {
   const { certId } = useParams<{ certId: string }>()
   const navigate = useNavigate()
-  const { isPremium } = useAuth()
+  const { isPremium, user } = useAuth()
 
   const [questions, setQuestions] = useState<Question[]>([])
   const [answers, setAnswers] = useState<(number | null)[]>([])
@@ -77,7 +78,28 @@ export default function MockExam() {
   const submitExam = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current)
     setSubmitted(true)
-  }, [])
+    // Save results to DynamoDB after state is committed
+    setTimeout(() => {
+      setQuestions(qs => {
+        setAnswers(ans => {
+          if (!user?.accessToken || !certId || qs.length === 0) return ans
+          const correctCount = ans.reduce((acc, a, i) => acc + (a === qs[i]?.answer ? 1 : 0), 0)
+          // Build per-domain scores
+          const domainScores: Record<string, { attempted: number; correct: number }> = {}
+          qs.forEach((q, i) => {
+            const domain = q.cat || 'other'
+            if (!domainScores[domain]) domainScores[domain] = { attempted: 0, correct: 0 }
+            domainScores[domain].attempted++
+            if (ans[i] === q.answer) domainScores[domain].correct++
+          })
+          saveExamResult(certId, qs.length, correctCount, domainScores, user.accessToken)
+            .catch(err => console.error('Failed to save exam result:', err))
+          return ans
+        })
+        return qs
+      })
+    }, 100)
+  }, [certId, user])
 
   useEffect(() => {
     if (!started || submitted) return
