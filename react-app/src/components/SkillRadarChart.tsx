@@ -44,7 +44,7 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: { name
   )
 }
 
-export default function SkillRadarChart({ data, isMock = false }: Props) {
+export default function SkillRadarChart({ data, isMock = false, label1 = 'Exam Weight', label2 = 'Your Score' }: Props & { label1?: string; label2?: string }) {
   return (
     <div style={{
       background: '#fff',
@@ -69,7 +69,7 @@ export default function SkillRadarChart({ data, isMock = false }: Props) {
         )}
       </div>
       <p style={{ fontSize: '0.78rem', color: '#6b7280', marginBottom: '1.25rem', marginTop: '0.2rem' }}>
-        Your score vs what the exam actually tests
+        {isMock ? 'Your score vs what the exam actually tests' : 'Your correct % per certification · practice more to move the red line out'}
       </p>
 
       <ResponsiveContainer width="100%" height={320}>
@@ -86,7 +86,7 @@ export default function SkillRadarChart({ data, isMock = false }: Props) {
             tickCount={5}
           />
           <Radar
-            name="Exam Weight"
+            name={label1}
             dataKey="examWeight"
             stroke="#2563eb"
             fill="#2563eb"
@@ -94,7 +94,7 @@ export default function SkillRadarChart({ data, isMock = false }: Props) {
             strokeWidth={2}
           />
           <Radar
-            name="Your Score"
+            name={label2}
             dataKey="userScore"
             stroke="#dc2626"
             fill="#dc2626"
