@@ -47,6 +47,9 @@
     .badge.legacy{background:var(--muted);color:#000}
     .note-box{background:#f8f9fa;border-left:4px solid var(--accent);padding:1rem;border-radius:8px;margin:1.5rem 0}
     footer{background:linear-gradient(135deg,#232f3e 0%,#1a2332 100%);border-top:3px solid var(--light-aqua);padding:1.5rem 0;margin-top:2rem;text-align:center;color:var(--muted)}
+    .filter-btn{padding:.4rem .9rem;background:#f8f9fa;border:1px solid var(--border);border-radius:999px;color:var(--muted);cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s}
+    .filter-btn:hover{border-color:var(--aws-blue);color:var(--aws-blue)}
+    .filter-btn.active{background:var(--aws-blue);color:#fff;border-color:var(--aws-blue)}
     @media(max-width:768px){.nav-links{width:100%;justify-content:center}h1{font-size:2rem}h2{font-size:1.5rem}.resource-grid{grid-template-columns:1fr}}
   </style>
 </head>
@@ -67,7 +70,7 @@
           <div class="dropdown-menu" role="menu">
             <a href="index.html#quiz" class="dropdown-item" onclick="showTab('quiz')">
               <span class="item-icon">📝</span>
-              <div class="item-content"><div class="item-title">Practice Quiz</div><div class="item-desc">3,120 questions · 12 certs</div></div>
+              <div class="item-content"><div class="item-title">Practice Quiz</div><div class="item-desc">3,221 questions · 12 certs</div></div>
             </a>
             <a href="index.html#exam" class="dropdown-item" onclick="showTab('exam')">
               <span class="item-icon">⏱️</span>
@@ -284,6 +287,28 @@
         </div>
       </div>
 
+      <!-- SERVICE COMPARISON SECTION -->
+      <div class="domain-section" id="service-comparison">
+        <h2>🔀 Service Comparison — When to Use What</h2>
+        <p>The hardest exam questions are "which service?" — here's every critical comparison, sourced from 3,221 practice questions across 12 AWS certifications.</p>
+        <div class="note-box" style="margin-bottom:1.5rem">
+          📚 <strong>Source:</strong> All comparisons derived from <strong>AWS official documentation</strong>, <strong>AWS exam guide objectives</strong>, and <strong>AWS whitepapers</strong> — publicly available sources. Not affiliated with Amazon Web Services, Inc.
+        </div>
+
+        <!-- Search -->
+        <div style="background:#f8f9fa;border:1px solid var(--border);border-radius:var(--radius);padding:.75rem 1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:.75rem">
+          <span style="color:var(--muted)">🔍</span>
+          <input id="cmpSearch" type="text" placeholder="Search services… e.g. Lambda, DynamoDB, WAF" oninput="filterCmp()" style="border:none;outline:none;flex:1;font-size:.95rem;background:transparent;color:var(--text)">
+        </div>
+
+        <!-- Group filter buttons -->
+        <div id="cmpTabs" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem"></div>
+
+        <!-- Comparisons rendered here -->
+        <div id="cmpContainer"></div>
+        <div id="cmpNone" style="display:none;text-align:center;padding:2rem;color:var(--muted)">No comparisons match your search.</div>
+      </div>
+
       <!-- FAQ SECTION -->
       <div class="domain-section">
         <h2>❓ Frequently Asked Questions</h2>
@@ -448,7 +473,7 @@
       <!-- Call to Action -->
       <div style="background:linear-gradient(135deg,var(--card),var(--bg));padding:2rem;border-radius:var(--radius);margin-top:3rem;text-align:center;border:2px solid var(--light-aqua)">
         <h2 style="margin-top:0">Ready to Start Practicing?</h2>
-        <p style="font-size:1.1rem;margin-bottom:1.5rem">Test your knowledge with our 3,120 real scenario questions across 12 AWS certs and AI-powered study guide!</p>
+        <p style="font-size:1.1rem;margin-bottom:1.5rem">Test your knowledge with our 3,221 original scenario-based questions across 12 AWS certs and AI-powered study guide!</p>
         <a href="index.html" style="display:inline-block;padding:1rem 2rem;background:linear-gradient(135deg,var(--light-aqua),var(--accent-2));color:#000;border-radius:8px;font-weight:800;text-decoration:none;transition:all .3s">Start Practicing Now →</a>
       </div>
     </div>
@@ -488,6 +513,135 @@
     }
   </script>
   <script src="navigation.js"></script>
-<script src="nav-auth.js"></script>
+  <script src="nav-auth.js"></script>
+  <script src="service-comparison-data.js"></script>
+  <script>
+  // ── Service Comparison ──────────────────────────────────────────────────────
+  const EXAM_TIPS = {
+    'EC2-Lambda':'If the question says "serverless" or "event-driven" → Lambda. "Persistent", "stateful", "custom runtime" → EC2.',
+    'ECS-EKS':'ECS = simpler, AWS-native. EKS = Kubernetes standard, multi-cloud portability.',
+    'ECS-Fargate':'"No server management" for containers → Fargate. Need GPU or reserved cost control → EC2 launch type.',
+    'S3-EBS':'"Block storage" attached to one EC2 → EBS. "Object storage" accessible from anywhere → S3.',
+    'S3-EFS':'Shared POSIX file system across many EC2 → EFS. HTTP object access → S3.',
+    'S3-Glacier':'"Archive", "compliance", "rarely accessed" → Glacier. Instant access needed → S3 Standard.',
+    'RDS-DynamoDB':'"SQL", "joins", "relational" → RDS. "NoSQL", "single-digit ms", "millions req/s" → DynamoDB.',
+    'RDS-Aurora':'Aurora = MySQL/PostgreSQL only, 5× faster, auto-scales. Choose RDS for Oracle/SQL Server.',
+    'DynamoDB-ElastiCache':'ElastiCache = sub-ms in-memory cache. DynamoDB = durable primary store. Use both together for best performance.',
+    'SQS-SNS':'SQS = one consumer pulls (queue). SNS = push to many subscribers at once (fan-out).',
+    'SQS-EventBridge':'SQS = simple point-to-point. EventBridge = content-based routing, 90+ AWS sources.',
+    'SNS-EventBridge':'SNS = push notifications. EventBridge = complex event patterns + SaaS integrations.',
+    'ALB-NLB':'"Layer 7", "HTTP/HTTPS", "path routing" → ALB. "Layer 4", "TCP/UDP", "static IP", "ultra-low latency" → NLB.',
+    'CloudFront-Global Accelerator':'"Cache content at edge" → CloudFront. "Non-HTTP", "static Anycast IP", "TCP/UDP" → Global Accelerator.',
+    'Direct Connect-VPN':'"Consistent bandwidth", "private link", "compliance" → Direct Connect. "Quick setup", "backup" → VPN.',
+    'WAF-Shield':'WAF = blocks web attacks at Layer 7 (SQL injection, XSS). Shield = absorbs DDoS floods at Layer 3/4.',
+    'GuardDuty-Inspector':'GuardDuty = detects ACTIVE threats NOW. Inspector = scans for VULNERABILITIES before they\'re exploited.',
+    'Secrets Manager-KMS':'Secrets Manager = stores + auto-rotates credentials. KMS = manages encryption keys for data at rest.',
+    'CloudWatch-CloudTrail':'CloudWatch = performance metrics + alarms. CloudTrail = API audit log (who did what).',
+    'CloudWatch-X-Ray':'CloudWatch = infrastructure-level monitoring. X-Ray = traces individual requests through distributed services.',
+    'CloudTrail-Config':'CloudTrail = WHO made the change. Config = WHAT changed and is it compliant.'
+  };
+
+  let activeCmpGroup = 'all';
+
+  function buildComparisons() {
+    const tabs = document.getElementById('cmpTabs');
+    const allBtn = document.createElement('button');
+    allBtn.className = 'filter-btn active';
+    allBtn.textContent = 'All';
+    allBtn.onclick = () => setCmpGroup('all', allBtn);
+    tabs.appendChild(allBtn);
+
+    SERVICE_COMPARISONS.forEach(g => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.textContent = g.icon + ' ' + g.group;
+      btn.onclick = () => setCmpGroup(g.group, btn);
+      tabs.appendChild(btn);
+    });
+
+    renderComparisons();
+  }
+
+  function renderComparisons() {
+    const container = document.getElementById('cmpContainer');
+    container.innerHTML = '';
+
+    SERVICE_COMPARISONS.forEach(group => {
+      const sec = document.createElement('div');
+      sec.dataset.group = group.group;
+
+      const heading = document.createElement('h3');
+      heading.style.cssText = 'margin-top:1.25rem;margin-bottom:.75rem';
+      heading.textContent = group.icon + ' ' + group.group;
+      sec.appendChild(heading);
+
+      group.comparisons.forEach(c => {
+        const tipKey = c.a + '-' + c.b;
+        const tip = EXAM_TIPS[tipKey] || EXAM_TIPS[c.b + '-' + c.a] || '';
+
+        const item = document.createElement('div');
+        item.className = 'faq-item';
+        item.dataset.search = (c.a + ' ' + c.b + ' ' + c.aFull + ' ' + c.bFull + ' ' + group.group).toLowerCase();
+        item.dataset.group = group.group;
+
+        item.innerHTML = `
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <span><strong>${c.aFull}</strong> vs <strong>${c.bFull}</strong></span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-answer">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:.85rem">
+              <div style="background:#eff6ff;border-left:3px solid #2563eb;padding:.85rem;border-radius:6px">
+                <div style="font-weight:800;color:#1d4ed8;margin-bottom:.4rem">🔵 ${c.aFull}</div>
+                <div style="font-size:.82rem;color:#374151;margin-bottom:.6rem">${c.aSummary}</div>
+                <div style="font-size:.75rem;font-weight:700;color:#2563eb;margin-bottom:.3rem">CHOOSE WHEN:</div>
+                <ul style="margin-left:1rem;font-size:.8rem;color:#374151;line-height:1.7">${c.chooseA.map(i=>'<li>'+i+'</li>').join('')}</ul>
+              </div>
+              <div style="background:#f0fdf4;border-left:3px solid #16a34a;padding:.85rem;border-radius:6px">
+                <div style="font-weight:800;color:#15803d;margin-bottom:.4rem">🟢 ${c.bFull}</div>
+                <div style="font-size:.82rem;color:#374151;margin-bottom:.6rem">${c.bSummary}</div>
+                <div style="font-size:.75rem;font-weight:700;color:#16a34a;margin-bottom:.3rem">CHOOSE WHEN:</div>
+                <ul style="margin-left:1rem;font-size:.8rem;color:#374151;line-height:1.7">${c.chooseB.map(i=>'<li>'+i+'</li>').join('')}</ul>
+              </div>
+            </div>
+            ${tip ? '<div class="note-box" style="font-size:.82rem;margin-top:.5rem">💡 <strong>Exam tip:</strong> ' + tip + '</div>' : ''}
+          </div>`;
+        sec.appendChild(item);
+      });
+
+      container.appendChild(sec);
+    });
+  }
+
+  function setCmpGroup(group, btn) {
+    activeCmpGroup = group;
+    document.querySelectorAll('#cmpTabs .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterCmp();
+  }
+
+  function filterCmp() {
+    const q = document.getElementById('cmpSearch').value.toLowerCase().trim();
+    let visible = 0;
+    document.querySelectorAll('#cmpContainer .faq-item').forEach(item => {
+      const groupOk = activeCmpGroup === 'all' || item.dataset.group === activeCmpGroup;
+      const searchOk = !q || item.dataset.search.includes(q);
+      const show = groupOk && searchOk;
+      item.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    // Hide/show group headings
+    document.querySelectorAll('#cmpContainer [data-group]').forEach(sec => {
+      if (sec.tagName === 'DIV') {
+        const anyVisible = [...sec.querySelectorAll('.faq-item')].some(i => i.style.display !== 'none');
+        sec.style.display = anyVisible ? '' : 'none';
+      }
+    });
+    document.getElementById('cmpNone').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  if (typeof SERVICE_COMPARISONS !== 'undefined') buildComparisons();
+  // ── End Service Comparison ──────────────────────────────────────────────────
+  </script>
 </body>
 </html>
