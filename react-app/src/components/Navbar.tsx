@@ -87,7 +87,8 @@ export default function Navbar() {
     { to: '/glossary', bg: '#eff6ff', icon: '📖', label: 'Glossary', sub: '50+ AWS terms explained simply' },
     { to: '/diagrams', bg: '#f5f3ff', icon: '🗺️', label: 'Architecture Diagrams', sub: 'Interactive SAA-C03 diagrams' },
     { to: '/service-groups', bg: '#f0fdf4', icon: '🗂️', label: 'Service Groups', sub: 'Compare AWS services by category' },
-    { to: '/comparisons', bg: '#fef3c7', icon: '⚖️', label: 'Service Comparisons', sub: 'X vs Y tables from 1,098 real exams' },
+    { to: '/comparisons', bg: '#fef3c7', icon: '⚖️', label: 'Service Comparisons', sub: 'X vs Y tables from real exam data' },
+    { to: '/cheat-sheets', bg: '#fef2f2', icon: '📄', label: 'Cheat Sheets', sub: 'Domains, traps & patterns per cert' },
   ]
 
   const DropdownItem = ({ item }: { item: typeof practiceItems[0] }) => (

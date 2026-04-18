@@ -124,6 +124,10 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
     title: 'Reset Password | CertiPrepAI',
     description: 'Reset your CertiPrepAI account password.',
   },
+  '/cheat-sheets': {
+    title: 'AWS Certification Cheat Sheets — Domains, Traps & Patterns | CertiPrepAI',
+    description: 'Exam domains, top tested services, choose-when patterns, and common traps for all 12 AWS certifications. Mined from 3,958 real practice questions.',
+  },
   '/dashboard': {
     title: 'Dashboard | CertiPrepAI',
     description: 'Track your AWS certification exam progress, skill radar, and practice history.',
