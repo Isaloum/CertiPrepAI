@@ -85,11 +85,6 @@ export default function CertDetail() {
     if (!loading && !user) navigate('/signup')
   }, [loading, user, navigate])
 
-  // Free users → pricing page (no exam access)
-  useEffect(() => {
-    if (!loading && user && tier === 'free') navigate('/pricing')
-  }, [loading, user, tier, navigate])
-
   // Load questions
   useEffect(() => {
     if (!certId || !certMeta[certId]) { navigate('/certifications'); return }
@@ -556,24 +551,37 @@ export default function CertDetail() {
           </div>
 
           {/* Free tier card */}
-          {tier === 'free' && (
-            <div style={{ background: 'linear-gradient(135deg, #eff6ff, #f0fdf4)', border: '1px solid #bfdbfe', borderRadius: '1.25rem', padding: '1.5rem' }}>
-              <p style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: '#3b82f6', marginBottom: '0.75rem', letterSpacing: '0.06em' }}>Free Tier</p>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.875rem', color: '#374151', fontWeight: 600 }}>{usedCount} / {FREE_LIMIT} used</span>
-                <span style={{ fontSize: '0.875rem', fontWeight: 800, color: freeRemaining === 0 ? '#ef4444' : '#3b82f6' }}>
-                  {freeRemaining === 0 ? 'Limit reached' : `${freeRemaining} left`}
-                </span>
+          {tier === 'free' && (() => {
+            const pct = (usedCount / FREE_LIMIT) * 100
+            const urgent = freeRemaining <= 5
+            const warning = freeRemaining <= 10 && !urgent
+            const barColor = urgent ? '#ef4444' : warning ? '#f59e0b' : '#3b82f6'
+            const bg = urgent ? 'linear-gradient(135deg, #fef2f2, #fff7ed)' : warning ? 'linear-gradient(135deg, #fffbeb, #fef3c7)' : 'linear-gradient(135deg, #eff6ff, #f0fdf4)'
+            const border = urgent ? '#fecaca' : warning ? '#fde68a' : '#bfdbfe'
+            const labelColor = urgent ? '#ef4444' : warning ? '#d97706' : '#3b82f6'
+            const msg = freeRemaining === 0 ? '🚫 Limit reached' : urgent ? `⚠️ Only ${freeRemaining} left!` : warning ? `${freeRemaining} questions left` : `${freeRemaining} of ${FREE_LIMIT} remaining`
+            return (
+              <div style={{ background: bg, border: `1px solid ${border}`, borderRadius: '1.25rem', padding: '1.5rem' }}>
+                <p style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: labelColor, marginBottom: '0.75rem', letterSpacing: '0.06em' }}>Free Trial</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                  <span style={{ fontSize: '0.82rem', color: '#374151', fontWeight: 600 }}>{usedCount} / {FREE_LIMIT} used</span>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 800, color: labelColor }}>{msg}</span>
+                </div>
+                <div style={{ background: '#e5e7eb', borderRadius: '9999px', height: '6px', marginBottom: '1rem' }}>
+                  <div style={{ height: '6px', borderRadius: '9999px', background: barColor, width: `${pct}%`, transition: 'width 0.3s' }} />
+                </div>
+                {urgent && (
+                  <p style={{ fontSize: '0.78rem', color: '#991b1b', fontWeight: 600, marginBottom: '0.75rem', lineHeight: 1.4 }}>
+                    You're seeing real exam-quality questions. Don't lose your momentum.
+                  </p>
+                )}
+                <button onClick={() => navigate('/pricing')}
+                  style={{ width: '100%', padding: '0.625rem', background: barColor, color: '#fff', fontWeight: 700, borderRadius: '0.625rem', border: 'none', cursor: 'pointer', fontSize: '0.825rem' }}>
+                  {freeRemaining === 0 ? 'Unlock to Continue →' : 'Unlock All 3,958 Questions →'}
+                </button>
               </div>
-              <div style={{ background: '#dbeafe', borderRadius: '9999px', height: '6px', marginBottom: '1rem' }}>
-                <div style={{ height: '6px', borderRadius: '9999px', background: freeRemaining === 0 ? '#ef4444' : '#3b82f6', width: `${(usedCount / FREE_LIMIT) * 100}%`, transition: 'width 0.3s' }} />
-              </div>
-              <button onClick={() => navigate('/pricing')}
-                style={{ width: '100%', padding: '0.625rem', background: '#3b82f6', color: '#fff', fontWeight: 700, borderRadius: '0.625rem', border: 'none', cursor: 'pointer', fontSize: '0.825rem' }}>
-                Unlock All Questions →
-              </button>
-            </div>
-          )}
+            )
+          })()}
 
           {/* Monthly plan card */}
           {tier === 'monthly' && (
