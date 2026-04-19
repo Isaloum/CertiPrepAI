@@ -48,7 +48,7 @@ export default function CertDetail() {
   const [domainFilter, setDomainFilter] = useState(searchParams.get('domain') || 'all')
   const [showResults, setShowResults] = useState(false)
   const [showPaywall, setShowPaywall] = useState(false)
-  const [_wrongQuestions, setWrongQuestions] = useState<Question[]>([])
+  const [wrongQuestions, setWrongQuestions] = useState<Question[]>([])
 
   // Free tier usage (total across all certs)
   const [usedCount, setUsedCount] = useState(0)
@@ -169,6 +169,14 @@ export default function CertDetail() {
   }
 
   const restart = () => {
+    setFiltered(questions)
+    setCurrent(0); setSelected(null); setRevealed(false)
+    setScore(0); setAnswered(0)
+    setShowResults(false); setWrongQuestions([])
+  }
+
+  const retryWrong = () => {
+    setFiltered(wrongQuestions)
     setCurrent(0); setSelected(null); setRevealed(false)
     setScore(0); setAnswered(0)
     setShowResults(false); setWrongQuestions([])
@@ -302,6 +310,17 @@ export default function CertDetail() {
             <div style={{ background: '#f3f4f6', borderRadius: '9999px', height: '12px', marginBottom: '2rem' }}>
               <div style={{ background: passed ? '#22c55e' : '#f87171', height: '12px', borderRadius: '9999px', width: `${scorePercent}%`, transition: 'width 0.5s' }} />
             </div>
+            {wrongQuestions.length > 0 && (
+              <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '0.875rem', padding: '1rem 1.5rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+                <div>
+                  <div style={{ fontWeight: 800, color: '#991b1b', fontSize: '0.9rem' }}>❌ {wrongQuestions.length} wrong answer{wrongQuestions.length > 1 ? 's' : ''}</div>
+                  <div style={{ fontSize: '0.78rem', color: '#b91c1c', marginTop: '0.15rem' }}>Drill these until you get them right</div>
+                </div>
+                <button onClick={retryWrong} style={{ padding: '0.6rem 1.25rem', background: '#ef4444', color: '#fff', fontWeight: 700, borderRadius: '0.75rem', border: 'none', cursor: 'pointer', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
+                  🔁 Retry Wrong Answers
+                </button>
+              </div>
+            )}
             <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button onClick={restart} style={{ padding: '0.75rem 2rem', background: '#3b82f6', color: '#fff', fontWeight: 700, borderRadius: '0.75rem', border: 'none', cursor: 'pointer', fontSize: '0.95rem' }}>Practice Again</button>
               <button onClick={() => navigate('/certifications')} style={{ padding: '0.75rem 2rem', background: '#f3f4f6', color: '#374151', fontWeight: 700, borderRadius: '0.75rem', border: 'none', cursor: 'pointer', fontSize: '0.95rem' }}>All Certs</button>
