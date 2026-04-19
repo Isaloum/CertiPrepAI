@@ -730,7 +730,7 @@ export default function CheatSheets() {
               <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '1rem', overflow: 'hidden' }}>
                 <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid #f3f4f6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h3 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#111827', margin: 0 }}>Most Tested Services</h3>
-                  <span style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 600 }}>computed from {sheet.code} question data</span>
+                  <span style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 600 }}>times this service appears across {sheet.code} practice questions</span>
                 </div>
                 {sheet.topServices.map((svc, i) => {
                   const max = sheet.topServices[0].count
@@ -742,7 +742,7 @@ export default function CheatSheets() {
                       <div style={{ flex: 1, height: '8px', background: '#f3f4f6', borderRadius: '999px' }}>
                         <div style={{ width: `${pct}%`, height: '100%', background: sheet.color, borderRadius: '999px', opacity: 0.8 }} />
                       </div>
-                      <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#374151', width: '60px', textAlign: 'right' }}>{svc.count} q's</span>
+                      <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#374151', width: '90px', textAlign: 'right' }}>{svc.count} questions</span>
                       <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap', width: '120px' }}>
                         {svc.domains.map(d => (
                           <span key={d} style={{ fontSize: '0.65rem', fontWeight: 700, color: sheet.color, background: `${sheet.color}15`, borderRadius: '0.375rem', padding: '0.1rem 0.4rem' }}>{d}</span>
