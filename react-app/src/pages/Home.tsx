@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import Layout from '../components/Layout'
+import EmailCapture from '../components/EmailCapture'
 
 const certs = [
   { icon: '☁️', code: 'CLF-C02', name: 'Cloud Practitioner', level: 'Foundational', id: 'clf-c02' },
@@ -440,6 +441,7 @@ export default function Home() {
           </button>
         </div>
       </section>
+      <EmailCapture />
     </Layout>
   )
 }

@@ -26,6 +26,24 @@ exports.handler = async (event) => {
     return { statusCode: 200, headers: CORS, body: '' };
   }
 
+  // ── capture_lead — no auth required ─────────────────────────────
+  try {
+    const body = JSON.parse(event.body || '{}');
+    if (body.action === 'capture_lead') {
+      const email = (body.data?.email || '').trim().toLowerCase();
+      if (!email || !email.includes('@')) {
+        return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid email' }) };
+      }
+      await dynamo.send(new PutCommand({
+        TableName: 'awsprepai-leads',
+        Item: { email, captured_at: new Date().toISOString(), source: body.data?.source || 'homepage' },
+      }));
+      return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true }) };
+    }
+  } catch (e) {
+    console.error('capture_lead error:', e.message);
+  }
+
   if (!token) {
     return { statusCode: 401, headers: CORS, body: JSON.stringify({ error: 'Missing token' }) };
   }
