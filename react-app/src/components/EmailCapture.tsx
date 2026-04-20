@@ -4,18 +4,21 @@
  * Saves email to awsprepai-leads via awsprepai-db Lambda (no auth).
  */
 import { useState, useEffect } from 'react'
+import { useAuth } from '../contexts/AuthContext'
 
 const DB_API = import.meta.env.VITE_DB_API_URL || import.meta.env.VITE_DB_API || 'https://dzhvi7oz29.execute-api.us-east-1.amazonaws.com'
 const STORAGE_KEY = 'certiprepai_lead_captured'
 
 export default function EmailCapture() {
+  const { user } = useAuth()
   const [visible, setVisible] = useState(false)
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
   const [dismissed, setDismissed] = useState(false)
 
   useEffect(() => {
-    // Don't show if already captured or dismissed this session
+    // Don't show if logged in or already captured/dismissed
+    if (user) return
     if (localStorage.getItem(STORAGE_KEY)) return
 
     const onScroll = () => {
