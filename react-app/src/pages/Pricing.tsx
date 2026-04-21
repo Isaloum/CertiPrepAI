@@ -95,6 +95,7 @@ const plans = [
     highlight: false,
     features: [
       'Everything in Yearly',
+      '🤖 AI Coach — ask anything AWS, anytime',
       'All future certifications included',
       'Pay once, use forever',
       'No recurring fees, ever',
