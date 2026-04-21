@@ -70,6 +70,10 @@ exports.handler = async (event) => {
     };
   } catch (err) {
     console.error('[ai-coach]', err);
-    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'Internal server error' }) };
+    const msg = err?.message || '';
+    if (msg.includes('credit balance') || msg.includes('billing')) {
+      return { statusCode: 503, headers: CORS, body: JSON.stringify({ error: 'AI service temporarily unavailable. Please try again later.' }) };
+    }
+    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'Internal server error', detail: msg }) };
   }
 };
