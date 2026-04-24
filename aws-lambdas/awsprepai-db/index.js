@@ -6,6 +6,10 @@
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
 const { CognitoIdentityProviderClient, GetUserCommand } = require('@aws-sdk/client-cognito-identity-provider');
+const { LambdaClient, InvokeCommand } = require('@aws-sdk/client-lambda');
+
+const lambdaClient = new LambdaClient({ region: 'us-east-1' });
+const EMAIL_DRIP_FUNCTION = process.env.EMAIL_DRIP_FUNCTION || 'awsprepai-email-drip';
 
 const dynamo = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'us-east-1' }));
 const cognito = new CognitoIdentityProviderClient({ region: 'us-east-1' });
@@ -37,11 +41,21 @@ exports.handler = async (event) => {
       await dynamo.send(new PutCommand({
         TableName: 'awsprepai-leads',
         Item: { email, captured_at: new Date().toISOString(), source: body.data?.source || 'homepage' },
+        ConditionExpression: 'attribute_not_exists(email)', // skip if already captured
       }));
+      // Fire-and-forget welcome email (async invoke — doesn't block response)
+      lambdaClient.send(new InvokeCommand({
+        FunctionName: EMAIL_DRIP_FUNCTION,
+        InvocationType: 'Event', // async
+        Payload: Buffer.from(JSON.stringify({ email, type: 'welcome' })),
+      })).catch(err => console.error('email-drip invoke failed:', err.message));
       return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true }) };
     }
   } catch (e) {
-    console.error('capture_lead error:', e.message);
+    // ConditionalCheckFailedException = duplicate email, that's fine
+    if (e.name !== 'ConditionalCheckFailedException') {
+      console.error('capture_lead error:', e.message);
+    }
   }
 
   if (!token) {

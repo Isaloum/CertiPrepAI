@@ -9,7 +9,12 @@
       "Hardcoded AWS Access Keys in the Lambda function"
     ],
     "answer": 2,
-    "explain": "Lambda functions automatically assume an IAM role that provides temporary STS credentials, eliminating the need for hardcoded keys."
+    "explain": "Lambda functions automatically assume an IAM role that provides temporary STS credentials, eliminating the need for hardcoded keys.",
+    "keywords": [
+      "DynamoDB",
+      "IAM",
+      "Lambda"
+    ]
   },
   {
     "cat": "security",
@@ -21,7 +26,11 @@
       "24 hours"
     ],
     "answer": 0,
-    "explain": "Default maximum session duration for STS AssumeRole is 1 hour, but can be extended up to 12 hours depending on the role's maximum session duration setting."
+    "explain": "Default maximum session duration for STS AssumeRole is 1 hour, but can be extended up to 12 hours depending on the role's maximum session duration setting.",
+    "keywords": [
+      "IAM",
+      "security"
+    ]
   },
   {
     "cat": "deployment",
@@ -33,7 +42,14 @@
       "pipeline.yml"
     ],
     "answer": 3,
-    "explain": "CodeDeploy requires an appspec.yml file in the root of your application repository that defines deployment instructions."
+    "explain": "CodeDeploy requires an appspec.yml file in the root of your application repository that defines deployment instructions.",
+    "keywords": [
+      "CI/CD",
+      "CodeDeploy",
+      "CodePipeline",
+      "EC2",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -45,7 +61,14 @@
       "VPC Flow Logs"
     ],
     "answer": 2,
-    "explain": "X-Ray provides distributed tracing to visualize request flows through microservices and identify performance issues and errors."
+    "explain": "X-Ray provides distributed tracing to visualize request flows through microservices and identify performance issues and errors.",
+    "keywords": [
+      "CloudWatch",
+      "EventBridge",
+      "Lambda",
+      "VPC",
+      "X-Ray"
+    ]
   },
   {
     "cat": "development",
@@ -57,7 +80,10 @@
       "10 messages"
     ],
     "answer": 3,
-    "explain": "SQS ReceiveMessage can retrieve a maximum of 10 messages per call using the MaxNumberOfMessages parameter."
+    "explain": "SQS ReceiveMessage can retrieve a maximum of 10 messages per call using the MaxNumberOfMessages parameter.",
+    "keywords": [
+      "SQS"
+    ]
   },
   {
     "cat": "security",
@@ -69,7 +95,15 @@
       "AWS Secrets Manager"
     ],
     "answer": 2,
-    "explain": "Secrets Manager provides automatic credential rotation, encryption, and centralized management of database credentials."
+    "explain": "Secrets Manager provides automatic credential rotation, encryption, and centralized management of database credentials.",
+    "keywords": [
+      "DynamoDB",
+      "EC2",
+      "IAM",
+      "S3",
+      "Secrets Manager",
+      "encryption"
+    ]
   },
   {
     "cat": "deployment",
@@ -81,7 +115,13 @@
       "All at once"
     ],
     "answer": 0,
-    "explain": "Canary deployment gradually routes traffic to new instances, reducing impact if failures occur and allowing rollback."
+    "explain": "Canary deployment gradually routes traffic to new instances, reducing impact if failures occur and allowing rollback.",
+    "keywords": [
+      "CI/CD",
+      "CodeDeploy",
+      "canary deployment",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -93,7 +133,11 @@
       "5 minutes"
     ],
     "answer": 2,
-    "explain": "Lambda functions have a maximum timeout of 15 minutes (900 seconds), which must be set during configuration."
+    "explain": "Lambda functions have a maximum timeout of 15 minutes (900 seconds), which must be set during configuration.",
+    "keywords": [
+      "CloudWatch",
+      "Lambda"
+    ]
   },
   {
     "cat": "development",
@@ -105,7 +149,10 @@
       "Scan and Filter operations"
     ],
     "answer": 2,
-    "explain": "BatchGetItem and BatchWriteItem allow you to batch multiple operations, reducing network round trips and improving throughput."
+    "explain": "BatchGetItem and BatchWriteItem allow you to batch multiple operations, reducing network round trips and improving throughput.",
+    "keywords": [
+      "DynamoDB"
+    ]
   },
   {
     "cat": "lambda",
@@ -117,7 +164,15 @@
       "Use Lambda provisioned concurrency or ECS fargate for guaranteed performance"
     ],
     "answer": 2,
-    "explain": "Cold starts occur on first invocation. Reserved concurrency and provisioned concurrency keep instances warm for consistent performance."
+    "explain": "Cold starts occur on first invocation. Reserved concurrency and provisioned concurrency keep instances warm for consistent performance.",
+    "keywords": [
+      "ECS",
+      "Fargate",
+      "Lambda",
+      "S3",
+      "cold start",
+      "concurrency"
+    ]
   },
   {
     "cat": "deployment",
@@ -129,7 +184,12 @@
       "The pipeline waits for manual approval again"
     ],
     "answer": 3,
-    "explain": "When a manual approval is rejected, the pipeline stops at that stage and the artifact is not promoted further."
+    "explain": "When a manual approval is rejected, the pipeline stops at that stage and the artifact is not promoted further.",
+    "keywords": [
+      "CI/CD",
+      "CodePipeline",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -141,7 +201,13 @@
       "API Gateway resource policies"
     ],
     "answer": 3,
-    "explain": "403 Forbidden typically indicates lack of permissions, which should be checked in IAM policies attached to the caller."
+    "explain": "403 Forbidden typically indicates lack of permissions, which should be checked in IAM policies attached to the caller.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "IAM",
+      "VPC"
+    ]
   },
   {
     "cat": "development",
@@ -153,7 +219,12 @@
       "Create a new connection for each invocation"
     ],
     "answer": 3,
-    "explain": "Creating connections outside the Lambda handler allows them to persist across warm invocations, improving performance."
+    "explain": "Creating connections outside the Lambda handler allows them to persist across warm invocations, improving performance.",
+    "keywords": [
+      "API",
+      "DynamoDB",
+      "Lambda"
+    ]
   },
   {
     "cat": "security",
@@ -165,7 +236,15 @@
       "Manually encrypt with KMS in your application code"
     ],
     "answer": 2,
-    "explain": "DynamoDB supports encryption at rest which can be enabled in table settings; AWS-owned keys are default."
+    "explain": "DynamoDB supports encryption at rest which can be enabled in table settings; AWS-owned keys are default.",
+    "keywords": [
+      "DynamoDB",
+      "IAM",
+      "KMS",
+      "Lambda",
+      "REST",
+      "encryption"
+    ]
   },
   {
     "cat": "deployment",
@@ -177,7 +256,13 @@
       "In the .ebextensions configuration"
     ],
     "answer": 3,
-    "explain": "Elastic Beanstalk uses .ebextensions directory for configuration hooks that can run custom commands during deployment."
+    "explain": "Elastic Beanstalk uses .ebextensions directory for configuration hooks that can run custom commands during deployment.",
+    "keywords": [
+      "CI/CD",
+      "CodeDeploy",
+      "Elastic Beanstalk",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -189,7 +274,13 @@
       "Lambda needs more concurrent executions"
     ],
     "answer": 1,
-    "explain": "High duration with low CPU indicates the function is waiting for I/O operations to complete, not computing."
+    "explain": "High duration with low CPU indicates the function is waiting for I/O operations to complete, not computing.",
+    "keywords": [
+      "API",
+      "CloudWatch",
+      "Lambda",
+      "throttling"
+    ]
   },
   {
     "cat": "development",
@@ -201,7 +292,13 @@
       "SNS with SQS subscribers"
     ],
     "answer": 0,
-    "explain": "SNS (or EventBridge) provides pub/sub messaging that sends messages to multiple subscribers simultaneously."
+    "explain": "SNS (or EventBridge) provides pub/sub messaging that sends messages to multiple subscribers simultaneously.",
+    "keywords": [
+      "EventBridge",
+      "Kinesis",
+      "SNS",
+      "SQS"
+    ]
   },
   {
     "cat": "lambda",
@@ -213,7 +310,14 @@
       "Add retry logic in the calling function"
     ],
     "answer": 2,
-    "explain": "Lambda destinations allow async failures to be sent to SQS/SNS for retry and monitoring without explicit function code."
+    "explain": "Lambda destinations allow async failures to be sent to SQS/SNS for retry and monitoring without explicit function code.",
+    "keywords": [
+      "CloudWatch",
+      "Lambda",
+      "SNS",
+      "SQS",
+      "dead-letter queue"
+    ]
   },
   {
     "cat": "deployment",
@@ -225,7 +329,12 @@
       "Must be in the .aws directory"
     ],
     "answer": 1,
-    "explain": "buildspec.yml can be at the repository root or in a custom location specified in the CodeBuild project configuration."
+    "explain": "buildspec.yml can be at the repository root or in a custom location specified in the CodeBuild project configuration.",
+    "keywords": [
+      "CI/CD",
+      "CodeBuild",
+      "deployment"
+    ]
   },
   {
     "cat": "lambda",
@@ -237,7 +346,13 @@
       "Use CloudFront to cache the library"
     ],
     "answer": 2,
-    "explain": "Lambda layers decouple library code from function code, reducing package size and improving cold start times significantly."
+    "explain": "Lambda layers decouple library code from function code, reducing package size and improving cold start times significantly.",
+    "keywords": [
+      "CloudFront",
+      "EC2",
+      "Lambda",
+      "Lambda Layer"
+    ]
   },
   {
     "cat": "dynamodb",
@@ -249,7 +364,10 @@
       "ConditionExpression with attribute_exists() and comparison operator"
     ],
     "answer": 3,
-    "explain": "ConditionExpression allows atomic conditional updates, preventing race conditions in concurrent write scenarios."
+    "explain": "ConditionExpression allows atomic conditional updates, preventing race conditions in concurrent write scenarios.",
+    "keywords": [
+      "DynamoDB"
+    ]
   },
   {
     "cat": "security",
@@ -261,7 +379,12 @@
       "Public bucket policies"
     ],
     "answer": 0,
-    "explain": "Pre-signed URLs provide temporary, credential-free access to S3 objects with expiration time limits."
+    "explain": "Pre-signed URLs provide temporary, credential-free access to S3 objects with expiration time limits.",
+    "keywords": [
+      "IAM",
+      "S3",
+      "security"
+    ]
   },
   {
     "cat": "dynamodb",
@@ -273,7 +396,12 @@
       "Increase provisioned throughput capacity"
     ],
     "answer": 1,
-    "explain": "BatchWriteItem reduces network overhead and API calls, improving throughput and reducing ProvisionedThroughputExceededException errors."
+    "explain": "BatchWriteItem reduces network overhead and API calls, improving throughput and reducing ProvisionedThroughputExceededException errors.",
+    "keywords": [
+      "DynamoDB",
+      "provisioning",
+      "throttling"
+    ]
   },
   {
     "cat": "dynamodb",
@@ -285,7 +413,12 @@
       "The item is too large"
     ],
     "answer": 1,
-    "explain": "Uneven access to specific partition keys causes hot partitions that exceed that partition's reserved throughput even if table capacity is high."
+    "explain": "Uneven access to specific partition keys causes hot partitions that exceed that partition's reserved throughput even if table capacity is high.",
+    "keywords": [
+      "DynamoDB",
+      "partitioning",
+      "provisioning"
+    ]
   },
   {
     "cat": "development",
@@ -297,7 +430,12 @@
       "In environment variables"
     ],
     "answer": 2,
-    "explain": "DynamoDB or ElastiCache provide persistent session storage across Lambda invocations and warm starts."
+    "explain": "DynamoDB or ElastiCache provide persistent session storage across Lambda invocations and warm starts.",
+    "keywords": [
+      "DynamoDB",
+      "ElastiCache",
+      "Lambda"
+    ]
   },
   {
     "cat": "apigateway",
@@ -309,7 +447,15 @@
       "Use API Gateway request/response transformations with VTL mapping templates"
     ],
     "answer": 3,
-    "explain": "VTL mapping templates in API Gateway perform request/response transformations without modifying backend logic."
+    "explain": "VTL mapping templates in API Gateway perform request/response transformations without modifying backend logic.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "CloudFront",
+      "EC2",
+      "Lambda",
+      "REST"
+    ]
   },
   {
     "cat": "deployment",
@@ -321,7 +467,15 @@
       "CodeDeploy scripts"
     ],
     "answer": 2,
-    "explain": ".ebextensions allow you to specify custom configuration and commands that run during Elastic Beanstalk deployment."
+    "explain": ".ebextensions allow you to specify custom configuration and commands that run during Elastic Beanstalk deployment.",
+    "keywords": [
+      "CI/CD",
+      "CodeDeploy",
+      "EC2",
+      "Elastic Beanstalk",
+      "Lambda",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -333,7 +487,13 @@
       "Lambda CloudWatch Logs only"
     ],
     "answer": 1,
-    "explain": "Step Functions execution history shows detailed information about each state and the errors that occurred."
+    "explain": "Step Functions execution history shows detailed information about each state and the errors that occurred.",
+    "keywords": [
+      "CloudWatch",
+      "CodePipeline",
+      "Lambda",
+      "Step Functions"
+    ]
   },
   {
     "cat": "development",
@@ -345,7 +505,15 @@
       "A VPC endpoint"
     ],
     "answer": 1,
-    "explain": "Lambda functions need resource-based policies that explicitly allow services like S3 or SNS to invoke them."
+    "explain": "Lambda functions need resource-based policies that explicitly allow services like S3 or SNS to invoke them.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "IAM",
+      "Lambda",
+      "S3",
+      "SNS"
+    ]
   },
   {
     "cat": "apigateway",
@@ -357,7 +525,13 @@
       "Use CloudFormation to create a separate testing API"
     ],
     "answer": 2,
-    "explain": "MOCK integration type with response templates enables rapid testing of API contracts without backend dependencies."
+    "explain": "MOCK integration type with response templates enables rapid testing of API contracts without backend dependencies.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "CloudFormation",
+      "Lambda"
+    ]
   },
   {
     "cat": "deployment",
@@ -369,7 +543,12 @@
       "The source stage is re-executed"
     ],
     "answer": 0,
-    "explain": "If any stage in CodePipeline fails, subsequent stages are skipped unless configured otherwise."
+    "explain": "If any stage in CodePipeline fails, subsequent stages are skipped unless configured otherwise.",
+    "keywords": [
+      "CI/CD",
+      "CodePipeline",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -381,7 +560,12 @@
       "Use X-Ray to trace memory allocations in the function"
     ],
     "answer": 2,
-    "explain": "X-Ray can help identify which parts of your code are consuming the most memory through service maps and traces."
+    "explain": "X-Ray can help identify which parts of your code are consuming the most memory through service maps and traces.",
+    "keywords": [
+      "CloudWatch",
+      "Lambda",
+      "X-Ray"
+    ]
   },
   {
     "cat": "development",
@@ -393,7 +577,13 @@
       "Kinesis stream"
     ],
     "answer": 0,
-    "explain": "SNS pub/sub pattern sends a message to all subscribers, perfect for multiple independent consumers."
+    "explain": "SNS pub/sub pattern sends a message to all subscribers, perfect for multiple independent consumers.",
+    "keywords": [
+      "Kinesis",
+      "SNS",
+      "SQS",
+      "microservices"
+    ]
   },
   {
     "cat": "development",
@@ -405,7 +595,13 @@
       "Save directly to /tmp in Lambda"
     ],
     "answer": 0,
-    "explain": "S3 presigned URLs allow clients to upload directly, bypassing Lambda payload limits. Lambda can only handle up to 6MB request payloads and 10MB responses."
+    "explain": "S3 presigned URLs allow clients to upload directly, bypassing Lambda payload limits. Lambda can only handle up to 6MB request payloads and 10MB responses.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "Lambda",
+      "S3"
+    ]
   },
   {
     "cat": "deployment",
@@ -417,7 +613,13 @@
       "appspec.yml"
     ],
     "answer": 2,
-    "explain": "imagedefinitions.json is used to specify container image URIs for ECS deployments from CodePipeline."
+    "explain": "imagedefinitions.json is used to specify container image URIs for ECS deployments from CodePipeline.",
+    "keywords": [
+      "CI/CD",
+      "CodePipeline",
+      "ECS",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -429,7 +631,15 @@
       "Table encryption settings"
     ],
     "answer": 1,
-    "explain": "Query performance can be improved by ensuring you're using appropriate indexes and efficient filter expressions."
+    "explain": "Query performance can be improved by ensuring you're using appropriate indexes and efficient filter expressions.",
+    "keywords": [
+      "DynamoDB",
+      "Lambda",
+      "VPC",
+      "concurrency",
+      "encryption",
+      "indexing"
+    ]
   },
   {
     "cat": "development",
@@ -441,7 +651,15 @@
       "EventBridge only"
     ],
     "answer": 3,
-    "explain": "Step Functions orchestrates workflows by coordinating Lambda invocations and passing data between them."
+    "explain": "Step Functions orchestrates workflows by coordinating Lambda invocations and passing data between them.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "EventBridge",
+      "Lambda",
+      "SNS",
+      "Step Functions"
+    ]
   },
   {
     "cat": "apigateway",
@@ -453,7 +671,14 @@
       "WebSocket is not compatible with Lambda"
     ],
     "answer": 1,
-    "explain": "Disconnect route must match the $disconnect system route; custom route names won't trigger on actual disconnects."
+    "explain": "Disconnect route must match the $disconnect system route; custom route names won't trigger on actual disconnects.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "IAM",
+      "Lambda",
+      "WebSocket"
+    ]
   },
   {
     "cat": "deployment",
@@ -484,7 +709,12 @@
       "Use longer timeouts"
     ],
     "answer": 2,
-    "explain": "Provisioned concurrency or periodic invocations keep Lambda functions warm, eliminating cold start latency."
+    "explain": "Provisioned concurrency or periodic invocations keep Lambda functions warm, eliminating cold start latency.",
+    "keywords": [
+      "Lambda",
+      "concurrency",
+      "provisioning"
+    ]
   },
   {
     "cat": "development",
@@ -496,7 +726,10 @@
       "Implement try-catch blocks and handle each error appropriately"
     ],
     "answer": 2,
-    "explain": "Proper error handling with try-catch allows you to gracefully handle service errors and implement retry logic."
+    "explain": "Proper error handling with try-catch allows you to gracefully handle service errors and implement retry logic.",
+    "keywords": [
+      "Lambda"
+    ]
   },
   {
     "cat": "security",
@@ -508,7 +741,15 @@
       "CloudFormation"
     ],
     "answer": 0,
-    "explain": "Secrets Manager provides automatic credential rotation for databases and other secrets without application changes."
+    "explain": "Secrets Manager provides automatic credential rotation for databases and other secrets without application changes.",
+    "keywords": [
+      "CloudFormation",
+      "CodeCommit",
+      "IAM",
+      "Parameter Store",
+      "Secrets Manager",
+      "Systems Manager"
+    ]
   },
   {
     "cat": "deployment",
@@ -520,7 +761,15 @@
       "Replaces CloudFormation entirely"
     ],
     "answer": 0,
-    "explain": "SAM CLI packages SAM templates and deploys them as CloudFormation stacks to AWS."
+    "explain": "SAM CLI packages SAM templates and deploys them as CloudFormation stacks to AWS.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "CI/CD",
+      "CloudFormation",
+      "Lambda",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -532,7 +781,14 @@
       "EC2 console"
     ],
     "answer": 1,
-    "explain": "CloudWatch Logs for the Lambda function contain detailed error messages and stack traces for debugging."
+    "explain": "CloudWatch Logs for the Lambda function contain detailed error messages and stack traces for debugging.",
+    "keywords": [
+      "CloudWatch",
+      "EC2",
+      "Lambda",
+      "RDS",
+      "VPC"
+    ]
   },
   {
     "cat": "development",
@@ -544,7 +800,15 @@
       "SNS topic"
     ],
     "answer": 2,
-    "explain": "CloudWatch Events (now EventBridge) can schedule Lambda invocations at specified intervals using cron expressions."
+    "explain": "CloudWatch Events (now EventBridge) can schedule Lambda invocations at specified intervals using cron expressions.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "CloudWatch",
+      "EventBridge",
+      "Lambda",
+      "SNS"
+    ]
   },
   {
     "cat": "cognito",
@@ -556,7 +820,10 @@
       "Post-confirmation trigger"
     ],
     "answer": 0,
-    "explain": "Custom message trigger allows modification of email/SMS content for confirmation, password reset, and other message types."
+    "explain": "Custom message trigger allows modification of email/SMS content for confirmation, password reset, and other message types.",
+    "keywords": [
+      "Cognito"
+    ]
   },
   {
     "cat": "deployment",
@@ -568,7 +835,14 @@
       "buildspec.yml syntax error"
     ],
     "answer": 1,
-    "explain": "This error indicates the Docker image URI in the environment configuration is incorrect or inaccessible."
+    "explain": "This error indicates the Docker image URI in the environment configuration is incorrect or inaccessible.",
+    "keywords": [
+      "CI/CD",
+      "CodeBuild",
+      "IAM",
+      "VPC",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -599,7 +873,12 @@
       "Create an IAM user with S3 access"
     ],
     "answer": 0,
-    "explain": "AWS SDK's getSignedUrl method generates temporary URLs with automatic expiration and no credential exposure."
+    "explain": "AWS SDK's getSignedUrl method generates temporary URLs with automatic expiration and no credential exposure.",
+    "keywords": [
+      "CloudFront",
+      "IAM",
+      "S3"
+    ]
   },
   {
     "cat": "security",
@@ -611,7 +890,11 @@
       "Both trust relationship and AssumeRole policy"
     ],
     "answer": 1,
-    "explain": "Cross-account access requires both trust relationship on the target role and AssumeRole permissions in the source account."
+    "explain": "Cross-account access requires both trust relationship on the target role and AssumeRole permissions in the source account.",
+    "keywords": [
+      "IAM",
+      "security"
+    ]
   },
   {
     "cat": "deployment",
@@ -623,7 +906,15 @@
       "Hardcoded in the application code"
     ],
     "answer": 0,
-    "explain": "Environment configuration should be stored externally in environment variables or configuration services, never hardcoded."
+    "explain": "Environment configuration should be stored externally in environment variables or configuration services, never hardcoded.",
+    "keywords": [
+      "API",
+      "CI/CD",
+      "CloudFormation",
+      "Parameter Store",
+      "Secrets Manager",
+      "Systems Manager"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -635,7 +926,12 @@
       "3 seconds"
     ],
     "answer": 0,
-    "explain": "API Gateway integration timeout is 29 seconds, regardless of Lambda timeout setting."
+    "explain": "API Gateway integration timeout is 29 seconds, regardless of Lambda timeout setting.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "Lambda"
+    ]
   },
   {
     "cat": "development",
@@ -647,7 +943,14 @@
       "Kinesis Data Streams"
     ],
     "answer": 1,
-    "explain": "Kinesis Data Streams is designed for real-time streaming and processing of data at scale."
+    "explain": "Kinesis Data Streams is designed for real-time streaming and processing of data at scale.",
+    "keywords": [
+      "Kinesis",
+      "Kinesis Data Streams",
+      "S3",
+      "SNS",
+      "SQS"
+    ]
   },
   {
     "cat": "cognito",
@@ -659,7 +962,12 @@
       "Pre-authentication Lambda trigger to check group membership and enforce MFA"
     ],
     "answer": 3,
-    "explain": "Pre-authentication trigger can inspect user groups and challenge users for MFA before authentication succeeds."
+    "explain": "Pre-authentication trigger can inspect user groups and challenge users for MFA before authentication succeeds.",
+    "keywords": [
+      "Cognito",
+      "IAM",
+      "Lambda"
+    ]
   },
   {
     "cat": "deployment",
@@ -671,7 +979,13 @@
       "hooks/predeploy.sh in .ebextensions"
     ],
     "answer": 1,
-    "explain": "container_commands in .ebextensions configuration files execute at the end of the deployment process."
+    "explain": "container_commands in .ebextensions configuration files execute at the end of the deployment process.",
+    "keywords": [
+      "AWS Config",
+      "CI/CD",
+      "Elastic Beanstalk",
+      "deployment"
+    ]
   },
   {
     "cat": "sqs",
@@ -683,7 +997,11 @@
       "Store metadata in DynamoDB with message ID"
     ],
     "answer": 0,
-    "explain": "Message attributes provide structured metadata storage without polluting the message body, enabling filtering and sorting."
+    "explain": "Message attributes provide structured metadata storage without polluting the message body, enabling filtering and sorting.",
+    "keywords": [
+      "DynamoDB",
+      "SQS"
+    ]
   },
   {
     "cat": "development",
@@ -695,7 +1013,12 @@
       "Move to RDS"
     ],
     "answer": 0,
-    "explain": "DAX provides microsecond-level caching for DynamoDB, significantly reducing query latency for frequently accessed items without changing application code."
+    "explain": "DAX provides microsecond-level caching for DynamoDB, significantly reducing query latency for frequently accessed items without changing application code.",
+    "keywords": [
+      "DynamoDB",
+      "DynamoDB DAX",
+      "RDS"
+    ]
   },
   {
     "cat": "sqs",
@@ -707,7 +1030,11 @@
       "Use SendMessage in a loop"
     ],
     "answer": 1,
-    "explain": "SendMessageBatch reduces API calls and latency by bundling up to 10 messages into a single request."
+    "explain": "SendMessageBatch reduces API calls and latency by bundling up to 10 messages into a single request.",
+    "keywords": [
+      "DynamoDB",
+      "SQS"
+    ]
   },
   {
     "cat": "deployment",
@@ -719,7 +1046,13 @@
       "Half the instances are deployed at a time"
     ],
     "answer": 3,
-    "explain": "'OneAtATime' deployment ensures minimal disruption by replacing instances sequentially."
+    "explain": "'OneAtATime' deployment ensures minimal disruption by replacing instances sequentially.",
+    "keywords": [
+      "CI/CD",
+      "CodeDeploy",
+      "EC2",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -731,7 +1064,12 @@
       "Alarm threshold and evaluation periods"
     ],
     "answer": 2,
-    "explain": "Adjust alarm thresholds, evaluation periods, and datapoints to reduce false positives."
+    "explain": "Adjust alarm thresholds, evaluation periods, and datapoints to reduce false positives.",
+    "keywords": [
+      "CloudWatch",
+      "Lambda",
+      "VPC"
+    ]
   },
   {
     "cat": "sqs",
@@ -743,7 +1081,12 @@
       "Enable long polling with WaitTimeSeconds=20 to reduce empty responses"
     ],
     "answer": 3,
-    "explain": "Long polling waits up to 20 seconds for messages before returning, dramatically reducing API calls and associated costs."
+    "explain": "Long polling waits up to 20 seconds for messages before returning, dramatically reducing API calls and associated costs.",
+    "keywords": [
+      "API",
+      "SNS",
+      "SQS"
+    ]
   },
   {
     "cat": "codedeploy",
@@ -755,7 +1098,11 @@
       "PreHook and PostHook"
     ],
     "answer": 0,
-    "explain": "Lambda deployment hooks allow validation of the new version (BeforeAllowTraffic) before shifting traffic (AfterAllowTraffic)."
+    "explain": "Lambda deployment hooks allow validation of the new version (BeforeAllowTraffic) before shifting traffic (AfterAllowTraffic).",
+    "keywords": [
+      "CodeDeploy",
+      "Lambda"
+    ]
   },
   {
     "cat": "codedeploy",
@@ -767,7 +1114,11 @@
       "Traffic stays at 50/50 mix"
     ],
     "answer": 1,
-    "explain": "Linear traffic shifting increments traffic by a fixed percentage each interval, allowing incremental validation."
+    "explain": "Linear traffic shifting increments traffic by a fixed percentage each interval, allowing incremental validation.",
+    "keywords": [
+      "CodeDeploy",
+      "Lambda"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -779,7 +1130,11 @@
       "Your table schema is wrong"
     ],
     "answer": 1,
-    "explain": "ProvisionedThroughputExceededException means requests exceeded the table's capacity units."
+    "explain": "ProvisionedThroughputExceededException means requests exceeded the table's capacity units.",
+    "keywords": [
+      "DynamoDB",
+      "provisioning"
+    ]
   },
   {
     "cat": "development",
@@ -791,7 +1146,11 @@
       "Use a Lambda layer for the SDK"
     ],
     "answer": 2,
-    "explain": "Instantiating clients outside the handler reuses connections across invocations, improving performance."
+    "explain": "Instantiating clients outside the handler reuses connections across invocations, improving performance.",
+    "keywords": [
+      "Lambda",
+      "Lambda Layer"
+    ]
   },
   {
     "cat": "security",
@@ -803,7 +1162,15 @@
       "OK, but only if marked as sensitive"
     ],
     "answer": 1,
-    "explain": "Secrets Manager and Parameter Store provide better security with encryption, rotation, and audit logging."
+    "explain": "Secrets Manager and Parameter Store provide better security with encryption, rotation, and audit logging.",
+    "keywords": [
+      "API",
+      "IAM",
+      "Lambda",
+      "Parameter Store",
+      "Secrets Manager",
+      "encryption"
+    ]
   },
   {
     "cat": "cloudformation",
@@ -815,7 +1182,12 @@
       "AWS::ApiGateway::RestApi"
     ],
     "answer": 0,
-    "explain": "AWS::Serverless::Api (SAM) is the simplified CloudFormation resource for API Gateway with automatic integration to Lambda."
+    "explain": "AWS::Serverless::Api (SAM) is the simplified CloudFormation resource for API Gateway with automatic integration to Lambda.",
+    "keywords": [
+      "API",
+      "CloudFormation",
+      "serverless"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -846,7 +1218,11 @@
       "Strong consistency in GetItem/Query/Scan"
     ],
     "answer": 2,
-    "explain": "Strong consistency ensures you read the latest data, though with higher latency and cost."
+    "explain": "Strong consistency ensures you read the latest data, though with higher latency and cost.",
+    "keywords": [
+      "DynamoDB",
+      "indexing"
+    ]
   },
   {
     "cat": "development",
@@ -858,7 +1234,12 @@
       "Implement custom retry loops with setTimeout"
     ],
     "answer": 2,
-    "explain": "AWS SDK provides configurable retry strategies with exponential backoff and jitter built-in, eliminating the need for custom retry logic."
+    "explain": "AWS SDK provides configurable retry strategies with exponential backoff and jitter built-in, eliminating the need for custom retry logic.",
+    "keywords": [
+      "Lambda",
+      "SQS",
+      "Step Functions"
+    ]
   },
   {
     "cat": "cloudformation",
@@ -870,7 +1251,13 @@
       "IAM section of the template"
     ],
     "answer": 2,
-    "explain": "SAM policy templates provide shorthand permissions (e.g., S3ReadPolicy) without writing full IAM policy documents."
+    "explain": "SAM policy templates provide shorthand permissions (e.g., S3ReadPolicy) without writing full IAM policy documents.",
+    "keywords": [
+      "DynamoDB",
+      "IAM",
+      "Lambda",
+      "S3"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -882,7 +1269,14 @@
       "VPC endpoint misconfiguration"
     ],
     "answer": 2,
-    "explain": "Object ACLs can override bucket policy, blocking access even if the bucket is publicly readable."
+    "explain": "Object ACLs can override bucket policy, blocking access even if the bucket is publicly readable.",
+    "keywords": [
+      "CloudFront",
+      "S3",
+      "VPC",
+      "VPC endpoint",
+      "encryption"
+    ]
   },
   {
     "cat": "development",
@@ -894,7 +1288,12 @@
       "Use SNS with SQS and SNS filter policy"
     ],
     "answer": 2,
-    "explain": "SNS filter policies allow filtering messages before they reach the SQS queue, reducing processing."
+    "explain": "SNS filter policies allow filtering messages before they reach the SQS queue, reducing processing.",
+    "keywords": [
+      "Lambda",
+      "SNS",
+      "SQS"
+    ]
   },
   {
     "cat": "elasticache",
@@ -906,7 +1305,10 @@
       "Write-through: always write to cache and database together"
     ],
     "answer": 3,
-    "explain": "Write-through ensures database and cache are always in sync, preventing cache misses and database flooding."
+    "explain": "Write-through ensures database and cache are always in sync, preventing cache misses and database flooding.",
+    "keywords": [
+      "ElastiCache"
+    ]
   },
   {
     "cat": "deployment",
@@ -918,7 +1320,13 @@
       "OneAtATime or Canary"
     ],
     "answer": 3,
-    "explain": "OneAtATime and Canary strategies minimize downtime by gradually updating instances."
+    "explain": "OneAtATime and Canary strategies minimize downtime by gradually updating instances.",
+    "keywords": [
+      "CI/CD",
+      "CodeDeploy",
+      "canary deployment",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -930,7 +1338,10 @@
       "15 minutes"
     ],
     "answer": 3,
-    "explain": "Step Functions default timeout is 1 year unless you set a TimeoutSeconds in the state machine definition."
+    "explain": "Step Functions default timeout is 1 year unless you set a TimeoutSeconds in the state machine definition.",
+    "keywords": [
+      "Step Functions"
+    ]
   },
   {
     "cat": "development",
@@ -942,7 +1353,15 @@
       "Polling S3 ListObjects every minute"
     ],
     "answer": 3,
-    "explain": "S3 Event Notifications trigger Lambda or SQS immediately when objects are uploaded."
+    "explain": "S3 Event Notifications trigger Lambda or SQS immediately when objects are uploaded.",
+    "keywords": [
+      "API",
+      "CloudTrail",
+      "CloudWatch",
+      "Lambda",
+      "S3",
+      "SQS"
+    ]
   },
   {
     "cat": "security",
@@ -954,7 +1373,12 @@
       "Root account credentials"
     ],
     "answer": 1,
-    "explain": "STS AssumeRole provides temporary, time-limited credentials that can be revoked immediately."
+    "explain": "STS AssumeRole provides temporary, time-limited credentials that can be revoked immediately.",
+    "keywords": [
+      "IAM",
+      "S3",
+      "security"
+    ]
   },
   {
     "cat": "elasticache",
@@ -966,7 +1390,10 @@
       "Keys are being evicted when memory is full, causing increased cache misses and database hits"
     ],
     "answer": 3,
-    "explain": "eviction-lru removes least recently used keys when maxmemory is exceeded, increasing cache misses and database load."
+    "explain": "eviction-lru removes least recently used keys when maxmemory is exceeded, increasing cache misses and database load.",
+    "keywords": [
+      "ElastiCache"
+    ]
   },
   {
     "cat": "kinesis",
@@ -978,7 +1405,13 @@
       "Use timestamp as partition key for temporal ordering"
     ],
     "answer": 2,
-    "explain": "User ID as partition key distributes traffic across shards and keeps a user's events on the same shard for ordering."
+    "explain": "User ID as partition key distributes traffic across shards and keeps a user's events on the same shard for ordering.",
+    "keywords": [
+      "Kinesis",
+      "partitioning",
+      "sharding",
+      "streaming"
+    ]
   },
   {
     "cat": "development",
@@ -990,7 +1423,14 @@
       "Cognito User Pool with API Gateway"
     ],
     "answer": 1,
-    "explain": "Cognito User Pool integrates with API Gateway to manage user authentication without custom logic."
+    "explain": "Cognito User Pool integrates with API Gateway to manage user authentication without custom logic.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "Cognito",
+      "IAM",
+      "Lambda"
+    ]
   },
   {
     "cat": "kinesis",
@@ -1002,7 +1442,10 @@
       "AT_TIMESTAMP to read from a specific time"
     ],
     "answer": 1,
-    "explain": "TRIM_HORIZON (oldest retained record, typically 24 hours) is used for complete replays; LATEST starts from new records."
+    "explain": "TRIM_HORIZON (oldest retained record, typically 24 hours) is used for complete replays; LATEST starts from new records.",
+    "keywords": [
+      "Kinesis"
+    ]
   },
   {
     "cat": "deployment",
@@ -1014,7 +1457,15 @@
       "CodeDeploy"
     ],
     "answer": 1,
-    "explain": "Elastic Beanstalk Worker environment tier automatically pulls messages from SQS and runs them."
+    "explain": "Elastic Beanstalk Worker environment tier automatically pulls messages from SQS and runs them.",
+    "keywords": [
+      "CI/CD",
+      "CodeDeploy",
+      "EC2",
+      "Elastic Beanstalk",
+      "Lambda",
+      "SQS"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -1026,7 +1477,15 @@
       "Hot partition due to uneven key distribution"
     ],
     "answer": 2,
-    "explain": "Hot partitions occur when many requests target the same partition key, causing throttling despite high capacity."
+    "explain": "Hot partitions occur when many requests target the same partition key, causing throttling despite high capacity.",
+    "keywords": [
+      "CloudWatch",
+      "DynamoDB",
+      "encryption",
+      "indexing",
+      "partitioning",
+      "provisioning"
+    ]
   },
   {
     "cat": "development",
@@ -1038,7 +1497,15 @@
       "S3 with versioning"
     ],
     "answer": 1,
-    "explain": "DynamoDB or RDS provide persistent, reliable storage for application state across Lambda invocations."
+    "explain": "DynamoDB or RDS provide persistent, reliable storage for application state across Lambda invocations.",
+    "keywords": [
+      "CloudWatch",
+      "DynamoDB",
+      "Lambda",
+      "RDS",
+      "S3",
+      "serverless"
+    ]
   },
   {
     "cat": "xray",
@@ -1050,7 +1517,14 @@
       "Use X-Ray annotations to tag high-level information"
     ],
     "answer": 1,
-    "explain": "Subsegments break down service execution into named operations (database queries, API calls), revealing where latency occurs."
+    "explain": "Subsegments break down service execution into named operations (database queries, API calls), revealing where latency occurs.",
+    "keywords": [
+      "API",
+      "CloudTrail",
+      "CloudWatch",
+      "X-Ray",
+      "audit"
+    ]
   },
   {
     "cat": "deployment",
@@ -1062,7 +1536,13 @@
       "Both are equivalent"
     ],
     "answer": 3,
-    "explain": "SAM provides Lambda-specific optimizations and simpler syntax, while CloudFormation is more general."
+    "explain": "SAM provides Lambda-specific optimizations and simpler syntax, while CloudFormation is more general.",
+    "keywords": [
+      "CI/CD",
+      "CloudFormation",
+      "Lambda",
+      "deployment"
+    ]
   },
   {
     "cat": "xray",
@@ -1074,7 +1554,11 @@
       "In the response object returned to the client"
     ],
     "answer": 2,
-    "explain": "Annotations are indexed and filterable in X-Ray console, making them ideal for error flags, status codes, and custom tags."
+    "explain": "Annotations are indexed and filterable in X-Ray console, making them ideal for error flags, status codes, and custom tags.",
+    "keywords": [
+      "CloudWatch",
+      "X-Ray"
+    ]
   },
   {
     "cat": "development",
@@ -1105,7 +1589,12 @@
       "Enable S3 versioning to track new uploads"
     ],
     "answer": 0,
-    "explain": "S3 event notifications (ObjectCreated) can trigger Lambda directly when matching objects are uploaded."
+    "explain": "S3 event notifications (ObjectCreated) can trigger Lambda directly when matching objects are uploaded.",
+    "keywords": [
+      "CloudWatch",
+      "Lambda",
+      "S3"
+    ]
   },
   {
     "cat": "s3",
@@ -1117,7 +1606,11 @@
       "Use S3 Glacier for all objects"
     ],
     "answer": 1,
-    "explain": "Lifecycle rules can transition/delete objects based on age and tags, automating retention policy enforcement."
+    "explain": "Lifecycle rules can transition/delete objects based on age and tags, automating retention policy enforcement.",
+    "keywords": [
+      "S3",
+      "S3 Glacier"
+    ]
   },
   {
     "cat": "lambda",
@@ -1129,7 +1622,12 @@
       "Use reserved concurrency set to 100 to keep capacity warm"
     ],
     "answer": 3,
-    "explain": "Reserved concurrency guarantees minimum available concurrency, preventing throttling and cold starts for critical applications."
+    "explain": "Reserved concurrency guarantees minimum available concurrency, preventing throttling and cold starts for critical applications.",
+    "keywords": [
+      "Lambda",
+      "Spot Instances",
+      "concurrency"
+    ]
   },
   {
     "cat": "lambda",
@@ -1141,7 +1639,13 @@
       "Call the API multiple times in parallel"
     ],
     "answer": 2,
-    "explain": "SQS provides automatic retries, dead-letter handling, and decouples caller from external API failures."
+    "explain": "SQS provides automatic retries, dead-letter handling, and decouples caller from external API failures.",
+    "keywords": [
+      "API",
+      "Lambda",
+      "SQS",
+      "Step Functions"
+    ]
   },
   {
     "cat": "development",
@@ -1153,7 +1657,12 @@
       "CloudWatch Metrics"
     ],
     "answer": 0,
-    "explain": "X-Ray provides distributed tracing and visualization of request flows through microservices."
+    "explain": "X-Ray provides distributed tracing and visualization of request flows through microservices.",
+    "keywords": [
+      "CloudWatch",
+      "EventBridge",
+      "X-Ray"
+    ]
   },
   {
     "cat": "lambda",
@@ -1165,7 +1674,11 @@
       "Use Glue instead of Lambda"
     ],
     "answer": 0,
-    "explain": "Streaming/chunking allows processing large files with modest memory; reading entire files into memory is inefficient."
+    "explain": "Streaming/chunking allows processing large files with modest memory; reading entire files into memory is inefficient.",
+    "keywords": [
+      "AWS Glue",
+      "Lambda"
+    ]
   },
   {
     "cat": "deployment",
@@ -1177,7 +1690,12 @@
       "A and C"
     ],
     "answer": 2,
-    "explain": "Combine environment-specific .ebextensions with environment variables for flexible configuration."
+    "explain": "Combine environment-specific .ebextensions with environment variables for flexible configuration.",
+    "keywords": [
+      "CI/CD",
+      "Elastic Beanstalk",
+      "deployment"
+    ]
   },
   {
     "cat": "lambda",
@@ -1189,7 +1707,14 @@
       "Pre-load all secrets into DynamoDB"
     ],
     "answer": 0,
-    "explain": "Initialization code runs once per container; caching secrets there avoids repeated API calls across warm invocations."
+    "explain": "Initialization code runs once per container; caching secrets there avoids repeated API calls across warm invocations.",
+    "keywords": [
+      "API",
+      "DynamoDB",
+      "IAM",
+      "Lambda",
+      "Secrets Manager"
+    ]
   },
   {
     "cat": "development",
@@ -1201,7 +1726,14 @@
       "DynamoDB"
     ],
     "answer": 3,
-    "explain": "ElastiCache provides in-memory caching for frequently accessed data with low latency."
+    "explain": "ElastiCache provides in-memory caching for frequently accessed data with low latency.",
+    "keywords": [
+      "API",
+      "DynamoDB",
+      "ElastiCache",
+      "RDS",
+      "S3"
+    ]
   },
   {
     "cat": "lambda",
@@ -1213,7 +1745,15 @@
       "The function is queued indefinitely"
     ],
     "answer": 1,
-    "explain": "Provisioned concurrency starts 10 warm instances; excess traffic auto-scales with potential cold starts beyond provisioned level."
+    "explain": "Provisioned concurrency starts 10 warm instances; excess traffic auto-scales with potential cold starts beyond provisioned level.",
+    "keywords": [
+      "Auto Scaling",
+      "Lambda",
+      "REST",
+      "concurrency",
+      "provisioning",
+      "throttling"
+    ]
   },
   {
     "cat": "development",
@@ -1225,7 +1765,10 @@
       "Use scan with filter"
     ],
     "answer": 2,
-    "explain": "A composite GSI with userId as partition key and status as sort key enables efficient queries on both attributes without additional indexes."
+    "explain": "A composite GSI with userId as partition key and status as sort key enables efficient queries on both attributes without additional indexes.",
+    "keywords": [
+      "DynamoDB"
+    ]
   },
   {
     "cat": "xray",
@@ -1256,7 +1799,13 @@
       "Neither; destinations are for errors only"
     ],
     "answer": 1,
-    "explain": "Destinations route based on invocation outcome: success events go to success destination, failures to the DLQ destination."
+    "explain": "Destinations route based on invocation outcome: success events go to success destination, failures to the DLQ destination.",
+    "keywords": [
+      "Lambda",
+      "SNS",
+      "SQS",
+      "dead-letter queue"
+    ]
   },
   {
     "cat": "lambda",
@@ -1268,7 +1817,11 @@
       "No permission needed for same region"
     ],
     "answer": 0,
-    "explain": "Cross-account Lambda URL invocation requires explicit lambda:InvokeFunctionUrl permission in the function's resource-based policy."
+    "explain": "Cross-account Lambda URL invocation requires explicit lambda:InvokeFunctionUrl permission in the function's resource-based policy.",
+    "keywords": [
+      "Lambda",
+      "S3"
+    ]
   },
   {
     "cat": "deployment",
@@ -1280,7 +1833,14 @@
       "Network ACLs only"
     ],
     "answer": 3,
-    "explain": "Fargate tasks require VPC configuration with subnets and security groups for network connectivity."
+    "explain": "Fargate tasks require VPC configuration with subnets and security groups for network connectivity.",
+    "keywords": [
+      "CI/CD",
+      "EC2",
+      "Fargate",
+      "VPC",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -1292,7 +1852,12 @@
       "Network congestion"
     ],
     "answer": 2,
-    "explain": "Latency increases can come from Lambda cold starts, network issues, or database bottlenecks."
+    "explain": "Latency increases can come from Lambda cold starts, network issues, or database bottlenecks.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "Lambda"
+    ]
   },
   {
     "cat": "development",
@@ -1304,7 +1869,15 @@
       "S3 upload triggering Lambda via event notification"
     ],
     "answer": 0,
-    "explain": "S3 event notifications trigger Lambda to process uploaded files immediately without synchronous waiting."
+    "explain": "S3 event notifications trigger Lambda to process uploaded files immediately without synchronous waiting.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "CodeCommit",
+      "Lambda",
+      "S3",
+      "SQS"
+    ]
   },
   {
     "cat": "lambda",
@@ -1316,7 +1889,14 @@
       "Lambda concurrency is set too low for stream shards; increase concurrent execution or shard count"
     ],
     "answer": 3,
-    "explain": "DynamoDB Streams source mapping has one invocation per shard; low concurrency causes single-shard backlog and event loss."
+    "explain": "DynamoDB Streams source mapping has one invocation per shard; low concurrency causes single-shard backlog and event loss.",
+    "keywords": [
+      "AWS Batch",
+      "DynamoDB",
+      "Lambda",
+      "concurrency",
+      "sharding"
+    ]
   },
   {
     "cat": "deployment",
@@ -1328,7 +1908,12 @@
       "As a separate stage with Manual approval action"
     ],
     "answer": 3,
-    "explain": "Manual approval is a separate stage action that stops the pipeline for human review."
+    "explain": "Manual approval is a separate stage action that stops the pipeline for human review.",
+    "keywords": [
+      "CI/CD",
+      "CodePipeline",
+      "deployment"
+    ]
   },
   {
     "cat": "lambda",
@@ -1340,7 +1925,12 @@
       "Inside the Lambda function"
     ],
     "answer": 2,
-    "explain": "Event source mapping filter policies allow server-side filtering, reducing unnecessary Lambda invocations and costs."
+    "explain": "Event source mapping filter policies allow server-side filtering, reducing unnecessary Lambda invocations and costs.",
+    "keywords": [
+      "CloudWatch",
+      "Kinesis",
+      "Lambda"
+    ]
   },
   {
     "cat": "development",
@@ -1352,7 +1942,11 @@
       "Use DynamoDB auto-incrementing IDs"
     ],
     "answer": 3,
-    "explain": "DynamoDB doesn't auto-increment; use UUID generation in application code or use separate counter table."
+    "explain": "DynamoDB doesn't auto-increment; use UUID generation in application code or use separate counter table.",
+    "keywords": [
+      "DynamoDB",
+      "RDS"
+    ]
   },
   {
     "cat": "deployment",
@@ -1364,7 +1958,15 @@
       "Environment variables with service endpoints"
     ],
     "answer": 1,
-    "explain": "IAM role attached to Lambda must have permissions for the services it needs to call."
+    "explain": "IAM role attached to Lambda must have permissions for the services it needs to call.",
+    "keywords": [
+      "CI/CD",
+      "IAM",
+      "Lambda",
+      "Lambda Layer",
+      "VPC",
+      "VPC endpoint"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -1376,7 +1978,14 @@
       "Any of the above depending on the pattern"
     ],
     "answer": 3,
-    "explain": "Solutions depend on access patterns: scale capacity, auto-scale, or use caching strategically."
+    "explain": "Solutions depend on access patterns: scale capacity, auto-scale, or use caching strategically.",
+    "keywords": [
+      "Auto Scaling",
+      "DynamoDB",
+      "DynamoDB DAX",
+      "provisioning",
+      "throttling"
+    ]
   },
   {
     "cat": "development",
@@ -1388,7 +1997,12 @@
       "Increase Lambda memory"
     ],
     "answer": 2,
-    "explain": "Larger batches allow Lambda to process more events per invocation, reducing the number of invocations needed and improving throughput for streaming workloads."
+    "explain": "Larger batches allow Lambda to process more events per invocation, reducing the number of invocations needed and improving throughput for streaming workloads.",
+    "keywords": [
+      "AWS Batch",
+      "IoT",
+      "Lambda"
+    ]
   },
   {
     "cat": "dynamodb",
@@ -1400,7 +2014,13 @@
       "Some session IDs hash to the same partition, creating hot partitions with uneven load"
     ],
     "answer": 3,
-    "explain": "Partition key distribution matters; poor distribution leads to hot partitions and throttling despite adequate total capacity."
+    "explain": "Partition key distribution matters; poor distribution leads to hot partitions and throttling despite adequate total capacity.",
+    "keywords": [
+      "DynamoDB",
+      "backup",
+      "partitioning",
+      "throttling"
+    ]
   },
   {
     "cat": "dynamodb",
@@ -1412,7 +2032,15 @@
       "On-demand should never throttle"
     ],
     "answer": 2,
-    "explain": "Even on-demand billing has throughput limits (40,000 RCU/WCU per partition key); sustained spikes require provisioned capacity."
+    "explain": "Even on-demand billing has throughput limits (40,000 RCU/WCU per partition key); sustained spikes require provisioned capacity.",
+    "keywords": [
+      "Auto Scaling",
+      "DynamoDB",
+      "On-Demand",
+      "partitioning",
+      "provisioning",
+      "throttling"
+    ]
   },
   {
     "cat": "dynamodb",
@@ -1424,7 +2052,11 @@
       "Use Lambda for atomic increment"
     ],
     "answer": 0,
-    "explain": "UpdateExpression with SET allows atomic server-side increment without read-modify-write race conditions."
+    "explain": "UpdateExpression with SET allows atomic server-side increment without read-modify-write race conditions.",
+    "keywords": [
+      "DynamoDB",
+      "Lambda"
+    ]
   },
   {
     "cat": "dynamodb",
@@ -1436,7 +2068,10 @@
       "Use ProjectionExpression to exclude large attributes"
     ],
     "answer": 2,
-    "explain": "Limit parameter stops retrieval after N items, reducing data transfer and improving query latency and cost."
+    "explain": "Limit parameter stops retrieval after N items, reducing data transfer and improving query latency and cost.",
+    "keywords": [
+      "DynamoDB"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -1448,7 +2083,12 @@
       "Missing IAM permissions"
     ],
     "answer": 0,
-    "explain": "This error means a required module/library is not available in the Lambda package or layer."
+    "explain": "This error means a required module/library is not available in the Lambda package or layer.",
+    "keywords": [
+      "IAM",
+      "Lambda",
+      "Lambda Layer"
+    ]
   },
   {
     "cat": "development",
@@ -1460,7 +2100,11 @@
       "Use Lambda layers for all code"
     ],
     "answer": 1,
-    "explain": "Monitor metrics, identify memory leaks, and optimize code to stay within limits and reduce costs."
+    "explain": "Monitor metrics, identify memory leaks, and optimize code to stay within limits and reduce costs.",
+    "keywords": [
+      "CloudWatch",
+      "Lambda"
+    ]
   },
   {
     "cat": "dynamodb",
@@ -1472,7 +2116,12 @@
       "GSI only works on frequently used attributes"
     ],
     "answer": 0,
-    "explain": "Sparse attributes in GSI can lead to skewed partition distribution if values cluster; normal queries are better for sparse data."
+    "explain": "Sparse attributes in GSI can lead to skewed partition distribution if values cluster; normal queries are better for sparse data.",
+    "keywords": [
+      "DynamoDB",
+      "indexing",
+      "partitioning"
+    ]
   },
   {
     "cat": "deployment",
@@ -1503,7 +2152,14 @@
       "Invoke Lambda asynchronously, store in S3, return presigned URL immediately"
     ],
     "answer": 3,
-    "explain": "Asynchronous processing with S3 storage and presigned URLs provides fast API responses while generating documents in the background."
+    "explain": "Asynchronous processing with S3 storage and presigned URLs provides fast API responses while generating documents in the background.",
+    "keywords": [
+      "API",
+      "EC2",
+      "Lambda",
+      "S3",
+      "Step Functions"
+    ]
   },
   {
     "cat": "development",
@@ -1515,7 +2171,12 @@
       "SQS with Lambda long polling"
     ],
     "answer": 0,
-    "explain": "For synchronous service-to-service calls with transient failures, HTTP with SDK retry strategy and exponential backoff is appropriate."
+    "explain": "For synchronous service-to-service calls with transient failures, HTTP with SDK retry strategy and exponential backoff is appropriate.",
+    "keywords": [
+      "Lambda",
+      "SQS",
+      "Step Functions"
+    ]
   },
   {
     "cat": "dynamodb",
@@ -1527,7 +2188,12 @@
       "BatchGetItem to retrieve items from different partitions in one request"
     ],
     "answer": 3,
-    "explain": "BatchGetItem allows fetching up to 100 items across different partition keys in a single request, more efficient than individual GetItems."
+    "explain": "BatchGetItem allows fetching up to 100 items across different partition keys in a single request, more efficient than individual GetItems.",
+    "keywords": [
+      "DynamoDB",
+      "indexing",
+      "partitioning"
+    ]
   },
   {
     "cat": "deployment",
@@ -1539,7 +2205,13 @@
       "Upload dependencies to S3"
     ],
     "answer": 0,
-    "explain": "Lambda layers provide a clean way to manage shared dependencies across multiple functions."
+    "explain": "Lambda layers provide a clean way to manage shared dependencies across multiple functions.",
+    "keywords": [
+      "CI/CD",
+      "Lambda",
+      "S3",
+      "deployment"
+    ]
   },
   {
     "cat": "dynamodb",
@@ -1551,7 +2223,12 @@
       "Use CloudTrail instead"
     ],
     "answer": 0,
-    "explain": "Comparing OldImage and NewImage reveals attribute changes; DynamoDB Streams don't provide explicit deltas."
+    "explain": "Comparing OldImage and NewImage reveals attribute changes; DynamoDB Streams don't provide explicit deltas.",
+    "keywords": [
+      "CloudTrail",
+      "DynamoDB",
+      "Lambda"
+    ]
   },
   {
     "cat": "dynamodb",
@@ -1563,7 +2240,10 @@
       "Use a separate table for consistent reads"
     ],
     "answer": 2,
-    "explain": "ConsistentRead parameter in GetItem/Query/BatchGetItem enables strong vs eventual consistency per operation."
+    "explain": "ConsistentRead parameter in GetItem/Query/BatchGetItem enables strong vs eventual consistency per operation.",
+    "keywords": [
+      "DynamoDB"
+    ]
   },
   {
     "cat": "dynamodb",
@@ -1575,7 +2255,12 @@
       "Scan the entire table and sort in application"
     ],
     "answer": 0,
-    "explain": "GSI with partition key on Score allows efficient ranking queries without scanning the entire table."
+    "explain": "GSI with partition key on Score allows efficient ranking queries without scanning the entire table.",
+    "keywords": [
+      "DynamoDB",
+      "Redshift",
+      "partitioning"
+    ]
   },
   {
     "cat": "development",
@@ -1587,7 +2272,12 @@
       "Use RDS Proxy instead"
     ],
     "answer": 2,
-    "explain": "Lambda reuses container instances across invocations. Initializing resources outside the handler ensures they persist across calls within the same container."
+    "explain": "Lambda reuses container instances across invocations. Initializing resources outside the handler ensures they persist across calls within the same container.",
+    "keywords": [
+      "DynamoDB",
+      "Lambda",
+      "RDS"
+    ]
   },
   {
     "cat": "development",
@@ -1618,7 +2308,15 @@
       "Use SNS to fan out to multiple SQS queues"
     ],
     "answer": 3,
-    "explain": "SNS fanout pattern sends a single message to multiple SQS queues, and SNS batch API reduces API calls compared to sequential queue writes."
+    "explain": "SNS fanout pattern sends a single message to multiple SQS queues, and SNS batch API reduces API calls compared to sequential queue writes.",
+    "keywords": [
+      "API",
+      "AWS Batch",
+      "DynamoDB",
+      "Lambda",
+      "SNS",
+      "SQS"
+    ]
   },
   {
     "cat": "development",
@@ -1630,7 +2328,13 @@
       "In CloudFormation parameters"
     ],
     "answer": 2,
-    "explain": "SSM Parameter Store and AppConfig allow dynamic configuration changes without code redeployment."
+    "explain": "SSM Parameter Store and AppConfig allow dynamic configuration changes without code redeployment.",
+    "keywords": [
+      "CloudFormation",
+      "Lambda",
+      "Parameter Store",
+      "Systems Manager"
+    ]
   },
   {
     "cat": "apigateway",
@@ -1642,7 +2346,15 @@
       "VPC Endpoint policies"
     ],
     "answer": 2,
-    "explain": "RateLimit (requests per second) and BurstLimit control throttling at the API level and per client with API Keys."
+    "explain": "RateLimit (requests per second) and BurstLimit control throttling at the API level and per client with API Keys.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "VPC",
+      "VPC endpoint",
+      "WAF",
+      "throttling"
+    ]
   },
   {
     "cat": "development",
@@ -1654,7 +2366,14 @@
       "Use API Gateway HTTP API instead"
     ],
     "answer": 0,
-    "explain": "API Gateway request validators can reject invalid requests before reaching Lambda, reducing unnecessary invocations and improving response times."
+    "explain": "API Gateway request validators can reject invalid requests before reaching Lambda, reducing unnecessary invocations and improving response times.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "CloudFront",
+      "Lambda",
+      "REST"
+    ]
   },
   {
     "cat": "development",
@@ -1666,7 +2385,12 @@
       "Use Query API with Limit parameter and ExclusiveStartKey for pagination"
     ],
     "answer": 3,
-    "explain": "DynamoDB Query with Limit and ExclusiveStartKey enables efficient pagination without loading all items into memory."
+    "explain": "DynamoDB Query with Limit and ExclusiveStartKey enables efficient pagination without loading all items into memory.",
+    "keywords": [
+      "API",
+      "DynamoDB",
+      "Lambda"
+    ]
   },
   {
     "cat": "apigateway",
@@ -1678,7 +2402,12 @@
       "Use request mapping template to parse CSV into JSON structure"
     ],
     "answer": 3,
-    "explain": "VTL mapping templates can parse CSV, XML, or other formats and transform into Lambda-compatible structures."
+    "explain": "VTL mapping templates can parse CSV, XML, or other formats and transform into Lambda-compatible structures.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "Lambda"
+    ]
   },
   {
     "cat": "apigateway",
@@ -1690,7 +2419,13 @@
       "API Gateway instance is overloaded"
     ],
     "answer": 0,
-    "explain": "Lambda proxy integration expects {statusCode, body, headers} format; missing or malformed response causes 502 Bad Gateway or 500 errors."
+    "explain": "Lambda proxy integration expects {statusCode, body, headers} format; missing or malformed response causes 502 Bad Gateway or 500 errors.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "CloudFront",
+      "Lambda"
+    ]
   },
   {
     "cat": "apigateway",
@@ -1702,7 +2437,13 @@
       "Use CloudFront in front of API"
     ],
     "answer": 0,
-    "explain": "API Gateway method caching with TTL caches responses per cache key (query params, headers), reducing backend invocations."
+    "explain": "API Gateway method caching with TTL caches responses per cache key (query params, headers), reducing backend invocations.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "CloudFront",
+      "Lambda"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -1714,7 +2455,12 @@
       "Reduce Lambda concurrency"
     ],
     "answer": 2,
-    "explain": "RDS Proxy manages connection pools efficiently, allowing more Lambda concurrencies with fewer DB connections."
+    "explain": "RDS Proxy manages connection pools efficiently, allowing more Lambda concurrencies with fewer DB connections.",
+    "keywords": [
+      "Lambda",
+      "RDS",
+      "concurrency"
+    ]
   },
   {
     "cat": "development",
@@ -1726,7 +2472,10 @@
       "Delete files at the end of handler"
     ],
     "answer": 1,
-    "explain": "try/finally ensures cleanup code executes regardless of success or failure, preventing file accumulation and /tmp exhaustion across invocations."
+    "explain": "try/finally ensures cleanup code executes regardless of success or failure, preventing file accumulation and /tmp exhaustion across invocations.",
+    "keywords": [
+      "Lambda"
+    ]
   },
   {
     "cat": "development",
@@ -1738,7 +2487,13 @@
       "Increase Lambda concurrency"
     ],
     "answer": 0,
-    "explain": "Idempotency using message ID tracking in DynamoDB ensures that duplicate message delivery does not result in duplicate processing."
+    "explain": "Idempotency using message ID tracking in DynamoDB ensures that duplicate message delivery does not result in duplicate processing.",
+    "keywords": [
+      "Lambda",
+      "SQS",
+      "concurrency",
+      "idempotency"
+    ]
   },
   {
     "cat": "development",
@@ -1750,7 +2505,13 @@
       "Make calls in parallel using Promise.all()"
     ],
     "answer": 3,
-    "explain": "Parallel API calls using Promise.all() can reduce 10+ seconds of sequential time to ~100ms, vastly improving performance."
+    "explain": "Parallel API calls using Promise.all() can reduce 10+ seconds of sequential time to ~100ms, vastly improving performance.",
+    "keywords": [
+      "API",
+      "ElastiCache",
+      "Lambda",
+      "Step Functions"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -1762,7 +2523,13 @@
       "Send to DLQ and retry"
     ],
     "answer": 0,
-    "explain": "Failed messages should either be retried, sent to DLQ, or requeued based on error type."
+    "explain": "Failed messages should either be retried, sent to DLQ, or requeued based on error type.",
+    "keywords": [
+      "AWS Batch",
+      "SQS",
+      "batch processing",
+      "dead-letter queue"
+    ]
   },
   {
     "cat": "development",
@@ -1774,7 +2541,11 @@
       "1 MB"
     ],
     "answer": 3,
-    "explain": "API Gateway supports request payloads up to 10 MB; larger files should use S3 pre-signed URLs."
+    "explain": "API Gateway supports request payloads up to 10 MB; larger files should use S3 pre-signed URLs.",
+    "keywords": [
+      "API",
+      "API Gateway"
+    ]
   },
   {
     "cat": "apigateway",
@@ -1786,7 +2557,12 @@
       "Content-Type header"
     ],
     "answer": 2,
-    "explain": "CORS requires proper response headers including Access-Control-Allow-Origin, Methods, and Headers for browser requests."
+    "explain": "CORS requires proper response headers including Access-Control-Allow-Origin, Methods, and Headers for browser requests.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "REST"
+    ]
   },
   {
     "cat": "deployment",
@@ -1798,7 +2574,12 @@
       "Terraform only"
     ],
     "answer": 0,
-    "explain": "Both are IaC tools; choose based on your infrastructure needs and team expertise."
+    "explain": "Both are IaC tools; choose based on your infrastructure needs and team expertise.",
+    "keywords": [
+      "CI/CD",
+      "CloudFormation",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -1810,7 +2591,14 @@
       "Store in Secrets Manager instead"
     ],
     "answer": 1,
-    "explain": "Use Secrets Manager for sensitive data and ensure sensitive variables aren't logged."
+    "explain": "Use Secrets Manager for sensitive data and ensure sensitive variables aren't logged.",
+    "keywords": [
+      "KMS",
+      "Lambda",
+      "REST",
+      "Secrets Manager",
+      "encryption"
+    ]
   },
   {
     "cat": "apigateway",
@@ -1822,7 +2610,12 @@
       "Include keys in URL query parameter"
     ],
     "answer": 1,
-    "explain": "Usage Plans + API Keys enable per-client quota tracking, rate limiting, and billing without modifying Lambda logic."
+    "explain": "Usage Plans + API Keys enable per-client quota tracking, rate limiting, and billing without modifying Lambda logic.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "Lambda"
+    ]
   },
   {
     "cat": "apigateway",
@@ -1834,7 +2627,11 @@
       "Use API Gateway stages (dev, prod, v2) with different integrations or stage variables for version routing"
     ],
     "answer": 3,
-    "explain": "API Gateway stages + stage variables enable version management and gradual migration without breaking existing clients."
+    "explain": "API Gateway stages + stage variables enable version management and gradual migration without breaking existing clients.",
+    "keywords": [
+      "API",
+      "API Gateway"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -1846,7 +2643,13 @@
       "Block the IP using WAF"
     ],
     "answer": 2,
-    "explain": "First investigate whether the traffic is legitimate before taking protective actions."
+    "explain": "First investigate whether the traffic is legitimate before taking protective actions.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "WAF",
+      "throttling"
+    ]
   },
   {
     "cat": "development",
@@ -1858,7 +2661,12 @@
       "CloudFormation event JSON"
     ],
     "answer": 2,
-    "explain": "Custom resource Lambda handlers must respond with specific JSON format including Status, PhysicalResourceId."
+    "explain": "Custom resource Lambda handlers must respond with specific JSON format including Status, PhysicalResourceId.",
+    "keywords": [
+      "CloudFormation",
+      "Lambda",
+      "S3"
+    ]
   },
   {
     "cat": "cognito",
@@ -1870,7 +2678,10 @@
       "Custom authentication flow"
     ],
     "answer": 0,
-    "explain": "Post-confirmation trigger fires after user confirms email; use it to programmatically add user to default group."
+    "explain": "Post-confirmation trigger fires after user confirms email; use it to programmatically add user to default group.",
+    "keywords": [
+      "Cognito"
+    ]
   },
   {
     "cat": "security",
@@ -1882,7 +2693,15 @@
       "Store encrypted in environment variables"
     ],
     "answer": 2,
-    "explain": "Secrets Manager provides automatic credential rotation, audit logging, and fine-grained IAM permissions without exposing secrets in environment variables."
+    "explain": "Secrets Manager provides automatic credential rotation, audit logging, and fine-grained IAM permissions without exposing secrets in environment variables.",
+    "keywords": [
+      "IAM",
+      "Lambda",
+      "S3",
+      "Secrets Manager",
+      "encryption",
+      "security"
+    ]
   },
   {
     "cat": "cognito",
@@ -1894,7 +2713,13 @@
       "Use Cognito Identity Pool (federated identity) to exchange Cognito token for AWS temporary credentials"
     ],
     "answer": 3,
-    "explain": "Cognito Identity Pool exchanges ID token for temporary AWS credentials with scoped permissions via IAM role."
+    "explain": "Cognito Identity Pool exchanges ID token for temporary AWS credentials with scoped permissions via IAM role.",
+    "keywords": [
+      "Cognito",
+      "IAM",
+      "S3",
+      "token"
+    ]
   },
   {
     "cat": "security",
@@ -1906,7 +2731,14 @@
       "Identity providers (IdP) integration with Cognito user pools"
     ],
     "answer": 3,
-    "explain": "Cognito user pools support identity provider federation, allowing users to authenticate with SAML/OAuth providers like corporate directories."
+    "explain": "Cognito user pools support identity provider federation, allowing users to authenticate with SAML/OAuth providers like corporate directories.",
+    "keywords": [
+      "API",
+      "Cognito",
+      "IAM",
+      "Lambda",
+      "security"
+    ]
   },
   {
     "cat": "security",
@@ -1918,7 +2750,15 @@
       "Enable mutual authentication with client certificates"
     ],
     "answer": 3,
-    "explain": "API Gateway client certificate authentication validates client certificates and can pass certificate info to Lambda authorizers for authorization decisions."
+    "explain": "API Gateway client certificate authentication validates client certificates and can pass certificate info to Lambda authorizers for authorization decisions.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "Cognito",
+      "IAM",
+      "Lambda",
+      "WAF"
+    ]
   },
   {
     "cat": "security",
@@ -1930,7 +2770,15 @@
       "Use Secrets Manager instead"
     ],
     "answer": 1,
-    "explain": "KMS data key caching reduces API calls to KMS by reusing cached plaintext keys for a configurable period, improving performance and reducing costs."
+    "explain": "KMS data key caching reduces API calls to KMS by reusing cached plaintext keys for a configurable period, improving performance and reducing costs.",
+    "keywords": [
+      "IAM",
+      "KMS",
+      "Lambda",
+      "Secrets Manager",
+      "containers",
+      "encryption"
+    ]
   },
   {
     "cat": "cognito",
@@ -1942,7 +2790,13 @@
       "From the ID token claims"
     ],
     "answer": 3,
-    "explain": "ID token JWT contains user attributes as claims (email, custom attributes); decode it directly without extra API calls."
+    "explain": "ID token JWT contains user attributes as claims (email, custom attributes); decode it directly without extra API calls.",
+    "keywords": [
+      "API",
+      "Cognito",
+      "DynamoDB",
+      "token"
+    ]
   },
   {
     "cat": "security",
@@ -1954,7 +2808,11 @@
       "Store credentials in .gitignore"
     ],
     "answer": 0,
-    "explain": "Automated secret scanning tools like truffleHog or git-secrets can detect credential patterns and prevent commits containing secrets."
+    "explain": "Automated secret scanning tools like truffleHog or git-secrets can detect credential patterns and prevent commits containing secrets.",
+    "keywords": [
+      "IAM",
+      "security"
+    ]
   },
   {
     "cat": "deployment",
@@ -1966,7 +2824,15 @@
       "ECR repository permissions"
     ],
     "answer": 2,
-    "explain": "Task execution role needs ECR read permissions; VPC endpoint is optional if using public ECR."
+    "explain": "Task execution role needs ECR read permissions; VPC endpoint is optional if using public ECR.",
+    "keywords": [
+      "CI/CD",
+      "ECR",
+      "ECS",
+      "VPC",
+      "VPC endpoint",
+      "deployment"
+    ]
   },
   {
     "cat": "security",
@@ -1997,7 +2863,12 @@
       "B or C depending on size"
     ],
     "answer": 0,
-    "explain": "For large data, store in DynamoDB/S3 and pass references to avoid Lambda payload limits."
+    "explain": "For large data, store in DynamoDB/S3 and pass references to avoid Lambda payload limits.",
+    "keywords": [
+      "DynamoDB",
+      "Lambda",
+      "S3"
+    ]
   },
   {
     "cat": "cognito",
@@ -2009,7 +2880,10 @@
       "Redirect after logout only"
     ],
     "answer": 1,
-    "explain": "Callback URL is the OAuth redirect endpoint; Cognito sends auth code there, app exchanges it for tokens."
+    "explain": "Callback URL is the OAuth redirect endpoint; Cognito sends auth code there, app exchanges it for tokens.",
+    "keywords": [
+      "Cognito"
+    ]
   },
   {
     "cat": "deployment",
@@ -2021,7 +2895,13 @@
       "B or C"
     ],
     "answer": 1,
-    "explain": "Run migrations before deployment using Lambda functions or containers in a dedicated stage."
+    "explain": "Run migrations before deployment using Lambda functions or containers in a dedicated stage.",
+    "keywords": [
+      "CI/CD",
+      "Lambda",
+      "containers",
+      "deployment"
+    ]
   },
   {
     "cat": "cognito",
@@ -2033,7 +2913,11 @@
       "OIDC automatically grants permissions"
     ],
     "answer": 2,
-    "explain": "Identity Pool role mapping associates IAM roles with OIDC provider attributes, granting AWS permissions after external auth."
+    "explain": "Identity Pool role mapping associates IAM roles with OIDC provider attributes, granting AWS permissions after external auth.",
+    "keywords": [
+      "Cognito",
+      "IAM"
+    ]
   },
   {
     "cat": "cognito",
@@ -2045,7 +2929,10 @@
       "Yes, temporary passwords must still meet policy requirements and user must change it on first login"
     ],
     "answer": 3,
-    "explain": "Temporary passwords meet policy requirements and must be changed on first login for security."
+    "explain": "Temporary passwords meet policy requirements and must be changed on first login for security.",
+    "keywords": [
+      "Cognito"
+    ]
   },
   {
     "cat": "security",
@@ -2076,7 +2963,15 @@
       "Store logs in S3 encrypted"
     ],
     "answer": 1,
-    "explain": "Implement field masking/filtering in logging code to prevent sensitive data from being written to CloudWatch Logs and accessible to other teams."
+    "explain": "Implement field masking/filtering in logging code to prevent sensitive data from being written to CloudWatch Logs and accessible to other teams.",
+    "keywords": [
+      "API",
+      "CloudWatch",
+      "IAM",
+      "S3",
+      "VPC",
+      "encryption"
+    ]
   },
   {
     "cat": "security",
@@ -2107,7 +3002,11 @@
       "Authentication proves who you are, authorization proves what you can do"
     ],
     "answer": 3,
-    "explain": "Authentication verifies identity; authorization determines resource access permissions."
+    "explain": "Authentication verifies identity; authorization determines resource access permissions.",
+    "keywords": [
+      "IAM",
+      "security"
+    ]
   },
   {
     "cat": "security",
@@ -2119,7 +3018,13 @@
       "Root account credentials"
     ],
     "answer": 2,
-    "explain": "Cognito Identity pools provide temporary AWS credentials with limited permissions, avoiding the need for long-term credentials in client applications."
+    "explain": "Cognito Identity pools provide temporary AWS credentials with limited permissions, avoiding the need for long-term credentials in client applications.",
+    "keywords": [
+      "API",
+      "Cognito",
+      "IAM",
+      "security"
+    ]
   },
   {
     "cat": "security",
@@ -2131,7 +3036,15 @@
       "Hardcode in Lambda function"
     ],
     "answer": 0,
-    "explain": "Secrets Manager provides encryption, audit logging, automatic rotation support, and fine-grained access control for third-party credentials."
+    "explain": "Secrets Manager provides encryption, audit logging, automatic rotation support, and fine-grained access control for third-party credentials.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "IAM",
+      "Lambda",
+      "Secrets Manager",
+      "security"
+    ]
   },
   {
     "cat": "deployment",
@@ -2143,7 +3056,13 @@
       "Manual approval stages between environments"
     ],
     "answer": 0,
-    "explain": "Use manual approvals to control promotion through environments; can use separate applications."
+    "explain": "Use manual approvals to control promotion through environments; can use separate applications.",
+    "keywords": [
+      "CI/CD",
+      "CodeDeploy",
+      "CodePipeline",
+      "deployment"
+    ]
   },
   {
     "cat": "security",
@@ -2155,7 +3074,14 @@
       "No authorization needed if API is behind API Gateway"
     ],
     "answer": 2,
-    "explain": "Implement authorization checks in Lambda to ensure users can only access their own resources (or what they have permission for), preventing horizontal privilege escalation."
+    "explain": "Implement authorization checks in Lambda to ensure users can only access their own resources (or what they have permission for), preventing horizontal privilege escalation.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "IAM",
+      "Lambda",
+      "security"
+    ]
   },
   {
     "cat": "security",
@@ -2167,7 +3093,15 @@
       "Validate token signature and expiration in Lambda"
     ],
     "answer": 3,
-    "explain": "Validate token signature using the OAuth provider public keys and check token expiration in Lambda to prevent use of expired or tampered tokens."
+    "explain": "Validate token signature using the OAuth provider public keys and check token expiration in Lambda to prevent use of expired or tampered tokens.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "CloudFront",
+      "IAM",
+      "Lambda",
+      "security"
+    ]
   },
   {
     "cat": "sqs",
@@ -2179,7 +3113,10 @@
       "The queue is broken"
     ],
     "answer": 2,
-    "explain": "Visibility timeout hides message from other consumers; consumer must delete it within timeout or it becomes visible again."
+    "explain": "Visibility timeout hides message from other consumers; consumer must delete it within timeout or it becomes visible again.",
+    "keywords": [
+      "SQS"
+    ]
   },
   {
     "cat": "deployment",
@@ -2191,7 +3128,12 @@
       "A or C"
     ],
     "answer": 3,
-    "explain": "Use cross-account IAM roles in CodeDeploy/CloudFormation to deploy from one pipeline to multiple accounts, with manual approvals for production."
+    "explain": "Use cross-account IAM roles in CodeDeploy/CloudFormation to deploy from one pipeline to multiple accounts, with manual approvals for production.",
+    "keywords": [
+      "CI/CD",
+      "CodePipeline",
+      "deployment"
+    ]
   },
   {
     "cat": "sqs",
@@ -2203,7 +3145,10 @@
       "Processing completes successfully; timeout doesn't interrupt"
     ],
     "answer": 2,
-    "explain": "Low visibility timeout causes duplicate processing; increase timeout to exceed max processing time."
+    "explain": "Low visibility timeout causes duplicate processing; increase timeout to exceed max processing time.",
+    "keywords": [
+      "SQS"
+    ]
   },
   {
     "cat": "deployment",
@@ -2215,7 +3160,13 @@
       "Use buildspec.yml with docker buildx"
     ],
     "answer": 1,
-    "explain": "CodeBuild supports Docker layer caching by storing intermediate layers. Enable this in the project settings to reuse layers across builds."
+    "explain": "CodeBuild supports Docker layer caching by storing intermediate layers. Enable this in the project settings to reuse layers across builds.",
+    "keywords": [
+      "CI/CD",
+      "CodeBuild",
+      "S3",
+      "deployment"
+    ]
   },
   {
     "cat": "deployment",
@@ -2246,7 +3197,10 @@
       "Order is not guaranteed in SQS"
     ],
     "answer": 0,
-    "explain": "Only SQS FIFO queues guarantee message order; standard queues do not maintain order."
+    "explain": "Only SQS FIFO queues guarantee message order; standard queues do not maintain order.",
+    "keywords": [
+      "SQS"
+    ]
   },
   {
     "cat": "sqs",
@@ -2258,7 +3212,11 @@
       "Message is deleted"
     ],
     "answer": 2,
-    "explain": "Messages reaching max receive count are moved to DLQ; process DLQ messages for failure analysis and recovery."
+    "explain": "Messages reaching max receive count are moved to DLQ; process DLQ messages for failure analysis and recovery.",
+    "keywords": [
+      "SQS",
+      "dead-letter queue"
+    ]
   },
   {
     "cat": "deployment",
@@ -2270,7 +3228,14 @@
       "Rolling with additional batch"
     ],
     "answer": 0,
-    "explain": "Rolling, immutable, and blue/green deployments maintain availability during updates. All at once causes brief downtime."
+    "explain": "Rolling, immutable, and blue/green deployments maintain availability during updates. All at once causes brief downtime.",
+    "keywords": [
+      "AWS Batch",
+      "CI/CD",
+      "Elastic Beanstalk",
+      "blue-green deployment",
+      "deployment"
+    ]
   },
   {
     "cat": "sqs",
@@ -2282,7 +3247,13 @@
       "Exactly-once guarantee is impossible"
     ],
     "answer": 1,
-    "explain": "FIFO + idempotency (tracking processed message IDs) guarantees exactly-once semantics despite potential retries."
+    "explain": "FIFO + idempotency (tracking processed message IDs) guarantees exactly-once semantics despite potential retries.",
+    "keywords": [
+      "SQS",
+      "deduplication",
+      "exactly-once",
+      "idempotency"
+    ]
   },
   {
     "cat": "codedeploy",
@@ -2294,7 +3265,11 @@
       "No rollback needed"
     ],
     "answer": 2,
-    "explain": "Canary deployment minimizes blast radius; if new version fails, only 5% of traffic is affected before automatic rollback."
+    "explain": "Canary deployment minimizes blast radius; if new version fails, only 5% of traffic is affected before automatic rollback.",
+    "keywords": [
+      "CodeDeploy",
+      "canary deployment"
+    ]
   },
   {
     "cat": "codedeploy",
@@ -2306,7 +3281,11 @@
       "Agent should be installed manually after each deployment"
     ],
     "answer": 2,
-    "explain": "CodeDeploy agent must be pre-installed and running on EC2 instances; it pulls and executes deployment scripts."
+    "explain": "CodeDeploy agent must be pre-installed and running on EC2 instances; it pulls and executes deployment scripts.",
+    "keywords": [
+      "CodeDeploy",
+      "EC2"
+    ]
   },
   {
     "cat": "deployment",
@@ -2318,7 +3297,13 @@
       "Create separate Lambda::Layer resource"
     ],
     "answer": 1,
-    "explain": "SAM supports both inline layer definitions and separate LayerVersion resources. Use either approach depending on your template organization."
+    "explain": "SAM supports both inline layer definitions and separate LayerVersion resources. Use either approach depending on your template organization.",
+    "keywords": [
+      "CI/CD",
+      "Lambda",
+      "Lambda Layer",
+      "deployment"
+    ]
   },
   {
     "cat": "codedeploy",
@@ -2330,7 +3315,10 @@
       "Deployment always continues despite script failures"
     ],
     "answer": 1,
-    "explain": "AppSpec hooks can be configured with OnFailure=STOP to halt deployment if validation or setup scripts fail."
+    "explain": "AppSpec hooks can be configured with OnFailure=STOP to halt deployment if validation or setup scripts fail.",
+    "keywords": [
+      "CodeDeploy"
+    ]
   },
   {
     "cat": "deployment",
@@ -2342,7 +3330,14 @@
       "Use stack imports/exports or pass as constructor parameters"
     ],
     "answer": 2,
-    "explain": "CDK stacks can use imports/exports for cross-stack references, or use Secrets Manager/Parameter Store for decoupled configuration."
+    "explain": "CDK stacks can use imports/exports for cross-stack references, or use Secrets Manager/Parameter Store for decoupled configuration.",
+    "keywords": [
+      "CDK",
+      "CI/CD",
+      "Parameter Store",
+      "Systems Manager",
+      "deployment"
+    ]
   },
   {
     "cat": "deployment",
@@ -2354,7 +3349,15 @@
       "B and C"
     ],
     "answer": 3,
-    "explain": "EC2 instances need an IAM instance profile with S3 permissions. Also verify S3 bucket policy does not restrict access."
+    "explain": "EC2 instances need an IAM instance profile with S3 permissions. Also verify S3 bucket policy does not restrict access.",
+    "keywords": [
+      "CI/CD",
+      "CodeDeploy",
+      "EC2",
+      "IAM",
+      "S3",
+      "deployment"
+    ]
   },
   {
     "cat": "deployment",
@@ -2366,7 +3369,13 @@
       "In .ebextensions/commands.config"
     ],
     "answer": 3,
-    "explain": ".ebextensions directory allows you to define commands, packages, and configuration that execute during environment creation and updates."
+    "explain": ".ebextensions directory allows you to define commands, packages, and configuration that execute during environment creation and updates.",
+    "keywords": [
+      "AWS Config",
+      "CI/CD",
+      "Elastic Beanstalk",
+      "deployment"
+    ]
   },
   {
     "cat": "development",
@@ -2378,7 +3387,12 @@
       "AppConfig for centralized feature flag management"
     ],
     "answer": 0,
-    "explain": "AppConfig provides managed feature flag and configuration service with client library."
+    "explain": "AppConfig provides managed feature flag and configuration service with client library.",
+    "keywords": [
+      "DynamoDB",
+      "Lambda",
+      "S3"
+    ]
   },
   {
     "cat": "deployment",
@@ -2390,7 +3404,13 @@
       "Delete old version"
     ],
     "answer": 0,
-    "explain": "Lambda aliases can point to different versions. Use gradual traffic shifting with aliases to migrate clients to new versions safely."
+    "explain": "Lambda aliases can point to different versions. Use gradual traffic shifting with aliases to migrate clients to new versions safely.",
+    "keywords": [
+      "CI/CD",
+      "CloudFront",
+      "Lambda",
+      "deployment"
+    ]
   },
   {
     "cat": "deployment",
@@ -2402,7 +3422,15 @@
       "Upload report to S3"
     ],
     "answer": 0,
-    "explain": "CodeBuild report groups generate test reports visible in CodePipeline and CodeBuild console, showing pass/fail/skipped test counts."
+    "explain": "CodeBuild report groups generate test reports visible in CodePipeline and CodeBuild console, showing pass/fail/skipped test counts.",
+    "keywords": [
+      "CI/CD",
+      "CloudWatch",
+      "CodeBuild",
+      "CodePipeline",
+      "S3",
+      "deployment"
+    ]
   },
   {
     "cat": "cloudformation",
@@ -2414,7 +3442,10 @@
       "Create separate stacks for A and B"
     ],
     "answer": 0,
-    "explain": "CloudFormation cannot resolve circular dependencies; refactor template structure to eliminate them."
+    "explain": "CloudFormation cannot resolve circular dependencies; refactor template structure to eliminate them.",
+    "keywords": [
+      "CloudFormation"
+    ]
   },
   {
     "cat": "deployment",
@@ -2426,7 +3457,14 @@
       "Update ECS service to pull new image tag"
     ],
     "answer": 3,
-    "explain": "ECS services can be updated to pull new image versions independently of CloudFormation stack updates using the UpdateService API."
+    "explain": "ECS services can be updated to pull new image versions independently of CloudFormation stack updates using the UpdateService API.",
+    "keywords": [
+      "CI/CD",
+      "CloudFormation",
+      "ECS",
+      "containers",
+      "deployment"
+    ]
   },
   {
     "cat": "cloudformation",
@@ -2438,7 +3476,10 @@
       "Stack is in CREATE_FAILED state and must be deleted before recreating"
     ],
     "answer": 3,
-    "explain": "Failed stacks must be deleted before creating a new stack with the same name to avoid resource conflicts."
+    "explain": "Failed stacks must be deleted before creating a new stack with the same name to avoid resource conflicts.",
+    "keywords": [
+      "CloudFormation"
+    ]
   },
   {
     "cat": "deployment",
@@ -2450,7 +3491,14 @@
       "Use Docker Compose with AWS services"
     ],
     "answer": 1,
-    "explain": "SAM CLI provides local testing environments for Lambda and other services. LocalStack or Docker Compose enables local AWS service emulation."
+    "explain": "SAM CLI provides local testing environments for Lambda and other services. LocalStack or Docker Compose enables local AWS service emulation.",
+    "keywords": [
+      "API",
+      "CI/CD",
+      "DynamoDB",
+      "Lambda",
+      "deployment"
+    ]
   },
   {
     "cat": "cloudformation",
@@ -2462,7 +3510,11 @@
       "Package shared code as a Lambda layer; reference in Layers property"
     ],
     "answer": 3,
-    "explain": "Lambda layers contain shared code/dependencies; multiple functions reference the same layer, reducing duplication."
+    "explain": "Lambda layers contain shared code/dependencies; multiple functions reference the same layer, reducing duplication.",
+    "keywords": [
+      "Lambda",
+      "Lambda Layer"
+    ]
   },
   {
     "cat": "deployment",
@@ -2474,7 +3526,13 @@
       "Manually rollback infrastructure"
     ],
     "answer": 1,
-    "explain": "Re-running the previous successful pipeline execution or using CodeDeploy automatic rollback can restore the previous version depending on the failure."
+    "explain": "Re-running the previous successful pipeline execution or using CodeDeploy automatic rollback can restore the previous version depending on the failure.",
+    "keywords": [
+      "CI/CD",
+      "CodeDeploy",
+      "CodePipeline",
+      "deployment"
+    ]
   },
   {
     "cat": "deployment",
@@ -2486,7 +3544,13 @@
       "B or C"
     ],
     "answer": 3,
-    "explain": "SAM can reference packages in S3. Alternatively, separate dependencies into layers that are uploaded to S3."
+    "explain": "SAM can reference packages in S3. Alternatively, separate dependencies into layers that are uploaded to S3.",
+    "keywords": [
+      "CI/CD",
+      "Lambda",
+      "S3",
+      "deployment"
+    ]
   },
   {
     "cat": "cloudformation",
@@ -2498,7 +3562,10 @@
       "Stack cannot be deleted"
     ],
     "answer": 2,
-    "explain": "DeletionPolicy=Retain preserves resources after stack deletion; useful for databases and backups to prevent accidental loss."
+    "explain": "DeletionPolicy=Retain preserves resources after stack deletion; useful for databases and backups to prevent accidental loss.",
+    "keywords": [
+      "CloudFormation"
+    ]
   },
   {
     "cat": "deployment",
@@ -2510,7 +3577,11 @@
       "Let dependency manager choose latest"
     ],
     "answer": 2,
-    "explain": "Pinning dependency versions ensures reproducible builds and predictable behavior."
+    "explain": "Pinning dependency versions ensures reproducible builds and predictable behavior.",
+    "keywords": [
+      "CI/CD",
+      "deployment"
+    ]
   },
   {
     "cat": "deployment",
@@ -2522,7 +3593,13 @@
       "All at once"
     ],
     "answer": 0,
-    "explain": "Immutable and blue/green deployments launch a complete new environment, ensuring old environment stays active until new one is verified healthy."
+    "explain": "Immutable and blue/green deployments launch a complete new environment, ensuring old environment stays active until new one is verified healthy.",
+    "keywords": [
+      "CI/CD",
+      "Elastic Beanstalk",
+      "blue-green deployment",
+      "deployment"
+    ]
   },
   {
     "cat": "development",
@@ -2534,7 +3611,11 @@
       "Single function with event type routing"
     ],
     "answer": 0,
-    "explain": "A single function with event type handling reduces complexity and deployment overhead."
+    "explain": "A single function with event type handling reduces complexity and deployment overhead.",
+    "keywords": [
+      "EventBridge",
+      "Lambda"
+    ]
   },
   {
     "cat": "elasticache",
@@ -2546,7 +3627,10 @@
       "Cache invalidation is too expensive"
     ],
     "answer": 2,
-    "explain": "Event-driven cache invalidation (on product update) prevents stale data better than fixed TTLs for infrequent changes."
+    "explain": "Event-driven cache invalidation (on product update) prevents stale data better than fixed TTLs for infrequent changes.",
+    "keywords": [
+      "ElastiCache"
+    ]
   },
   {
     "cat": "deployment",
@@ -2558,7 +3642,12 @@
       "Hardcode region in template"
     ],
     "answer": 1,
-    "explain": "CloudFormation parameters allow flexible region deployment without code changes."
+    "explain": "CloudFormation parameters allow flexible region deployment without code changes.",
+    "keywords": [
+      "CI/CD",
+      "CloudFormation",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -2570,7 +3659,15 @@
       "Lambda concurrency is throttled"
     ],
     "answer": 3,
-    "explain": "If many functions timeout despite sufficient timeout setting, the issue is likely concurrency throttling or downstream service limitations, not Lambda speed."
+    "explain": "If many functions timeout despite sufficient timeout setting, the issue is likely concurrency throttling or downstream service limitations, not Lambda speed.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "DynamoDB",
+      "Lambda",
+      "concurrency",
+      "throttling"
+    ]
   },
   {
     "cat": "development",
@@ -2582,7 +3679,12 @@
       "In Secrets Manager with rotation"
     ],
     "answer": 0,
-    "explain": "Secrets Manager provides secure storage with encryption for client certificates."
+    "explain": "Secrets Manager provides secure storage with encryption for client certificates.",
+    "keywords": [
+      "Lambda",
+      "S3",
+      "Secrets Manager"
+    ]
   },
   {
     "cat": "elasticache",
@@ -2594,7 +3696,10 @@
       "Configure connection pooling in the client"
     ],
     "answer": 2,
-    "explain": "Redis supports pipelining and multi-threaded clients better; Memcached is simpler but less flexible for concurrent operations."
+    "explain": "Redis supports pipelining and multi-threaded clients better; Memcached is simpler but less flexible for concurrent operations.",
+    "keywords": [
+      "ElastiCache"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -2606,7 +3711,14 @@
       "Lambda authorizer performance/timeout"
     ],
     "answer": 0,
-    "explain": "502 errors from authorizers indicate timeout or invalid response format. Check if authorizer is exceeding the 29-second integration timeout."
+    "explain": "502 errors from authorizers indicate timeout or invalid response format. Check if authorizer is exceeding the 29-second integration timeout.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "CloudWatch",
+      "Lambda",
+      "throttling"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -2618,7 +3730,14 @@
       "GSI is under-provisioned"
     ],
     "answer": 0,
-    "explain": "Hot partitions from skewed key distribution cause throttling on specific partitions even if aggregate capacity is available. GSIs have separate capacity provisioning."
+    "explain": "Hot partitions from skewed key distribution cause throttling on specific partitions even if aggregate capacity is available. GSIs have separate capacity provisioning.",
+    "keywords": [
+      "CloudWatch",
+      "DynamoDB",
+      "partitioning",
+      "provisioning",
+      "throttling"
+    ]
   },
   {
     "cat": "elasticache",
@@ -2630,7 +3749,10 @@
       "All cached data is lost"
     ],
     "answer": 1,
-    "explain": "Multi-AZ with automatic failover promotes replica to primary, maintaining availability without application code changes."
+    "explain": "Multi-AZ with automatic failover promotes replica to primary, maintaining availability without application code changes.",
+    "keywords": [
+      "ElastiCache"
+    ]
   },
   {
     "cat": "kinesis",
@@ -2642,7 +3764,12 @@
       "Partition key distribution is uneven, causing hot shard; choose better partition key"
     ],
     "answer": 3,
-    "explain": "Uneven partition key distribution creates hot shards that exceed their throughput capacity while others are underutilized."
+    "explain": "Uneven partition key distribution creates hot shards that exceed their throughput capacity while others are underutilized.",
+    "keywords": [
+      "Kinesis",
+      "partitioning",
+      "sharding"
+    ]
   },
   {
     "cat": "kinesis",
@@ -2654,7 +3781,14 @@
       "Increase shard count immediately"
     ],
     "answer": 1,
-    "explain": "PutRecords batches records, reducing API calls and improving throughput compared to individual PutRecord calls."
+    "explain": "PutRecords batches records, reducing API calls and improving throughput compared to individual PutRecord calls.",
+    "keywords": [
+      "AWS Batch",
+      "Kinesis",
+      "Kinesis Firehose",
+      "provisioning",
+      "sharding"
+    ]
   },
   {
     "cat": "kinesis",
@@ -2666,7 +3800,11 @@
       "Consumer parallelism is insufficient; use multiple consumers or increase batch size for faster processing"
     ],
     "answer": 3,
-    "explain": "Consumer throughput must match or exceed producer rate; increase consumers, parallelism, or batch processing for catch-up."
+    "explain": "Consumer throughput must match or exceed producer rate; increase consumers, parallelism, or batch processing for catch-up.",
+    "keywords": [
+      "AWS Batch",
+      "Kinesis"
+    ]
   },
   {
     "cat": "deployment",
@@ -2678,7 +3816,12 @@
       "Use Lambda layers to separate concerns"
     ],
     "answer": 0,
-    "explain": "Lambda layers help manage dependency conflicts by separating code from libraries."
+    "explain": "Lambda layers help manage dependency conflicts by separating code from libraries.",
+    "keywords": [
+      "CI/CD",
+      "Lambda",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -2709,7 +3852,10 @@
       "UUIDv4"
     ],
     "answer": 1,
-    "explain": "UUIDv1 combines timestamp with uniqueness, providing sortable unique identifiers."
+    "explain": "UUIDv1 combines timestamp with uniqueness, providing sortable unique identifiers.",
+    "keywords": [
+      "development"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -2740,7 +3886,12 @@
       "Cognito password policy"
     ],
     "answer": 2,
-    "explain": "Cognito Lambda triggers can implement custom logic to block IPs after repeated failures. WAF can also block at the application layer."
+    "explain": "Cognito Lambda triggers can implement custom logic to block IPs after repeated failures. WAF can also block at the application layer.",
+    "keywords": [
+      "Cognito",
+      "Lambda",
+      "WAF"
+    ]
   },
   {
     "cat": "xray",
@@ -2752,7 +3903,10 @@
       "X-Ray cannot sample selectively"
     ],
     "answer": 0,
-    "explain": "Sampling rules allow higher rates for specific paths/status codes; always sample errors (100%) for complete failure visibility."
+    "explain": "Sampling rules allow higher rates for specific paths/status codes; always sample errors (100%) for complete failure visibility.",
+    "keywords": [
+      "X-Ray"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -2802,7 +3956,11 @@
       "Lambda resource policy allows Step Functions"
     ],
     "answer": 1,
-    "explain": "Step Functions needs both IAM role permissions to invoke Lambda AND Lambda needs resource-based policy allowing Step Functions to invoke it."
+    "explain": "Step Functions needs both IAM role permissions to invoke Lambda AND Lambda needs resource-based policy allowing Step Functions to invoke it.",
+    "keywords": [
+      "Lambda",
+      "Step Functions"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -2833,7 +3991,13 @@
       "Conditions section in template"
     ],
     "answer": 2,
-    "explain": "CloudFormation Conditions enable conditional resource creation based on parameters."
+    "explain": "CloudFormation Conditions enable conditional resource creation based on parameters.",
+    "keywords": [
+      "CI/CD",
+      "CloudFormation",
+      "Lambda",
+      "deployment"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -2845,7 +4009,12 @@
       "Move to DynamoDB"
     ],
     "answer": 2,
-    "explain": "RDS Proxy maintains a connection pool and provides connections to Lambda functions, preventing connection exhaustion from many concurrent Lambda invocations."
+    "explain": "RDS Proxy maintains a connection pool and provides connections to Lambda functions, preventing connection exhaustion from many concurrent Lambda invocations.",
+    "keywords": [
+      "DynamoDB",
+      "Lambda",
+      "RDS"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -2876,7 +4045,14 @@
       "Lambda is in a VPC"
     ],
     "answer": 2,
-    "explain": "Lambda needs IAM permissions to write trace segments to X-Ray. Without proper permissions, traces will not be sent even if X-Ray is enabled."
+    "explain": "Lambda needs IAM permissions to write trace segments to X-Ray. Without proper permissions, traces will not be sent even if X-Ray is enabled.",
+    "keywords": [
+      "API",
+      "API Gateway",
+      "Lambda",
+      "VPC",
+      "X-Ray"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -2888,7 +4064,12 @@
       "ECS task stopped reason"
     ],
     "answer": 2,
-    "explain": "ECS stopped reason shows why the task stopped (container exit code, resource issues). Container logs show application errors. Check both."
+    "explain": "ECS stopped reason shows why the task stopped (container exit code, resource issues). Container logs show application errors. Check both.",
+    "keywords": [
+      "CloudWatch",
+      "ECS",
+      "containers"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -2900,7 +4081,10 @@
       "Application caching is serving old version"
     ],
     "answer": 2,
-    "explain": "Verify ApplicationStart script in AppSpec actually stops old and starts new version. Also check if application caching or browser caching is serving old code."
+    "explain": "Verify ApplicationStart script in AppSpec actually stops old and starts new version. Also check if application caching or browser caching is serving old code.",
+    "keywords": [
+      "CodeDeploy"
+    ]
   },
   {
     "cat": "troubleshooting",
@@ -2969,7 +4153,11 @@
       "Multiple transactions trying to modify same item"
     ],
     "answer": 3,
-    "explain": "TransactionConflictException occurs when concurrent transactions try to modify the same item. Implement retry logic with exponential backoff."
+    "explain": "TransactionConflictException occurs when concurrent transactions try to modify the same item. Implement retry logic with exponential backoff.",
+    "keywords": [
+      "DynamoDB",
+      "encryption"
+    ]
   },
   {
     "cat": "lambda",

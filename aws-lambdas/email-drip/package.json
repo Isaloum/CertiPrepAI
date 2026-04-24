@@ -1,0 +1,12 @@
+{
+  "name": "awsprepai-email-drip",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "3-email drip sequence for CertiPrepAI leads",
+  "main": "index.mjs",
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.0.0",
+    "@aws-sdk/client-scheduler": "^3.0.0",
+    "@aws-sdk/client-dynamodb": "^3.0.0"
+  }
+}
