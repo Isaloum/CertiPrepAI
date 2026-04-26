@@ -205,7 +205,7 @@ export default function Home() {
             <span style={{ fontSize: '0.85rem', color: '#374151', fontWeight: 600, marginLeft: '0.25rem' }}>4.9 / 5 — from early users</span>
           </div>
           <div style={{ fontSize: '0.85rem', color: '#374151', fontWeight: 600 }}>
-            🏆 Built by an AWS-certified engineer
+            🏆 Built for serious AWS exam prep
           </div>
         </div>
       </section>

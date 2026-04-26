@@ -155,7 +155,7 @@ const HOME_FAQ = [
   { q: 'Is CertiPrepAI free to use?', a: 'Yes. You can practice 20 questions for free with no credit card required. Paid plans unlock all 3,958 questions and timed mock exams starting at $7/month.' },
   { q: 'Does CertiPrepAI include mock exams?', a: 'Yes. Each certification includes a timed mock exam with 65 questions and a 130-minute timer, matching the real AWS exam format.' },
   { q: 'Which AWS certifications are covered?', a: 'CertiPrepAI covers all 12 active AWS certifications: CLF-C02, AIF-C01, SAA-C03, DVA-C02, SOA-C02, DEA-C01, MLA-C01, GAI-C01, SAP-C02, DOP-C02, SCS-C03, and ANS-C01.' },
-  { q: 'How is CertiPrepAI different from other AWS practice platforms?', a: 'CertiPrepAI is built by an AWS-certified engineer. Every question includes a detailed explanation, domain filtering lets you focus on weak areas, and cheat sheets are mined directly from the question bank.' },
+  { q: 'How is CertiPrepAI different from other AWS practice platforms?', a: 'CertiPrepAI is purpose-built for AWS exam prep. Every question includes a detailed explanation, domain filtering lets you focus on weak areas, and cheat sheets are mined directly from the question bank.' },
 ]
 
 function injectJsonLd(id: string, data: object) {
