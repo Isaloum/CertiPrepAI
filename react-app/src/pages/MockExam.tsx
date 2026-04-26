@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
-import { saveExamResult } from '../lib/db'
+import { saveExamResult, getMonthlyCert } from '../lib/db'
 
 interface Question {
   cat: string
@@ -50,7 +50,7 @@ function formatTime(seconds: number) {
 export default function MockExam() {
   const { certId } = useParams<{ certId: string }>()
   const navigate = useNavigate()
-  const { isPremium, user } = useAuth()
+  const { isPremium, tier, user } = useAuth()
 
   const [questions, setQuestions] = useState<Question[]>([])
   const [answers, setAnswers] = useState<(number | null)[]>([])
@@ -59,6 +59,22 @@ export default function MockExam() {
   const [submitted, setSubmitted] = useState(false)
   const [started, setStarted] = useState(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Monthly cert gating
+  const [monthlySelection, setMonthlySelection] = useState<{ cert_id: string } | null>(null)
+  const [monthlyLoaded, setMonthlyLoaded] = useState(false)
+  const [monthlyLoadFailed, setMonthlyLoadFailed] = useState(false)
+
+  useEffect(() => {
+    if (!user || tier !== 'monthly') { setMonthlyLoaded(true); return }
+    getMonthlyCert(user.accessToken).then((data) => {
+      setMonthlySelection(data)
+      setMonthlyLoaded(true)
+    }).catch(() => {
+      setMonthlyLoadFailed(true)
+      setMonthlyLoaded(true)
+    })
+  }, [user, tier])
 
   const meta = certMeta[certId || ''] ?? { name: 'Unknown', code: '', icon: '❓' }
 
@@ -161,8 +177,68 @@ export default function MockExam() {
     )
   }
 
+  // Monthly cert gate
+  if (tier === 'monthly' && monthlyLoaded) {
+    if (monthlyLoadFailed) {
+      return (
+        <Layout>
+          <div style={{ maxWidth: '540px', margin: '4rem auto', padding: '0 1rem', textAlign: 'center' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚠️</div>
+            <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Could Not Verify Your Plan</h1>
+            <p style={{ color: '#6b7280', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+              We couldn't verify which certification your monthly plan covers. Please try again.
+            </p>
+            <button onClick={() => window.location.reload()}
+              style={{ padding: '0.875rem 2rem', background: '#2563eb', color: '#fff', borderRadius: '0.875rem', fontWeight: 800, border: 'none', cursor: 'pointer', fontSize: '1rem' }}>
+              Retry
+            </button>
+          </div>
+        </Layout>
+      )
+    }
+    if (!monthlySelection) {
+      return (
+        <Layout>
+          <div style={{ maxWidth: '540px', margin: '4rem auto', padding: '0 1rem', textAlign: 'center' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔒</div>
+            <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Activate a Cert First</h1>
+            <p style={{ color: '#6b7280', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+              Your Monthly plan includes 1 certification at a time. Activate your cert in Practice mode first.
+            </p>
+            <Link to={`/cert/${certId}`}
+              style={{ display: 'inline-block', padding: '0.875rem 2rem', background: '#2563eb', color: '#fff', borderRadius: '0.875rem', fontWeight: 800, textDecoration: 'none', fontSize: '1rem' }}>
+              Go to Practice Mode →
+            </Link>
+          </div>
+        </Layout>
+      )
+    }
+    if (monthlySelection.cert_id !== certId) {
+      const lockedMeta = certMeta[monthlySelection.cert_id] || { name: monthlySelection.cert_id, code: '', icon: '📝' }
+      return (
+        <Layout>
+          <div style={{ maxWidth: '540px', margin: '4rem auto', padding: '0 1rem', textAlign: 'center' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔒</div>
+            <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Monthly Plan — 1 Cert at a Time</h1>
+            <p style={{ color: '#6b7280', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+              Your active cert is <strong>{lockedMeta.icon} {lockedMeta.code}</strong>. Switch to it or upgrade to access all 12 certs.
+            </p>
+            <Link to={`/mock-exam/${monthlySelection.cert_id}`}
+              style={{ display: 'block', padding: '0.875rem', background: '#2563eb', color: '#fff', borderRadius: '0.875rem', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem', marginBottom: '0.75rem' }}>
+              Go to {lockedMeta.code} Mock Exam →
+            </Link>
+            <Link to="/pricing"
+              style={{ display: 'block', fontSize: '0.85rem', color: '#2563eb', fontWeight: 600, textDecoration: 'none' }}>
+              Upgrade to Yearly for all 12 certs →
+            </Link>
+          </div>
+        </Layout>
+      )
+    }
+  }
+
   // Loading
-  if (questions.length === 0) {
+  if (questions.length === 0 || (tier === 'monthly' && !monthlyLoaded)) {
     return (
       <Layout>
         <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

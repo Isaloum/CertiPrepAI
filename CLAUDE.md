@@ -1,5 +1,5 @@
 # CertiPrepAI — Claude Context
-_Last updated: 2026-04-20_
+_Last updated: 2026-04-25_
 
 ## What this project is
 AWS certification prep SaaS. Two frontends, one backend on AWS.
@@ -176,6 +176,30 @@ After deploys, always test in a **fresh incognito window**. Old bundles are aggr
 - Anthropic API key: stored as Lambda env var `ANTHROPIC_API_KEY` (rotate if exposed)
 - Lambda Function URLs blocked in this AWS account — use API Gateway instead
 - `custom:plan = lifetime` required in Cognito for access
+
+---
+
+## ✅ Built April 25, 2026
+
+| # | Item | Details |
+|---|------|---------|
+| 1 | Stripe webhook fixed | `STRIPE_WEBHOOK_SECRET` added to `awsprepai-stripe-webhook` Lambda. Lambda Function URL had persistent 403 bug — replaced with new API Gateway `515bmmrebh` (`https://515bmmrebh.execute-api.us-east-1.amazonaws.com`). Stripe webhook updated to point to API Gateway. |
+| 2 | Stripe webhook renamed | Renamed from "elegant-finesse" to "CertiPrepAI Production Webhook" in Stripe dashboard |
+| 3 | Monthly gating — MockExam | `MockExam.tsx` had ZERO monthly tier gating. Monthly users could access any cert's mock exam via direct URL. Fixed: added `getMonthlyCert` check — locked screen shown if cert doesn't match active monthly cert. DB failure now blocks access (not bypasses). |
+| 4 | Monthly gating — CertDetail DB failure | DB failure on `getMonthlyCert` was silently setting `monthlySelection = null`, allowing users to pick any cert. Fixed: `monthlyLoadFailed` state now shows "retry" screen instead of granting access. |
+
+### ⚠️ Monthly Plan Gating — How It Works
+- `tier === 'monthly'` → user picks 1 cert, stored in `awsprepai-monthly-cert` DynamoDB table
+- Gated in: `CertDetail.tsx` (practice mode) AND `MockExam.tsx` (mock exam)
+- Switch allowed once every 30 days (`canSwitchMonthly()` in CertDetail)
+- DB failure = access BLOCKED with retry screen (not bypassed)
+- `isFullAccess = yearly || lifetime` → no cert restriction
+
+### Stripe Webhook Infrastructure
+- Old: Lambda Function URL (had persistent 403 bug — never resolved)
+- New: API Gateway HTTP API `515bmmrebh` → `awsprepai-stripe-webhook` Lambda
+- Webhook endpoint: `https://515bmmrebh.execute-api.us-east-1.amazonaws.com`
+- Signing secret: stored as `STRIPE_WEBHOOK_SECRET` in Lambda env
 
 ---
 

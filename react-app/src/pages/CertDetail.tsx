@@ -76,6 +76,7 @@ export default function CertDetail() {
   // Monthly cert selection
   const [monthlySelection, setMonthlySelection] = useState<{ cert_id: string; selected_at: string } | null>(null)
   const [monthlyLoaded, setMonthlyLoaded] = useState(false)
+  const [monthlyLoadFailed, setMonthlyLoadFailed] = useState(false)
   const [switching, setSwitching] = useState(false)
   const [showHint, setShowHint] = useState(false)
 
@@ -117,8 +118,8 @@ export default function CertDetail() {
       setMonthlySelection(data)
       setMonthlyLoaded(true)
     }).catch(() => {
-      // DB unavailable — allow access without cert lock
-      setMonthlySelection(null)
+      // DB unavailable — block access, do NOT allow bypass
+      setMonthlyLoadFailed(true)
       setMonthlyLoaded(true)
     })
   }, [user, tier])
@@ -212,6 +213,25 @@ export default function CertDetail() {
             <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>⚙️</div>
             <p style={{ color: '#6b7280' }}>Loading questions...</p>
           </div>
+        </div>
+      </Layout>
+    )
+  }
+
+  // ── Monthly: DB load failed — block access ──
+  if (tier === 'monthly' && monthlyLoadFailed) {
+    return (
+      <Layout>
+        <div style={{ maxWidth: '480px', margin: '4rem auto', padding: '0 1rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚠️</div>
+          <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Could Not Verify Your Plan</h1>
+          <p style={{ color: '#6b7280', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+            We couldn't verify which certification your monthly plan covers. Please try again.
+          </p>
+          <button onClick={() => window.location.reload()}
+            style={{ width: '100%', padding: '0.875rem', background: '#2563eb', color: '#fff', borderRadius: '0.875rem', fontWeight: 700, border: 'none', cursor: 'pointer', fontSize: '0.95rem' }}>
+            Retry
+          </button>
         </div>
       </Layout>
     )
