@@ -30,31 +30,35 @@ export default function Terms() {
             body: 'Paid plans (Monthly, Yearly, Lifetime) are processed securely through Stripe. Monthly and Yearly plans can be cancelled at any time from your dashboard — cancellation takes effect at the end of the billing period. Lifetime plans are a one-time purchase with no recurring charges.',
           },
           {
-            title: '5. Intellectual Property',
+            title: '5. No Refund Policy',
+            body: 'All purchases on CertiPrepAI are final and non-refundable. We offer a 3-day free trial on all subscription plans (Monthly, Bundle, Yearly) so you can evaluate the platform before being charged. By starting a paid subscription or purchasing a Lifetime plan, you acknowledge and agree that no refunds will be issued. If you believe you were charged in error, contact support@certiprepai.com within 7 days.',
+          },
+          {
+            title: '6. Intellectual Property',
             body: 'All content on CertiPrepAI — including questions, explanations, diagrams, and study materials — is the property of CertiPrepAI and may not be copied, reproduced, or distributed without written permission.',
           },
           {
-            title: '6. Prohibited Use',
+            title: '7. Prohibited Use',
             body: 'You may not use CertiPrepAI to scrape content, share account credentials, attempt unauthorized access, or use the platform in any way that violates applicable laws.',
           },
           {
-            title: '7. Disclaimer',
+            title: '8. Disclaimer',
             body: 'CertiPrepAI is an independent study tool. We do not guarantee exam results. AWS certifications are administered by Amazon Web Services — passing any exam depends on individual preparation and performance.',
           },
           {
-            title: '8. Privacy Policy',
+            title: '9. Privacy Policy',
             body: 'We collect only the information necessary to provide the service: your email address, payment status (processed by Stripe — we never store card details), and usage data to improve the platform. We do not sell your data to third parties. We use cookies for authentication and session management only.',
           },
           {
-            title: '9. Data Retention',
+            title: '10. Data Retention',
             body: 'Your account data is retained for as long as your account is active. You may request deletion of your account and associated data by emailing support@certiprepai.com.',
           },
           {
-            title: '10. Changes to Terms',
+            title: '11. Changes to Terms',
             body: 'We may update these terms from time to time. Continued use of the platform after changes constitutes acceptance of the revised terms.',
           },
           {
-            title: '11. Contact',
+            title: '12. Contact',
             body: 'For any questions about these terms, contact us at support@certiprepai.com.',
           },
         ].map(section => (
