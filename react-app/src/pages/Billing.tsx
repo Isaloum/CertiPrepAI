@@ -58,8 +58,6 @@ export default function Billing() {
   const info = PLAN_INFO[tier] ?? PLAN_INFO.free
 
   const handleUpgradeClick = async (plan: typeof upgradePlans[0]) => {
-    const planRank = TIER_RANK[plan.key] ?? 0
-
     // Lifetime: new checkout session
     if (plan.key === 'lifetime') {
       setUpgradeModal({ plan, state: 'loading' })
@@ -150,9 +148,7 @@ export default function Billing() {
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
               {upgradePlans.map(plan => {
-                const planRank = TIER_RANK[plan.key] ?? 0
                 const isCurrent = plan.key === tier
-                const isUpgrade = planRank > userRank
                 const isDowngrade = planRank < userRank
 
                 if (isCurrent) {
