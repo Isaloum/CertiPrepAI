@@ -439,6 +439,11 @@ export default function Pricing() {
                       <div style={{ textAlign: 'center', padding: '0.5rem', background: '#d1fae5', borderRadius: '0.6rem', fontSize: '0.78rem', fontWeight: 700, color: '#15803d', border: '1.5px solid #86efac' }}>
                         ✓ Your Current Plan
                       </div>
+                    ) : userRank > 1.5 ? (
+                      // yearly/lifetime users — bundle is a downgrade, hide it
+                      <div style={{ textAlign: 'center', padding: '0.5rem', background: '#f3f4f6', borderRadius: '0.6rem', fontSize: '0.75rem', color: '#9ca3af', border: '1.5px solid #e5e7eb' }}>
+                        Not available on your plan
+                      </div>
                     ) : (
                       <button
                         onClick={async () => {
