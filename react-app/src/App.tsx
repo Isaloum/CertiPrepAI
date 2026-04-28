@@ -32,6 +32,8 @@ import Comparisons from './pages/Comparisons'
 import ServiceComparison from './pages/ServiceComparison'
 import ForgotPassword from './pages/ForgotPassword'
 import CheatSheets from './pages/CheatSheets'
+import Billing from './pages/Billing'
+import AiCoach from './pages/AiCoach'
 import SEOMeta from './components/SEOMeta'
 
 const NotFound = () => (
@@ -78,6 +80,8 @@ export default function App() {
           <Route path="/service-comparison" element={<ServiceComparison />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/cheat-sheets" element={<CheatSheets />} />
+          <Route path="/billing" element={<Billing />} />
+          <Route path="/ai-coach" element={<AiCoach />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>

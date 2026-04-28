@@ -168,7 +168,10 @@ export default function Navbar() {
                 { to: '/certifications', label: 'Certifications' },
                 { to: '/about', label: 'About' },
                 { to: '/resources', label: 'Resources' },
-                { to: '/pricing', label: 'Pricing' },
+                // Pricing: only for free users and logged-out visitors
+                ...(!isPremium ? [{ to: '/pricing', label: 'Pricing' }] : []),
+                // AI Coach full page: only for yearly plan
+                ...(tier === 'yearly' ? [{ to: '/ai-coach', label: '🤖 AI Coach' }] : []),
               ].map(link => (
                 <Link key={link.to} to={link.to}
                   style={{ ...navItem(isActive(link.to)) }}
@@ -211,6 +214,7 @@ export default function Navbar() {
                         {[
                           { to: '/dashboard', icon: '🏠', label: 'My Dashboard' },
                           { to: '/certifications', icon: '📝', label: 'Practice' },
+                          ...(isPremium ? [{ to: '/billing', icon: '💳', label: 'Billing' }] : []),
                         ].map(item => (
                           <Link key={item.to} to={item.to} onClick={() => setUserMenuOpen(false)}
                             style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '9px 12px', borderRadius: '8px', textDecoration: 'none', fontSize: '14px', color: '#374151', fontWeight: 500 }}
@@ -337,7 +341,9 @@ export default function Navbar() {
             {[
               { to: '/certifications', label: 'Certifications' },
               { to: '/about', label: 'About' },
-              { to: '/pricing', label: 'Pricing' },
+              ...(!isPremium ? [{ to: '/pricing', label: 'Pricing' }] : []),
+              ...(tier === 'yearly' ? [{ to: '/ai-coach', label: '🤖 AI Coach' }] : []),
+              ...(isPremium ? [{ to: '/billing', label: '💳 Billing' }] : []),
             ].map(link => (
               <Link key={link.to} to={link.to}
                 style={{ display: 'block', padding: '10px 8px', fontSize: '14px', fontWeight: 500, color: '#374151', textDecoration: 'none', borderRadius: '8px' }}
