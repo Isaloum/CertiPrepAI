@@ -79,7 +79,6 @@ export default function Dashboard() {
   const [showCancelModal, setShowCancelModal] = useState(false)
   const [cancelling, setCancelling] = useState(false)
   const [cancelError, setCancelError] = useState('')
-  const [cancelScheduled, setCancelScheduled] = useState(false)
   const [progress, setProgress] = useState<CertProgress[]>([])
   const [mfaEnabled, setMfaEnabled] = useState<boolean>(false)
   const [mfaSetup, setMfaSetup] = useState(false)
@@ -210,7 +209,6 @@ export default function Dashboard() {
       if (!res.ok) { setCancelError(data.error || 'Cancellation failed. Please try again.'); setCancelling(false); return }
       // Success — plan cancelled at period end, stay on dashboard
       setShowCancelModal(false)
-      setCancelScheduled(true)
     } catch {
       setCancelError('Network error. Please try again.')
       setCancelling(false)

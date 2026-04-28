@@ -4,15 +4,16 @@
  * Handles: headers, bold, italic, inline code, code blocks, bullet lists, numbered lists, line breaks.
  * No external dependencies.
  */
+import type { CSSProperties, ReactNode } from 'react'
 
 interface Props {
   content: string
-  style?: React.CSSProperties
+  style?: CSSProperties
 }
 
 export default function MarkdownRenderer({ content, style }: Props) {
   const lines = content.split('\n')
-  const elements: React.ReactNode[] = []
+  const elements: ReactNode[] = []
   let i = 0
 
   while (i < lines.length) {
@@ -148,9 +149,9 @@ export default function MarkdownRenderer({ content, style }: Props) {
 }
 
 /** Render inline markdown: **bold**, *italic*, `code` */
-function renderInline(text: string): React.ReactNode {
+function renderInline(text: string): ReactNode {
   // Split on bold (**), italic (*), and inline code (`)
-  const parts: React.ReactNode[] = []
+  const parts: ReactNode[] = []
   const re = /(\*\*(.+?)\*\*|\*(.+?)\*|`([^`]+)`)/g
   let last = 0
   let match: RegExpExecArray | null
