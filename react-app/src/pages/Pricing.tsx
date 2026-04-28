@@ -523,20 +523,41 @@ export default function Pricing() {
 
         {/* Bottom CTA */}
         <div style={{ background: '#111827', borderRadius: '1rem', padding: '2.5rem', textAlign: 'center', color: '#fff' }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 900, margin: '0 0 0.5rem' }}>
-            Ready to pass your AWS cert?
-          </h2>
-          <p style={{ color: '#9ca3af', margin: '0 0 1.5rem', fontSize: '0.95rem' }}>
-            20 free questions — no credit card, no sign-up.
-          </p>
-          <button
-            onClick={() => navigate('/sample-questions')}
-            style={{ padding: '0.85rem 2rem', background: '#2563eb', color: '#fff', fontWeight: 700, fontSize: '0.95rem', border: 'none', borderRadius: '0.75rem', cursor: 'pointer' }}
-            onMouseEnter={e => (e.currentTarget.style.background = '#1d4ed8')}
-            onMouseLeave={e => (e.currentTarget.style.background = '#2563eb')}
-          >
-            Start Practicing Free →
-          </button>
+          {tier && tier !== 'free' ? (
+            <>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 900, margin: '0 0 0.5rem' }}>
+                You're all set — time to practice!
+              </h2>
+              <p style={{ color: '#9ca3af', margin: '0 0 1.5rem', fontSize: '0.95rem' }}>
+                Your plan is active. Head to your certifications and start studying.
+              </p>
+              <button
+                onClick={() => navigate('/certifications')}
+                style={{ padding: '0.85rem 2rem', background: '#2563eb', color: '#fff', fontWeight: 700, fontSize: '0.95rem', border: 'none', borderRadius: '0.75rem', cursor: 'pointer' }}
+                onMouseEnter={e => (e.currentTarget.style.background = '#1d4ed8')}
+                onMouseLeave={e => (e.currentTarget.style.background = '#2563eb')}
+              >
+                Go to Certifications →
+              </button>
+            </>
+          ) : (
+            <>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 900, margin: '0 0 0.5rem' }}>
+                Ready to pass your AWS cert?
+              </h2>
+              <p style={{ color: '#9ca3af', margin: '0 0 1.5rem', fontSize: '0.95rem' }}>
+                20 free questions — no credit card, no sign-up.
+              </p>
+              <button
+                onClick={() => navigate('/sample-questions')}
+                style={{ padding: '0.85rem 2rem', background: '#2563eb', color: '#fff', fontWeight: 700, fontSize: '0.95rem', border: 'none', borderRadius: '0.75rem', cursor: 'pointer' }}
+                onMouseEnter={e => (e.currentTarget.style.background = '#1d4ed8')}
+                onMouseLeave={e => (e.currentTarget.style.background = '#2563eb')}
+              >
+                Start Practicing Free →
+              </button>
+            </>
+          )}
         </div>
 
       </div>

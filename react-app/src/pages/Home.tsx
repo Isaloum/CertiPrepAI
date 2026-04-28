@@ -323,8 +323,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Pricing teaser ── */}
-      <section style={{ padding: '5rem 1.5rem', background: 'linear-gradient(160deg, #0f172a 0%, #1e3a8a 100%)', position: 'relative', overflow: 'hidden' }}>
+      {/* ── Pricing teaser (free/guest only) ── */}
+      {!isPaid && <section style={{ padding: '5rem 1.5rem', background: 'linear-gradient(160deg, #0f172a 0%, #1e3a8a 100%)', position: 'relative', overflow: 'hidden' }}>
         {/* Background glow blobs */}
         <div style={{ position: 'absolute', top: '-80px', left: '10%', width: '400px', height: '400px', borderRadius: '50%', background: 'rgba(37,99,235,0.15)', filter: 'blur(80px)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: '-60px', right: '5%', width: '320px', height: '320px', borderRadius: '50%', background: 'rgba(99,102,241,0.12)', filter: 'blur(70px)', pointerEvents: 'none' }} />
@@ -450,7 +450,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </section>
+      </section>}
 
       {/* ── Final CTA ── */}
       <section style={{ padding: '5rem 1.5rem', background: 'linear-gradient(135deg, #1e40af, #1e3a8a)', color: '#fff', textAlign: 'center' }}>

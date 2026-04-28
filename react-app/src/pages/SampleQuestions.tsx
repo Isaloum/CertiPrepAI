@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Layout from '../components/Layout'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
@@ -306,9 +306,15 @@ const DOMAIN_COLORS: Record<string, string> = {
 
 export default function SampleQuestions() {
   const navigate = useNavigate()
-  const { tier } = useAuth()
+  const { tier, loading } = useAuth()
   const isPaid = tier && tier !== 'free'
   const [current, setCurrent] = useState(0)
+
+  useEffect(() => {
+    if (!loading && isPaid) {
+      navigate('/certifications', { replace: true })
+    }
+  }, [loading, isPaid, navigate])
   const [selected, setSelected] = useState<number | null>(null)
   const [answered, setAnswered] = useState(false)
   const [answers, setAnswers] = useState<{ userAnswer: number; isCorrect: boolean }[]>([])
