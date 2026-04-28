@@ -148,6 +148,8 @@ export default function Billing() {
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
               {upgradePlans.map(plan => {
+                const planRank = TIER_RANK[plan.key] ?? 0
+                const planRank = TIER_RANK[plan.key] ?? 0
                 const isCurrent = plan.key === tier
                 const isDowngrade = planRank < userRank
 
