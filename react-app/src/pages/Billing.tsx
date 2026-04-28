@@ -17,14 +17,14 @@ const PLAN_INFO: Record<string, { label: string; color: string; bg: string; icon
   free:     { label: 'Free',     icon: '🆓', color: '#6b7280', bg: '#f9fafb', desc: '20 sample questions, no payment required', price: '$0/mo' },
   monthly:  { label: 'Monthly',  icon: '📦', color: '#2563eb', bg: '#eff6ff', desc: 'Access to 1 certification of your choice',  price: '$7/mo' },
   bundle:   { label: '3-Cert Bundle', icon: '🎯', color: '#0891b2', bg: '#ecfeff', desc: 'Access to any 3 certifications',         price: '$17/mo' },
-  yearly:   { label: 'Yearly',   icon: '📅', color: '#7c3aed', bg: '#f5f3ff', desc: 'All 12 certifications + AI Coach full page', price: '$49/yr' },
-  lifetime: { label: 'Lifetime', icon: '🔥', color: '#dc2626', bg: '#fef2f2', desc: 'Pay once, access forever + AI Coach widget', price: '$147 once' },
+  yearly:   { label: 'Yearly',   icon: '📅', color: '#7c3aed', bg: '#f5f3ff', desc: 'All 12 certifications, best annual value',   price: '$67/yr' },
+  lifetime: { label: 'Lifetime', icon: '🔥', color: '#dc2626', bg: '#fef2f2', desc: 'All 12 certs + AI Coach, pay once forever',   price: '$147 once' },
 }
 
 const upgradePlans = [
   { key: 'monthly',  name: 'Monthly',  price: '$7/mo',   priceId: 'monthly',  desc: '1 cert · switch anytime' },
   { key: 'bundle',   name: '3-Cert Bundle', price: '$17/mo', priceId: 'bundle', desc: '3 certs of your choice' },
-  { key: 'yearly',   name: 'Yearly',   price: '$49/yr',  priceId: 'yearly',   desc: 'All 12 certs + AI Coach' },
+  { key: 'yearly',   name: 'Yearly',   price: '$67/yr',  priceId: 'yearly',   desc: 'All 12 certs, best annual value' },
   { key: 'lifetime', name: 'Lifetime', price: '$147',    priceId: 'lifetime', desc: 'Pay once, forever access' },
 ]
 
