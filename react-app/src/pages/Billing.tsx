@@ -18,7 +18,7 @@ const PLAN_INFO: Record<string, { label: string; color: string; bg: string; icon
   monthly:  { label: 'Monthly',  icon: '📦', color: '#2563eb', bg: '#eff6ff', desc: 'Access to 1 certification of your choice',  price: '$7/mo' },
   bundle:   { label: '3-Cert Bundle', icon: '🎯', color: '#0891b2', bg: '#ecfeff', desc: 'Access to any 3 certifications',         price: '$17/mo' },
   yearly:   { label: 'Yearly',   icon: '📅', color: '#7c3aed', bg: '#f5f3ff', desc: 'All 12 certifications + AI Coach full page', price: '$49/yr' },
-  lifetime: { label: 'Lifetime', icon: '🔥', color: '#dc2626', bg: '#fef2f2', desc: 'Pay once, access forever + AI Coach widget', price: '$97 once' },
+  lifetime: { label: 'Lifetime', icon: '🔥', color: '#dc2626', bg: '#fef2f2', desc: 'Pay once, access forever + AI Coach widget', price: '$147 once' },
 }
 
 const upgradePlans = [

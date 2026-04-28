@@ -161,7 +161,7 @@ const isFullAccess = tier === 'yearly' || tier === 'lifetime'
 | monthly | $7/mo | 1 cert (pick from 12) | ❌ |
 | bundle | $17/mo | 3 certs (pick from 12) | ❌ |
 | yearly | $49/yr | All 12 certs | ❌ |
-| lifetime | $97 once | All 12 certs | ✅ Widget on Dashboard |
+| lifetime | $147 once | All 12 certs | ✅ Widget on Dashboard |
 
 ---
 
