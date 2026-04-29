@@ -20,53 +20,58 @@
   },
   {
     "cat": "monitoring",
-    "q": "CloudWatch Logs Insights needs to be used to analyze application errors. What should be configured first?",
+    "q": "A SysOps administrator wants to use CloudWatch Logs Insights to analyze application errors. What must be configured FIRST before any queries can be run?",
     "options": [
-      "Configure EventBridge rules",
-      "Create CloudWatch Alarms",
-      "Enable log group for the application",
-      "Create a CloudWatch dashboard"
+      "Configure EventBridge rules to forward events to CloudWatch",
+      "Create CloudWatch Alarms on relevant metrics",
+      "Enable a CloudWatch Logs log group and ensure the application streams logs to it",
+      "Create a CloudWatch dashboard to visualize log data"
     ],
-    "answer": 3,
-    "explain": "CloudWatch Logs Insights requires that logs first be collected in a CloudWatch log group.",
+    "answer": 2,
+    "explain": "CloudWatch Logs Insights queries are run against CloudWatch Logs log groups. Before any query can execute, the application must have a log group configured and must be actively streaming log events to that group. Without the log group and log data, Logs Insights has no data to analyze. EventBridge rules route events to targets but are not a prerequisite for log querying. CloudWatch Alarms and dashboards are useful after log collection is set up, not before.",
     "keywords": [
-      "CloudWatch",
-      "EventBridge"
+      "CloudWatch Logs Insights",
+      "log group",
+      "application logging",
+      "log streaming"
     ]
   },
   {
     "cat": "monitoring",
-    "q": "A SysOps administrator needs to detect unauthorized API calls and create alarms. Which combination of services is required?",
+    "q": "A SysOps administrator needs to detect unauthorized API calls across the AWS account and create automated alarms. Which combination of services provides this capability?",
     "options": [
       "EventBridge + CloudTrail",
-      "Config + CloudWatch",
+      "AWS Config + CloudWatch",
       "CloudWatch + CloudTrail",
       "CloudTrail + EventBridge"
     ],
     "answer": 2,
-    "explain": "CloudTrail logs API calls; EventBridge can trigger on those events to create alarms.",
+    "explain": "AWS CloudTrail records all API calls made in an account and delivers them as log events to Amazon CloudWatch Logs. CloudWatch Logs metric filters can then match patterns (such as unauthorized API call event names or error codes like UnauthorizedOperation) and increment a custom metric. A CloudWatch Alarm on that metric triggers an SNS notification when unauthorized calls occur. AWS Config evaluates resource configuration compliance but does not alarm on individual API calls. EventBridge can also trigger on CloudTrail events in real time, but the standard SOA-C02 pattern for API call alarming is CloudWatch + CloudTrail.",
     "keywords": [
-      "API",
-      "AWS Config",
       "CloudTrail",
       "CloudWatch",
-      "EventBridge"
+      "API call monitoring",
+      "unauthorized access",
+      "metric filter"
     ]
   },
   {
     "cat": "monitoring",
-    "q": "A critical application requires monitoring of application-level metrics not available from CloudWatch. What should be used?",
+    "q": "A critical application requires monitoring of application-level metrics — such as active user sessions, queue depth, or business transaction counts — that are not available from standard CloudWatch infrastructure metrics. Which CloudWatch feature allows the application to publish these metrics for monitoring and alarming?",
     "options": [
       "CloudWatch Synthetics",
       "CloudWatch custom metrics",
       "EventBridge rules",
       "CloudWatch Logs Insights"
     ],
-    "answer": 0,
-    "explain": "Custom metrics allow applications to publish their own metrics to CloudWatch for monitoring.",
+    "answer": 1,
+    "explain": "CloudWatch custom metrics allow any application or service to publish its own metrics to CloudWatch using the PutMetricData API or the CloudWatch agent. Application-level data such as business transaction counts, cache hit rates, or session counts can be tracked and alarmed on just like built-in AWS metrics. CloudWatch Synthetics creates scheduled canary scripts that test endpoints externally but does not enable applications to publish internal metrics. CloudWatch Logs Insights queries log data after the fact but does not create persistent, alarmable metrics. EventBridge rules route events but do not provide metric collection.",
     "keywords": [
-      "CloudWatch",
-      "EventBridge"
+      "CloudWatch custom metrics",
+      "PutMetricData",
+      "application metrics",
+      "business metrics",
+      "CloudWatch agent"
     ]
   },
   {
@@ -90,33 +95,40 @@
   },
   {
     "cat": "monitoring",
-    "q": "A SysOps administrator needs to monitor Lambda function performance and errors. Which CloudWatch feature is used?",
+    "q": "A SysOps administrator needs to monitor AWS Lambda function performance and errors, including invocation counts, duration, error rates, and throttles. Which CloudWatch feature automatically captures this data without any code changes to the Lambda function?",
     "options": [
       "CloudWatch Logs",
       "CloudWatch Synthetics",
       "CloudWatch Events",
       "CloudWatch custom metrics"
     ],
-    "answer": 3,
-    "explain": "Lambda automatically logs to CloudWatch Logs, where function performance and errors can be monitored.",
+    "answer": 0,
+    "explain": "AWS Lambda automatically publishes invocation logs (including START, END, and REPORT lines with duration, memory used, and billed duration) to Amazon CloudWatch Logs, and also publishes built-in metrics such as Invocations, Errors, Duration, Throttles, and ConcurrentExecutions to CloudWatch Metrics — all without any code changes. CloudWatch Logs is the primary feature for capturing Lambda error details and performance data. CloudWatch Synthetics creates canaries to test endpoints externally, not internal Lambda performance. CloudWatch custom metrics require explicit PutMetricData API calls from the application. CloudWatch Events (now EventBridge) routes events to targets and does not collect performance data.",
     "keywords": [
-      "CloudWatch",
-      "Lambda"
+      "CloudWatch Logs",
+      "Lambda monitoring",
+      "Lambda metrics",
+      "Errors",
+      "Duration"
     ]
   },
   {
     "cat": "monitoring",
-    "q": "A SysOps administrator needs to detect anomalous cost patterns. Which CloudWatch feature enables this?",
+    "q": "A SysOps administrator needs to detect anomalous patterns in AWS infrastructure metrics — such as unexpected CPU spikes or unusual network traffic volumes — without manually setting fixed thresholds. Which CloudWatch feature uses machine learning to identify deviations from expected behavior?",
     "options": [
       "CloudWatch Events",
       "CloudWatch Anomaly Detector",
       "CloudWatch Logs Insights",
       "CloudWatch Synthetics"
     ],
-    "answer": 2,
-    "explain": "CloudWatch Anomaly Detector uses machine learning to detect anomalous metric values.",
+    "answer": 1,
+    "explain": "CloudWatch Anomaly Detector uses machine learning to model the expected behavior of a metric based on historical data, accounting for hourly, daily, and weekly patterns. It creates a dynamic band of expected values and can trigger alarms when the metric falls outside this band — enabling detection of unusual patterns without requiring manually tuned static thresholds. CloudWatch Logs Insights queries log data but does not perform predictive anomaly detection. CloudWatch Events (now EventBridge) routes events to targets and does not analyze metric anomalies. CloudWatch Synthetics runs canary scripts to test endpoints, not to detect metric anomalies.",
     "keywords": [
-      "CloudWatch"
+      "CloudWatch Anomaly Detector",
+      "machine learning",
+      "dynamic thresholds",
+      "anomaly detection",
+      "metric baseline"
     ]
   },
   {

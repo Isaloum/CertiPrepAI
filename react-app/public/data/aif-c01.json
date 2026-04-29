@@ -11,12 +11,11 @@
     "answer": 3,
     "explain": "Supervised learning uses labeled historical data (churned vs not churned) to train a model that predicts outcomes for new customers. Binary classification is the correct approach when the output is one of two classes.",
     "keywords": [
-      "generative-ai",
-      "gen-ai",
-      "content-generation",
-      "AI-generation",
+      "supervised-learning",
       "classification",
-      "supervised-learning"
+      "binary-classification",
+      "labeled-data",
+      "churn-prediction"
     ]
   },
   {
@@ -31,12 +30,11 @@
     "answer": 2,
     "explain": "Overfitting occurs when a model memorizes training data including noise, resulting in high training accuracy but poor generalization to unseen data. It is characterized by high variance.",
     "keywords": [
-      "bias-detection",
-      "model-bias",
-      "fairness",
-      "responsible-AI",
+      "overfitting",
+      "bias-variance",
+      "generalization",
       "model-training",
-      "ML-training"
+      "variance"
     ]
   },
   {
@@ -49,14 +47,13 @@
       "Class imbalance requiring specialized techniques"
     ],
     "answer": 3,
-    "explain": "Class imbalance occurs when one class vastly outnumbers another. Techniques like SMOTE, class weighting, or using precision-recall metrics instead of accuracy help handle this challenge.",
+    "explain": "Class imbalance makes standard accuracy misleading \u2014 a model predicting 'not fraud' for all transactions gets 99.95% accuracy while detecting no fraud. Techniques like SMOTE (oversampling), class weighting, and using precision-recall metrics instead of accuracy address this. The other options describe different problems: overfitting relates to complexity, data leakage to train/test contamination.",
     "keywords": [
-      "overfitting",
-      "regularization",
-      "generalization",
-      "bias-variance",
-      "Amazon-Lex",
-      "chatbot"
+      "class-imbalance",
+      "SMOTE",
+      "precision-recall",
+      "fraud-detection",
+      "imbalanced-data"
     ]
   },
   {
@@ -72,11 +69,10 @@
     "explain": "Amazon SageMaker is the fully managed ML platform on AWS covering the entire ML lifecycle: data labeling, feature engineering, training, tuning, deployment, and monitoring.",
     "keywords": [
       "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
+      "ML-platform",
       "model-training",
-      "epochs"
+      "model-deployment",
+      "managed-ML"
     ]
   },
   {
@@ -91,12 +87,11 @@
     "answer": 3,
     "explain": "Unsupervised learning discovers patterns without labels. Clustering algorithms like K-Means or topic models like LDA group emails into natural categories without requiring pre-labeled examples.",
     "keywords": [
-      "fine-tuning",
-      "model-adaptation",
-      "transfer-learning",
-      "domain-adaptation",
-      "classification",
-      "supervised-learning"
+      "unsupervised-learning",
+      "clustering",
+      "K-Means",
+      "topic-modeling",
+      "unlabeled-data"
     ]
   },
   {
@@ -111,10 +106,10 @@
     "answer": 3,
     "explain": "Collaborative filtering finds patterns across users with similar behavior to make recommendations. Amazon Personalize implements this approach for real-time personalized recommendations.",
     "keywords": [
+      "collaborative-filtering",
       "Amazon-Personalize",
       "recommendation-engine",
-      "collaborative-filtering",
-      "ML"
+      "user-behavior"
     ]
   },
   {
@@ -129,12 +124,11 @@
     "answer": 0,
     "explain": "Recall measures the proportion of actual positives correctly identified. High recall minimizes false negatives, which is critical in medical diagnosis where missing a disease has serious consequences.",
     "keywords": [
-      "cost-optimization",
-      "model-efficiency",
-      "token-usage",
-      "inference-cost",
-      "model-accuracy",
-      "evaluation-metrics"
+      "recall",
+      "sensitivity",
+      "evaluation-metrics",
+      "false-negatives",
+      "medical-AI"
     ]
   },
   {
@@ -147,14 +141,13 @@
       "SageMaker Debugger for bottleneck detection"
     ],
     "answer": 2,
-    "explain": "SageMaker Distributed Training splits training data or model layers across multiple GPUs/instances, significantly reducing training time for large models and datasets.",
+    "explain": "SageMaker Distributed Training with data parallelism splits the training dataset across multiple GPUs, running parallel gradient computations that are synchronized between workers. This reduces training time proportionally to the number of GPUs used. Automatic Model Tuning (option A) searches hyperparameters but doesn't parallelize training itself.",
     "keywords": [
       "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "bias-detection",
-      "model-bias"
+      "distributed-training",
+      "data-parallelism",
+      "GPU",
+      "model-training"
     ]
   },
   {
@@ -169,12 +162,11 @@
     "answer": 1,
     "explain": "The train set trains the model, the validation set guides hyperparameter tuning, and the test set provides a final unbiased evaluation of generalization performance on completely unseen data.",
     "keywords": [
-      "bias-detection",
-      "model-bias",
-      "fairness",
-      "responsible-AI",
-      "model-training",
-      "ML-training"
+      "train-test-split",
+      "validation",
+      "hyperparameter-tuning",
+      "model-evaluation",
+      "generalization"
     ]
   },
   {
@@ -191,10 +183,9 @@
     "keywords": [
       "Amazon-Comprehend",
       "NLP",
-      "text-analysis",
-      "entity-recognition",
-      "Amazon-Textract",
-      "document-extraction"
+      "sentiment-analysis",
+      "key-phrase-extraction",
+      "entity-recognition"
     ]
   },
   {
@@ -209,11 +200,10 @@
     "answer": 0,
     "explain": "Reinforcement learning trains agents to maximize cumulative reward through interaction with an environment. The agent learns which actions lead to positive outcomes through trial and error.",
     "keywords": [
-      "AI-agent",
-      "agentic-AI",
-      "tool-use",
-      "autonomous-AI",
       "reinforcement-learning",
+      "reward",
+      "agent",
+      "trial-and-error",
       "RLHF"
     ]
   },
@@ -229,12 +219,11 @@
     "answer": 3,
     "explain": "Data drift (or concept drift) occurs when the statistical properties of input data or the relationship between inputs and outputs changes over time, degrading model performance. Regular monitoring and retraining addresses this.",
     "keywords": [
-      "model-training",
-      "ML-training",
-      "epochs",
-      "gradient-descent",
-      "overfitting",
-      "regularization"
+      "data-drift",
+      "concept-drift",
+      "model-monitoring",
+      "retraining",
+      "production-ML"
     ]
   },
   {
@@ -249,12 +238,11 @@
     "answer": 3,
     "explain": "Amazon Transcribe is a speech-to-text service that converts audio to text. It supports batch and streaming transcription, speaker identification, and custom vocabularies.",
     "keywords": [
-      "Amazon-Comprehend",
+      "Amazon-Transcribe",
+      "speech-to-text",
       "NLP",
-      "text-analysis",
-      "entity-recognition",
-      "Amazon-Polly",
-      "text-to-speech"
+      "audio-processing",
+      "voice-analytics"
     ]
   },
   {
@@ -270,9 +258,10 @@
     "explain": "SageMaker Automatic Model Tuning (HPO) uses Bayesian optimization or random search to find the best hyperparameter combinations, reducing the manual effort of tuning model configuration.",
     "keywords": [
       "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML"
+      "hyperparameter-tuning",
+      "HPO",
+      "Bayesian-optimization",
+      "AutoML"
     ]
   },
   {
@@ -287,10 +276,11 @@
     "answer": 0,
     "explain": "Feature engineering transforms raw data into features that better represent the underlying problem, improving model performance. Examples include normalization, encoding categorical variables, and creating interaction terms.",
     "keywords": [
-      "model-accuracy",
-      "evaluation-metrics",
-      "performance",
-      "benchmark"
+      "feature-engineering",
+      "data-preprocessing",
+      "model-performance",
+      "normalization",
+      "encoding"
     ]
   },
   {
@@ -305,12 +295,11 @@
     "answer": 1,
     "explain": "Computer vision applies ML to image and video analysis. Amazon Rekognition uses deep learning to detect objects, faces, scenes, and content moderation labels in images and videos.",
     "keywords": [
-      "classification",
-      "supervised-learning",
-      "labeled-data",
-      "prediction",
       "Amazon-Rekognition",
-      "image-recognition"
+      "computer-vision",
+      "image-recognition",
+      "content-moderation",
+      "deep-learning"
     ]
   },
   {
@@ -325,12 +314,11 @@
     "answer": 3,
     "explain": "ROC-AUC (Area Under the ROC Curve) measures the probability that a randomly chosen positive example ranks higher than a randomly chosen negative example, aggregated across all classification thresholds.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "classification",
-      "supervised-learning"
+      "ROC-AUC",
+      "binary-classification",
+      "evaluation-metrics",
+      "model-performance",
+      "threshold"
     ]
   },
   {
@@ -343,14 +331,13 @@
       "SageMaker Model Registry"
     ],
     "answer": 2,
-    "explain": "SageMaker Feature Store is a centralized repository for storing, retrieving, and sharing ML features. It supports both online (low-latency) and offline (batch) feature access, ensuring consistency across models.",
+    "explain": "SageMaker Feature Store provides centralized storage for ML features with two modes: online store (single-digit millisecond latency for real-time inference) and offline store (S3-based for batch training). Sharing curated features prevents feature duplication and ensures consistency across teams. Data Wrangler (option A) prepares data but doesn't serve as a shared feature repository.",
     "keywords": [
       "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "latency",
-      "inference-speed"
+      "Feature-Store",
+      "ML-features",
+      "online-store",
+      "offline-store"
     ]
   },
   {
@@ -363,14 +350,14 @@
       "AWS AI Services (Rekognition, Translate, Polly, etc.)"
     ],
     "answer": 3,
-    "explain": "AWS AI Services provide pre-trained ML capabilities via simple APIs — no ML expertise required. They cover vision (Rekognition), language (Comprehend, Translate), speech (Transcribe, Polly), and more.",
+    "explain": "AWS AI Services provide pre-trained ML capabilities via simple APIs \u2014 no ML expertise required. They cover vision (Rekognition), language (Comprehend, Translate), speech (Transcribe, Polly), and more.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "model-training",
-      "epochs"
+      "AWS-AI-Services",
+      "pre-trained-models",
+      "Rekognition",
+      "Comprehend",
+      "Polly",
+      "Transcribe"
     ]
   },
   {
@@ -386,11 +373,10 @@
     "explain": "SageMaker Autopilot automatically explores ML algorithms, preprocesses data, trains multiple models, and tunes hyperparameters, providing a fully automated ML pipeline with explainability reports.",
     "keywords": [
       "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "explainability",
-      "model-interpretability"
+      "Autopilot",
+      "AutoML",
+      "no-code-ML",
+      "automated-ML"
     ]
   },
   {
@@ -406,11 +392,10 @@
     "explain": "SageMaker Ground Truth manages data labeling workflows combining automated labeling (using active learning) with human labelers, reducing labeling costs by up to 70%.",
     "keywords": [
       "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "Amazon-Rekognition",
-      "image-recognition"
+      "Ground-Truth",
+      "data-labeling",
+      "annotation",
+      "active-learning"
     ]
   },
   {
@@ -425,12 +410,11 @@
     "answer": 0,
     "explain": "RNNs and Transformers are designed for sequential data. Transformers (used in modern LLMs) use attention mechanisms to capture long-range dependencies in text, outperforming traditional RNNs.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
       "transformer",
-      "neural-network",
-      "deep-learning"
+      "RNN",
+      "sequential-data",
+      "attention-mechanism",
+      "LLM"
     ]
   },
   {
@@ -445,12 +429,11 @@
     "answer": 3,
     "explain": "Amazon Forecast is a fully managed time-series forecasting service using ML. It automatically selects the best algorithm (e.g., DeepAR+) and handles missing data, seasonality, and related time series.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
       "Amazon-Forecast",
-      "time-series"
+      "time-series",
+      "demand-forecasting",
+      "DeepAR",
+      "ML-forecasting"
     ]
   },
   {
@@ -463,14 +446,13 @@
       "Batch normalization"
     ],
     "answer": 2,
-    "explain": "Dropout randomly deactivates a percentage of neurons during each training step, preventing co-adaptation and reducing overfitting, forcing the network to learn more robust features.",
+    "explain": "Dropout randomly sets a fraction of neurons to zero during each forward pass, forcing the network to learn redundant representations rather than relying on specific neurons. Unlike L2 regularization (option A) which penalizes large weights, dropout works by reducing co-adaptation between neurons, making it particularly effective for deep networks.",
     "keywords": [
-      "model-training",
-      "ML-training",
-      "epochs",
-      "gradient-descent",
-      "data-augmentation",
-      "training-data"
+      "dropout",
+      "regularization",
+      "overfitting",
+      "neural-network",
+      "model-training"
     ]
   },
   {
@@ -485,10 +467,11 @@
     "answer": 1,
     "explain": "Unsupervised anomaly detection identifies statistical outliers from normal patterns without requiring labeled failure examples. Amazon Lookout for Equipment and Lookout for Metrics use this approach.",
     "keywords": [
-      "reinforcement-learning",
-      "RLHF",
-      "reward-model",
-      "alignment"
+      "anomaly-detection",
+      "unsupervised-learning",
+      "IoT",
+      "Amazon-Lookout",
+      "outlier-detection"
     ]
   },
   {
@@ -503,12 +486,11 @@
     "answer": 2,
     "explain": "RAG retrieves relevant documents from a knowledge base and provides them as context to an LLM, enabling accurate, grounded responses without the cost of training or full fine-tuning.",
     "keywords": [
-      "generative-ai",
-      "gen-ai",
-      "content-generation",
-      "AI-generation",
       "RAG",
-      "retrieval-augmented-generation"
+      "retrieval-augmented-generation",
+      "chatbot",
+      "knowledge-base",
+      "Amazon-Bedrock"
     ]
   },
   {
@@ -523,11 +505,10 @@
     "answer": 3,
     "explain": "Foundation models are large-scale models trained on massive datasets that develop general capabilities transferable to many downstream tasks through prompting or fine-tuning.",
     "keywords": [
-      "generative-ai",
-      "gen-ai",
-      "content-generation",
-      "AI-generation",
       "foundation-models",
+      "pre-trained-model",
+      "large-scale-model",
+      "transfer-learning",
       "FM"
     ]
   },
@@ -543,12 +524,11 @@
     "answer": 2,
     "explain": "Amazon Bedrock is a fully managed service providing access to foundation models from multiple providers (Anthropic Claude, Meta Llama, Amazon Titan, Mistral, etc.) via a single API without managing infrastructure.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
       "Amazon-Bedrock",
-      "bedrock"
+      "foundation-models",
+      "managed-FM",
+      "multi-provider",
+      "serverless-AI"
     ]
   },
   {
@@ -564,11 +544,10 @@
     "explain": "Prompt engineering shapes LLM behavior through carefully crafted instructions, system prompts, and few-shot examples. It is the fastest and cheapest way to improve responses without changing model weights.",
     "keywords": [
       "prompt-engineering",
-      "prompt-design",
+      "system-prompts",
       "few-shot",
-      "prompting",
-      "LLM",
-      "large-language-model"
+      "zero-shot",
+      "LLM"
     ]
   },
   {
@@ -584,11 +563,10 @@
     "explain": "Hallucination refers to LLMs generating confident but factually incorrect or fabricated information. It occurs because LLMs predict likely text rather than retrieving verified facts.",
     "keywords": [
       "hallucination",
-      "model-accuracy",
-      "factual-errors",
       "LLM-limitations",
-      "LLM",
-      "large-language-model"
+      "factual-errors",
+      "model-accuracy",
+      "generative-AI"
     ]
   },
   {
@@ -603,12 +581,11 @@
     "answer": 0,
     "explain": "Tool use (function calling) allows LLMs to call external APIs, databases, or services to retrieve real-time information beyond their training data, enabling dynamic and up-to-date responses.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "LLM",
-      "large-language-model"
+      "tool-use",
+      "function-calling",
+      "LLM-agents",
+      "real-time-data",
+      "API-integration"
     ]
   },
   {
@@ -623,12 +600,11 @@
     "answer": 0,
     "explain": "The context window is the maximum number of tokens (words/subwords) an LLM can process at once, including input prompt and output. Larger context windows allow processing longer documents.",
     "keywords": [
+      "context-window",
+      "tokens",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "fine-tuning",
-      "model-adaptation"
+      "input-length",
+      "transformer"
     ]
   },
   {
@@ -643,12 +619,11 @@
     "answer": 0,
     "explain": "Amazon Bedrock Model Customization allows fine-tuning or continued pre-training of supported foundation models using your own data, improving performance on domain-specific tasks.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
       "Amazon-Bedrock",
-      "bedrock"
+      "fine-tuning",
+      "model-customization",
+      "domain-adaptation",
+      "foundation-models"
     ]
   },
   {
@@ -664,11 +639,10 @@
     "explain": "Amazon Bedrock Agents orchestrate multi-step workflows by breaking tasks into steps, calling APIs, querying knowledge bases, and executing actions autonomously using LLMs.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "LLM",
-      "large-language-model"
+      "Bedrock-Agents",
+      "multi-step-tasks",
+      "task-orchestration",
+      "agentic-AI"
     ]
   },
   {
@@ -683,12 +657,11 @@
     "answer": 1,
     "explain": "Temperature controls output randomness. Low temperature (near 0) produces deterministic, focused responses. High temperature produces more creative, diverse outputs. Set to 0 for factual tasks, higher for creative writing.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "tokenization",
-      "tokens"
+      "temperature",
+      "sampling",
+      "LLM-inference",
+      "randomness",
+      "creativity"
     ]
   },
   {
@@ -705,10 +678,9 @@
     "keywords": [
       "RAG",
       "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "LLM",
-      "large-language-model"
+      "embeddings",
+      "vector-database",
+      "semantic-search"
     ]
   },
   {
@@ -723,12 +695,11 @@
     "answer": 2,
     "explain": "Embeddings convert text into dense numerical vectors where semantically similar text has similar vectors. They enable semantic search, clustering, and retrieval in RAG systems.",
     "keywords": [
-      "generative-ai",
-      "gen-ai",
-      "content-generation",
-      "AI-generation",
+      "embeddings",
+      "vector-representation",
+      "semantic-search",
       "RAG",
-      "retrieval-augmented-generation"
+      "NLP"
     ]
   },
   {
@@ -743,12 +714,11 @@
     "answer": 1,
     "explain": "Few-shot prompting includes example input-output pairs in the prompt to demonstrate the desired format and behavior to the LLM, improving performance on structured tasks without fine-tuning.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "fine-tuning",
-      "model-adaptation"
+      "few-shot-prompting",
+      "in-context-learning",
+      "examples",
+      "prompt-engineering",
+      "LLM"
     ]
   },
   {
@@ -763,12 +733,11 @@
     "answer": 3,
     "explain": "Chain-of-thought prompting asks the model to show intermediate reasoning steps before the final answer. This significantly improves accuracy on complex reasoning, math, and logic tasks.",
     "keywords": [
+      "chain-of-thought",
+      "reasoning",
+      "prompt-engineering",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "Amazon-Lex",
-      "chatbot"
+      "step-by-step"
     ]
   },
   {
@@ -781,14 +750,13 @@
       "Fine-tuning is cheaper; RAG requires expensive GPU training"
     ],
     "answer": 2,
-    "explain": "Fine-tuning permanently modifies model weights through supervised training, improving style and task performance. RAG retrieves external knowledge at inference time without modifying the model, keeping knowledge updatable.",
+    "explain": "Fine-tuning updates model weights through gradient descent on labeled examples, permanently encoding knowledge into the model \u2014 but requires retraining to update. RAG retrieves relevant documents from an external store at inference time, keeping knowledge updatable without any model changes. Option B incorrectly reverses this \u2014 RAG is more easily updated, fine-tuning is more permanent.",
     "keywords": [
+      "fine-tuning",
       "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "LLM",
-      "large-language-model"
+      "model-weights",
+      "inference",
+      "knowledge-base"
     ]
   },
   {
@@ -803,12 +771,11 @@
     "answer": 3,
     "explain": "Bedrock Knowledge Bases automates the entire RAG data pipeline: ingesting documents from S3, chunking them, generating embeddings, and storing them in a managed vector store for semantic retrieval.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
+      "Amazon-Bedrock",
+      "Knowledge-Bases",
       "RAG",
-      "retrieval-augmented-generation"
+      "document-ingestion",
+      "vector-store"
     ]
   },
   {
@@ -824,11 +791,10 @@
     "explain": "Amazon Bedrock Guardrails lets you configure topic filters, content filters, PII redaction, and word blocklists to control what topics the model can discuss and prevent information leakage.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "LLM",
-      "large-language-model"
+      "Guardrails",
+      "content-filtering",
+      "topic-restrictions",
+      "PII-redaction"
     ]
   },
   {
@@ -843,12 +809,11 @@
     "answer": 2,
     "explain": "Grounding anchors LLM responses to external, verified data (through RAG or tool use), reducing hallucinations by ensuring responses are based on retrieved facts rather than model memorization.",
     "keywords": [
+      "grounding",
       "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "hallucination",
-      "model-accuracy"
+      "hallucination-reduction",
+      "factual-accuracy",
+      "LLM"
     ]
   },
   {
@@ -861,14 +826,13 @@
       "AWS Lambda with model containers"
     ],
     "answer": 2,
-    "explain": "Bedrock Provisioned Throughput reserves model capacity for consistent, low-latency inference at predictable costs, suitable for production workloads requiring guaranteed throughput.",
+    "explain": "Bedrock Provisioned Throughput purchases model units (MUs) that reserve dedicated model capacity, providing guaranteed throughput and consistent latency. For production applications with predictable, high volume, Provisioned Throughput typically has lower per-token costs than on-demand. On-demand inference (option B) is better for variable or low-volume traffic with no upfront commitment.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "SageMaker",
-      "ML-training"
+      "Provisioned-Throughput",
+      "latency",
+      "production-AI",
+      "reserved-capacity"
     ]
   },
   {
@@ -883,12 +847,12 @@
     "answer": 3,
     "explain": "Amazon OpenSearch Serverless (with vector engine) and Amazon Aurora with pgvector support vector similarity search. Bedrock Knowledge Bases integrates with these for managed RAG vector storage.",
     "keywords": [
+      "vector-database",
+      "OpenSearch",
+      "pgvector",
+      "Aurora",
       "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "Amazon-Bedrock",
-      "bedrock"
+      "embeddings"
     ]
   },
   {
@@ -903,12 +867,11 @@
     "answer": 0,
     "explain": "System prompts define the LLM's role, behavior, tone, constraints, and instructions at the start of a conversation. They shape all subsequent responses without requiring user input.",
     "keywords": [
+      "system-prompts",
+      "persona",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "model-inference",
-      "prediction"
+      "prompt-engineering",
+      "behavior-constraints"
     ]
   },
   {
@@ -921,14 +884,13 @@
       "Increase the temperature parameter for more creative summaries"
     ],
     "answer": 2,
-    "explain": "Chain-of-thought prompting guides the model to systematically analyze each section step by step, reducing the chance of important clauses being skipped in complex document summarization tasks.",
+    "explain": "Chain-of-thought prompting ('Analyze each clause in order: 1. Parties, 2. Obligations, 3. Termination...') systematically directs the model through all contract sections, preventing key clauses from being skipped. Reducing temperature (option D) makes outputs more deterministic but doesn't address comprehensiveness. The clause-by-clause structure is more effective than relying on free-form summarization.",
     "keywords": [
+      "chain-of-thought",
+      "document-summarization",
+      "prompt-engineering",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "Amazon-Lex",
-      "chatbot"
+      "legal-AI"
     ]
   },
   {
@@ -943,12 +905,11 @@
     "answer": 1,
     "explain": "Tokens are the basic units LLMs process. A token is roughly 3-4 characters or 0.75 words. LLM pricing, context windows, and throughput are all measured in tokens.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
+      "tokens",
       "tokenization",
-      "tokens"
+      "LLM",
+      "context-window",
+      "pricing"
     ]
   },
   {
@@ -964,11 +925,10 @@
     "explain": "Bedrock Agents with action groups use Lambda functions to call external APIs and databases in real time. The agent decides when to call which action based on the conversation context.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "fine-tuning",
-      "model-adaptation"
+      "Bedrock-Agents",
+      "action-groups",
+      "Lambda",
+      "tool-use"
     ]
   },
   {
@@ -983,12 +943,11 @@
     "answer": 1,
     "explain": "Zero-shot classification leverages a foundation model's broad pre-trained knowledge to classify inputs into categories it has never explicitly been trained on, using only a task description.",
     "keywords": [
+      "zero-shot",
       "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "RAG",
-      "retrieval-augmented-generation"
+      "classification",
+      "generalization",
+      "FM"
     ]
   },
   {
@@ -1003,12 +962,11 @@
     "answer": 2,
     "explain": "Transformers use self-attention to compute relationships between all tokens simultaneously, regardless of distance. This parallel processing and long-range dependency modeling is why transformers outperform RNNs on language tasks.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "vector-database",
-      "embeddings"
+      "transformer",
+      "attention-mechanism",
+      "self-attention",
+      "parallel-processing",
+      "LLM"
     ]
   },
   {
@@ -1023,12 +981,11 @@
     "answer": 1,
     "explain": "Multimodal models accept inputs in multiple formats (text, images, audio). Models like Claude claude-sonnet-4-6 can analyze images and text together, enabling tasks like visual question answering.",
     "keywords": [
+      "multimodal",
+      "vision-language",
+      "image-text",
       "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "fine-tuning",
-      "model-adaptation"
+      "Claude"
     ]
   },
   {
@@ -1041,14 +998,13 @@
       "When the task requires accessing information newer than the model's training cutoff"
     ],
     "answer": 1,
-    "explain": "Fine-tuning is appropriate when prompt engineering cannot achieve required performance — typically for consistent style, specialized vocabulary, or complex domain knowledge. It permanently modifies model behavior through supervised training.",
+    "explain": "Fine-tuning is appropriate when prompt engineering cannot achieve required performance \u2014 typically for consistent style, specialized vocabulary, or complex domain knowledge. It permanently modifies model behavior through supervised training.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
+      "fine-tuning",
       "prompt-engineering",
-      "prompt-design"
+      "domain-adaptation",
+      "foundation-models",
+      "model-customization"
     ]
   },
   {
@@ -1063,12 +1019,11 @@
     "answer": 2,
     "explain": "Providing the database schema in the system prompt grounds the model's SQL generation in actual table and column names, significantly reducing hallucinated table names and incorrect queries.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "Amazon-Bedrock",
-      "bedrock"
+      "system-prompts",
+      "grounding",
+      "SQL-generation",
+      "hallucination-reduction",
+      "prompt-engineering"
     ]
   },
   {
@@ -1081,14 +1036,13 @@
       "Bedrock provides lower inference costs in all scenarios"
     ],
     "answer": 0,
-    "explain": "Amazon Bedrock is fully managed — no infrastructure to provision, patch, or scale. You pay per token with no upfront costs, while self-hosting requires GPU instances, serving frameworks, and operational overhead.",
+    "explain": "Amazon Bedrock is fully managed \u2014 no infrastructure to provision, patch, or scale. You pay per token with no upfront costs, while self-hosting requires GPU instances, serving frameworks, and operational overhead.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
       "Amazon-Bedrock",
-      "bedrock"
+      "serverless-AI",
+      "managed-FM",
+      "infrastructure",
+      "cost-optimization"
     ]
   },
   {
@@ -1103,12 +1057,11 @@
     "answer": 3,
     "explain": "Running automated unit tests on generated code and measuring pass rates provides objective, scalable code quality evaluation. This is more reliable than BLEU scores for code and more scalable than human review.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
+      "code-generation",
+      "unit-tests",
+      "model-evaluation",
       "LLM",
-      "large-language-model"
+      "quality-metrics"
     ]
   },
   {
@@ -1121,14 +1074,13 @@
       "Top-P (nucleus sampling) controlling the cumulative probability threshold"
     ],
     "answer": 3,
-    "explain": "Top-P (nucleus sampling) selects tokens from the smallest set whose cumulative probability exceeds P. Lower values produce focused, predictable outputs; higher values allow more diverse token selection.",
+    "explain": "Top-P (nucleus sampling) dynamically selects from the smallest vocabulary subset whose cumulative probability exceeds P. At top-p=0.9, the model only considers the top tokens covering 90% of probability mass. Unlike temperature (option A) which scales the entire distribution, top-p directly controls the candidate pool size, providing more nuanced diversity control.",
     "keywords": [
-      "tokenization",
-      "tokens",
-      "context-window",
-      "LLM",
-      "temperature",
-      "sampling"
+      "top-p",
+      "nucleus-sampling",
+      "sampling",
+      "LLM-inference",
+      "diversity"
     ]
   },
   {
@@ -1143,12 +1095,11 @@
     "answer": 2,
     "explain": "System prompt instructions are the most effective way to enforce consistent output formats like citations. Instructing the model to always quote source clauses directly improves traceability and reduces fabricated references.",
     "keywords": [
-      "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "fine-tuning",
-      "model-adaptation"
+      "system-prompts",
+      "citations",
+      "prompt-engineering",
+      "LLM",
+      "legal-AI"
     ]
   },
   {
@@ -1163,12 +1114,11 @@
     "answer": 1,
     "explain": "Prompt injection is an attack where malicious input tries to override the system prompt, changing model behavior or extracting confidential information. Input validation and Bedrock Guardrails help mitigate this.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "Amazon-Bedrock",
-      "bedrock"
+      "prompt-injection",
+      "LLM-security",
+      "adversarial-attack",
+      "Bedrock-Guardrails",
+      "AI-safety"
     ]
   },
   {
@@ -1183,12 +1133,11 @@
     "answer": 0,
     "explain": "A large context window is essential for processing long documents in a single request. Models with 100K+ token context windows can process entire legal documents without chunking.",
     "keywords": [
+      "context-window",
+      "long-documents",
+      "tokens",
       "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "tokenization",
-      "tokens"
+      "Claude"
     ]
   },
   {
@@ -1203,12 +1152,11 @@
     "answer": 2,
     "explain": "Anthropic's Claude models (available on Bedrock) are designed with safety as a core principle using Constitutional AI, with strong performance on complex reasoning, analysis, and instruction-following tasks.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
+      "Anthropic",
+      "Claude",
       "Amazon-Bedrock",
-      "bedrock"
+      "Constitutional-AI",
+      "safety-alignment"
     ]
   },
   {
@@ -1224,11 +1172,10 @@
     "explain": "Amazon Bedrock hosts image generation models including Amazon Titan Image Generator and Stability AI's Stable Diffusion, enabling text-to-image generation via API without managing model infrastructure.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "Amazon-Comprehend",
-      "NLP"
+      "image-generation",
+      "Titan-Image-Generator",
+      "Stable-Diffusion",
+      "generative-AI"
     ]
   },
   {
@@ -1243,12 +1190,11 @@
     "answer": 1,
     "explain": "Continued pre-training trains a foundation model further on domain-specific unlabeled text (e.g., medical literature, legal documents) to improve its knowledge of that domain before task-specific fine-tuning.",
     "keywords": [
+      "continued-pre-training",
+      "domain-adaptation",
       "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "fine-tuning",
-      "model-adaptation"
+      "unlabeled-data",
+      "medical-AI"
     ]
   },
   {
@@ -1263,12 +1209,11 @@
     "answer": 2,
     "explain": "Amazon Bedrock Model Evaluation allows you to automatically evaluate multiple foundation models against custom prompts and metrics, comparing quality, accuracy, and toxicity to select the best model for your use case.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
       "Amazon-Bedrock",
-      "bedrock"
+      "Model-Evaluation",
+      "model-selection",
+      "benchmarking",
+      "quality-metrics"
     ]
   },
   {
@@ -1281,14 +1226,13 @@
       "Improves retrieval accuracy in RAG applications"
     ],
     "answer": 0,
-    "explain": "RLHF trains a reward model from human preference data, then uses reinforcement learning to optimize the LLM toward human-preferred outputs. This alignment technique improves helpfulness, safety, and instruction-following.",
+    "explain": "RLHF first trains a reward model from human preference comparisons (which of two outputs is better), then uses PPO (Proximal Policy Optimization) to fine-tune the LLM to maximize the reward model's score. This alignment technique is how ChatGPT, Claude, and other instruction-tuned models achieve helpful, harmless, and honest behavior.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "RAG",
-      "retrieval-augmented-generation"
+      "RLHF",
+      "alignment",
+      "human-feedback",
+      "Constitutional-AI",
+      "safety"
     ]
   },
   {
@@ -1304,11 +1248,10 @@
     "explain": "RAG retrieval quality depends on chunking strategy (chunk size, overlap) and embedding model quality. Poor chunking breaks context across chunks; weak embeddings fail to capture semantic meaning for accurate retrieval.",
     "keywords": [
       "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "LLM",
-      "large-language-model"
+      "chunking",
+      "embeddings",
+      "retrieval-quality",
+      "vector-search"
     ]
   },
   {
@@ -1323,12 +1266,11 @@
     "answer": 3,
     "explain": "For structured, template-driven tasks like product descriptions, a well-prompted smaller model with few-shot examples often matches larger model quality at significantly lower cost and latency.",
     "keywords": [
+      "cost-optimization",
+      "few-shot",
+      "prompt-engineering",
       "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "RAG",
-      "retrieval-augmented-generation"
+      "product-generation"
     ]
   },
   {
@@ -1344,11 +1286,10 @@
     "explain": "Bedrock model invocation logging captures all API inputs and outputs to S3 or CloudWatch, enabling auditing, debugging, compliance, and building evaluation datasets for model improvement.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "model-inference",
-      "prediction"
+      "invocation-logging",
+      "audit",
+      "compliance",
+      "CloudWatch"
     ]
   },
   {
@@ -1363,12 +1304,11 @@
     "answer": 1,
     "explain": "Models supporting structured output (JSON mode) are constrained to produce valid JSON. Combined with clear prompt instructions specifying the schema, this reliably produces parseable outputs for downstream systems.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "temperature",
-      "sampling"
+      "structured-output",
+      "JSON-mode",
+      "LLM",
+      "data-integration",
+      "prompt-engineering"
     ]
   },
   {
@@ -1383,12 +1323,11 @@
     "answer": 3,
     "explain": "AI agents combine LLMs with tool use (APIs, databases, code execution) to autonomously plan and execute multi-step tasks, making decisions dynamically based on intermediate results.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "LLM",
-      "large-language-model"
+      "AI-agent",
+      "agentic-AI",
+      "tool-use",
+      "multi-step-tasks",
+      "LLM"
     ]
   },
   {
@@ -1403,12 +1342,11 @@
     "answer": 2,
     "explain": "BLEU (Bilingual Evaluation Understudy) measures n-gram overlap between generated and reference text. It is widely used for machine translation evaluation, though human evaluation remains the gold standard for open-ended generation.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "model-evaluation",
-      "benchmarking"
+      "BLEU",
+      "evaluation-metrics",
+      "translation-quality",
+      "n-gram",
+      "NLP"
     ]
   },
   {
@@ -1423,12 +1361,11 @@
     "answer": 1,
     "explain": "Amazon Bedrock Batch Inference processes large volumes of records in a single job, offering significant cost savings (up to 50% less than on-demand) for non-time-sensitive bulk document processing.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
       "Amazon-Bedrock",
-      "bedrock"
+      "batch-inference",
+      "cost-optimization",
+      "bulk-processing",
+      "foundation-models"
     ]
   },
   {
@@ -1441,14 +1378,13 @@
       "Use spot instances for Bedrock inference"
     ],
     "answer": 1,
-    "explain": "Provisioned Throughput reserves model units for consistent throughput, providing lower per-token costs at high, predictable volumes and guaranteed latency — ideal for high-volume production workloads.",
+    "explain": "Provisioned Throughput reserves model units for consistent throughput, providing lower per-token costs at high, predictable volumes and guaranteed latency \u2014 ideal for high-volume production workloads.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "SageMaker",
-      "ML-training"
+      "Provisioned-Throughput",
+      "high-volume",
+      "cost-optimization",
+      "latency"
     ]
   },
   {
@@ -1461,14 +1397,13 @@
       "Feature engineering error in the model"
     ],
     "answer": 2,
-    "explain": "Algorithmic bias occurs when an ML model produces systematically unfair outcomes for certain groups, often because training data reflected historical discrimination. This causes real-world harm and legal liability.",
+    "explain": "Algorithmic bias in hiring tools typically stems from historical training data reflecting past discrimination \u2014 if women were historically underrepresented in certain roles, a model trained on historical hiring decisions learns those patterns. This violates equal employment opportunity laws and causes real harm to candidates, regardless of intent.",
     "keywords": [
-      "bias-detection",
-      "model-bias",
+      "algorithmic-bias",
       "fairness",
       "responsible-AI",
-      "model-training",
-      "ML-training"
+      "discrimination",
+      "hiring-AI"
     ]
   },
   {
@@ -1483,12 +1418,11 @@
     "answer": 0,
     "explain": "SageMaker Clarify detects statistical bias in training data and model predictions across demographic groups, and provides feature importance explanations (SHAP values) to make model decisions transparent.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
+      "SageMaker-Clarify",
       "bias-detection",
-      "model-bias"
+      "SHAP",
+      "explainability",
+      "fairness"
     ]
   },
   {
@@ -1503,12 +1437,11 @@
     "answer": 1,
     "explain": "Human-in-the-loop oversight ensures clinicians review and validate AI-assisted diagnoses before decisions affecting patient health. High-stakes applications require human judgment to catch errors and maintain accountability.",
     "keywords": [
+      "human-in-the-loop",
       "responsible-AI",
-      "AI-ethics",
-      "fairness",
-      "governance",
-      "model-training",
-      "ML-training"
+      "medical-AI",
+      "oversight",
+      "safety"
     ]
   },
   {
@@ -1523,11 +1456,10 @@
     "answer": 1,
     "explain": "Explainability (XAI) refers to techniques that help humans understand why an AI model made a specific prediction or decision. SHAP values and LIME are common methods used in SageMaker Clarify.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
       "explainability",
+      "XAI",
+      "SHAP",
+      "LIME",
       "model-interpretability"
     ]
   },
@@ -1535,20 +1467,19 @@
     "cat": "responsible-ai",
     "q": "A company wants to ensure their AI model's decisions can be audited and explained to regulators. Which principle of responsible AI does this address?",
     "options": [
-      "Transparency and explainability — making AI decisions interpretable",
-      "Robustness — ensuring consistent performance",
-      "Inclusivity — serving all demographic groups equally",
-      "Privacy — protecting user data from disclosure"
+      "Transparency and explainability \u2014 making AI decisions interpretable",
+      "Robustness \u2014 ensuring consistent performance",
+      "Inclusivity \u2014 serving all demographic groups equally",
+      "Privacy \u2014 protecting user data from disclosure"
     ],
     "answer": 0,
-    "explain": "Transparency and explainability ensure AI decisions can be understood, audited, and justified to stakeholders including regulators, users, and affected parties — essential for building trust and accountability.",
+    "explain": "Transparency and explainability ensure AI decisions can be understood, audited, and justified to stakeholders including regulators, users, and affected parties \u2014 essential for building trust and accountability.",
     "keywords": [
+      "transparency",
+      "explainability",
+      "AI-governance",
       "responsible-AI",
-      "AI-ethics",
-      "fairness",
-      "governance",
-      "data-privacy",
-      "PII"
+      "auditing"
     ]
   },
   {
@@ -1561,14 +1492,13 @@
       "Add more human reviewers to catch model errors"
     ],
     "answer": 2,
-    "explain": "Auditing for bias using fairness metrics (equal opportunity, demographic parity) identifies whether the model systematically underperforms for specific groups, enabling targeted remediation.",
+    "explain": "Fairness metrics like demographic parity (equal prediction rates across groups), equalized odds (equal error rates), and disparate impact ratio quantify whether the model treats groups differently. SageMaker Clarify automates this analysis. Simply retraining on more data (option A) without addressing the root cause won't eliminate systematic bias.",
     "keywords": [
-      "bias-detection",
-      "model-bias",
-      "fairness",
+      "bias-audit",
+      "fairness-metrics",
       "responsible-AI",
-      "model-accuracy",
-      "evaluation-metrics"
+      "demographic-parity",
+      "content-moderation"
     ]
   },
   {
@@ -1583,12 +1513,11 @@
     "answer": 3,
     "explain": "Privacy by design integrates data minimization, access controls, anonymization, and consent mechanisms into the AI system from the design phase, rather than retrofitting privacy controls after deployment.",
     "keywords": [
-      "model-inference",
-      "prediction",
-      "deployment",
-      "serving",
-      "data-privacy",
-      "PII"
+      "privacy-by-design",
+      "GDPR",
+      "data-minimization",
+      "responsible-AI",
+      "data-protection"
     ]
   },
   {
@@ -1601,14 +1530,13 @@
       "The right to be forgotten conflicts with trained models that may have learned from that customer's data"
     ],
     "answer": 3,
-    "explain": "The right to erasure under GDPR is complex for ML models because models may have learned patterns from that individual's data. Techniques like machine unlearning, differential privacy, and model retraining address this challenge.",
+    "explain": "The right to erasure (GDPR Article 17) creates a technical challenge for ML because deleting a record from a database doesn't remove learned patterns. Techniques being developed include machine unlearning (updating model weights to remove influence of specific data), retraining from scratch, and differential privacy during training to limit individual memorization.",
     "keywords": [
-      "model-training",
-      "ML-training",
-      "epochs",
-      "gradient-descent",
-      "Amazon-Lex",
-      "chatbot"
+      "GDPR",
+      "right-to-erasure",
+      "machine-unlearning",
+      "data-privacy",
+      "responsible-AI"
     ]
   },
   {
@@ -1621,14 +1549,13 @@
       "A pricing document outlining model inference costs"
     ],
     "answer": 2,
-    "explain": "Model cards document a model's intended purpose, performance across demographic groups, known limitations, potential harms, and ethical considerations — promoting transparency and informed deployment decisions.",
+    "explain": "Model cards document a model's intended purpose, performance across demographic groups, known limitations, potential harms, and ethical considerations \u2014 promoting transparency and informed deployment decisions.",
     "keywords": [
-      "model-inference",
-      "prediction",
-      "deployment",
-      "serving",
-      "cost-optimization",
-      "model-efficiency"
+      "model-card",
+      "documentation",
+      "responsible-AI",
+      "transparency",
+      "AI-governance"
     ]
   },
   {
@@ -1641,14 +1568,13 @@
       "Intellectual property violation through training data reproduction"
     ],
     "answer": 2,
-    "explain": "Deepfakes are synthetic media depicting real people in fabricated scenarios. They pose risks including disinformation, reputation damage, fraud, and election manipulation — a key responsible AI concern for generative models.",
+    "explain": "Deepfakes are synthetic media depicting real people in fabricated scenarios. They pose risks including disinformation, reputation damage, fraud, and election manipulation \u2014 a key responsible AI concern for generative models.",
     "keywords": [
-      "generative-ai",
-      "gen-ai",
-      "content-generation",
-      "AI-generation",
+      "deepfake",
+      "generative-AI",
+      "disinformation",
       "responsible-AI",
-      "AI-ethics"
+      "synthetic-media"
     ]
   },
   {
@@ -1663,32 +1589,31 @@
     "answer": 3,
     "explain": "Amazon Comprehend detects PII entities in text, and Amazon Bedrock Guardrails can automatically redact PII from LLM inputs and outputs, helping applications comply with privacy regulations.",
     "keywords": [
-      "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "LLM",
-      "large-language-model"
+      "PII-detection",
+      "Amazon-Comprehend",
+      "Bedrock-Guardrails",
+      "data-privacy",
+      "redaction"
     ]
   },
   {
     "cat": "responsible-ai",
     "q": "A company's AI model is used in a high-stakes financial lending decision. Regulators require the company to explain why a loan was denied. What AI principle is required?",
     "options": [
-      "Privacy — protecting applicant data from disclosure",
-      "Fairness — equal approval rates across demographic groups",
-      "Model robustness — consistent performance across conditions",
-      "Explainability — providing interpretable reasons for individual model decisions"
+      "Privacy \u2014 protecting applicant data from disclosure",
+      "Fairness \u2014 equal approval rates across demographic groups",
+      "Model robustness \u2014 consistent performance across conditions",
+      "Explainability \u2014 providing interpretable reasons for individual model decisions"
     ],
     "answer": 3,
     "explain": "Explainability is legally required for high-stakes automated decisions in regulated industries. Techniques like SHAP values, LIME, or counterfactual explanations provide interpretable reasons for individual predictions.",
     "keywords": [
-      "data-privacy",
-      "PII",
-      "responsible-AI",
-      "compliance",
       "explainability",
-      "model-interpretability"
+      "SHAP",
+      "LIME",
+      "responsible-AI",
+      "financial-AI",
+      "compliance"
     ]
   },
   {
@@ -1701,34 +1626,32 @@
       "Using human feedback to continuously retrain models in production"
     ],
     "answer": 0,
-    "explain": "Human-in-the-loop keeps humans in the decision-making process for high-stakes AI outputs, providing oversight, catching errors, and maintaining accountability — critical for medical, legal, and financial AI applications.",
+    "explain": "Human-in-the-loop keeps humans in the decision-making process for high-stakes AI outputs, providing oversight, catching errors, and maintaining accountability \u2014 critical for medical, legal, and financial AI applications.",
     "keywords": [
+      "human-in-the-loop",
       "responsible-AI",
-      "AI-ethics",
-      "fairness",
-      "governance",
-      "model-training",
-      "ML-training"
+      "oversight",
+      "accountability",
+      "high-stakes-AI"
     ]
   },
   {
     "cat": "responsible-ai",
     "q": "An AI-powered hiring tool consistently scores candidates differently based on their name. What is the root cause and responsible AI solution?",
     "options": [
-      "Training data likely contains historical hiring bias — audit and debias training data and model outputs",
-      "The model is overfitting — increase regularization",
-      "The feature engineering is incorrect — remove the name field only",
-      "The model context window is too small — increase capacity"
+      "Training data likely contains historical hiring bias \u2014 audit and debias training data and model outputs",
+      "The model is overfitting \u2014 increase regularization",
+      "The feature engineering is incorrect \u2014 remove the name field only",
+      "The model context window is too small \u2014 increase capacity"
     ],
     "answer": 0,
-    "explain": "Historical bias in training data (e.g., past hiring patterns reflecting discrimination) is learned by the model. Solutions include auditing training data for representation, removing proxies for protected attributes, and testing for disparate impact.",
+    "explain": "Historical hiring data encoding discrimination is the root cause. Solutions go beyond just removing the name field (option C) \u2014 proxy variables (school, location) can correlate with race or gender and must also be audited. Bias mitigation requires: representative training data, fairness-constrained optimization, and testing with diverse name patterns before deployment.",
     "keywords": [
-      "responsible-AI",
-      "AI-ethics",
+      "training-data-bias",
+      "historical-bias",
       "fairness",
-      "governance",
-      "bias-detection",
-      "model-bias"
+      "responsible-AI",
+      "debiasing"
     ]
   },
   {
@@ -1744,9 +1667,10 @@
     "explain": "Amazon Bedrock encrypts all data in transit using TLS and at rest using AWS KMS by default. You can use customer-managed KMS keys for additional control over encryption.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service"
+      "encryption",
+      "KMS",
+      "TLS",
+      "data-security"
     ]
   },
   {
@@ -1761,12 +1685,11 @@
     "answer": 3,
     "explain": "The bedrock:InvokeModel IAM action controls who can call foundation models for inference. Restricting this action ensures only authorized users and roles can generate responses from Bedrock models.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "Amazon-Bedrock",
-      "bedrock"
+      "IAM",
+      "bedrock-InvokeModel",
+      "access-control",
+      "least-privilege",
+      "Amazon-Bedrock"
     ]
   },
   {
@@ -1781,12 +1704,11 @@
     "answer": 3,
     "explain": "Bedrock Guardrails allows configuring content filters for specific harmful categories (violence, illegal activity, hate speech) and custom topic restrictions, blocking policy-violating inputs and outputs automatically.",
     "keywords": [
-      "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "guardrails",
-      "content-filtering"
+      "Bedrock-Guardrails",
+      "content-filtering",
+      "responsible-AI",
+      "harmful-content",
+      "Amazon-Bedrock"
     ]
   },
   {
@@ -1802,11 +1724,10 @@
     "explain": "Bedrock model invocation logging captures every prompt and response to S3, while CloudTrail records all API calls. Together they provide the complete audit trail required for regulatory compliance in financial services.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "SageMaker",
-      "ML-training"
+      "invocation-logging",
+      "CloudTrail",
+      "compliance",
+      "audit"
     ]
   },
   {
@@ -1821,10 +1742,11 @@
     "answer": 2,
     "explain": "AWS PrivateLink (VPC endpoint) for Bedrock routes API traffic through the AWS private network, eliminating exposure to the public internet and meeting security requirements for sensitive workloads.",
     "keywords": [
+      "VPC-endpoint",
+      "PrivateLink",
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service"
+      "network-security",
+      "private-connectivity"
     ]
   },
   {
@@ -1837,14 +1759,13 @@
       "Customers manage the underlying GPU infrastructure; AWS manages the model weights"
     ],
     "answer": 1,
-    "explain": "AWS manages Bedrock infrastructure, model availability, and physical security. Customers are responsible for IAM access control, data classification, prompt safety, output validation, Guardrails configuration, and application-level security.",
+    "explain": "In the shared responsibility model: AWS secures the Bedrock infrastructure (physical hardware, model serving, network isolation) and maintains model availability. Customers are responsible for: IAM policies controlling who can invoke models, the prompts sent to models, data privacy in inputs/outputs, Guardrails configuration, and application-level security controls.",
     "keywords": [
+      "shared-responsibility",
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "classification",
-      "supervised-learning"
+      "AWS-security",
+      "customer-responsibility",
+      "cloud-security"
     ]
   },
   {
@@ -1857,14 +1778,13 @@
       "Launch SageMaker training jobs inside a VPC with no internet access and S3 VPC endpoints"
     ],
     "answer": 3,
-    "explain": "Running SageMaker training jobs in a VPC with network isolation and S3 VPC endpoints ensures training data stays on the AWS private network, never traversing the internet — meeting healthcare data security requirements.",
+    "explain": "Running SageMaker training jobs in a VPC with network isolation and S3 VPC endpoints ensures training data stays on the AWS private network, never traversing the internet \u2014 meeting healthcare data security requirements.",
     "keywords": [
       "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "model-training",
-      "epochs"
+      "VPC",
+      "network-isolation",
+      "HIPAA",
+      "data-security"
     ]
   },
   {
@@ -1879,12 +1799,11 @@
     "answer": 3,
     "explain": "SageMaker Model Monitor continuously compares real-time inference data against a baseline captured at training time, detecting data quality issues, feature drift, and model quality degradation in production.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "bias-detection",
-      "model-bias"
+      "SageMaker-Model-Monitor",
+      "data-drift",
+      "model-quality",
+      "production-monitoring",
+      "alerts"
     ]
   },
   {
@@ -1899,12 +1818,11 @@
     "answer": 2,
     "explain": "Blocking public access and applying least-privilege IAM policies ensures only authorized SageMaker roles can access training data. Combined with SSE-KMS encryption, this protects sensitive ML training datasets.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "model-training",
-      "epochs"
+      "S3",
+      "IAM",
+      "least-privilege",
+      "bucket-policy",
+      "data-security"
     ]
   },
   {
@@ -1919,12 +1837,12 @@
     "answer": 2,
     "explain": "Amazon Bedrock inherits AWS compliance certifications including HIPAA eligibility, SOC 1/2/3, ISO 27001, and PCI DSS, enabling regulated industries to use foundation models while meeting compliance requirements.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
       "Amazon-Bedrock",
-      "bedrock"
+      "HIPAA",
+      "SOC",
+      "PCI-DSS",
+      "compliance",
+      "regulated-industries"
     ]
   },
   {
@@ -1939,12 +1857,11 @@
     "answer": 0,
     "explain": "Defense-in-depth against prompt injection combines input validation (filtering suspicious patterns), Bedrock Guardrails (topic restrictions), and strong prompt architecture (clear separation of system instructions from user input).",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "Amazon-Bedrock",
-      "bedrock"
+      "prompt-injection",
+      "Bedrock-Guardrails",
+      "input-validation",
+      "defense-in-depth",
+      "LLM-security"
     ]
   },
   {
@@ -1959,12 +1876,11 @@
     "answer": 1,
     "explain": "Customers are responsible for their fine-tuning data quality, representativeness, bias, and compliance with data licensing terms. AWS provides the secure infrastructure; the customer controls what data enters the training pipeline.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "Amazon-Bedrock",
-      "bedrock"
+      "shared-responsibility",
+      "fine-tuning",
+      "data-quality",
+      "bias",
+      "customer-responsibility"
     ]
   },
   {
@@ -1979,12 +1895,11 @@
     "answer": 1,
     "explain": "Least privilege means granting only the specific Bedrock actions (e.g., bedrock:InvokeModel) and specific model ARNs needed by each component. This minimizes the blast radius if credentials are compromised.",
     "keywords": [
+      "least-privilege",
+      "IAM",
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "Amazon-Lex",
-      "chatbot"
+      "access-control",
+      "security"
     ]
   },
   {
@@ -1999,12 +1914,11 @@
     "answer": 1,
     "explain": "GDPR requires EU personal data to remain within the EU. Selecting eu-west-1 or eu-central-1 for Bedrock ensures inference and any logged data stay within EU boundaries, meeting data residency requirements.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
+      "GDPR",
+      "data-residency",
       "Amazon-Bedrock",
-      "bedrock"
+      "EU",
+      "compliance"
     ]
   },
   {
@@ -2017,30 +1931,32 @@
       "Encrypting AI outputs for secure transmission"
     ],
     "answer": 0,
-    "explain": "AI watermarking embeds imperceptible signals (statistical patterns, metadata) in generated content that can be detected to verify AI origin, helping combat deepfakes, disinformation, and academic dishonesty.",
+    "explain": "AI watermarking embeds imperceptible statistical signals in generated content (text token probability biases, image frequency domain modifications) that can be detected with a secret key. This helps combat deepfakes and verify AI authorship. Unlike metadata (option C), watermarks survive format conversion and basic editing attempts.",
     "keywords": [
-      "embeddings",
-      "vector-representation",
-      "semantic-search",
-      "vector-store"
+      "watermarking",
+      "AI-detection",
+      "synthetic-content",
+      "responsible-AI",
+      "deepfake"
     ]
   },
   {
     "cat": "ai-security",
     "q": "A company needs to ensure their ML model in production cannot be reverse-engineered by analyzing its API responses. What is this threat called and how is it mitigated?",
     "options": [
-      "Model extraction attack — mitigated through rate limiting, output perturbation, and access controls",
-      "Prompt injection — mitigated through input validation",
-      "Adversarial attack — mitigated through adversarial training",
-      "Data poisoning — mitigated through training data validation"
+      "Model extraction attack \u2014 mitigated through rate limiting, output perturbation, and access controls",
+      "Prompt injection \u2014 mitigated through input validation",
+      "Adversarial attack \u2014 mitigated through adversarial training",
+      "Data poisoning \u2014 mitigated through training data validation"
     ],
     "answer": 0,
     "explain": "Model extraction attacks use many API queries to reconstruct an approximation of a proprietary model. Rate limiting API calls, adding slight output perturbation, and monitoring for systematic querying patterns help mitigate this threat.",
     "keywords": [
-      "model-training",
-      "ML-training",
-      "epochs",
-      "gradient-descent"
+      "model-extraction",
+      "API-security",
+      "rate-limiting",
+      "model-stealing",
+      "AI-security"
     ]
   },
   {
@@ -2055,12 +1971,11 @@
     "answer": 1,
     "explain": "Regression predicts continuous numeric outputs. Predicting house prices is a classic regression problem because the output (price) is a continuous value rather than a discrete category.",
     "keywords": [
-      "classification",
-      "supervised-learning",
-      "labeled-data",
-      "prediction",
       "regression",
-      "continuous-output"
+      "continuous-output",
+      "supervised-learning",
+      "prediction",
+      "house-prices"
     ]
   },
   {
@@ -2075,12 +1990,11 @@
     "answer": 3,
     "explain": "SageMaker Canvas is a no-code ML tool that lets business analysts build and deploy ML models through a visual interface without writing code, using AutoML under the hood.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "model-training",
-      "epochs"
+      "SageMaker-Canvas",
+      "no-code-ML",
+      "AutoML",
+      "business-analyst",
+      "point-and-click"
     ]
   },
   {
@@ -2093,14 +2007,14 @@
       "The model requires more features to improve performance"
     ],
     "answer": 1,
-    "explain": "With 99% legitimate transactions, a model that always predicts 'not fraud' achieves 99% accuracy but detects zero fraud cases. Use precision, recall, and F1 instead of accuracy for imbalanced datasets.",
+    "explain": "With 99% legitimate transactions, the naive classifier always predicting 'legitimate' achieves 99% accuracy but 0% fraud detection \u2014 perfectly accurate and completely useless. This is the accuracy paradox. Use F1 score, precision-recall AUC, or Matthews Correlation Coefficient for imbalanced classification to get meaningful performance measurement.",
     "keywords": [
-      "model-training",
-      "ML-training",
-      "epochs",
-      "gradient-descent",
-      "overfitting",
-      "regularization"
+      "class-imbalance",
+      "accuracy-paradox",
+      "precision",
+      "recall",
+      "F1",
+      "fraud-detection"
     ]
   },
   {
@@ -2115,12 +2029,11 @@
     "answer": 2,
     "explain": "SageMaker Clarify detects statistical bias in training data and model predictions, and provides SHAP-based feature importance explanations to help understand why a model makes specific predictions.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
+      "SageMaker-Clarify",
       "bias-detection",
-      "model-bias"
+      "SHAP",
+      "explainability",
+      "fairness"
     ]
   },
   {
@@ -2135,12 +2048,11 @@
     "answer": 1,
     "explain": "Amazon Rekognition provides real-time computer vision capabilities including person detection, activity recognition, and face analysis, purpose-built for video and image analysis use cases.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "Amazon-Comprehend",
-      "NLP"
+      "Amazon-Rekognition",
+      "computer-vision",
+      "real-time-detection",
+      "video-analysis",
+      "security-AI"
     ]
   },
   {
@@ -2155,12 +2067,11 @@
     "answer": 3,
     "explain": "L1 (Lasso) and L2 (Ridge) regularization add penalty terms to the loss function proportional to weight magnitude, discouraging complex models and reducing overfitting on training data.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "model-training",
-      "ML-training"
+      "regularization",
+      "L1",
+      "L2",
+      "overfitting",
+      "model-training"
     ]
   },
   {
@@ -2172,8 +2083,8 @@
       "SageMaker Feature Store for medical features",
       "Amazon Comprehend Medical for clinical NLP"
     ],
-    "answer": 3,
-    "explain": "Amazon Transcribe Medical is optimized for medical speech-to-text with healthcare terminology. Custom vocabulary in standard Transcribe can also add domain-specific terms to improve recognition accuracy.",
+    "answer": 0,
+    "explain": "Amazon Transcribe Medical is a speech recognition service optimized for medical terminology, enabling accurate transcription of clinical dictations. Amazon Comprehend Medical (option D) is an NLP service for analyzing existing medical text, not for converting speech to text.",
     "keywords": [
       "SageMaker",
       "ML-training",
@@ -2196,11 +2107,10 @@
     "explain": "SageMaker Batch Transform processes large datasets asynchronously offline. Real-time endpoints serve individual predictions with millisecond latency. Choose based on latency requirements and data volume.",
     "keywords": [
       "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "classification",
-      "supervised-learning"
+      "batch-transform",
+      "real-time-inference",
+      "latency",
+      "model-deployment"
     ]
   },
   {
@@ -2215,12 +2125,11 @@
     "answer": 0,
     "explain": "SageMaker Experiments automatically tracks training runs, hyperparameters, metrics, and artifacts, enabling teams to compare experiments and reproduce results across multiple model iterations.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "model-training",
-      "epochs"
+      "SageMaker-Experiments",
+      "experiment-tracking",
+      "ML-ops",
+      "reproducibility",
+      "model-comparison"
     ]
   },
   {
@@ -2233,12 +2142,13 @@
       "Amazon CloudWatch with anomaly detection"
     ],
     "answer": 1,
-    "explain": "Amazon Lookout for Metrics automatically detects anomalies in business metrics using ML, identifies root causes, and sends alerts — no ML expertise required.",
+    "explain": "Amazon Lookout for Metrics automatically detects anomalies in business metrics using ML, identifies root causes, and sends alerts \u2014 no ML expertise required.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML"
+      "Amazon-Lookout-for-Metrics",
+      "anomaly-detection",
+      "business-metrics",
+      "ML",
+      "no-code"
     ]
   },
   {
@@ -2253,10 +2163,11 @@
     "answer": 3,
     "explain": "Precision = True Positives / (True Positives + False Positives). It measures what fraction of positive predictions are actually correct. High precision means few false alarms.",
     "keywords": [
+      "precision",
+      "false-positives",
+      "evaluation-metrics",
       "classification",
-      "supervised-learning",
-      "labeled-data",
-      "prediction"
+      "fraud-detection"
     ]
   },
   {
@@ -2271,12 +2182,11 @@
     "answer": 3,
     "explain": "Amazon Textract extracts text and structured data (tables, forms, key-value pairs) from documents using ML-based OCR, going beyond simple text detection to understand document structure.",
     "keywords": [
-      "Amazon-Comprehend",
-      "NLP",
-      "text-analysis",
-      "entity-recognition",
-      "Amazon-Rekognition",
-      "image-recognition"
+      "Amazon-Textract",
+      "OCR",
+      "document-extraction",
+      "structured-data",
+      "text-extraction"
     ]
   },
   {
@@ -2291,10 +2201,11 @@
     "answer": 2,
     "explain": "SageMaker Model Registry provides model versioning, approval workflows, and lineage tracking. Teams register models, get approval, and deploy approved versions to production with governance controls.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML"
+      "SageMaker-Model-Registry",
+      "model-versioning",
+      "governance",
+      "MLOps",
+      "deployment"
     ]
   },
   {
@@ -2309,12 +2220,11 @@
     "answer": 1,
     "explain": "Topic modeling (like LDA or Amazon Comprehend Topics) discovers latent themes across documents without labeled data, automatically grouping reviews into thematic clusters.",
     "keywords": [
-      "classification",
-      "supervised-learning",
-      "labeled-data",
-      "prediction",
-      "clustering",
-      "unsupervised-learning"
+      "topic-modeling",
+      "LDA",
+      "Amazon-Comprehend",
+      "unsupervised-learning",
+      "NLP"
     ]
   },
   {
@@ -2329,12 +2239,11 @@
     "answer": 2,
     "explain": "SageMaker Model Monitor continuously monitors deployed models for data quality drift, model quality drift, bias drift, and feature attribution drift, alerting teams when production data deviates from training baselines.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "bias-detection",
-      "model-bias"
+      "SageMaker-Model-Monitor",
+      "data-quality",
+      "model-drift",
+      "production-monitoring",
+      "alerting"
     ]
   },
   {
@@ -2349,11 +2258,10 @@
     "answer": 3,
     "explain": "Transformers use self-attention to compute relationships between all tokens simultaneously, capturing long-range dependencies without the sequential bottleneck of RNNs, enabling massive parallelization during training.",
     "keywords": [
-      "classification",
-      "supervised-learning",
-      "labeled-data",
-      "prediction",
       "transformer",
+      "self-attention",
+      "parallel-processing",
+      "LLM",
       "attention-mechanism"
     ]
   },
@@ -2369,12 +2277,11 @@
     "answer": 2,
     "explain": "Anthropic Claude models are available through Amazon Bedrock and are known for safety alignment, strong instruction following, long context windows, and nuanced reasoning.",
     "keywords": [
+      "Anthropic",
+      "Claude",
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "AI-safety",
-      "content-filtering"
+      "safety-alignment",
+      "instruction-following"
     ]
   },
   {
@@ -2387,14 +2294,13 @@
       "Train a new foundation model from scratch on company data"
     ],
     "answer": 1,
-    "explain": "Prompt engineering with system prompts is the fastest, cheapest way to shape FM behavior. Fine-tuning is more expensive and training from scratch costs millions — start with prompting.",
+    "explain": "Prompt engineering with system prompts is the fastest, cheapest way to shape FM behavior. Fine-tuning is more expensive and training from scratch costs millions \u2014 start with prompting.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
+      "system-prompts",
+      "brand-voice",
       "prompt-engineering",
-      "prompt-design"
+      "cost-optimization",
+      "foundation-models"
     ]
   },
   {
@@ -2409,12 +2315,11 @@
     "answer": 0,
     "explain": "RLHF trains a reward model from human preference ratings, then uses reinforcement learning to optimize the LLM toward outputs humans rate as more helpful, harmless, and honest.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "LLM",
-      "large-language-model"
+      "RLHF",
+      "alignment",
+      "human-feedback",
+      "Constitutional-AI",
+      "safety"
     ]
   },
   {
@@ -2429,12 +2334,11 @@
     "answer": 2,
     "explain": "Amazon Titan Embeddings converts text into dense vector representations for semantic similarity search, powering RAG pipelines, recommendation systems, and document clustering.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
+      "Amazon-Titan",
+      "Titan-Embeddings",
       "embeddings",
-      "vector-representation"
+      "semantic-search",
+      "RAG"
     ]
   },
   {
@@ -2449,12 +2353,11 @@
     "answer": 3,
     "explain": "A large context window allows the model to process entire long documents in a single call. Models like Claude have 100K-200K token context windows, enabling full-document analysis.",
     "keywords": [
+      "context-window",
+      "long-documents",
       "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "LLM",
-      "large-language-model"
+      "tokens",
+      "Claude"
     ]
   },
   {
@@ -2469,12 +2372,11 @@
     "answer": 0,
     "explain": "Base models are trained to predict next tokens. Instruction-tuned models undergo supervised fine-tuning on instruction-response pairs plus RLHF, enabling them to follow user instructions and hold conversations.",
     "keywords": [
+      "instruction-tuning",
+      "base-model",
       "fine-tuning",
-      "model-adaptation",
-      "transfer-learning",
-      "domain-adaptation",
-      "tokenization",
-      "tokens"
+      "RLHF",
+      "LLM"
     ]
   },
   {
@@ -2489,12 +2391,11 @@
     "answer": 0,
     "explain": "LoRA freezes pre-trained model weights and injects small trainable rank-decomposition matrices. This dramatically reduces memory and compute requirements while achieving fine-tuning quality.",
     "keywords": [
+      "LoRA",
       "fine-tuning",
-      "model-adaptation",
-      "transfer-learning",
-      "domain-adaptation",
-      "tokenization",
-      "tokens"
+      "parameter-efficient",
+      "adapter",
+      "model-customization"
     ]
   },
   {
@@ -2509,12 +2410,11 @@
     "answer": 3,
     "explain": "Multimodal models process multiple data modalities. For example, they can analyze images and generate text descriptions, or accept image+text inputs and produce text outputs (like Claude or GPT-4V).",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
       "multimodal",
-      "vision-language"
+      "vision-language",
+      "image-text",
+      "foundation-models",
+      "Claude"
     ]
   },
   {
@@ -2529,12 +2429,11 @@
     "answer": 1,
     "explain": "SageMaker JumpStart provides a hub of pre-trained models (Llama, Mistral, Stable Diffusion, etc.) that can be deployed to endpoints or fine-tuned with one click, accelerating time to production.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "SageMaker",
-      "ML-training"
+      "SageMaker-JumpStart",
+      "pre-trained-models",
+      "one-click-deployment",
+      "model-hub",
+      "FM"
     ]
   },
   {
@@ -2549,12 +2448,11 @@
     "answer": 1,
     "explain": "Inference is the process of using a trained model to generate predictions or outputs from new inputs. In LLMs, inference produces text responses. Training and inference are separate phases.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "LLM",
-      "large-language-model"
+      "inference",
+      "model-serving",
+      "prediction",
+      "deployment",
+      "LLM"
     ]
   },
   {
@@ -2569,12 +2467,11 @@
     "answer": 1,
     "explain": "RAG retrieves up-to-date information from a knowledge base at inference time, making it ideal for frequently changing data. Retraining and fine-tuning are expensive and can't keep up with frequent updates.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
       "RAG",
-      "retrieval-augmented-generation"
+      "dynamic-data",
+      "retrieval-augmented-generation",
+      "knowledge-base",
+      "real-time"
     ]
   },
   {
@@ -2589,12 +2486,11 @@
     "answer": 2,
     "explain": "Prompt injection attacks craft malicious user input that overrides system prompt instructions, potentially causing the model to reveal sensitive information, bypass guardrails, or take unintended actions.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "tokenization",
-      "tokens"
+      "prompt-injection",
+      "LLM-security",
+      "adversarial-attack",
+      "AI-safety",
+      "guardrails"
     ]
   },
   {
@@ -2607,14 +2503,13 @@
       "Always choose the most accurate model regardless of cost"
     ],
     "answer": 0,
-    "explain": "Foundation model selection requires balancing accuracy, latency, and cost against business requirements. A customer service chatbot may tolerate lower accuracy for speed; a medical diagnosis system may require maximum accuracy.",
+    "explain": "Foundation model selection requires analyzing three dimensions: (1) accuracy \u2014 does it meet the minimum quality bar for the use case, (2) latency \u2014 does it respond within acceptable time, (3) cost \u2014 is the price per query sustainable at scale. A customer service chatbot may tolerate 90% accuracy for 10x lower cost, while a medical diagnosis system requires 99%+ accuracy regardless of cost.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
+      "model-selection",
+      "cost-quality-tradeoff",
       "latency",
-      "inference-speed"
+      "accuracy",
+      "foundation-models"
     ]
   },
   {
@@ -2629,12 +2524,11 @@
     "answer": 2,
     "explain": "Amazon Bedrock Model Evaluation lets you run automatic or human-based evaluations of multiple models on your dataset using metrics like accuracy, toxicity, and robustness to select the best model.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
       "Amazon-Bedrock",
-      "bedrock"
+      "Model-Evaluation",
+      "benchmarking",
+      "model-comparison",
+      "quality-metrics"
     ]
   },
   {
@@ -2649,12 +2543,10 @@
     "answer": 0,
     "explain": "Continued pre-training extends a foundation model's training on domain-specific unlabeled data (e.g., medical literature, legal documents) to improve domain knowledge before task-specific fine-tuning.",
     "keywords": [
+      "continued-pre-training",
+      "domain-adaptation",
       "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "fine-tuning",
-      "model-adaptation"
+      "unlabeled-data"
     ]
   },
   {
@@ -2667,14 +2559,13 @@
       "The date after which events are not reflected in the model's training data"
     ],
     "answer": 3,
-    "explain": "Foundation models have a knowledge cutoff date — the point when training data collection ended. Events after this date are unknown to the model unless provided via RAG or tools.",
+    "explain": "Foundation models have a knowledge cutoff date \u2014 the point when training data collection ended. Events after this date are unknown to the model unless provided via RAG or tools.",
     "keywords": [
+      "knowledge-cutoff",
+      "training-data",
       "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
       "RAG",
-      "retrieval-augmented-generation"
+      "real-time-data"
     ]
   },
   {
@@ -2690,11 +2581,10 @@
     "explain": "Bedrock Provisioned Throughput purchases reserved model units (MUs) providing consistent, predictable throughput and latency SLAs for production workloads with guaranteed capacity.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "SageMaker",
-      "ML-training"
+      "Provisioned-Throughput",
+      "latency-SLA",
+      "production-AI",
+      "reserved-capacity"
     ]
   },
   {
@@ -2709,12 +2599,11 @@
     "answer": 2,
     "explain": "Quantization reduces the numerical precision of model weights (e.g., from 32-bit floats to 8-bit integers), reducing memory footprint by 4x and speeding up inference with minimal accuracy loss.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "fine-tuning",
-      "model-adaptation"
+      "quantization",
+      "model-compression",
+      "INT8",
+      "inference-optimization",
+      "deployment"
     ]
   },
   {
@@ -2729,12 +2618,11 @@
     "answer": 3,
     "explain": "Deploying open-source models (Llama, Mistral) on SageMaker endpoints in a private VPC ensures all data stays within the company's AWS account, meeting strict data residency and compliance requirements.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "Amazon-Bedrock",
-      "bedrock"
+      "SageMaker",
+      "VPC",
+      "data-residency",
+      "compliance",
+      "open-source-models"
     ]
   },
   {
@@ -2749,12 +2637,11 @@
     "answer": 2,
     "explain": "Top-p (nucleus) sampling selects the next token from the smallest set whose cumulative probability mass exceeds threshold p. Combined with temperature, it controls output diversity while avoiding low-probability tokens.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "tokenization",
-      "tokens"
+      "top-p",
+      "nucleus-sampling",
+      "diversity",
+      "LLM-inference",
+      "sampling"
     ]
   },
   {
@@ -2769,12 +2656,12 @@
     "answer": 3,
     "explain": "Amazon Bedrock Knowledge Bases ingests data from Amazon S3 and supported connectors including Confluence, Salesforce, SharePoint, and web crawlers, enabling diverse enterprise document sources.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
       "Amazon-Bedrock",
-      "bedrock"
+      "Knowledge-Bases",
+      "data-sources",
+      "S3",
+      "Confluence",
+      "RAG"
     ]
   },
   {
@@ -2789,12 +2676,11 @@
     "answer": 3,
     "explain": "The embedding model encodes document chunks into dense vectors capturing semantic meaning. These vectors are stored in a vector database enabling similarity search to retrieve relevant context for RAG.",
     "keywords": [
+      "embeddings",
+      "embedding-model",
       "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "LLM",
-      "large-language-model"
+      "vector-database",
+      "semantic-search"
     ]
   },
   {
@@ -2809,12 +2695,11 @@
     "answer": 0,
     "explain": "Bedrock Agents with memory can store and retrieve conversation history across sessions, enabling personalized, context-aware interactions that remember user preferences and past interactions.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
       "Amazon-Bedrock",
-      "bedrock"
+      "Bedrock-Agents",
+      "memory",
+      "session-history",
+      "personalization"
     ]
   },
   {
@@ -2829,12 +2714,11 @@
     "answer": 2,
     "explain": "Catastrophic forgetting occurs when fine-tuning overwrites pre-trained weights, causing the model to lose previously learned capabilities. Techniques like LoRA mitigate this by keeping base weights frozen.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
+      "catastrophic-forgetting",
       "fine-tuning",
-      "model-adaptation"
+      "LoRA",
+      "model-training",
+      "foundation-models"
     ]
   },
   {
@@ -2849,12 +2733,11 @@
     "answer": 1,
     "explain": "ROUGE (Recall-Oriented Understudy for Gisting Evaluation) measures the overlap of n-grams between generated summaries and reference summaries, with ROUGE-L measuring longest common subsequences.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "Amazon-Lex",
-      "chatbot"
+      "ROUGE",
+      "summarization",
+      "evaluation-metrics",
+      "n-gram",
+      "NLP"
     ]
   },
   {
@@ -2869,12 +2752,11 @@
     "answer": 1,
     "explain": "Chain-of-thought prompting improves accuracy on complex tasks by guiding models to break problems into intermediate steps. This is especially effective for math, logic, and multi-step reasoning where direct answers often fail.",
     "keywords": [
-      "tokenization",
-      "tokens",
-      "context-window",
+      "chain-of-thought",
+      "reasoning",
+      "multi-step",
       "LLM",
-      "Amazon-Lex",
-      "chatbot"
+      "accuracy"
     ]
   },
   {
@@ -2889,12 +2771,11 @@
     "answer": 3,
     "explain": "Model routing classifies query complexity first, directing simple queries to fast/cheap models and complex queries to capable/expensive models, optimizing the cost-quality tradeoff at scale.",
     "keywords": [
-      "fine-tuning",
-      "model-adaptation",
-      "transfer-learning",
-      "domain-adaptation",
-      "classification",
-      "supervised-learning"
+      "model-routing",
+      "cost-optimization",
+      "complexity-classification",
+      "foundation-models",
+      "cascading"
     ]
   },
   {
@@ -2909,12 +2790,11 @@
     "answer": 0,
     "explain": "Bedrock Knowledge Bases RAG responses include citations linking each claim to source documents, enabling users to verify accuracy and improving trust in AI-generated responses.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
+      "Amazon-Bedrock",
+      "Knowledge-Bases",
+      "citations",
       "RAG",
-      "retrieval-augmented-generation"
+      "grounding"
     ]
   },
   {
@@ -2929,12 +2809,11 @@
     "answer": 0,
     "explain": "Proxy discrimination occurs when seemingly neutral variables (zip code) correlate with protected attributes (race), causing the model to discriminate indirectly even without using race explicitly.",
     "keywords": [
-      "bias-detection",
-      "model-bias",
+      "proxy-discrimination",
+      "algorithmic-bias",
       "fairness",
       "responsible-AI",
-      "model-training",
-      "ML-training"
+      "indirect-discrimination"
     ]
   },
   {
@@ -2949,12 +2828,11 @@
     "answer": 3,
     "explain": "Bedrock Guardrails implements content filters, topic blocklists, PII detection/redaction, and grounding checks across LLM applications to enforce responsible AI policies consistently.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "Amazon-Bedrock",
-      "bedrock"
+      "Bedrock-Guardrails",
+      "content-filtering",
+      "PII",
+      "responsible-AI",
+      "Amazon-Bedrock"
     ]
   },
   {
@@ -2969,12 +2847,11 @@
     "answer": 3,
     "explain": "Explainability (or interpretability) ensures AI decisions can be understood and audited by humans. This is especially critical in regulated industries like finance and healthcare where decisions impact individuals.",
     "keywords": [
+      "explainability",
       "responsible-AI",
-      "AI-ethics",
-      "fairness",
-      "governance",
-      "data-privacy",
-      "PII"
+      "transparency",
+      "accountability",
+      "AI-governance"
     ]
   },
   {
@@ -2989,12 +2866,11 @@
     "answer": 1,
     "explain": "SHAP (SHapley Additive exPlanations) and LIME provide post-hoc explanations showing which features contributed to each prediction, enabling model-specific explanations for regulatory compliance.",
     "keywords": [
-      "neural-network",
-      "deep-learning",
-      "layers",
-      "backpropagation",
-      "model-accuracy",
-      "evaluation-metrics"
+      "SHAP",
+      "LIME",
+      "explainability",
+      "responsible-AI",
+      "financial-AI"
     ]
   },
   {
@@ -3009,10 +2885,10 @@
     "answer": 0,
     "explain": "Human-in-the-loop keeps humans involved in high-stakes decisions, combining AI efficiency with human judgment and accountability. This is critical for irreversible decisions affecting individuals.",
     "keywords": [
-      "model-training",
-      "ML-training",
-      "epochs",
-      "gradient-descent"
+      "human-in-the-loop",
+      "responsible-AI",
+      "oversight",
+      "accountability"
     ]
   },
   {
@@ -3027,12 +2903,11 @@
     "answer": 2,
     "explain": "Deepfakes use generative AI to create realistic fake media, enabling misinformation, defamation, and fraud. Responsible AI frameworks must address misuse potential of generative capabilities.",
     "keywords": [
-      "generative-ai",
-      "gen-ai",
-      "content-generation",
-      "AI-generation",
+      "deepfake",
+      "synthetic-media",
       "responsible-AI",
-      "AI-ethics"
+      "misinformation",
+      "generative-AI"
     ]
   },
   {
@@ -3048,11 +2923,10 @@
     "explain": "Amazon Comprehend detects PII entities (names, addresses, SSNs, credit card numbers) in text and can redact them, supporting data privacy compliance in AI pipelines.",
     "keywords": [
       "Amazon-Comprehend",
-      "NLP",
-      "text-analysis",
-      "entity-recognition",
+      "PII-detection",
       "data-privacy",
-      "PII"
+      "redaction",
+      "NLP"
     ]
   },
   {
@@ -3065,14 +2939,13 @@
       "Publishing AI model benchmarks on public leaderboards"
     ],
     "answer": 0,
-    "explain": "AI transparency means openly communicating how AI systems make decisions, what training data was used, known limitations, and potential biases, enabling informed trust and accountability.",
+    "explain": "AI transparency means proactively disclosing how AI systems make decisions (mechanisms and training data), what limitations they have (known failure modes, confidence calibration), and where they might be wrong (edge cases). This is distinct from full technical disclosure (option B) \u2014 transparency doesn't require open-sourcing model weights, just honest communication about capabilities and limitations.",
     "keywords": [
-      "bias-detection",
-      "model-bias",
-      "fairness",
+      "transparency",
       "responsible-AI",
-      "model-training",
-      "ML-training"
+      "AI-governance",
+      "disclosure",
+      "accountability"
     ]
   },
   {
@@ -3087,12 +2960,11 @@
     "answer": 2,
     "explain": "Red teaming involves deliberately trying to elicit harmful, biased, or offensive model outputs through adversarial testing before deployment, identifying safety issues in a controlled environment.",
     "keywords": [
+      "red-teaming",
+      "adversarial-testing",
       "responsible-AI",
-      "AI-ethics",
-      "fairness",
-      "governance",
-      "bias-detection",
-      "model-bias"
+      "safety-evaluation",
+      "pre-deployment"
     ]
   },
   {
@@ -3107,12 +2979,11 @@
     "answer": 3,
     "explain": "Model cards are standardized documentation sheets covering model purpose, training data, evaluation results, known limitations, appropriate use cases, and ethical considerations, enabling informed deployment decisions.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
+      "model-card",
+      "documentation",
       "responsible-AI",
-      "AI-ethics"
+      "transparency",
+      "standardized"
     ]
   },
   {
@@ -3125,14 +2996,13 @@
       "Distribution shift and representation bias from underrepresented rural populations"
     ],
     "answer": 3,
-    "explain": "Representation bias occurs when training data underrepresents certain populations (rural clinics), causing the model to generalize poorly to those groups. Diverse, representative data is essential for equitable performance.",
+    "explain": "Representation bias occurs when training data underrepresents subpopulations, causing the model to generalize poorly to those groups. Urban hospital data over-represents certain demographics, equipment types, and disease presentations. Solutions include: stratified data collection from diverse facilities, data augmentation for underrepresented populations, and fairness evaluation across subgroups.",
     "keywords": [
-      "bias-detection",
-      "model-bias",
+      "representation-bias",
+      "distribution-shift",
       "fairness",
       "responsible-AI",
-      "model-training",
-      "ML-training"
+      "training-data"
     ]
   },
   {
@@ -3147,12 +3017,11 @@
     "answer": 2,
     "explain": "AI governance frameworks define organizational policies for responsible AI including oversight structures, risk assessment processes, fairness standards, documentation requirements, and accountability mechanisms.",
     "keywords": [
+      "AI-governance",
       "responsible-AI",
-      "AI-ethics",
-      "fairness",
-      "governance",
-      "model-training",
-      "ML-training"
+      "policies",
+      "oversight",
+      "risk-management"
     ]
   },
   {
@@ -3167,12 +3036,11 @@
     "answer": 3,
     "explain": "Bedrock Guardrails denied topics configuration blocks specific topics (like competitor discussions) at inference time, returning a configurable message instead of engaging with prohibited content.",
     "keywords": [
+      "Bedrock-Guardrails",
+      "denied-topics",
+      "content-policy",
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "LLM",
-      "large-language-model"
+      "LLM"
     ]
   },
   {
@@ -3187,12 +3055,11 @@
     "answer": 2,
     "explain": "Data minimization is a privacy principle (enshrined in GDPR) requiring organizations to collect only data necessary for the stated purpose, reducing privacy risk and limiting exposure in case of data breaches.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
+      "data-minimization",
+      "GDPR",
+      "privacy",
       "responsible-AI",
-      "AI-ethics"
+      "data-protection"
     ]
   },
   {
@@ -3207,12 +3074,11 @@
     "answer": 3,
     "explain": "Prompt injection crafts user input to override system instructions, potentially revealing system prompts, bypassing safety filters, or causing unauthorized actions. It is a top security risk for LLM applications.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "AI-safety",
-      "content-filtering"
+      "prompt-injection",
+      "LLM-security",
+      "chatbot-security",
+      "adversarial-attack",
+      "AI-safety"
     ]
   },
   {
@@ -3225,12 +3091,13 @@
       "AWS WAF filtering malicious web requests"
     ],
     "answer": 0,
-    "explain": "Amazon GuardDuty uses ML to continuously monitor CloudTrail, VPC Flow Logs, and DNS logs, detecting threats like credential compromise, unusual API activity, and unauthorized access to ML resources.",
+    "explain": "Amazon GuardDuty uses ML to detect threats across AWS services by analyzing CloudTrail API logs, VPC Flow Logs, and DNS logs. For ML workloads, it detects anomalies like unusual SageMaker API access, credential compromise, cryptomining on training instances, and unauthorized Bedrock API calls from unexpected sources.",
     "keywords": [
+      "Amazon-GuardDuty",
+      "threat-detection",
       "CloudTrail",
-      "VPC",
-      "AWS",
-      "cloud-computing"
+      "AI-security",
+      "unauthorized-access"
     ]
   },
   {
@@ -3245,12 +3112,11 @@
     "answer": 2,
     "explain": "Bedrock Guardrails PII detection can redact sensitive information in both inputs and outputs, preventing users from extracting personal data or proprietary information through the LLM interface.",
     "keywords": [
-      "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "LLM",
-      "large-language-model"
+      "Bedrock-Guardrails",
+      "PII-redaction",
+      "data-privacy",
+      "sensitive-information",
+      "Amazon-Bedrock"
     ]
   },
   {
@@ -3265,10 +3131,11 @@
     "answer": 1,
     "explain": "Model poisoning injects malicious examples into training data, causing the model to learn incorrect patterns or backdoor behaviors. For example, a poisoned spam filter might be trained to always allow certain emails.",
     "keywords": [
-      "model-training",
-      "ML-training",
-      "epochs",
-      "gradient-descent"
+      "model-poisoning",
+      "data-poisoning",
+      "adversarial-ML",
+      "training-security",
+      "backdoor"
     ]
   },
   {
@@ -3283,12 +3150,11 @@
     "answer": 1,
     "explain": "Model extraction attacks reconstruct model behavior or steal intellectual property by querying the model API. Rate limiting, output randomization, and watermarking help detect and prevent this.",
     "keywords": [
-      "model-inference",
-      "prediction",
-      "deployment",
-      "serving",
-      "model-training",
-      "ML-training"
+      "model-extraction",
+      "model-stealing",
+      "API-security",
+      "rate-limiting",
+      "intellectual-property"
     ]
   },
   {
@@ -3303,12 +3169,11 @@
     "answer": 1,
     "explain": "Amazon Macie uses ML to automatically discover and classify sensitive data in S3 including PII, financial data, and credentials, alerting teams to access patterns that may indicate data exposure.",
     "keywords": [
-      "classification",
-      "supervised-learning",
-      "labeled-data",
-      "prediction",
-      "model-training",
-      "ML-training"
+      "Amazon-Macie",
+      "S3-security",
+      "PII-detection",
+      "data-classification",
+      "ML-data-protection"
     ]
   },
   {
@@ -3323,12 +3188,11 @@
     "answer": 2,
     "explain": "S3 SSE-KMS encrypts data at rest using AWS KMS customer managed keys. SageMaker supports KMS keys for encrypting training data, model artifacts, and notebook volumes.",
     "keywords": [
+      "S3",
+      "KMS",
+      "encryption-at-rest",
       "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "model-training",
-      "epochs"
+      "data-security"
     ]
   },
   {
@@ -3341,14 +3205,13 @@
       "Encrypting model weights to protect intellectual property"
     ],
     "answer": 1,
-    "explain": "Differential privacy adds calibrated noise to training processes or outputs, providing mathematical guarantees that individual training examples cannot be inferred from model outputs, protecting data privacy.",
+    "explain": "Differential privacy adds calibrated Gaussian or Laplacian noise to model gradients during training (DP-SGD), providing a mathematical privacy guarantee: an adversary cannot determine whether any specific individual was in the training set. The privacy budget (epsilon) controls the tradeoff between privacy strength and model accuracy.",
     "keywords": [
-      "model-inference",
-      "prediction",
-      "deployment",
-      "serving",
-      "model-training",
-      "ML-training"
+      "differential-privacy",
+      "data-privacy",
+      "noise-addition",
+      "ML-training",
+      "privacy-preserving"
     ]
   },
   {
@@ -3363,12 +3226,11 @@
     "answer": 3,
     "explain": "Adversarial examples are inputs crafted with small perturbations that cause ML models to make wrong predictions confidently. They exploit the geometric properties of model decision boundaries.",
     "keywords": [
-      "classification",
-      "supervised-learning",
-      "labeled-data",
-      "prediction",
-      "model-inference",
-      "deployment"
+      "adversarial-examples",
+      "adversarial-attacks",
+      "computer-vision",
+      "model-robustness",
+      "AI-security"
     ]
   },
   {
@@ -3384,11 +3246,10 @@
     "explain": "SageMaker network isolation mode prevents training containers from making outbound network calls, ensuring sensitive training data cannot be exfiltrated even if the training code is compromised.",
     "keywords": [
       "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "clustering",
-      "unsupervised-learning"
+      "network-isolation",
+      "data-security",
+      "training-security",
+      "sensitive-data"
     ]
   },
   {
@@ -3403,12 +3264,11 @@
     "answer": 3,
     "explain": "Membership inference attacks determine if specific individuals' data was used in training, which is a privacy violation. Models that overfit are especially vulnerable since they memorize training examples.",
     "keywords": [
-      "model-inference",
-      "prediction",
-      "deployment",
-      "serving",
-      "model-training",
-      "ML-training"
+      "membership-inference",
+      "privacy-attack",
+      "overfitting",
+      "ML-security",
+      "data-privacy"
     ]
   },
   {
@@ -3423,12 +3283,11 @@
     "answer": 0,
     "explain": "Least privilege grants AI system components (SageMaker roles, Lambda functions, Bedrock agents) only the specific permissions they need, minimizing the blast radius of a security breach.",
     "keywords": [
-      "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "SageMaker",
-      "ML-training"
+      "least-privilege",
+      "IAM",
+      "AI-security",
+      "blast-radius",
+      "access-control"
     ]
   },
   {
@@ -3443,12 +3302,11 @@
     "answer": 2,
     "explain": "Few-shot prompting with labeled examples of each category guides the LLM to produce correctly formatted classifications. It outperforms zero-shot for structured classification tasks without requiring fine-tuning.",
     "keywords": [
+      "few-shot-prompting",
+      "classification",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "fine-tuning",
-      "model-adaptation"
+      "prompt-engineering",
+      "customer-service"
     ]
   },
   {
@@ -3463,12 +3321,11 @@
     "answer": 1,
     "explain": "Jailbreaking uses creative prompt engineering to bypass safety alignments, causing models to generate content they are designed to refuse. Guardrails and safety classifiers help defend against this.",
     "keywords": [
-      "prompt-engineering",
-      "prompt-design",
-      "few-shot",
-      "prompting",
-      "LLM",
-      "large-language-model"
+      "jailbreaking",
+      "LLM-security",
+      "safety-bypass",
+      "Guardrails",
+      "adversarial-prompting"
     ]
   },
   {
@@ -3483,12 +3340,11 @@
     "answer": 2,
     "explain": "Simply instructing the model to respond in Spanish via the system prompt or user instruction is the fastest solution. Modern LLMs are multilingual and follow language instructions reliably.",
     "keywords": [
+      "multilingual",
+      "system-prompts",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "fine-tuning",
-      "model-adaptation"
+      "prompt-engineering",
+      "language"
     ]
   },
   {
@@ -3504,11 +3360,10 @@
     "explain": "Bedrock Agents Action Groups define which APIs (Lambda functions or OpenAPI schemas) the agent can call. This enables the agent to fetch live data, submit forms, or trigger workflows automatically.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "LLM",
-      "large-language-model"
+      "Bedrock-Agents",
+      "action-groups",
+      "API-integration",
+      "Lambda"
     ]
   },
   {
@@ -3523,12 +3378,11 @@
     "answer": 2,
     "explain": "Vector similarity search compares embedding vectors using distance metrics (cosine similarity, dot product), finding semantically related content even when no exact keywords match, unlike traditional inverted index search.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
+      "vector-search",
+      "semantic-search",
       "embeddings",
-      "vector-representation"
+      "similarity-search",
+      "RAG"
     ]
   },
   {
@@ -3544,11 +3398,10 @@
     "explain": "RAG retrieval quality depends on chunk size, overlap, embedding model choice, similarity threshold, and top-k value. Tuning these parameters significantly impacts the relevance of retrieved context.",
     "keywords": [
       "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "LLM",
-      "large-language-model"
+      "retrieval-quality",
+      "chunking",
+      "top-k",
+      "similarity-threshold"
     ]
   },
   {
@@ -3563,12 +3416,11 @@
     "answer": 1,
     "explain": "JSON mode constrains LLM output to valid JSON following a schema, making outputs programmatically parseable. This is essential for LLM integration into applications that need structured data.",
     "keywords": [
+      "structured-output",
+      "JSON-mode",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "model-inference",
-      "prediction"
+      "data-integration",
+      "reliable-output"
     ]
   },
   {
@@ -3583,12 +3435,11 @@
     "answer": 1,
     "explain": "Adding an explicit instruction in the system prompt like 'Be concise and answer in 2-3 sentences' is the most reliable way to control verbosity. Max_tokens hard-cuts responses, which may cut off mid-sentence.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "tokenization",
-      "tokens"
+      "system-prompts",
+      "verbosity",
+      "prompt-engineering",
+      "response-length",
+      "LLM"
     ]
   },
   {
@@ -3603,12 +3454,11 @@
     "answer": 1,
     "explain": "RAG addresses LLM hallucinations and knowledge cutoff limitations by retrieving relevant, up-to-date documents at inference time and providing them as context, grounding responses in verifiable facts.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
       "RAG",
-      "retrieval-augmented-generation"
+      "hallucination-reduction",
+      "grounding",
+      "knowledge-cutoff",
+      "factual-accuracy"
     ]
   },
   {
@@ -3623,12 +3473,11 @@
     "answer": 0,
     "explain": "BLEU (Bilingual Evaluation Understudy) measures n-gram precision between generated and reference translations, making it the standard metric for evaluating machine translation quality.",
     "keywords": [
-      "embeddings",
-      "vector-representation",
-      "semantic-search",
-      "vector-store",
-      "Amazon-Lex",
-      "chatbot"
+      "BLEU",
+      "machine-translation",
+      "evaluation-metrics",
+      "n-gram",
+      "NLP"
     ]
   },
   {
@@ -3643,12 +3492,11 @@
     "answer": 0,
     "explain": "System prompts define the model's persistent identity, persona, behavior rules, and constraints. They apply throughout the conversation and are the standard way to establish an AI assistant's character.",
     "keywords": [
+      "system-prompts",
+      "persona",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "fine-tuning",
-      "model-adaptation"
+      "brand-voice",
+      "customer-service"
     ]
   },
   {
@@ -3663,12 +3511,11 @@
     "answer": 1,
     "explain": "Research shows LLMs recall information from the beginning and end of long contexts better than the middle. Important information should be placed at the start or end of prompts for best results.",
     "keywords": [
+      "context-window",
+      "lost-in-the-middle",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "model-training",
-      "ML-training"
+      "long-context",
+      "attention"
     ]
   },
   {
@@ -3683,12 +3530,11 @@
     "answer": 0,
     "explain": "Template-based prompting injects structured product data into a consistent prompt template, enabling reliable, scalable generation of product descriptions without fine-tuning. Few-shot examples further improve quality.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "SageMaker",
-      "ML-training"
+      "template-prompting",
+      "product-generation",
+      "few-shot",
+      "structured-data",
+      "LLM"
     ]
   },
   {
@@ -3703,12 +3549,11 @@
     "answer": 0,
     "explain": "Constitutional AI uses a set of principles (a 'constitution') to train models to evaluate and revise their own responses, producing more helpful, harmless, and honest outputs through self-critique.",
     "keywords": [
-      "model-inference",
-      "prediction",
-      "deployment",
-      "serving",
-      "model-training",
-      "ML-training"
+      "Constitutional-AI",
+      "Anthropic",
+      "safety-training",
+      "self-critique",
+      "alignment"
     ]
   },
   {
@@ -3723,12 +3568,11 @@
     "answer": 2,
     "explain": "Bedrock Agents can combine Knowledge Bases (for RAG retrieval) and Action Groups (for API calls) in a single agent, enabling complex assistants that both retrieve knowledge and take actions.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
       "Amazon-Bedrock",
-      "bedrock"
+      "Bedrock-Agents",
+      "Knowledge-Bases",
+      "action-groups",
+      "agentic-AI"
     ]
   },
   {
@@ -3743,12 +3587,11 @@
     "answer": 0,
     "explain": "Agentic AI systems plan sequences of actions, use tools (search, code execution, APIs), and iterate toward goals autonomously. Standard chat is single-turn or stateless conversational response.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "AI-agent",
-      "agentic-AI"
+      "agentic-AI",
+      "AI-agents",
+      "multi-step-tasks",
+      "tool-use",
+      "LLM"
     ]
   },
   {
@@ -3763,12 +3606,11 @@
     "answer": 0,
     "explain": "Detailed system prompt instructions specifying tone, style, vocabulary, and examples of brand voice can effectively shape LLM writing style without the cost and complexity of fine-tuning.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "LLM",
-      "large-language-model"
+      "system-prompts",
+      "brand-voice",
+      "prompt-engineering",
+      "cost-optimization",
+      "LLM"
     ]
   },
   {
@@ -3783,12 +3625,11 @@
     "answer": 0,
     "explain": "Semantic chunking splits documents at natural topic boundaries (paragraphs, sections, sentences) rather than arbitrary character limits, preserving context and improving embedding quality for retrieval.",
     "keywords": [
+      "semantic-chunking",
       "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
+      "document-splitting",
       "embeddings",
-      "vector-representation"
+      "retrieval-quality"
     ]
   },
   {
@@ -3801,14 +3642,13 @@
       "Amazon SageMaker with self-managed training clusters"
     ],
     "answer": 1,
-    "explain": "Amazon Bedrock is serverless and fully managed — no infrastructure to provision or scale. Developers call foundation model APIs directly and Bedrock handles scaling, availability, and model management.",
+    "explain": "Amazon Bedrock is serverless and fully managed \u2014 no infrastructure to provision or scale. Developers call foundation model APIs directly and Bedrock handles scaling, availability, and model management.",
     "keywords": [
-      "generative-ai",
-      "gen-ai",
-      "content-generation",
-      "AI-generation",
-      "foundation-models",
-      "FM"
+      "Amazon-Bedrock",
+      "serverless",
+      "managed-FM",
+      "infrastructure",
+      "generative-AI"
     ]
   },
   {
@@ -3823,12 +3663,11 @@
     "answer": 1,
     "explain": "Systematic prompt evaluation uses test datasets with expected outputs and automated metrics (accuracy, ROUGE, BERTScore) or human ratings. Bedrock Model Evaluation supports structured model and prompt comparison.",
     "keywords": [
-      "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "model-accuracy",
-      "evaluation-metrics"
+      "prompt-evaluation",
+      "Bedrock-Model-Evaluation",
+      "benchmarking",
+      "quality-metrics",
+      "LLM"
     ]
   },
   {
@@ -3843,12 +3682,11 @@
     "answer": 1,
     "explain": "Token streaming sends each generated token to the client as it is produced rather than waiting for the complete response, dramatically improving perceived responsiveness in chat applications.",
     "keywords": [
+      "token-streaming",
+      "latency",
+      "UX",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "fine-tuning",
-      "model-adaptation"
+      "real-time"
     ]
   },
   {
@@ -3863,12 +3701,11 @@
     "answer": 1,
     "explain": "System prompt protection requires explicit instructions not to reveal it combined with output monitoring. Bedrock Guardrails can detect and block prompt extraction patterns. Complete protection is difficult but layers of defense help.",
     "keywords": [
-      "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "Amazon-Lex",
-      "chatbot"
+      "system-prompt-protection",
+      "Bedrock-Guardrails",
+      "prompt-injection",
+      "LLM-security",
+      "defense"
     ]
   },
   {
@@ -3878,17 +3715,16 @@
       "Caching model weights in GPU memory to reduce cold start latency",
       "Pre-computing embeddings for common query patterns",
       "Storing user conversation history in a database for context retrieval",
-      "Saving generated responses to serve identical future requests faster without model inference"
+      "Reusing precomputed key-value (KV) caches for repeated prompt prefixes to reduce latency and cost"
     ],
     "answer": 3,
-    "explain": "Prompt caching stores and reuses computed key-value caches for identical prompt prefixes (like long system prompts), significantly reducing latency and cost for repeated requests with the same context.",
+    "explain": "Prompt caching stores the precomputed KV-cache (key-value attention states) for repeated prompt prefixes \u2014 like a long system prompt or document that appears in every request. Subsequent requests reuse this cached computation, reducing both latency (no recomputation) and cost (cached tokens are cheaper to process). Anthropic's Claude API supports prompt caching with significant cost savings for long static prefixes.",
     "keywords": [
-      "embeddings",
-      "vector-representation",
-      "semantic-search",
-      "vector-store",
-      "model-inference",
-      "prediction"
+      "prompt-caching",
+      "KV-cache",
+      "latency",
+      "cost-optimization",
+      "LLM-inference"
     ]
   },
   {
@@ -3903,12 +3739,11 @@
     "answer": 0,
     "explain": "Self-consistency generates multiple chain-of-thought responses with temperature > 0 and selects the most frequently occurring answer, improving accuracy on complex reasoning tasks where single responses may fail.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "tokenization",
-      "tokens"
+      "self-consistency",
+      "sampling",
+      "chain-of-thought",
+      "reasoning",
+      "LLM-accuracy"
     ]
   },
   {
@@ -3923,12 +3758,11 @@
     "answer": 0,
     "explain": "Attention computes a weighted sum of all input token representations for each output token, allowing the model to focus on the most relevant parts of the context dynamically for each prediction.",
     "keywords": [
-      "transformer",
       "attention-mechanism",
+      "transformer",
+      "self-attention",
       "LLM",
-      "BERT",
-      "tokenization",
-      "tokens"
+      "weighted-sum"
     ]
   },
   {
@@ -3943,12 +3777,11 @@
     "answer": 3,
     "explain": "Long documents may exceed context windows or suffer from the 'lost in the middle' problem. Solutions include processing sections separately, using models with 100K+ token windows, or implementing document-aware chunking strategies.",
     "keywords": [
-      "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "bias-detection",
-      "model-bias"
+      "context-window",
+      "long-documents",
+      "Claude",
+      "legal-AI",
+      "lost-in-the-middle"
     ]
   },
   {
@@ -3961,14 +3794,13 @@
       "top_p: set to 0 for deterministic selection"
     ],
     "answer": 0,
-    "explain": "Setting temperature to 0 enables greedy decoding — the model always selects the highest-probability next token, producing deterministic, reproducible outputs. This is ideal for factual tasks requiring consistency.",
+    "explain": "Setting temperature to 0 enables greedy decoding \u2014 the model always selects the highest-probability next token, producing deterministic, reproducible outputs. This is ideal for factual tasks requiring consistency.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "tokenization",
-      "tokens"
+      "temperature",
+      "greedy-decoding",
+      "deterministic",
+      "LLM-inference",
+      "reproducibility"
     ]
   },
   {
@@ -3983,12 +3815,11 @@
     "answer": 2,
     "explain": "Reinforcement learning trains an agent to maximize cumulative reward through trial and error in an environment. The agent learns which actions lead to higher scores without labeled training data.",
     "keywords": [
-      "clustering",
-      "unsupervised-learning",
-      "k-means",
-      "segmentation",
-      "model-training",
-      "ML-training"
+      "reinforcement-learning",
+      "reward",
+      "agent",
+      "game-AI",
+      "cumulative-reward"
     ]
   },
   {
@@ -4001,14 +3832,13 @@
       "Data leakage from the test set contaminating training"
     ],
     "answer": 2,
-    "explain": "Systematic offset in predictions indicates high bias — the model has learned incorrect assumptions. High bias models underfit the data. Reducing bias requires more complex models or better features.",
+    "explain": "Systematic offset in predictions indicates high bias \u2014 the model has learned incorrect assumptions. High bias models underfit the data. Reducing bias requires more complex models or better features.",
     "keywords": [
-      "bias-detection",
-      "model-bias",
-      "fairness",
-      "responsible-AI",
-      "model-training",
-      "ML-training"
+      "bias",
+      "underfitting",
+      "high-bias",
+      "systematic-error",
+      "model-training"
     ]
   },
   {
@@ -4023,12 +3853,11 @@
     "answer": 1,
     "explain": "SageMaker Autopilot automatically generates candidate notebooks showing data exploration, feature engineering steps, algorithm choices, and model performance with SHAP-based explainability.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "bias-detection",
-      "model-bias"
+      "SageMaker-Autopilot",
+      "explainability",
+      "AutoML",
+      "SHAP",
+      "feature-importance"
     ]
   },
   {
@@ -4043,12 +3872,11 @@
     "answer": 3,
     "explain": "Transfer learning leverages representations learned by a model on a large dataset (e.g., ImageNet) and adapts them to a new task with less data, dramatically reducing training time and data requirements.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "model-training",
-      "ML-training"
+      "transfer-learning",
+      "pre-trained-models",
+      "domain-adaptation",
+      "ImageNet",
+      "fine-tuning"
     ]
   },
   {
@@ -4063,12 +3891,11 @@
     "answer": 1,
     "explain": "Precision = TP/(TP+FP). Low precision means many false positives (legitimate transactions flagged). If false positives are costly (customer friction), optimizing precision reduces unnecessary alerts.",
     "keywords": [
-      "cost-optimization",
-      "model-efficiency",
-      "token-usage",
-      "inference-cost",
-      "model-accuracy",
-      "evaluation-metrics"
+      "precision",
+      "false-positives",
+      "evaluation-metrics",
+      "fraud-detection",
+      "classification"
     ]
   },
   {
@@ -4083,12 +3910,11 @@
     "answer": 3,
     "explain": "Amazon Forecast incorporates related time series (promotions, weather, holidays) and item metadata alongside historical sales to generate probabilistic demand forecasts for inventory optimization.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "Amazon-Personalize",
-      "recommendation-engine"
+      "Amazon-Forecast",
+      "time-series",
+      "demand-forecasting",
+      "related-time-series",
+      "ML"
     ]
   },
   {
@@ -4101,14 +3927,13 @@
       "Deep neural network with 50 layers"
     ],
     "answer": 2,
-    "explain": "Shallow decision trees are inherently interpretable — you can trace the exact path from input features to prediction. Deep models require post-hoc explainability tools (SHAP, LIME) since their decisions aren't directly readable.",
+    "explain": "Shallow decision trees are inherently interpretable \u2014 you can trace the exact path from input features to prediction. Deep models require post-hoc explainability tools (SHAP, LIME) since their decisions aren't directly readable.",
     "keywords": [
-      "neural-network",
-      "deep-learning",
-      "layers",
-      "backpropagation",
-      "transformer",
-      "attention-mechanism"
+      "decision-tree",
+      "interpretability",
+      "explainability",
+      "healthcare-AI",
+      "white-box"
     ]
   },
   {
@@ -4123,10 +3948,11 @@
     "answer": 3,
     "explain": "K-fold cross-validation splits data into k folds, training on k-1 and validating on 1 repeatedly. This gives a more reliable performance estimate than a single train/test split, especially with limited data.",
     "keywords": [
-      "model-training",
-      "ML-training",
-      "epochs",
-      "gradient-descent"
+      "cross-validation",
+      "K-fold",
+      "model-evaluation",
+      "generalization",
+      "overfitting"
     ]
   },
   {
@@ -4141,10 +3967,11 @@
     "answer": 0,
     "explain": "SageMaker Model Registry acts as a centralized model catalog where teams can register, version, tag, and share models across projects, enabling model reuse and consistent governance.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML"
+      "SageMaker-Model-Registry",
+      "model-catalog",
+      "model-sharing",
+      "governance",
+      "MLOps"
     ]
   },
   {
@@ -4159,12 +3986,11 @@
     "answer": 2,
     "explain": "Concept drift occurs when the relationship between inputs and outputs changes over time. Retraining on recent data with current fraud patterns restores model performance. Continuous monitoring triggers retraining.",
     "keywords": [
-      "model-training",
-      "ML-training",
-      "epochs",
-      "gradient-descent",
-      "Amazon-Lex",
-      "chatbot"
+      "concept-drift",
+      "model-retraining",
+      "fraud-detection",
+      "production-ML",
+      "monitoring"
     ]
   },
   {
@@ -4179,12 +4005,11 @@
     "answer": 3,
     "explain": "Data augmentation applies transformations (flips, rotations, noise, cropping) to existing training examples to create new synthetic samples, reducing overfitting and improving model robustness.",
     "keywords": [
-      "model-training",
-      "ML-training",
-      "epochs",
-      "gradient-descent",
       "data-augmentation",
-      "training-data"
+      "synthetic-data",
+      "overfitting",
+      "generalization",
+      "model-training"
     ]
   },
   {
@@ -4199,12 +4024,11 @@
     "answer": 3,
     "explain": "Amazon Rekognition Custom Labels trains custom object detection models on your labeled images using transfer learning, without requiring ML expertise or managing training infrastructure.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "model-training",
-      "epochs"
+      "Amazon-Rekognition",
+      "Custom-Labels",
+      "object-detection",
+      "transfer-learning",
+      "computer-vision"
     ]
   },
   {
@@ -4212,19 +4036,18 @@
     "q": "A company's LLM-powered search returns results for a query about 'bank' that mix financial banks and riverbanks. What is the core problem?",
     "options": [
       "The embedding model has insufficient dimensions for semantic search",
-      "Word ambiguity — embeddings lack contextual disambiguation for polysemous words",
+      "Word ambiguity \u2014 embeddings lack contextual disambiguation for polysemous words",
       "The vector database is returning too many results",
       "The LLM temperature is too high causing diverse interpretations"
     ],
     "answer": 1,
     "explain": "Polysemous words like 'bank' have multiple meanings. Modern contextual embeddings (BERT-based) handle this better than static embeddings, but query context and reranking strategies further improve disambiguation.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
       "embeddings",
-      "vector-representation"
+      "polysemy",
+      "contextual-embeddings",
+      "BERT",
+      "semantic-search"
     ]
   },
   {
@@ -4239,12 +4062,11 @@
     "answer": 2,
     "explain": "Zero-shot chain-of-thought adds 'Let's think step by step' to a prompt without any examples. This simple addition significantly improves reasoning accuracy on math and logic problems without few-shot examples.",
     "keywords": [
-      "tokenization",
-      "tokens",
-      "context-window",
-      "LLM",
-      "temperature",
-      "sampling"
+      "zero-shot-CoT",
+      "chain-of-thought",
+      "step-by-step",
+      "reasoning",
+      "LLM"
     ]
   },
   {
@@ -4259,12 +4081,11 @@
     "answer": 0,
     "explain": "JSON mode (structured outputs) constrains the model's generation to produce valid JSON matching a specified schema, providing much more reliable structured output than prompt instructions alone.",
     "keywords": [
+      "structured-output",
+      "JSON-mode",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "fine-tuning",
-      "model-adaptation"
+      "reliable-output",
+      "data-integration"
     ]
   },
   {
@@ -4272,39 +4093,37 @@
     "q": "What is 'agentic loop' in the context of LLM agents?",
     "options": [
       "The feedback loop used in RLHF training",
-      "The iterative cycle of: observe → plan → act → observe that agents repeat until task completion",
+      "The iterative cycle of: observe \u2192 plan \u2192 act \u2192 observe that agents repeat until task completion",
       "An infinite loop bug in agent code causing runaway API costs",
       "A circular chain of agents where each calls the next"
     ],
     "answer": 1,
-    "explain": "The agentic loop is the fundamental cycle agents follow: observe the environment/results, plan the next action, execute the action, then observe again. This repeats until the goal is achieved or a stopping condition is met.",
+    "explain": "The agentic loop is the core operating cycle of LLM agents: (1) Observe \u2014 receive current state/context, (2) Think \u2014 reason about what action to take next, (3) Act \u2014 execute the action (call API, run code, search), (4) Observe \u2014 see the result, then repeat. Amazon Bedrock Agents implements this loop automatically using the model's reasoning to determine when to stop.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "model-training",
-      "ML-training"
+      "agentic-loop",
+      "AI-agent",
+      "observe-plan-act",
+      "LLM-agents",
+      "task-completion"
     ]
   },
   {
     "cat": "generative-ai",
     "q": "Which Amazon Bedrock model provider is known for open-weight models that can be deployed on your own infrastructure?",
     "options": [
-      "AI21 Jurassic — closed API models only",
-      "Amazon Titan — AWS proprietary closed models",
-      "Anthropic Claude — available via Bedrock API only",
-      "Meta Llama — open-weight models deployable via Bedrock or self-hosted"
+      "AI21 Jurassic \u2014 closed API models only",
+      "Amazon Titan \u2014 AWS proprietary closed models",
+      "Anthropic Claude \u2014 available via Bedrock API only",
+      "Meta Llama \u2014 open-weight models deployable via Bedrock or self-hosted"
     ],
     "answer": 3,
     "explain": "Meta's Llama models are open-weight, meaning the weights are publicly available. They're accessible via Amazon Bedrock or can be deployed on SageMaker endpoints or your own GPU infrastructure.",
     "keywords": [
+      "Meta-Llama",
+      "open-weight",
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
       "SageMaker",
-      "ML-training"
+      "open-source-LLM"
     ]
   },
   {
@@ -4319,12 +4138,11 @@
     "answer": 0,
     "explain": "Faithfulness checking (grounded generation) verifies that each claim in the generated answer is supported by retrieved source documents. Amazon Bedrock Guardrails grounding checks implement this automatically.",
     "keywords": [
+      "faithfulness",
+      "grounding",
       "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "Amazon-Bedrock",
-      "bedrock"
+      "hallucination-reduction",
+      "Bedrock-Guardrails"
     ]
   },
   {
@@ -4337,14 +4155,13 @@
       "Including all retrieved chunks regardless of relevance into the context"
     ],
     "answer": 3,
-    "explain": "Context stuffing includes all retrieved documents without filtering, potentially degrading quality. Better approaches use relevance thresholds, reranking, and selecting only the most relevant chunks to include.",
+    "explain": "Context stuffing includes all retrieved documents regardless of relevance, wasting context window space and diluting the relevant content with noise. Better RAG pipelines use: (1) a relevance threshold to filter low-scoring chunks, (2) a cross-encoder reranker for high-precision selection, and (3) deduplication. Quality over quantity of context improves LLM answer accuracy.",
     "keywords": [
+      "context-stuffing",
       "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "context-window",
-      "token-limit"
+      "relevance-filtering",
+      "reranking",
+      "context-quality"
     ]
   },
   {
@@ -4354,17 +4171,16 @@
       "Perplexity measuring model confidence in outputs",
       "BERTScore measuring semantic similarity of outputs",
       "ROUGE score measuring summary overlap",
-      "Context relevance — what fraction of retrieved context is actually relevant"
+      "Context relevance \u2014 what fraction of retrieved context is actually relevant"
     ],
     "answer": 3,
     "explain": "Context relevance (from RAGAS framework) measures what fraction of the retrieved context is actually relevant to the query. This separates retrieval quality from generation quality in RAG system evaluation.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "Amazon-Lex",
-      "chatbot"
+      "context-relevance",
+      "RAGAS",
+      "RAG-evaluation",
+      "retrieval-quality",
+      "metrics"
     ]
   },
   {
@@ -4379,12 +4195,11 @@
     "answer": 1,
     "explain": "Instruction following is the ability to correctly interpret and execute natural language instructions like 'Summarize this in 3 bullet points' or 'Translate to French'. This capability emerges from instruction fine-tuning (IFT).",
     "keywords": [
+      "instruction-following",
+      "IFT",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "fine-tuning",
-      "model-adaptation"
+      "natural-language",
+      "fine-tuning"
     ]
   },
   {
@@ -4399,12 +4214,11 @@
     "answer": 3,
     "explain": "Multilingual foundation models (Claude, GPT-4, Llama) are trained on multilingual data and can understand and generate text in 30+ languages natively, making them far more scalable than language-specific solutions.",
     "keywords": [
+      "multilingual",
       "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "fine-tuning",
-      "model-adaptation"
+      "LLM",
+      "language-support",
+      "scalability"
     ]
   },
   {
@@ -4419,12 +4233,11 @@
     "answer": 2,
     "explain": "ReAct (Reasoning + Acting) prompts the model to alternate between thinking (Thought:) and acting (Action:), then observing results (Observation:). This improves agent reliability by making reasoning explicit.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "AI-agent",
-      "agentic-AI"
+      "ReAct",
+      "reasoning-acting",
+      "LLM-agents",
+      "prompt-engineering",
+      "decision-making"
     ]
   },
   {
@@ -4439,12 +4252,11 @@
     "answer": 0,
     "explain": "Map-reduce applies the LLM to each chunk independently (map), then combines intermediate results (reduce). This enables processing arbitrarily long documents by breaking them into manageable pieces.",
     "keywords": [
+      "map-reduce",
+      "long-context",
+      "chunking",
       "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "context-window",
-      "token-limit"
+      "document-processing"
     ]
   },
   {
@@ -4457,14 +4269,13 @@
       "Bedrock provides lower latency than EC2 for all use cases"
     ],
     "answer": 2,
-    "explain": "Amazon Bedrock is serverless — no GPU instances to provision, patch, or scale. It includes built-in features (Guardrails, Knowledge Bases, Agents) and pay-per-token pricing, vs EC2's always-on infrastructure costs.",
+    "explain": "Amazon Bedrock is serverless \u2014 no GPU instances to provision, patch, or scale. It includes built-in features (Guardrails, Knowledge Bases, Agents) and pay-per-token pricing, vs EC2's always-on infrastructure costs.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "tokenization",
-      "tokens"
+      "serverless",
+      "Guardrails",
+      "pay-per-token",
+      "managed-FM"
     ]
   },
   {
@@ -4479,12 +4290,11 @@
     "answer": 2,
     "explain": "Speculative decoding uses a small fast draft model to propose multiple tokens, which a larger model verifies in parallel. This achieves 2-3x inference speedup while maintaining the quality of the large model.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "tokenization",
-      "tokens"
+      "speculative-decoding",
+      "inference-optimization",
+      "draft-model",
+      "latency",
+      "LLM"
     ]
   },
   {
@@ -4499,12 +4309,11 @@
     "answer": 1,
     "explain": "Amazon Bedrock supports regional deployments ensuring data stays in the selected AWS region. Selecting the correct region and disabling cross-region inference satisfies data residency compliance requirements.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
       "Amazon-Bedrock",
-      "bedrock"
+      "data-residency",
+      "compliance",
+      "regional-deployment",
+      "GDPR"
     ]
   },
   {
@@ -4514,17 +4323,16 @@
       "A measure of prompt complexity affecting inference time",
       "The number of parameters that are uncertain after training",
       "The model's confidence score for a given output",
-      "How surprised the model is by a sequence — lower perplexity means better language modeling"
+      "How surprised the model is by a sequence \u2014 lower perplexity means better language modeling"
     ],
     "answer": 3,
-    "explain": "Perplexity measures how well a language model predicts a text sample. Lower perplexity means the model finds the text more probable — it's the geometric mean of inverse probability across tokens.",
+    "explain": "Perplexity measures how well a language model predicts a text sample. Lower perplexity means the model finds the text more probable \u2014 it's the geometric mean of inverse probability across tokens.",
     "keywords": [
-      "tokenization",
-      "tokens",
-      "context-window",
+      "perplexity",
+      "language-model",
+      "evaluation-metrics",
       "LLM",
-      "model-inference",
-      "prediction"
+      "probability"
     ]
   },
   {
@@ -4539,12 +4347,11 @@
     "answer": 1,
     "explain": "LoRA adapters are small (<<1% of model size) and can be swapped per request, allowing a single base model deployment to serve multiple organizations with different fine-tuned behaviors efficiently.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
+      "LoRA",
+      "multi-tenant",
       "fine-tuning",
-      "model-adaptation"
+      "adapter",
+      "model-efficiency"
     ]
   },
   {
@@ -4557,14 +4364,13 @@
       "Capabilities discovered through red-teaming safety evaluations"
     ],
     "answer": 2,
-    "explain": "Emergent capabilities appear unpredictably at sufficient scale — abilities like multi-step reasoning, code generation, and in-context learning were not present in smaller models and weren't explicitly trained for.",
+    "explain": "Emergent capabilities appear abruptly when model scale crosses a threshold \u2014 capabilities like multi-step arithmetic, chain-of-thought reasoning, and code generation were essentially absent in smaller models (e.g., 6B parameters) and emerged in larger ones (e.g., 100B+). This non-linear scaling is distinct from fine-tuned capabilities (option A) which are explicitly trained.",
     "keywords": [
+      "emergent-capabilities",
+      "scaling",
       "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "fine-tuning",
-      "model-adaptation"
+      "in-context-learning",
+      "LLM"
     ]
   },
   {
@@ -4577,14 +4383,13 @@
       "Use both in an ensemble to get the best of both"
     ],
     "answer": 2,
-    "explain": "Foundation model selection requires cost-quality tradeoff analysis. Calculate: cost per unit × quality improvement × business value. If 5x cost produces proportionally better business outcomes, higher cost may be justified.",
+    "explain": "Foundation model selection requires cost-quality tradeoff analysis. Calculate: cost per unit \u00d7 quality improvement \u00d7 business value. If 5x cost produces proportionally better business outcomes, higher cost may be justified.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "cost-optimization",
-      "model-efficiency"
+      "model-selection",
+      "cost-quality",
+      "Anthropic-Claude",
+      "Amazon-Titan",
+      "foundation-models"
     ]
   },
   {
@@ -4599,17 +4404,16 @@
     "answer": 3,
     "explain": "Context length extrapolation techniques (RoPE scaling, YaRN) extend models to handle longer sequences than their training context, enabling processing of very long documents without full retraining.",
     "keywords": [
+      "context-length-extrapolation",
+      "RoPE",
+      "long-context",
       "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "model-training",
-      "ML-training"
+      "LLM"
     ]
   },
   {
     "cat": "foundation-models",
-    "q": "Amazon Bedrock's 'on-demand' vs 'provisioned throughput' — when should you choose provisioned?",
+    "q": "Amazon Bedrock's 'on-demand' vs 'provisioned throughput' \u2014 when should you choose provisioned?",
     "options": [
       "Always use provisioned for cost savings on any workload",
       "Provisioned is only available for fine-tuned models",
@@ -4620,11 +4424,10 @@
     "explain": "Provisioned Throughput is cost-effective for consistent high-volume production workloads needing guaranteed throughput and latency. On-demand suits variable or low-volume traffic where paying per token is cheaper.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "fine-tuning",
-      "model-adaptation"
+      "Provisioned-Throughput",
+      "on-demand",
+      "high-volume",
+      "cost-optimization"
     ]
   },
   {
@@ -4637,14 +4440,13 @@
       "A technique for compressing long contexts into shorter representations"
     ],
     "answer": 0,
-    "explain": "In-context learning allows foundation models to adapt to new tasks using only examples in the prompt — no gradient updates or weight changes. This is the mechanism behind few-shot prompting.",
+    "explain": "In-context learning allows foundation models to adapt to new tasks using only examples in the prompt \u2014 no gradient updates or weight changes. This is the mechanism behind few-shot prompting.",
     "keywords": [
+      "in-context-learning",
+      "few-shot",
       "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "model-training",
-      "ML-training"
+      "prompt-engineering",
+      "no-gradient"
     ]
   },
   {
@@ -4660,11 +4462,10 @@
     "explain": "Amazon Bedrock Agents supports a Code Interpreter action group that allows agents to write and execute Python code in a sandboxed environment, enabling data analysis, calculations, and file manipulation.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "guardrails",
-      "content-filtering"
+      "Bedrock-Agents",
+      "Code-Interpreter",
+      "Python-execution",
+      "data-analysis"
     ]
   },
   {
@@ -4679,12 +4480,11 @@
     "answer": 1,
     "explain": "Output watermarking embeds statistical patterns in token distributions that are detectable with the right key but invisible to readers, enabling identification of AI-generated content and tracking of model misuse.",
     "keywords": [
-      "foundation-models",
-      "FM",
-      "large-scale-model",
-      "pre-trained-model",
-      "embeddings",
-      "vector-representation"
+      "watermarking",
+      "model-fingerprinting",
+      "AI-detection",
+      "token-distribution",
+      "responsible-AI"
     ]
   },
   {
@@ -4693,18 +4493,17 @@
     "options": [
       "Switch to a model with a larger context window to handle the PDF",
       "Cache the entire prompt including PDF to avoid repeated processing",
-      "Implement RAG — store the PDF in a knowledge base and only retrieve relevant chunks per query",
+      "Implement RAG \u2014 store the PDF in a knowledge base and only retrieve relevant chunks per query",
       "Compress the PDF text to reduce token count before sending"
     ],
     "answer": 2,
     "explain": "Including a full document in every prompt is wasteful and expensive. RAG stores the document once, then retrieves only the relevant 2-3 chunks per query, reducing token usage by 90%+ while maintaining answer quality.",
     "keywords": [
       "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "LLM",
-      "large-language-model"
+      "cost-optimization",
+      "token-usage",
+      "document-retrieval",
+      "LLM-efficiency"
     ]
   },
   {
@@ -4719,12 +4518,11 @@
     "answer": 2,
     "explain": "Constitutional AI (Anthropic) trains models using a set of principles as a 'constitution'. The model critiques and revises its own outputs against these principles, making Claude's safety alignment more scalable.",
     "keywords": [
-      "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "responsible-AI",
-      "AI-ethics"
+      "Constitutional-AI",
+      "Anthropic",
+      "Claude",
+      "safety-alignment",
+      "Amazon-Bedrock"
     ]
   },
   {
@@ -4739,12 +4537,11 @@
     "answer": 2,
     "explain": "SageMaker JumpStart provides quantized model variants (INT8, INT4, GPTQ) that reduce memory by 4-8x and increase throughput, enabling cost-efficient deployment of large models on smaller GPU instances.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "LLM",
-      "large-language-model"
+      "SageMaker-JumpStart",
+      "quantization",
+      "INT8",
+      "INT4",
+      "cost-efficient-inference"
     ]
   },
   {
@@ -4754,17 +4551,16 @@
       "RAG is real-time; tool use works only with pre-indexed data",
       "Tool use calls external APIs/code at inference time; RAG retrieves static documents from a knowledge base",
       "Tool use retrieves documents; RAG calls APIs and executes code",
-      "They are identical — both involve retrieving external information"
+      "They are identical \u2014 both involve retrieving external information"
     ],
     "answer": 1,
     "explain": "Tool use (function calling) lets LLMs invoke external APIs, run code, or query live systems at inference time. RAG retrieves from pre-indexed static document stores. Tool use enables dynamic, real-time actions.",
     "keywords": [
+      "tool-use",
+      "function-calling",
       "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "LLM",
-      "large-language-model"
+      "real-time-API",
+      "dynamic-data"
     ]
   },
   {
@@ -4780,11 +4576,10 @@
     "explain": "Bedrock Agents with memory feature can store session summaries and retrieve them in future sessions. Alternatively, action groups can save/load user preferences from DynamoDB, enabling true cross-session personalization.",
     "keywords": [
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "fine-tuning",
-      "model-adaptation"
+      "Bedrock-Agents",
+      "memory",
+      "cross-session",
+      "personalization"
     ]
   },
   {
@@ -4799,8 +4594,9 @@
     "answer": 2,
     "explain": "Under GDPR and EU AI Act, high-risk AI systems (hiring) showing discriminatory outcomes must be remediated. Continued deployment of biased systems violates non-discrimination principles and carries significant legal risk.",
     "keywords": [
-      "bias-detection",
-      "model-bias",
+      "GDPR",
+      "EU-AI-Act",
+      "bias-remediation",
       "fairness",
       "responsible-AI"
     ]
@@ -4815,14 +4611,13 @@
       "Building inherently interpretable models vs applying explanation techniques after training"
     ],
     "answer": 3,
-    "explain": "Explainability by design uses inherently interpretable models (decision trees, linear regression). Post-hoc explainability applies tools like SHAP or LIME to explain black-box models after training. Design-time is generally preferred for high-stakes decisions.",
+    "explain": "Explainability by design uses inherently interpretable architectures: decision trees, linear/logistic regression, and GAMs (Generalized Additive Models) where each decision rule is readable. Post-hoc methods like SHAP, LIME, and attention visualization explain black-box models after training. Regulators increasingly prefer design-time interpretability for high-stakes decisions because post-hoc explanations can be approximate.",
     "keywords": [
-      "regression",
-      "supervised-learning",
-      "prediction",
-      "continuous-output",
-      "model-training",
-      "ML-training"
+      "explainability-by-design",
+      "post-hoc-explainability",
+      "interpretable-models",
+      "SHAP",
+      "LIME"
     ]
   },
   {
@@ -4837,12 +4632,11 @@
     "answer": 0,
     "explain": "Amazon Rekognition can detect faces and identify individuals in video. Combined with MediaConvert or custom Lambda, it enables automated PII/face blurring in video content before it's used in training datasets.",
     "keywords": [
-      "model-training",
-      "ML-training",
-      "epochs",
-      "gradient-descent",
-      "Amazon-Comprehend",
-      "NLP"
+      "Amazon-Rekognition",
+      "face-detection",
+      "PII-protection",
+      "video-anonymization",
+      "training-data"
     ]
   },
   {
@@ -4857,12 +4651,11 @@
     "answer": 3,
     "explain": "Representation bias in training data causes disparate impact. Auditing for demographic balance and collecting representative data from underrepresented communities is the root cause fix. SageMaker Clarify helps measure this bias.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "responsible-AI",
-      "AI-ethics"
+      "representation-bias",
+      "training-data",
+      "fairness",
+      "SageMaker-Clarify",
+      "responsible-AI"
     ]
   },
   {
@@ -4877,12 +4670,11 @@
     "answer": 0,
     "explain": "AI washing means exaggerating AI capabilities or labeling non-AI products as AI-powered to attract investment or customers. It's a responsible AI concern because it misleads stakeholders and erodes trust in legitimate AI.",
     "keywords": [
+      "AI-washing",
       "responsible-AI",
-      "AI-ethics",
-      "fairness",
-      "governance",
-      "bias-detection",
-      "model-bias"
+      "transparency",
+      "ethics",
+      "marketing"
     ]
   },
   {
@@ -4897,30 +4689,30 @@
     "answer": 3,
     "explain": "Human-in-the-loop (HITL) inserts mandatory human review at critical decision points before actions are taken. For high-stakes financial decisions, HITL ensures AI assists but humans remain accountable for final outcomes.",
     "keywords": [
-      "explainability",
-      "model-interpretability",
+      "human-in-the-loop",
       "responsible-AI",
-      "SHAP"
+      "financial-AI",
+      "accountability",
+      "oversight"
     ]
   },
   {
     "cat": "responsible-ai",
     "q": "Which principle of responsible AI specifically addresses ensuring AI systems perform consistently across demographic groups?",
     "options": [
-      "Transparency — disclosing how AI systems work",
-      "Robustness — maintaining performance under adversarial conditions",
-      "Privacy — protecting individual data from unauthorized access",
-      "Fairness — ensuring equitable treatment and outcomes across groups"
+      "Transparency \u2014 disclosing how AI systems work",
+      "Robustness \u2014 maintaining performance under adversarial conditions",
+      "Privacy \u2014 protecting individual data from unauthorized access",
+      "Fairness \u2014 ensuring equitable treatment and outcomes across groups"
     ],
     "answer": 3,
     "explain": "Fairness requires AI systems to provide equitable outcomes across demographic groups (race, gender, age). SageMaker Clarify measures disparate impact and group fairness metrics to detect and mitigate unfair bias.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
+      "fairness",
       "responsible-AI",
-      "AI-ethics"
+      "SageMaker-Clarify",
+      "demographic-parity",
+      "equity"
     ]
   },
   {
@@ -4933,14 +4725,13 @@
       "API documentation for accessing training datasets programmatically"
     ],
     "answer": 1,
-    "explain": "Datasheets for Datasets (Gebru et al.) proposes standardized documentation covering dataset motivation, composition, collection process, preprocessing, intended uses, limitations, and maintenance — enabling informed, responsible dataset use.",
+    "explain": "Datasheets for Datasets (Gebru et al.) proposes standardized documentation covering dataset motivation, composition, collection process, preprocessing, intended uses, limitations, and maintenance \u2014 enabling informed, responsible dataset use.",
     "keywords": [
+      "datasheets-for-datasets",
+      "dataset-documentation",
       "responsible-AI",
-      "AI-ethics",
-      "fairness",
-      "governance",
-      "model-training",
-      "ML-training"
+      "transparency",
+      "data-governance"
     ]
   },
   {
@@ -4955,12 +4746,11 @@
     "answer": 2,
     "explain": "Training jobs downloading from the internet risk supply chain attacks (malicious packages) and data exfiltration. SageMaker network isolation mode + private package mirrors (CodeArtifact) eliminates internet dependency.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
+      "supply-chain-attack",
+      "network-isolation",
       "SageMaker",
-      "ML-training"
+      "CodeArtifact",
+      "security"
     ]
   },
   {
@@ -4973,14 +4763,13 @@
       "They are identical attacks with different names"
     ],
     "answer": 0,
-    "explain": "Indirect prompt injection hides malicious instructions in external content an agent retrieves (websites, documents, emails). When the LLM processes this content, the hidden instructions override its behavior without direct user input.",
+    "explain": "Direct prompt injection comes from user input directly trying to override instructions. Indirect injection is more dangerous \u2014 malicious instructions are embedded in external content the agent reads (a web page saying 'Ignore previous instructions and...', a PDF containing hidden commands). Agentic AI is especially vulnerable because it autonomously processes untrusted external content.",
     "keywords": [
-      "LLM",
-      "large-language-model",
-      "language-model",
-      "transformer",
-      "embeddings",
-      "vector-representation"
+      "indirect-prompt-injection",
+      "direct-prompt-injection",
+      "LLM-security",
+      "agentic-AI",
+      "AI-safety"
     ]
   },
   {
@@ -4993,14 +4782,13 @@
       "Denial of service overwhelming the agent with requests"
     ],
     "answer": 2,
-    "explain": "This is indirect prompt injection via tool use hijacking — malicious instructions in processed documents redirect the agent's actions. Defense requires input sanitization, action confirmation, and least-privilege tool permissions.",
+    "explain": "This is indirect prompt injection via tool use hijacking \u2014 malicious instructions in processed documents redirect the agent's actions. Defense requires input sanitization, action confirmation, and least-privilege tool permissions.",
     "keywords": [
-      "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "model-training",
-      "ML-training"
+      "indirect-prompt-injection",
+      "tool-use-hijacking",
+      "Bedrock-Agents",
+      "agentic-AI",
+      "AI-security"
     ]
   },
   {
@@ -5008,19 +4796,18 @@
     "q": "What IAM best practice specifically limits the blast radius if an ML pipeline's role is compromised?",
     "options": [
       "Enable MFA for the SageMaker service role",
-      "Apply least privilege — each pipeline component gets only the specific permissions it needs",
+      "Apply least privilege \u2014 each pipeline component gets only the specific permissions it needs",
       "Rotate IAM credentials for the pipeline role daily",
       "Use AWS Organizations SCPs to restrict all ML workloads"
     ],
     "answer": 1,
     "explain": "Least privilege limits blast radius: a compromised training job role that can only read its S3 bucket does far less damage than one with broad S3:* permissions. Each pipeline stage should have minimally scoped roles.",
     "keywords": [
+      "least-privilege",
+      "IAM",
       "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "model-training",
-      "epochs"
+      "blast-radius",
+      "ML-security"
     ]
   },
   {
@@ -5035,12 +4822,11 @@
     "answer": 0,
     "explain": "System prompt protection requires: explicit non-disclosure instructions, output monitoring for prompt leakage, and Guardrails to detect extraction attempts. No single measure is foolproof; defense in depth is required.",
     "keywords": [
-      "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "LLM",
-      "large-language-model"
+      "system-prompt-protection",
+      "Bedrock-Guardrails",
+      "defense-in-depth",
+      "LLM-security",
+      "monitoring"
     ]
   },
   {
@@ -5053,14 +4839,13 @@
       "Learning distributed across multiple AWS accounts for scalability"
     ],
     "answer": 0,
-    "explain": "Federated learning trains models on data where it lives (hospitals, phones) without moving raw data to a central server. Only model gradients are shared, providing strong privacy guarantees for sensitive data.",
+    "explain": "Federated learning trains models collaboratively: each participant (hospital, mobile device) trains locally on their data and only shares model gradients \u2014 not raw data \u2014 with a central aggregator. This provides strong privacy because sensitive data never leaves the originating site. Combined with differential privacy on the gradients, federated learning offers cryptographically meaningful privacy guarantees.",
     "keywords": [
-      "model-training",
-      "ML-training",
-      "epochs",
-      "gradient-descent",
+      "federated-learning",
       "data-privacy",
-      "PII"
+      "distributed-ML",
+      "privacy-preserving",
+      "gradients"
     ]
   },
   {
@@ -5075,10 +4860,11 @@
     "answer": 0,
     "explain": "DDoS/DoS on ML inference endpoints can degrade availability. AWS WAF rate limiting blocks abusive clients, Auto Scaling handles legitimate traffic spikes, and AWS Shield provides DDoS protection at the network layer.",
     "keywords": [
-      "model-inference",
-      "prediction",
-      "deployment",
-      "serving"
+      "DDoS",
+      "rate-limiting",
+      "AWS-WAF",
+      "Auto-Scaling",
+      "ML-availability"
     ]
   },
   {
@@ -5093,12 +4879,11 @@
     "answer": 3,
     "explain": "AWS Nitro Enclaves provide isolated compute environments where even the instance owner cannot access data or code. This enables processing highly sensitive data (medical records, financial data) for ML without exposure.",
     "keywords": [
-      "RAG",
-      "retrieval-augmented-generation",
-      "retrieval-augmented",
-      "knowledge-retrieval",
-      "model-training",
-      "ML-training"
+      "Nitro-Enclaves",
+      "secure-enclave",
+      "sensitive-data",
+      "ML-security",
+      "hardware-isolation"
     ]
   },
   {
@@ -5113,12 +4898,11 @@
     "answer": 0,
     "explain": "PII in logs is a data privacy violation. Immediate remediation requires preprocessing training data to detect and redact PII before training, and sanitizing container logs. Amazon Comprehend can automate PII detection in data pipelines.",
     "keywords": [
-      "SageMaker",
-      "ML-training",
-      "model-deployment",
-      "managed-ML",
-      "model-training",
-      "epochs"
+      "PII",
+      "training-logs",
+      "data-privacy",
+      "Amazon-Comprehend",
+      "SageMaker"
     ]
   },
   {
@@ -5131,14 +4915,13 @@
       "Use a separate classification model to detect competitor queries"
     ],
     "answer": 0,
-    "explain": "Bedrock Guardrails denied topics configuration is the simplest approach — define topic descriptions and the model returns a configured refusal message instead of engaging, with no code changes required.",
+    "explain": "Bedrock Guardrails denied topics configuration is the simplest approach \u2014 define topic descriptions and the model returns a configured refusal message instead of engaging, with no code changes required.",
     "keywords": [
+      "Bedrock-Guardrails",
+      "denied-topics",
+      "content-policy",
       "Amazon-Bedrock",
-      "bedrock",
-      "managed-FM",
-      "foundation-model-service",
-      "LLM",
-      "large-language-model"
+      "competitor"
     ]
   },
   {
@@ -5153,10 +4936,11 @@
     "answer": 3,
     "explain": "Pipeline parallelism (model parallelism) assigns different transformer layers to different GPUs. GPU 1 holds layers 1-12, GPU 2 holds layers 13-24, etc., enabling models too large to fit on a single GPU.",
     "keywords": [
-      "transformer",
-      "attention-mechanism",
-      "LLM",
-      "BERT"
+      "pipeline-parallelism",
+      "model-parallelism",
+      "distributed-training",
+      "GPU",
+      "large-models"
     ]
   }
 ]

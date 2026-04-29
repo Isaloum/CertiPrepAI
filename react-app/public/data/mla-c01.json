@@ -9,7 +9,7 @@
       "AWS Lambda for custom Python data cleaning scripts"
     ],
     "answer": 0,
-    "explain": "SageMaker Data Wrangler provides visual interfaces for handling missing values, inconsistent formats, and class imbalance through built-in transformations.",
+    "explain": "Amazon SageMaker Data Wrangler provides a visual interface with 300+ built-in transformations for handling missing values, standardizing date formats, and addressing class imbalance via oversampling or class weighting — all without writing code. AWS Glue DataBrew is also a strong option but lacks SageMaker's native integration for ML workflows.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -28,8 +28,8 @@
       "Use AWS Glue ETL jobs to transform data and write train/validation/test datasets to separate S3 paths",
       "Use SageMaker Processing jobs with pandas to transform and split data"
     ],
-    "answer": 3,
-    "explain": "AWS Glue ETL is optimized for scalable data transformations and can efficiently write split datasets directly to S3 for SageMaker training jobs.",
+    "answer": 2,
+    "explain": "AWS Glue ETL jobs use Apache Spark under the hood, scaling efficiently to millions of Parquet records stored in S3. Glue writes train/validation/test splits to separate S3 paths natively, integrating directly with SageMaker training jobs. SageMaker Processing also works but requires managing the Spark runtime manually.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -49,7 +49,7 @@
       "RDS database for ACID compliance on features"
     ],
     "answer": 1,
-    "explain": "SageMaker Feature Store enables feature sharing, versioning, and both online/offline feature retrieval across teams and models.",
+    "explain": "Amazon SageMaker Feature Store provides both an online store (low-latency retrieval for inference) and offline store (S3-backed for training), with versioning and access control for sharing features across teams. It eliminates redundant feature computation and ensures training-serving consistency, preventing training-serving skew.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -68,8 +68,8 @@
       "Use stratified k-fold cross-validation without any resampling",
       "Use data augmentation on minority class and implement class weights in the loss function"
     ],
-    "answer": 1,
-    "explain": "Data augmentation (rotation, flipping for images) combined with class weights handles imbalance effectively while preserving data diversity.",
+    "answer": 3,
+    "explain": "Data augmentation (rotation, flipping, brightness adjustments) synthetically expands the minority class with realistic variations, while class weights in the loss function penalize minority class misclassifications more heavily. Simple duplication (option B) risks overfitting to identical minority examples without adding useful variation.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -88,8 +88,8 @@
       "Semantic Segmentation with crowd workers",
       "Image Classification with auto-labeling"
     ],
-    "answer": 2,
-    "explain": "Private workforce is recommended for complex object detection tasks requiring expertise, while public crowds suit simpler classification tasks.",
+    "answer": 0,
+    "explain": "Complex object detection tasks requiring expert judgment should use a private workforce (your own employees or vetted contractors via Amazon Mechanical Turk Expert workforce), ensuring annotation quality for specialized tasks. Semantic Segmentation with crowd workers is better suited for simpler, scalable tasks where expert knowledge is not required.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -108,8 +108,8 @@
       "Remove all timestamp information as it's not useful for models",
       "Aggregate data by time windows, derive session-level statistics like session duration and page count"
     ],
-    "answer": 2,
-    "explain": "Aggregating clickstream data into meaningful time windows first creates domain-relevant features like session duration and engagement metrics.",
+    "answer": 3,
+    "explain": "Aggregating raw clickstream events into time-window features (session count, average duration, page diversity per user) creates domain-relevant predictive signals. Timestamps alone are not useful as raw values; derived session-level statistics capture behavioral patterns that correlate with churn.",
     "keywords": [
       "feature-engineering",
       "data-preprocessing",
@@ -129,7 +129,7 @@
       "EC2 cluster with Apache Spark"
     ],
     "answer": 1,
-    "explain": "AWS Glue DPU pricing scales with actual compute usage and offers better cost efficiency than fixed capacity for variable workloads.",
+    "explain": "AWS Glue with DPU on-demand pricing charges only for compute consumed during job execution, making it cost-effective for daily batch ETL. Provisioned capacity wastes money during idle periods, and SageMaker Processing is priced per second of instance use, making it less efficient than Glue for pure ETL workloads.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -148,8 +148,8 @@
       "Partition data by a high-cardinality column like user ID for fine-grained access",
       "Use Parquet's column-based compression only without partitioning"
     ],
-    "answer": 1,
-    "explain": "Partitioning by date and region enables Athena/Spark to prune irrelevant data quickly, improving query performance on large datasets.",
+    "answer": 0,
+    "explain": "Partitioning by low-cardinality columns like region and date enables partition pruning in Athena and Spark — queries only scan relevant partitions, dramatically reducing data read. High-cardinality partitioning (by user_id) creates millions of tiny files, hurting performance rather than improving it.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -168,8 +168,8 @@
       "Train the model first and assess quality through model performance metrics",
       "Use only AWS Glue data catalog metadata for validation"
     ],
-    "answer": 2,
-    "explain": "SageMaker Model Monitor's data quality baseline automatically detects missing values, outliers, and statistical drift against baseline constraints.",
+    "answer": 0,
+    "explain": "SageMaker Model Monitor Data Quality baselines compute statistical constraints (missing value rates, distribution bounds) from training data and continuously compare incoming data against these baselines. Training first and assessing quality through model metrics (option C) is reactive and may waste expensive training compute on bad data.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -188,8 +188,8 @@
       "The validation set is too small",
       "The validation data was accidentally used during training"
     ],
-    "answer": 0,
-    "explain": "Data distribution shift between validation and test sets (e.g., different time periods) often reveals overfitting when test accuracy drops.",
+    "answer": 1,
+    "explain": "When validation accuracy is higher than test accuracy, the most common cause is distribution shift — the validation set comes from a time period or source that is easier or different from the real-world test set. This pattern often reveals that hyperparameter tuning overfit to the validation set's specific distribution.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -209,7 +209,7 @@
       "SageMaker Autopilot to automatically select the algorithm"
     ],
     "answer": 1,
-    "explain": "SageMaker's built-in XGBoost supports CSV format natively and handles distributed training on large datasets efficiently.",
+    "explain": "SageMaker's built-in XGBoost algorithm accepts CSV or LibSVM input directly from S3, supports distributed training for large datasets, and automatically handles categorical features encoded numerically. A custom container adds unnecessary complexity for standard XGBoost training that the built-in algorithm handles natively.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -228,8 +228,8 @@
       "Decrease the embedding dimension only",
       "Use a smaller learning rate to improve model accuracy"
     ],
-    "answer": 1,
-    "explain": "BlazingText supports distributed training across multiple GPU instances, and larger batch sizes improve throughput and reduce wall-clock training time.",
+    "answer": 0,
+    "explain": "BlazingText supports data parallelism across multiple GPU instances; increasing batch size maximizes GPU utilization and reduces training time per epoch. Removing stop words (option B) is a preprocessing step that does not reduce training compute time for a model already in training.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -248,8 +248,8 @@
       "Customer feedback only",
       "Cost of each training job only"
     ],
-    "answer": 2,
-    "explain": "SageMaker Experiments tracks trial parameters, metrics across epochs, and artifacts, enabling comparison and reproducibility of model development.",
+    "answer": 1,
+    "explain": "SageMaker Experiments tracks trial components including hyperparameters, per-epoch metrics, and model artifacts for each run, enabling systematic comparison between parallel A/B experiments. Tracking only final accuracy (option A) loses the training dynamics and parameter configurations needed for reproducibility.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -268,8 +268,8 @@
       "Manual trial-and-error based on past experience",
       "Grid search trying all 200 combinations sequentially"
     ],
-    "answer": 2,
-    "explain": "SageMaker Hyperparameter Tuning with Bayesian optimization intelligently explores parameter space, finding good values faster than grid or random search.",
+    "answer": 1,
+    "explain": "SageMaker Hyperparameter Tuning with Bayesian optimization uses previous trial results to intelligently select the next set of hyperparameters, converging on optimal values with fewer trials than grid or random search. Grid search across all 200 combinations would be 20x more expensive with diminishing returns.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -288,8 +288,8 @@
       "A pre-trained model checkpoint",
       "Instance type with GPU support (e.g., ml.p3.2xlarge), Docker image, and training script entry point"
     ],
-    "answer": 1,
-    "explain": "GPU training requires specifying instance type with GPU, the custom Docker image, and entry point script in the training job config.",
+    "answer": 3,
+    "explain": "A custom training container on SageMaker requires specifying a GPU-capable instance type (e.g., ml.p3.2xlarge), the ECR Docker image URI containing the training environment, and the entry point script. Specifying only the Docker image URI (option A) omits the instance type and entry point required for job execution.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -308,8 +308,8 @@
       "The learning rate is too low",
       "The model is underfitting due to insufficient capacity"
     ],
-    "answer": 0,
-    "explain": "Decreasing training loss with increasing validation loss is the classic overfitting pattern, indicating the model memorizes training data.",
+    "answer": 1,
+    "explain": "Decreasing training loss paired with increasing validation loss is the canonical signature of overfitting — the model memorizes training examples rather than learning generalizable patterns. A bug in the loss function (option A) would typically cause both training and validation loss to behave erratically, not diverge cleanly.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -329,7 +329,7 @@
       "SageMaker Pipelines for workflow orchestration"
     ],
     "answer": 2,
-    "explain": "SageMaker Autopilot automatically runs feature engineering, algorithm selection, and hyperparameter optimization for supervised learning tasks.",
+    "explain": "SageMaker Autopilot automatically runs data preprocessing, algorithm selection (linear models, XGBoost, neural networks), feature engineering, and hyperparameter optimization for supervised ML tasks. SageMaker Clarify (option A) is for bias and explainability analysis, not automated model building.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -348,8 +348,8 @@
       "0.94",
       "0.89"
     ],
-    "answer": 2,
-    "explain": "Precision = TP / (TP + FP) = 80 / (80 + 20) = 80 / 100 = 0.80. Wait, recalculating: 80/100 = 0.80. Actually the answer is 0.80 which is option A.",
+    "answer": 1,
+    "explain": "Precision = TP / (TP + FP) = 80 / (80 + 20) = 80 / 100 = 0.80. Recall = TP / (TP + FN) = 80 / (80 + 50) = 0.615, and overall accuracy = (TP + TN) / total = 930 / 1000 = 0.93. The answer 0.94 (option C) is incorrect.",
     "keywords": [
       "confusion-matrix",
       "classification-metrics",
@@ -368,8 +368,8 @@
       "Apply L1/L2 regularization and dropout to reduce model complexity",
       "Increase the learning rate for faster convergence"
     ],
-    "answer": 1,
-    "explain": "L1/L2 regularization and dropout directly reduce overfitting by penalizing complex weights and randomly disabling neurons during training.",
+    "answer": 2,
+    "explain": "L1/L2 regularization penalizes large weights to reduce model complexity, and dropout randomly disables neurons during training to prevent co-adaptation — both directly target overfitting on small datasets. Increasing batch size (option B) primarily affects optimization stability, not overfitting.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -389,7 +389,7 @@
       "The embedding dimension is too small"
     ],
     "answer": 1,
-    "explain": "Large accuracy gap between test and production suggests the test set doesn't represent real-world distribution, indicating data drift.",
+    "explain": "A large gap between test accuracy (92%) and production accuracy (78%) indicates covariate shift — the test set and production data have different distributions. BlazingText trains on the test distribution well but fails to generalize to unseen production patterns, suggesting the test set was not representative.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -408,8 +408,8 @@
       "Train 4 separate models with different random seeds",
       "SageMaker distributed model parallelism to split the model across GPUs"
     ],
-    "answer": 1,
-    "explain": "Data parallelism is ideal for training large models on multiple GPUs; each GPU processes different data batches, scaling efficiently.",
+    "answer": 0,
+    "explain": "SageMaker Distributed Data Parallel (SMDDP) provides an optimized AllReduce implementation for multi-instance data parallelism, splitting batches across 4 instances and synchronizing gradients. torch.nn.DataParallel (option B) only works within a single machine and does not support multi-node training.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -428,8 +428,8 @@
       "Removes all negative class samples",
       "Oversamples the minority class by duplication"
     ],
-    "answer": 2,
-    "explain": "scale_pos_weight applies class weights in XGBoost's loss function, penalizing minority class errors more heavily to handle imbalance.",
+    "answer": 1,
+    "explain": "XGBoost's scale_pos_weight parameter multiplies the loss gradient for positive class samples, penalizing misclassification of the minority (positive) class more heavily. Setting it to neg_count/pos_count is the recommended approach for binary classification with class imbalance.",
     "keywords": [
       "XGBoost",
       "gradient-boosting",
@@ -449,7 +449,7 @@
       "Overfitting on the majority class"
     ],
     "answer": 1,
-    "explain": "Imbalanced classes with standard loss cause models to predict only frequent classes since they dominate the loss gradient.",
+    "explain": "Standard softmax loss computes gradients proportional to sample frequency; minority classes contribute fewer gradient updates, causing the model to predict only majority classes. Focal loss or class-weighted loss addresses this by up-weighting minority class contributions.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -469,7 +469,7 @@
       "Use a simpler model to improve variance"
     ],
     "answer": 1,
-    "explain": "High bias with low variance suggests underfitting; increasing model complexity adds capacity to capture true patterns and reduce bias.",
+    "explain": "High bias indicates underfitting — the model lacks capacity to capture training data patterns. Increasing model complexity (deeper trees, more features) reduces bias. Increasing regularization (option A) would worsen bias by further constraining the model.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -489,7 +489,7 @@
       "SageMaker serverless inference without capacity configuration"
     ],
     "answer": 1,
-    "explain": "Real-time endpoints with provisioned instances guarantee latency SLAs (<100ms) for synchronous requests with consistent throughput.",
+    "explain": "SageMaker real-time endpoints with provisioned instance capacity guarantee consistent low latency by keeping instances pre-warmed and ready. Serverless inference (option D) introduces cold starts incompatible with <100ms SLAs, and batch transform is offline, not suitable for synchronous credit scoring.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -508,8 +508,8 @@
       "Use production variant traffic weights in SageMaker endpoint configuration",
       "Deploy all models in one container with routing logic"
     ],
-    "answer": 1,
-    "explain": "SageMaker endpoint variants support traffic splitting; each variant receives requests proportional to specified weights for A/B testing.",
+    "answer": 2,
+    "explain": "SageMaker endpoint configurations support multiple production variants, each with a configurable InitialVariantWeight that determines traffic percentage. This enables native A/B testing within a single endpoint without external load balancers or separate deployments.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -528,8 +528,8 @@
       "Deploy a real-time endpoint and call it for each image",
       "Provision EC2 instances for inference"
     ],
-    "answer": 1,
-    "explain": "Batch transform is optimized for large-scale offline inference, processing data in batches and writing directly to S3 cost-effectively.",
+    "answer": 0,
+    "explain": "SageMaker Batch Transform is designed for large-scale offline inference — it reads input from S3, runs inference in parallel across instances, and writes results back to S3. For 1 million images without latency requirements, batch transform is more cost-effective than maintaining a persistent endpoint.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -549,7 +549,7 @@
       "Lambda function manually triggered by the data team"
     ],
     "answer": 0,
-    "explain": "EventBridge can automatically trigger SageMaker Pipelines when new data arrives in S3, enabling fully automated workflows.",
+    "explain": "Amazon EventBridge rules can trigger SageMaker Pipelines executions on S3 PutObject events, enabling fully automated ML pipelines when new data arrives. Manual triggers (options B and D) require human intervention and break CI/CD automation.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -568,8 +568,8 @@
       "Update endpoint configuration and instantly replace all traffic",
       "Use production variants with shifting traffic weights over time"
     ],
-    "answer": 1,
-    "explain": "Production variants allow gradual traffic shifting from old to new models, enabling safe blue-green deployment with rollback capability.",
+    "answer": 3,
+    "explain": "SageMaker production variants support gradual traffic shifting by adjusting variant weights over time (e.g., starting at 10% new model, incrementing to 100%), enabling safe blue-green deployment with rollback capability. DNS switching (option B) has propagation delays and no native rollback.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -588,8 +588,8 @@
       "Save model artifacts to local notebook storage",
       "Register models in SageMaker Model Registry with metadata and version tags"
     ],
-    "answer": 0,
-    "explain": "SageMaker Model Registry integrates with MLflow, enabling model registration, versioning, and approval workflows for production deployment.",
+    "answer": 3,
+    "explain": "SageMaker Model Registry provides native MLflow integration for registering models with metadata, approval workflows, and deployment tracking. GitHub (option A) is for source code version control, not model artifact management and deployment orchestration.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -608,8 +608,8 @@
       "The data format is inconsistent",
       "The model is underfitted"
     ],
-    "answer": 1,
-    "explain": "SageMaker auto-scaling can cause cold starts when scaling up instances, resulting in slow requests until the instance is fully initialized.",
+    "answer": 0,
+    "explain": "Auto-scaling SageMaker endpoints scale down during low traffic, causing cold start latency when new requests arrive and instances must be re-initialized. This explains intermittent slow responses — <10ms for warm instances, >1s for cold starts after scale-down.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -628,8 +628,8 @@
       "Use SageMaker cross-region model package to copy the model and deploy endpoints in each region",
       "Use a single global endpoint in us-east-1 for all regions"
     ],
-    "answer": 3,
-    "explain": "SageMaker model packages enable copying models across regions and deploying regional endpoints for low-latency global inference.",
+    "answer": 2,
+    "explain": "SageMaker cross-region model packages allow copying model artifacts to S3 buckets in target regions and creating regional endpoints, minimizing latency for users in each geography. A single global endpoint in us-east-1 (option D) adds network round-trip latency for non-US users.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -648,8 +648,8 @@
       "Use public S3 bucket accessible over the internet",
       "Place S3 bucket in the same VPC as the endpoint"
     ],
-    "answer": 0,
-    "explain": "VPC endpoints for S3 enable private, secure connectivity without requiring internet gateway, meeting security requirements for restricted deployments.",
+    "answer": 1,
+    "explain": "VPC S3 gateway endpoints provide private, secure connectivity between VPC-deployed SageMaker endpoints and S3 model artifacts without routing traffic over the internet. Disabling encryption (option A) directly violates the security requirement.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -669,7 +669,7 @@
       "Manually download the model and train it themselves"
     ],
     "answer": 2,
-    "explain": "Marketplace models can be subscribed and deployed directly to SageMaker endpoints, simplifying access for customers.",
+    "explain": "AWS Marketplace models can be subscribed and deployed directly to SageMaker real-time or batch transform endpoints via the SageMaker console or SDK. Downloading and training the model yourself (option D) defeats the purpose of a pre-trained Marketplace model.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -688,8 +688,8 @@
       "Avoid updating models to prevent production disruption",
       "Use SageMaker Edge manager for fleet management and automated model updates"
     ],
-    "answer": 1,
-    "explain": "SageMaker Edge Manager enables remote fleet management, automated model updates, and monitoring across IoT devices at scale.",
+    "answer": 3,
+    "explain": "SageMaker Edge Manager provides fleet management capabilities — remote model deployment, health monitoring, and automated update orchestration across IoT devices at scale. Manual per-device updates (option A) are operationally infeasible for large manufacturing plant device fleets.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -708,8 +708,8 @@
       "Retrain the model immediately without monitoring",
       "Manually check model accuracy daily by running test data"
     ],
-    "answer": 0,
-    "explain": "SageMaker Model Monitor's data quality baseline detects distribution shift (drift) between production data and training baseline automatically.",
+    "answer": 1,
+    "explain": "SageMaker Model Monitor continuously compares production data distributions against training baseline statistics, automatically detecting covariate shift and triggering CloudWatch alarms. Waiting for customer complaints (option A) is reactive and damages user trust.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -728,8 +728,8 @@
       "Use SageMaker Clarify to generate feature importance and bias reports across protected attributes",
       "Remove the protected attribute (gender) from the model to hide the bias"
     ],
-    "answer": 3,
-    "explain": "SageMaker Clarify provides bias reports and feature importance analysis, quantifying disparities across protected attributes systematically.",
+    "answer": 2,
+    "explain": "SageMaker Clarify generates bias reports quantifying disparities across protected attributes (gender, race) using metrics like disparate impact ratio, enabling systematic detection of lending bias. Removing the protected attribute (option D) does not prevent proxy discrimination through correlated features.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -748,8 +748,8 @@
       "SageMaker Clarify for SHAP/LIME explanations and feature importance",
       "CloudWatch logs only"
     ],
-    "answer": 0,
-    "explain": "SageMaker Clarify provides model explanations using SHAP/LIME, showing feature contributions to individual predictions for interpretability.",
+    "answer": 2,
+    "explain": "SageMaker Clarify provides SHAP values for each prediction, quantifying each feature's contribution in a mathematically rigorous way. CloudWatch logs (option D) record operational metrics, not model prediction explanations.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -768,8 +768,8 @@
       "The model is experiencing concept drift; fraud patterns have evolved since training on 2023 data",
       "Too many predictions are being made"
     ],
-    "answer": 3,
-    "explain": "Concept drift occurs when the relationship between features and target changes over time; fraud patterns evolve, reducing model accuracy.",
+    "answer": 2,
+    "explain": "Concept drift occurs when the statistical relationship between input features and the target variable changes over time — in fraud detection, fraudsters adapt their patterns, reducing model effectiveness. Model accuracy naturally degrades as trained patterns no longer match current fraud behaviors.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -788,8 +788,8 @@
       "Only error rates",
       "Application performance only"
     ],
-    "answer": 2,
-    "explain": "Monitoring invocation count, latency, and utilization enables identifying over-provisioned capacity and optimizing costs on ML endpoints.",
+    "answer": 1,
+    "explain": "Monitoring SageMaker endpoint InvocationCount, ModelLatency, and CPUUtilization identifies over-provisioned or under-provisioned capacity, enabling right-sizing for cost optimization. Error rates alone (option C) do not reveal cost inefficiencies.",
     "keywords": [
       "SageMaker-Endpoint",
       "model-deployment",
@@ -806,8 +806,8 @@
       "Remove demographic information from inputs",
       "Assume the model is fair if accuracy is high"
     ],
-    "answer": 3,
-    "explain": "SageMaker Clarify measures fairness metrics like disparate impact across demographics, ensuring equitable performance for responsible AI.",
+    "answer": 1,
+    "explain": "SageMaker Clarify measures bias metrics including disparate impact ratio and statistical parity difference across patient demographics in evaluation datasets, providing quantitative fairness evidence. High overall accuracy (option D) can mask poor performance on demographic subgroups.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -826,8 +826,8 @@
       "Email reports sent manually weekly",
       "CloudWatch Dashboards with metrics from SageMaker endpoint and Model Monitor"
     ],
-    "answer": 2,
-    "explain": "CloudWatch Dashboards visualize endpoint metrics (latency, errors) and Model Monitor drift metrics in real-time for operational visibility.",
+    "answer": 3,
+    "explain": "CloudWatch Dashboards aggregate SageMaker endpoint metrics (ModelLatency, InvocationCount, 4xx/5xx errors) and Model Monitor drift metrics in real-time, providing operational visibility. Email reports (option C) are manually generated and lag hours behind real issues.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -846,8 +846,8 @@
       "Predictions are more confident",
       "The model became more accurate"
     ],
-    "answer": 1,
-    "explain": "Latency increase suggests resource contention or insufficient capacity; scaling endpoints or using GPU instances can reduce latency.",
+    "answer": 0,
+    "explain": "Latency increasing from 50ms to 200ms on a SageMaker endpoint typically indicates resource saturation — requests queue behind others being processed. Scaling up to larger instance types or increasing minimum instance count addresses queue-induced latency.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -866,8 +866,8 @@
       "Remove timestamps as they can't be modeled",
       "Use raw event timestamps without aggregation"
     ],
-    "answer": 2,
-    "explain": "Aggregating raw events into meaningful windows creates predictive features like user activity level and engagement patterns.",
+    "answer": 1,
+    "explain": "Aggregating raw clickstream events into time-window statistics (event count, average duration, event diversity per user session) creates domain-relevant features for churn prediction. Raw timestamps and user IDs are not predictive as raw values without aggregation.",
     "keywords": [
       "feature-engineering",
       "data-preprocessing",
@@ -886,8 +886,8 @@
       "Validation set should be larger than training set",
       "All data should be used for training only"
     ],
-    "answer": 2,
-    "explain": "Small test sets reduce statistical power for evaluation; stratified splits ensure minority classes are represented proportionally.",
+    "answer": 1,
+    "explain": "With only 100,000 samples per split, rare events and minority classes may be underrepresented, reducing evaluation reliability. Stratified splits ensure class distributions match the training set, preserving statistical validity of test evaluation.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -904,8 +904,8 @@
       "Ignore historical context",
       "Store all data in DynamoDB for real-time access"
     ],
-    "answer": 3,
-    "explain": "AWS Glue can enrich streaming data by joining with reference tables, creating enriched datasets for training.",
+    "answer": 1,
+    "explain": "AWS Glue ETL jobs can join Kinesis Firehose-delivered streaming data with historical reference tables in S3 or RDS, enriching records with context before writing to S3 for training. DynamoDB (option D) is optimized for low-latency reads, not complex joins across large datasets.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -925,7 +925,7 @@
       "Amazon Macie for PII discovery in S3"
     ],
     "answer": 2,
-    "explain": "AWS Glue DataBrew provides built-in recipes for PII redaction (email masking, SSN hashing) to comply with GDPR and privacy policies.",
+    "explain": "AWS Glue DataBrew provides built-in PII detection and redaction recipes (email masking, SSN hashing, name anonymization) that can be applied at scale to S3 data. Amazon Macie (option D) discovers PII but does not perform automated redaction for training data preparation.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -944,8 +944,8 @@
       "The model may show inflated performance; test performance could be lower due to overfitting on the validation set",
       "More data is needed"
     ],
-    "answer": 0,
-    "explain": "Using validation set for hyperparameter tuning causes optimistic bias; a held-out test set provides unbiased performance estimation.",
+    "answer": 2,
+    "explain": "Without a held-out test set, the validation set serves dual purposes (hyperparameter selection and performance estimation), causing optimistic bias — the reported 95% may not reflect true generalization. A separate test set ensures unbiased final evaluation.",
     "keywords": [
       "hyperparameter-tuning",
       "model-optimization",
@@ -964,8 +964,8 @@
       "Resize only JPEG images",
       "Convert all images to consistent format and resolution (e.g., 256x256 PNG), normalize pixel values"
     ],
-    "answer": 2,
-    "explain": "CNN training requires consistent input shapes; standardizing format, resolution, and pixel normalization improves convergence and model quality.",
+    "answer": 3,
+    "explain": "CNNs require fixed input dimensions; standardizing all images to the same resolution (e.g., 256x256), color space, and normalizing pixel values to [0,1] ensures consistent batch processing and stable training convergence. Inconsistent input shapes cause runtime errors in batch training.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -984,8 +984,8 @@
       "Use a single low-cost annotator per ticket",
       "Use multiple annotators per ticket and measure inter-annotator agreement for quality control"
     ],
-    "answer": 1,
-    "explain": "Ground Truth supports multi-annotator consensus; inter-annotator agreement metrics validate labeling quality before model training.",
+    "answer": 3,
+    "explain": "Multi-label annotation quality requires consensus across multiple annotators; SageMaker Ground Truth measures inter-annotator agreement using Cohen's kappa to identify ambiguous examples requiring expert review. Single low-cost annotators (option C) introduce label noise in complex classification tasks.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1004,8 +1004,8 @@
       "Combine both sources and apply quality weighting; assign lower weights to noisy database B samples",
       "Use only database A to maintain quality"
     ],
-    "answer": 0,
-    "explain": "Sample weighting can down-weight noisy samples, allowing both data sources to contribute while maintaining overall quality.",
+    "answer": 2,
+    "explain": "Sample weighting down-weights noisy database B contributions in the loss function, allowing both sources to contribute while minimizing noise impact. Using only database A (option D) wastes additional data volume, and using only B (option A) introduces more noise.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1022,8 +1022,8 @@
       "Remove regularization",
       "Decrease learning rate to 0.01 to stabilize training"
     ],
-    "answer": 2,
-    "explain": "High learning rate causes gradient explosion; decreasing it stabilizes training by taking smaller steps in the loss landscape.",
+    "answer": 3,
+    "explain": "Oscillating training loss with learning rate 0.1 indicates the learning rate is too large, causing gradient overshooting. Reducing to 0.01 takes smaller steps in the loss landscape, stabilizing convergence. Increasing to 0.5 (option A) would worsen oscillation.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1042,8 +1042,8 @@
       "Simple linear regression ignoring temporal patterns",
       "Naive baseline that predicts previous value"
     ],
-    "answer": 0,
-    "explain": "ARIMA/LSTM explicitly model temporal dependencies and seasonality in time series, outperforming models that ignore temporal structure.",
+    "answer": 1,
+    "explain": "ARIMA explicitly models autoregressive, integrated, and moving average components for time series with seasonality; LSTM networks capture long-range temporal dependencies. Random forests without time encoding (option A) cannot model temporal patterns or seasonality.",
     "keywords": [
       "random-forest",
       "ensemble-learning",
@@ -1062,8 +1062,8 @@
       "The learning rate is too low",
       "The test set is too difficult"
     ],
-    "answer": 3,
-    "explain": "Massive gap between training and test accuracy indicates severe overfitting; regularization, data augmentation, or early stopping are needed.",
+    "answer": 0,
+    "explain": "99% training accuracy with 51% test accuracy indicates severe overfitting — the model memorized training samples. 51% is near random chance for binary classification, confirming no meaningful generalization. Solutions include regularization, data augmentation, early stopping, or a simpler model.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1082,8 +1082,8 @@
       "They are equally good",
       "Model A is better because it has a higher error"
     ],
-    "answer": 2,
-    "explain": "Lower MSE indicates better prediction accuracy; Model B with MSE=50 makes predictions closer to true values than Model A.",
+    "answer": 0,
+    "explain": "Model B with MSE=50 makes predictions twice as close to ground truth as Model A (MSE=100) on average. Lower MSE directly indicates better regression accuracy, and model selection should favor Model B unless computational constraints favor Model A.",
     "keywords": [
       "SageMaker-Ground-Truth",
       "data-labeling",
@@ -1100,8 +1100,8 @@
       "For fraud detection (false positives costly), choose Model A with high precision; for disease screening (false negatives costly), choose Model B",
       "Choose randomly"
     ],
-    "answer": 3,
-    "explain": "Precision vs. recall tradeoffs matter; high precision is critical when false positives are expensive (fraud), high recall when false negatives are dangerous (disease).",
+    "answer": 2,
+    "explain": "For fraud detection, false positives (legitimate transactions flagged) are costly — Model A's 90% precision minimizes these. For disease screening, false negatives (missed cases) are dangerous — Model B's higher recall is preferred. Metric selection depends entirely on the cost asymmetry of errors.",
     "keywords": [
       "precision",
       "classification-metrics",
@@ -1119,8 +1119,8 @@
       "k-fold cross-validation uses multiple folds to get more stable performance estimates and better utilize limited data",
       "Cross-validation always produces higher accuracy"
     ],
-    "answer": 3,
-    "explain": "k-fold cross-validation reduces variance in performance estimates by averaging results across multiple folds, providing more reliable evaluation.",
+    "answer": 2,
+    "explain": "k-fold cross-validation evaluates the model on k different held-out subsets and averages results, producing a more stable performance estimate with lower variance than a single train/test split. A single split's result depends heavily on which samples happen to be in the test set.",
     "keywords": [
       "cross-validation",
       "model-evaluation",
@@ -1138,7 +1138,7 @@
       "Increase the number of trees to 1000"
     ],
     "answer": 2,
-    "explain": "High bias indicates underfitting; increasing tree depth allows each tree to capture more complex patterns, reducing bias and improving accuracy.",
+    "explain": "High bias with low variance in a random forest indicates underfitting — trees are too shallow to capture complex patterns. Increasing max_depth allows each tree to model more complex decision boundaries, reducing bias. Reducing depth (option A) would increase bias further.",
     "keywords": [
       "random-forest",
       "ensemble-learning",
@@ -1158,7 +1158,7 @@
       "Learning rate schedule has no effect on convergence"
     ],
     "answer": 1,
-    "explain": "Learning rate schedules balance exploration (large initial rate) and exploitation (small later rate), improving both convergence speed and final accuracy.",
+    "explain": "Learning rate schedules use a large initial rate to escape poor local minima quickly, then reduce the rate to fine-tune weights near the optimum. A constant high learning rate overshoots minima; a constant low rate converges slowly to a good solution.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1177,8 +1177,8 @@
       "Continue training for 100 epochs to ensure convergence",
       "Use early stopping to halt training and prevent overfitting when validation loss stops improving"
     ],
-    "answer": 0,
-    "explain": "Early stopping halts training when validation performance plateaus, preventing overfitting and saving computational resources.",
+    "answer": 3,
+    "explain": "When training loss plateaus (stops improving after 5 epochs), early stopping halts training and returns the best checkpoint, preventing overfitting and saving compute. Increasing the learning rate (option A) would cause gradient instability rather than escape the plateau.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1198,7 +1198,7 @@
       "Model B might be preferred if it's simpler, faster to train, or requires less computational resources for inference"
     ],
     "answer": 3,
-    "explain": "Model selection involves tradeoffs; simpler, faster models with slightly higher error may be preferred for real-time, cost-sensitive applications.",
+    "explain": "Model selection involves tradeoffs beyond RMSE; simpler models with fewer features are faster to serve, easier to maintain, and less prone to overfitting. A 5-unit RMSE difference may be negligible compared to a 30% reduction in inference latency and complexity.",
     "keywords": [
       "RMSE",
       "regression-metrics",
@@ -1215,8 +1215,8 @@
       "Manually add more instances every time traffic increases",
       "Switch to a larger instance type only once"
     ],
-    "answer": 1,
-    "explain": "SageMaker auto-scaling policies automatically add/remove instances based on metrics, ensuring consistent performance under variable load.",
+    "answer": 0,
+    "explain": "SageMaker Application Auto Scaling policies add or remove endpoint instances based on CloudWatch metrics like InvocationsPerInstance or CPUUtilization, automatically handling 10x traffic increases. Using a single fixed instance (option B) causes request queuing and latency degradation under high load.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1235,8 +1235,8 @@
       "All-at-once replacement",
       "Deploy to offline environment only"
     ],
-    "answer": 0,
-    "explain": "Canary deployments minimize risk by serving small traffic percentage to new model first, monitoring for issues before full rollout.",
+    "answer": 1,
+    "explain": "Canary deployment routes a small percentage of traffic (5-10%) to the new model first, monitoring error rates and latency before expanding. This minimizes blast radius if the new model has issues. All-at-once replacement (option C) exposes 100% of users to potential failures immediately.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -1255,8 +1255,8 @@
       "Use conditional steps in the pipeline: evaluate model, then conditionally deploy only if accuracy >= 90%",
       "Manually check accuracy and decide to deploy"
     ],
-    "answer": 3,
-    "explain": "SageMaker Pipelines support conditional steps; pipeline execution can branch based on metric thresholds, preventing poor model deployment.",
+    "answer": 2,
+    "explain": "SageMaker Pipelines ConditionStep allows branching based on evaluation metrics — if accuracy >= 90%, proceed to deployment; otherwise, stop. This prevents low-quality models from reaching production automatically without manual intervention.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1275,8 +1275,8 @@
       "Keep models only in MLflow without deploying",
       "Manually download MLflow model and rewrite for SageMaker"
     ],
-    "answer": 0,
-    "explain": "SageMaker integrates with MLflow Model Registry, allowing seamless deployment of MLflow models to SageMaker endpoints.",
+    "answer": 1,
+    "explain": "SageMaker's native MLflow integration allows registering models from the MLflow Model Registry directly to SageMaker Model Registry, then deploying to endpoints. Maintaining separate repositories (option A) creates synchronization overhead and governance gaps.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1295,8 +1295,8 @@
       "Use only real-time endpoints for notifications",
       "Clients cannot be notified"
     ],
-    "answer": 2,
-    "explain": "SageMaker async endpoints can publish results to SNS/SQS, enabling event-driven workflows where clients are notified when results are ready.",
+    "answer": 0,
+    "explain": "SageMaker asynchronous endpoints publish completion notifications to Amazon SNS or SQS, enabling event-driven client workflows that receive results without polling. Repeated S3 polling (option B) adds latency and unnecessary API calls.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1315,8 +1315,8 @@
       "Use only one endpoint",
       "Use AWS Lambda function triggered on model registry updates to automatically update all endpoints"
     ],
-    "answer": 1,
-    "explain": "Lambda can be triggered by model registry updates, automatically deploying new versions to all endpoints, ensuring consistency.",
+    "answer": 3,
+    "explain": "EventBridge events from SageMaker Model Registry state changes can trigger a Lambda function that iterates over endpoint names and calls UpdateEndpoint for each, automating multi-endpoint deployments. Manual per-endpoint updates (option A) are error-prone and time-consuming.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1336,7 +1336,7 @@
       "Use tensor parallelism or model parallelism across multiple GPUs/instances"
     ],
     "answer": 3,
-    "explain": "Model parallelism splits large models across multiple instances/GPUs, enabling deployment of models larger than single instance memory.",
+    "explain": "Model parallelism (or pipeline parallelism) splits large model layers across multiple GPUs/instances, enabling deployment of models larger than single device memory. SageMaker Multi-Model Endpoints (option A) serve multiple smaller models, not a single oversized model.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1356,7 +1356,7 @@
       "Only use offline inference"
     ],
     "answer": 2,
-    "explain": "Lambda can be triggered by Kinesis records, invoke SageMaker endpoints for real-time inference, and write results back to Kinesis/S3.",
+    "explain": "Lambda functions configured as Kinesis stream consumers invoke SageMaker real-time endpoints for each record and write results downstream. This serverless pattern scales with stream throughput without managing persistent compute infrastructure.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1375,8 +1375,8 @@
       "More people are applying for loans",
       "Interest rates changed"
     ],
-    "answer": 3,
-    "explain": "Concept drift changes model behavior without accuracy change; drift detection should monitor prediction distribution, not just accuracy.",
+    "answer": 0,
+    "explain": "High overall accuracy with shifting approval rates suggests prediction distribution drift or threshold changes — the model's score distribution shifted upward, resulting in more approvals at the same threshold. This warrants investigation into model behavior.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -1395,8 +1395,8 @@
       "Immediately retrain the model",
       "Disable the model"
     ],
-    "answer": 3,
-    "explain": "Data drift alerts require investigation; drifted data may represent new real-world patterns worth learning, not always warranting immediate retraining.",
+    "answer": 0,
+    "explain": "Data drift alerts should trigger investigation first — the drift may represent legitimate new patterns (new customer behavior) worth incorporating via retraining, or upstream data pipeline bugs requiring fixes. Immediate retraining (option C) without investigation may introduce new problems.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1415,8 +1415,8 @@
       "Only use age feature in some countries",
       "Rename age to avoid legal issues"
     ],
-    "answer": 2,
-    "explain": "Protected attributes (age, race, gender) should not be primary decision factors; fairness constraints or feature removal ensures regulatory compliance.",
+    "answer": 1,
+    "explain": "When a legally protected attribute (age) is the dominant model feature, the model must be modified — either by removing age or applying fairness constraints ensuring predictions are not primarily driven by it. Renaming (option D) or restricting by country (option C) does not address discriminatory decision logic.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1435,8 +1435,8 @@
       "Check for concept drift, data drift, or label quality degradation in recent data",
       "Immediately retrain on all available data"
     ],
-    "answer": 0,
-    "explain": "Performance degradation requires investigation; concept/data drift or label quality issues are common causes in production systems.",
+    "answer": 2,
+    "explain": "An F1-score drop from 0.85 to 0.72 over 6 months warrants systematic investigation — concept drift (fraud patterns changed), data drift (input distribution shifted), or label quality degradation are common causes. Immediately retraining (option D) without diagnosis may not address the root cause.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -1455,8 +1455,8 @@
       "Use SageMaker Clarify for automated SHAP/LIME explanations with feature importance and prediction attribution",
       "Manual case-by-case explanations by data scientists"
     ],
-    "answer": 1,
-    "explain": "SageMaker Clarify provides automated, scalable explanations for audit trails, meeting regulatory requirements for model transparency.",
+    "answer": 2,
+    "explain": "SageMaker Clarify generates SHAP explanations at scale, creating audit-ready reports showing feature contributions to individual decisions and aggregate feature importance. Simple linear models (option B) sacrifice predictive performance for interpretability and are not always appropriate for complex regulatory decisions.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1475,8 +1475,8 @@
       "Use AWS Glue catalog for metadata management and Glue ETL jobs to integrate and standardize schemas",
       "Use only the database, ignore other sources"
     ],
-    "answer": 1,
-    "explain": "AWS Glue provides centralized schema management and ETL, handling multiple data sources and standardizing schemas at scale.",
+    "answer": 2,
+    "explain": "AWS Glue Data Catalog provides centralized metadata management across SQL, S3, and REST sources, while Glue ETL jobs standardize schemas and handle different update frequencies automatically. Custom Python scripts per source (option B) require constant maintenance as schemas evolve.",
     "keywords": [
       "ML-pipeline",
       "MLOps",
@@ -1495,8 +1495,8 @@
       "Use only images from one camera",
       "Standardize image size, color space; apply histogram equalization or normalization to handle lighting variation"
     ],
-    "answer": 1,
-    "explain": "Image preprocessing standardizes size/color and handles lighting variation, improving model robustness and convergence across diverse image sources.",
+    "answer": 3,
+    "explain": "Computer vision models require consistent input — standardizing resolution, color space, and applying histogram equalization or pixel normalization handles lighting variation across different cameras. Leaving images as-is (option A) causes tensor shape errors and poor model convergence.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1515,8 +1515,8 @@
       "Upload raw data to S3 without encryption",
       "Use SageMaker Processing with VPC mode, encrypt data at rest/in-transit, and use IAM roles for access control"
     ],
-    "answer": 1,
-    "explain": "SageMaker Processing in VPC with encryption ensures healthcare data privacy while enabling cloud-based ML development securely.",
+    "answer": 3,
+    "explain": "SageMaker Processing with VPC mode keeps data within the private network; encryption at rest (KMS) and in-transit (TLS) protects sensitive healthcare data; IAM roles restrict access to authorized users. Processing only on-premises (option A) eliminates cloud scalability benefits.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1535,8 +1535,8 @@
       "No issues; more features are always better",
       "Improved model accuracy due to more features"
     ],
-    "answer": 2,
-    "explain": "One-hot encoding high-cardinality features creates sparse, high-dimensional data, increasing overfitting risk and computational overhead.",
+    "answer": 0,
+    "explain": "One-hot encoding 1,000 unique values creates 1,000 sparse binary columns, dramatically increasing dimensionality and memory requirements. This introduces the curse of dimensionality — models overfit to sparse, high-dimensional inputs. Target encoding or embeddings are preferred for high-cardinality features.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1555,8 +1555,8 @@
       "Remove temporal features entirely",
       "Use raw timestamp values directly"
     ],
-    "answer": 3,
-    "explain": "Temporal features are cyclical (Monday is close to Sunday); sin/cos encoding preserves this structure better than linear day-of-week values.",
+    "answer": 0,
+    "explain": "Day-of-week is cyclical (Sunday=0, Saturday=6 are neighbors); sin/cos encoding preserves this circular proximity structure, whereas raw integer encoding treats Sunday and Saturday as maximally distant values — a fundamental misrepresentation of temporal structure.",
     "keywords": [
       "linear-model",
       "regression",
@@ -1575,8 +1575,8 @@
       "Use only the majority class for all splits",
       "Combine test and validation sets"
     ],
-    "answer": 3,
-    "explain": "Stratified splitting ensures minority classes appear in all splits proportionally, enabling proper evaluation of minority class performance.",
+    "answer": 0,
+    "explain": "Stratified splitting ensures each split contains the same proportion of positive samples (1%), preventing test sets with zero positive examples when data is highly imbalanced. Random splitting (option B) may accidentally exclude the minority class from small test sets entirely.",
     "keywords": [
       "imbalanced-data",
       "SMOTE",
@@ -1593,8 +1593,8 @@
       "No real benefits compared to manual feature engineering",
       "Centralized feature definitions, versioning, reusability, and both online/offline retrieval for training and inference"
     ],
-    "answer": 2,
-    "explain": "Feature Store enables feature reusability, versioning, and centralized management, reducing redundant work and improving feature consistency.",
+    "answer": 3,
+    "explain": "SageMaker Feature Store provides centralized feature definitions with versioning, eliminating redundant computation across teams, and supports both online (low-latency inference) and offline (S3-backed training) retrieval from a single store — preventing training-serving skew.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1613,8 +1613,8 @@
       "Apply dropout, L2 regularization, and data augmentation to reduce model complexity and improve generalization",
       "Remove all regularization"
     ],
-    "answer": 0,
-    "explain": "Dropout and L2 regularization directly combat overfitting by reducing effective model capacity and penalizing large weights.",
+    "answer": 2,
+    "explain": "Dropout randomly disables neurons during training to prevent co-adaptation, L2 regularization penalizes large weights, and data augmentation increases effective training set size — all directly reducing overfitting in large neural networks trained on limited data.",
     "keywords": [
       "overfitting",
       "regularization",
@@ -1633,8 +1633,8 @@
       "Tuning is complete after 100 trials regardless",
       "Always continue to 1000 trials"
     ],
-    "answer": 1,
-    "explain": "Hyperparameter tuning should stop when optimization plateaus to balance model quality and computational cost.",
+    "answer": 0,
+    "explain": "SageMaker Hyperparameter Tuning with Bayesian optimization converges when subsequent trials stop improving the objective metric; running beyond the point of diminishing returns wastes compute budget. Checking whether best metric has plateaued over recent trials informs when to stop.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1653,8 +1653,8 @@
       "Use only 1 fold instead of k-fold",
       "Investigate data heterogeneity; consider increasing model capacity or using ensemble methods to reduce variance"
     ],
-    "answer": 0,
-    "explain": "High variance across folds suggests data heterogeneity; ensemble methods or increased capacity can improve robustness across different data subsets.",
+    "answer": 3,
+    "explain": "High variance across k-fold splits suggests the model performs very differently on different data subsets, often indicating data heterogeneity or rare event patterns in some folds. Ensemble methods (voting, stacking) improve robustness by combining diverse models trained on different subsets.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1671,8 +1671,8 @@
       "Use early stopping based on validation loss and consider reducing training epochs or increasing regularization for small datasets",
       "Use a much larger learning rate"
     ],
-    "answer": 3,
-    "explain": "Early stopping on small datasets prevents overfitting by halting training before the model memorizes training data.",
+    "answer": 2,
+    "explain": "BERT fine-tuning on small datasets is prone to overfitting; early stopping based on validation loss prevents the model from memorizing the few training examples. A much larger learning rate (option D) would destroy pre-trained representations causing catastrophic forgetting.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1691,8 +1691,8 @@
       "CloudWatch Logs associated with the training/inference instance",
       "Local notebook terminal only"
     ],
-    "answer": 1,
-    "explain": "SageMaker containers stream logs to CloudWatch Logs, enabling remote debugging and monitoring without SSH access to instances.",
+    "answer": 2,
+    "explain": "SageMaker streams all container stdout/stderr logs to Amazon CloudWatch Logs under /aws/sagemaker/TrainingJobs or /aws/sagemaker/Endpoints log groups, enabling remote debugging. Container logs are not fully exposed through the SageMaker console UI alone (option A).",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1711,8 +1711,8 @@
       "Configure production variants with 0.3 and 0.7 traffic weights in endpoint configuration",
       "Deploy two separate endpoints and use DNS round-robin"
     ],
-    "answer": 0,
-    "explain": "SageMaker endpoint configuration supports production variants with traffic weights, enabling built-in A/B testing without external routing.",
+    "answer": 2,
+    "explain": "SageMaker endpoint configurations support multiple production variants with InitialVariantWeight values; setting 0.3 for Variant A and 0.7 for Variant B routes traffic in those proportions natively. This is built-in A/B testing without external routing logic.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1731,8 +1731,8 @@
       "S3 access from VPC endpoints is not possible",
       "Use public S3 bucket accessible from internet"
     ],
-    "answer": 2,
-    "explain": "VPC S3 endpoints provide private, secure access to S3 without routing traffic through internet gateway, maintaining network isolation.",
+    "answer": 1,
+    "explain": "VPC S3 gateway endpoints enable SageMaker endpoints in private VPC subnets to access S3 model artifacts without traversing the internet gateway, maintaining network isolation. NAT gateways (option A) still route through the internet and add unnecessary cost.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1751,8 +1751,8 @@
       "Immediately replace the model",
       "No action needed if accuracy is still high"
     ],
-    "answer": 0,
-    "explain": "Prediction shift requires investigation; concept drift warrants retraining while data drift may require data collection strategy changes.",
+    "answer": 1,
+    "explain": "A shift in prediction distribution (mean from 0.5 to 0.6) may indicate concept drift or data drift. Immediate model replacement (option C) without investigation may introduce different problems; understanding the cause guides the correct response.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1771,8 +1771,8 @@
       "Manually review all predictions",
       "Use SageMaker Clarify to quantify bias, retrain with fairness constraints or remove biased features"
     ],
-    "answer": 2,
-    "explain": "SageMaker Clarify enables bias quantification and fairness-aware retraining to achieve equitable model decisions across demographics.",
+    "answer": 3,
+    "explain": "SageMaker Clarify quantifies bias using metrics like disparate impact ratio and statistical parity difference, then fairness-aware retraining with constraints or feature reweighting ensures equitable outcomes. Ignoring bias (option B) violates fairness principles and potentially equal opportunity laws.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1791,8 +1791,8 @@
       "Train separately in each region",
       "Consolidate data to a single S3 bucket in the same region as training instances to minimize data transfer latency"
     ],
-    "answer": 2,
-    "explain": "Co-locating training instances with data (same region) minimizes data transfer latency and network costs for large-scale data training.",
+    "answer": 3,
+    "explain": "Co-locating S3 training data in the same AWS region as SageMaker training instances eliminates inter-region data transfer costs and latency. Cross-region transfer for 50TB is slow and expensive compared to a one-time consolidation operation.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1811,8 +1811,8 @@
       "Feature C with 50% missing should likely be removed; use imputation (mean/median) for features A and B with low missingness",
       "Keep all missing values as-is"
     ],
-    "answer": 0,
-    "explain": "High missingness (50%) in feature C reduces information value; low missingness (5-20%) can be imputed; severe missingness should be removed.",
+    "answer": 2,
+    "explain": "Feature C with 50% missing values likely has insufficient signal and high imputation bias risk; removing it is appropriate. Features A (5%) and B (20%) have low enough missingness that mean/median imputation preserves useful information without significant bias.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1831,8 +1831,8 @@
       "Train two separate single-output models",
       "Combine outputs into single value"
     ],
-    "answer": 1,
-    "explain": "Multi-output models can share learned representations across related tasks; joint training improves efficiency and may improve performance.",
+    "answer": 0,
+    "explain": "Multi-output regression models share learned representations across related outputs (temperature and humidity are physically correlated), often achieving better performance than two separate single-output models. Joint training with summed MSE losses enables learning shared meteorological features.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1849,8 +1849,8 @@
       "Same number of weight updates per epoch",
       "Mini-batch has more weight updates"
     ],
-    "answer": 1,
-    "explain": "Mini-batch training updates weights fewer times per epoch but each update averages gradients over multiple samples, improving stability.",
+    "answer": 0,
+    "explain": "With batch_size=100 on 10,000 samples, there are 100 weight updates per epoch; with batch_size=1 (SGD), there are 10,000 updates. Mini-batch updates are more stable because each gradient is averaged over 100 samples, reducing noise compared to single-sample gradients.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1869,8 +1869,8 @@
       "Don't update endpoints",
       "Manual management of each endpoint"
     ],
-    "answer": 2,
-    "explain": "CI/CD with Model Registry and CloudFormation enables automated, consistent deployment and updates across multiple endpoints and regions.",
+    "answer": 1,
+    "explain": "SageMaker Model Registry combined with CI/CD pipelines (CodePipeline) and CloudFormation stacks enables automated, consistent endpoint deployment and updates across all 50+ regional endpoints. Manual management (option D) at scale leads to configuration drift and deployment inconsistencies.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -1889,8 +1889,8 @@
       "Input features, model version, prediction, confidence score, and timestamps for compliance auditing",
       "No logging needed"
     ],
-    "answer": 0,
-    "explain": "Complete audit trails with features, model versions, and predictions enable compliance verification and investigation of adverse outcomes.",
+    "answer": 2,
+    "explain": "Healthcare regulatory compliance (HIPAA, FDA) requires comprehensive audit trails including input features, model version, prediction output, confidence scores, and timestamps to investigate adverse outcomes and verify regulatory requirements. Logging only accuracy metrics (option A) does not support individual decision review.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -1907,8 +1907,8 @@
       "Normalize separately without retraining",
       "Reject the data point"
     ],
-    "answer": 2,
-    "explain": "Out-of-range values indicate data drift; investigation and potential model retraining ensures predictions remain reliable.",
+    "answer": 0,
+    "explain": "Out-of-range values indicate data drift beyond the training distribution; investigating the root cause (upstream process change, seasonal spike) determines whether to clip, adjust normalization parameters, or retrain with updated data. Blind clipping (option B) masks drift signals.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1927,8 +1927,8 @@
       "Remove special characters, convert to lowercase, tokenize",
       "Remove HTML tags first, then lowercase, tokenize, and optionally remove stop words"
     ],
-    "answer": 1,
-    "explain": "HTML and special character removal before tokenization prevents noise; case conversion normalizes text; stop word removal reduces dimensionality.",
+    "answer": 3,
+    "explain": "The correct NLP preprocessing order is: (1) remove HTML tags and special characters, (2) lowercase, (3) tokenize, (4) optionally remove stop words. Tokenizing before cleaning (option A) causes HTML artifacts to become separate tokens, degrading vocabulary quality.",
     "keywords": [
       "data-preprocessing",
       "data-cleaning",
@@ -1947,8 +1947,8 @@
       "Dropout automatically disables",
       "Performance will improve"
     ],
-    "answer": 2,
-    "explain": "Dropout should be disabled during inference (eval mode); leaving it on causes random weight dropping, increasing prediction variance.",
+    "answer": 1,
+    "explain": "Dropout randomly drops neurons during forward passes; if not disabled in eval mode (PyTorch model.eval() or TF training=False), inference predictions vary between calls for the same input, causing non-deterministic results.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -1967,8 +1967,8 @@
       "This has no effect",
       "Learning rates should be identical across all layers"
     ],
-    "answer": 2,
-    "explain": "Layer-wise learning rates preserve pre-trained knowledge in early layers while allowing faster learning in untrained classification layers.",
+    "answer": 0,
+    "explain": "Layer-wise learning rate decay preserves pre-trained representations in BERT's early layers with a very low LR (1e-5) while training the randomly initialized classification head at a higher LR (1e-3), preventing catastrophic forgetting while enabling task-specific adaptation.",
     "keywords": [
       "learning-rate",
       "hyperparameter",
@@ -1985,8 +1985,8 @@
       "Models cannot run on CPU",
       "CPU inference is not supported"
     ],
-    "answer": 3,
-    "explain": "CPU-optimized inference libraries and frameworks enable serving GPU-trained models on CPU with acceptable latency and cost tradeoffs.",
+    "answer": 0,
+    "explain": "GPU-trained models can be served on CPU by loading weights on CPU-compatible backends; ONNX Runtime and CPU-optimized TorchScript optimize inference for CPU architectures. Models do not need to be retrained from scratch — only deployment inference mode changes.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -2003,8 +2003,8 @@
       "Investigate data quality degradation; check data pipeline for bugs; consider imputation strategy or model retraining",
       "Ignore the report"
     ],
-    "answer": 1,
-    "explain": "Data quality drift (increased missingness, distribution shift) requires investigation to identify root cause (data pipeline issues, upstream changes).",
+    "answer": 2,
+    "explain": "Increased missing rate (2% to 15%) and histogram shift indicate upstream data pipeline issues or genuine distributional change. Investigation identifies whether the cause is a bug (fix pipeline) or real change (consider retraining). Disabling monitoring (option B) removes the early warning system.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2023,8 +2023,8 @@
       "Oversample minority class to 9,000 samples and use undersampling/oversampling with stratified splits to maintain class balance",
       "Use all 1,000 minority samples and 9,000 majority samples only"
     ],
-    "answer": 0,
-    "explain": "Combined undersampling majority + oversampling minority (with stratified splits) creates balanced training data while preserving test set distribution.",
+    "answer": 2,
+    "explain": "Combined resampling — oversampling the 1,000 minority samples to ~9,000 plus undersampling majority — creates a balanced training set. Stratified splits preserve the original distribution in validation/test sets for realistic performance evaluation.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2041,8 +2041,8 @@
       "Ensembles always overfit",
       "Ensemble averaging reduces individual tree overfitting; uncorrelated tree errors cancel out, improving generalization"
     ],
-    "answer": 1,
-    "explain": "Ensemble methods reduce variance by averaging independent models; uncorrelated errors from multiple trees provide more robust predictions.",
+    "answer": 3,
+    "explain": "Ensemble methods (bagging/random forest) average uncorrelated models; individual tree errors cancel out in aggregation, reducing variance. Single trees overfit (95% train, 60% test gap) because no averaging smooths their individual high-variance decisions.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2061,8 +2061,8 @@
       "Halt rollout and investigate the error increase before proceeding",
       "Ignore the difference; both are acceptable"
     ],
-    "answer": 1,
-    "explain": "Canary deployments catch errors early; a 5x error increase warrants investigation before expanding to 100% traffic.",
+    "answer": 2,
+    "explain": "A 5x error rate increase (0.1% to 0.5%) is a strong signal the new model has quality issues; halting the rollout and investigating prevents this degradation from reaching 100% of users. Immediate full rollback (option B) may be premature before identifying the cause.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -2081,8 +2081,8 @@
       "Only monitor when retrained",
       "Yes, monitor for drift to detect when retraining is needed; lack of updates doesn't prevent data distribution from changing"
     ],
-    "answer": 0,
-    "explain": "Data continues to evolve in production; drift monitoring identifies when static models become stale and retraining is necessary.",
+    "answer": 3,
+    "explain": "Data distributions evolve continuously in production regardless of model updates; drift monitoring identifies when the static model becomes stale and retraining is needed. Not monitoring a deployed model (option B) means degradation is only detected through customer complaints.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2101,8 +2101,8 @@
       "Features are not important",
       "Using raw data is always worse"
     ],
-    "answer": 3,
-    "explain": "Automatic feature engineering sometimes discovers non-obvious features manual engineers miss; both approaches have merits.",
+    "answer": 0,
+    "explain": "Autopilot's automated feature engineering applies sophisticated transformations (interactions, polynomial features, target statistics) that manual engineers may miss. The result suggests algorithmic search discovered non-obvious features; combining domain knowledge with automated search often yields the best results.",
     "keywords": [
       "feature-engineering",
       "data-preprocessing",
@@ -2121,8 +2121,8 @@
       "Subset training always improves quality",
       "No effect on model quality"
     ],
-    "answer": 0,
-    "explain": "Learning curves reveal if 10% of data is sufficient; if performance plateaus early, subset training is efficient; if not, more data helps.",
+    "answer": 1,
+    "explain": "Learning curves (performance vs. training set size) reveal whether 10% of data is sufficient — if validation performance plateaus at 100K samples, the full dataset adds minimal benefit. If the curve is still rising, more data would help and subsampling hurts model quality.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2141,8 +2141,8 @@
       "Real-time if latency <1s is required; async if requests can wait and cost savings are prioritized",
       "Real-time for all cases"
     ],
-    "answer": 0,
-    "explain": "Real-time endpoints suit latency-critical applications; async endpoints reduce costs for tolerating longer delays.",
+    "answer": 2,
+    "explain": "Real-time endpoints with GPU instances meet strict latency requirements (<1s) at higher cost; async endpoints process inference offline and return results to S3/SNS, suitable when applications tolerate minutes of delay. The choice depends on the application's latency tolerance.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2161,8 +2161,8 @@
       "Use SageMaker Clarify to analyze if salary-driven predictions result in disparate impact; remove or constraint salary if discrimination is found",
       "Ignore audits"
     ],
-    "answer": 3,
-    "explain": "Indirect discrimination through correlated features can be detected and mitigated; fairness analysis and retraining with constraints ensures compliance.",
+    "answer": 2,
+    "explain": "SageMaker Clarify can quantify whether salary-driven predictions produce disparate impact across protected groups (race, gender); if confirmed, salary should be removed or the model retrained with fairness constraints. Removing all correlated features (option A) could eliminate most predictive power.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2181,8 +2181,8 @@
       "Always-on EC2 instances",
       "AWS Glue jobs that scale based on data volume processed"
     ],
-    "answer": 1,
-    "explain": "AWS Glue scales cost to actual data processed without fixed instance costs, making it ideal for variable-frequency validation workloads.",
+    "answer": 3,
+    "explain": "AWS Glue jobs with auto-scaling DPUs charge only for compute consumed during job execution, making them cost-effective for sporadic validation workloads on billions of records. RDS (option B) is a relational database, not a compute service for large-scale data validation.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2201,8 +2201,8 @@
       "Use chronological split: earlier data for training, later data for validation/test to simulate realistic forecasting",
       "Split by store ID, not time"
     ],
-    "answer": 0,
-    "explain": "Time-series must be split chronologically to avoid look-ahead bias and accurately simulate real deployment where models predict future data.",
+    "answer": 2,
+    "explain": "Time-series data must be split chronologically to prevent look-ahead bias — validation and test sets must represent future periods the model hasn't seen. Random shuffling (option B) allows future data to appear in training, creating artificially optimistic evaluation.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2221,8 +2221,8 @@
       "F1-score, precision, recall, and ROC-AUC to focus on minority class performance",
       "Training loss"
     ],
-    "answer": 1,
-    "explain": "F1-score and ROC-AUC are robust to class imbalance; accuracy is misleading when minority class is important.",
+    "answer": 2,
+    "explain": "On 99:1 imbalanced data, a model predicting only the majority class achieves 99% accuracy; F1-score, ROC-AUC, and precision-recall curves focus on minority class performance and are not inflated by class imbalance. Accuracy (option A) is misleading for highly skewed distributions.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2241,8 +2241,8 @@
       "Train all layers with high learning rate",
       "Use only ImageNet predictions without further training"
     ],
-    "answer": 3,
-    "explain": "Fine-tuning with frozen early layers preserves pre-trained feature detectors while adapting to new task, improving small-data performance.",
+    "answer": 0,
+    "explain": "Transfer learning on small datasets (1,000 images) works best by freezing early layers that capture general features (edges, textures) and fine-tuning later layers with a low learning rate. Training all layers from scratch (option B) on 1,000 images leads to severe overfitting.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2261,8 +2261,8 @@
       "Deploy separately to each platform",
       "No synchronization needed"
     ],
-    "answer": 3,
-    "explain": "Model Registry provides single source of truth; versions can be deployed to both endpoints and Edge devices via CI/CD pipelines.",
+    "answer": 1,
+    "explain": "SageMaker Model Registry stores a single model version deployable to both cloud endpoints and edge devices (via SageMaker Neo compilation), ensuring synchronized versions. Manual file transfer (option A) creates version drift and governance gaps.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2281,8 +2281,8 @@
       "Need to check statistical significance with confidence intervals and sample size; 0.3% difference may be noise",
       "Statistics don't matter for recommendations"
     ],
-    "answer": 3,
-    "explain": "Small absolute differences require statistical testing; with large traffic, small differences can be significant; with small traffic, they may be noise.",
+    "answer": 2,
+    "explain": "A 0.3% CTR difference requires statistical hypothesis testing (chi-squared or z-test for proportions) with adequate sample size to determine significance. With insufficient traffic, 0.3% may be noise; with large traffic (millions), it can be statistically significant.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -2301,8 +2301,8 @@
       "Impute missing values using forward-fill (carry forward last value) or interpolation; mark downtime periods explicitly",
       "Use only complete records"
     ],
-    "answer": 0,
-    "explain": "Forward-fill and interpolation are appropriate for sensor data; explicit downtime markers preserve data integrity and prevent training bias.",
+    "answer": 2,
+    "explain": "Forward-fill (LOCF) or linear interpolation preserves temporal continuity in sensor data during equipment downtime, while explicit downtime indicator features prevent the model from treating missing data as normal operating conditions.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2321,8 +2321,8 @@
       "Define naming conventions, tagging policies, and access controls in Glue Catalog; use Lake Formation for fine-grained permissions",
       "No governance; anyone can add anything"
     ],
-    "answer": 1,
-    "explain": "Lake Formation enables centralized governance: tagging policies, lineage tracking, and role-based access control for Glue data.",
+    "answer": 2,
+    "explain": "AWS Lake Formation provides fine-grained, centralized governance for Glue Catalog data — column-level security, data filters, and tag-based access control enforce policies across all teams. Glue Catalog alone has no governance enforcement mechanism (option B).",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2341,8 +2341,8 @@
       "The loss function is incorrect",
       "The model is too large"
     ],
-    "answer": 2,
-    "explain": "Large training-validation gap is the primary indicator of overfitting; the model memorizes rather than generalizes.",
+    "answer": 0,
+    "explain": "A 15% training-validation gap (90% train vs. 75% validation) is the classic overfitting signature — the model learned training data specifics instead of generalizable patterns. Underfitting (option B) would show both training and validation accuracy being low.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2361,8 +2361,8 @@
       "Use only 7 instances",
       "Stop training"
     ],
-    "answer": 2,
-    "explain": "Stragglers in distributed training bottleneck synchronization; investigation and replacement/repair prevents training slowdowns.",
+    "answer": 1,
+    "explain": "In synchronous distributed training, all workers must complete a step before gradient synchronization, making the slowest worker (straggler) the bottleneck. Identifying the cause (network issue, hardware fault, data loading imbalance) and fixing it prevents GPU idle time.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2381,8 +2381,8 @@
       "The model is non-deterministic",
       "This is expected behavior"
     ],
-    "answer": 3,
-    "explain": "High variance in latency typically indicates resource saturation; increasing capacity or enabling aggressive auto-scaling can stabilize response times.",
+    "answer": 1,
+    "explain": "High latency variance on SageMaker endpoints typically indicates resource saturation or auto-scaling cold starts; requests hitting warmed instances get <10ms while requests triggering new instance launches experience multi-second delays. Increasing minimum instance count resolves this.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2401,8 +2401,8 @@
       "Model architecture only",
       "Input features, key factors influencing prediction, confidence scores, and reasoning for clinical validation"
     ],
-    "answer": 0,
-    "explain": "Clinical explainability requires logging input features and factors influencing predictions for clinician review and model validation.",
+    "answer": 3,
+    "explain": "Clinical explainability requires logging the features that drove each prediction, their contribution weights, confidence scores, and model version — enabling clinicians to validate counterintuitive recommendations and regulators to audit the decision trail.",
     "keywords": [
       "ROC-AUC",
       "model-evaluation",
@@ -2419,8 +2419,8 @@
       "Use language-agnostic preprocessing only",
       "Detect language for each text; apply language-specific tokenization and normalization; consider language as a feature"
     ],
-    "answer": 2,
-    "explain": "Language detection enables appropriate tokenization and preprocessing; language as a feature helps the model learn language-specific patterns.",
+    "answer": 3,
+    "explain": "Language-specific tokenization is critical — Spanish and French have different morphology, stop words, and tokenization rules. Language as a feature enables the classifier to learn language-specific sentiment patterns. Removing non-English text (option A) discards valuable training signal.",
     "keywords": [
       "data-preprocessing",
       "data-cleaning",
@@ -2439,8 +2439,8 @@
       "Switch to Adam optimizer which adapts learning rate per parameter, potentially reducing oscillations",
       "Increase momentum to 0.95"
     ],
-    "answer": 1,
-    "explain": "Adam optimizer combines momentum with adaptive learning rates, often providing more stable convergence than SGD with fixed momentum.",
+    "answer": 2,
+    "explain": "Adam optimizer combines momentum and RMSprop, adapting learning rates per parameter based on gradient history, making it more robust to oscillations near minima than fixed-momentum SGD. Removing momentum (option A) would make optimization less stable, not more.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2459,8 +2459,8 @@
       "Test ONNX model output matches PyTorch on CPU; validate edge device inference accuracy and latency",
       "Validation is not necessary"
     ],
-    "answer": 3,
-    "explain": "ONNX conversion can lose numerical precision or operations; testing ensures ONNX model behaves identically to original on target devices.",
+    "answer": 2,
+    "explain": "ONNX export can introduce numerical differences through operator approximations or unsupported operations; validating output agreement between PyTorch (reference) and ONNX (deployed) on a test set ensures the export is numerically faithful before edge deployment.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -2479,8 +2479,8 @@
       "Continue using the old model",
       "Implement data/concept drift monitoring; retrain if drift detected; establish retraining schedule"
     ],
-    "answer": 0,
-    "explain": "Drift monitoring identifies degradation; understanding whether it's data or concept drift informs retraining strategy and prevents waste.",
+    "answer": 3,
+    "explain": "Two years without retraining is high risk for concept/data drift; implementing SageMaker Model Monitor establishes baseline and detects drift, informing targeted retraining. Immediate retraining without diagnosis (option B) may not address the actual degradation cause.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2499,8 +2499,8 @@
       "No risk; more features are always removed",
       "Dimensionality reduction has no tradeoffs"
     ],
-    "answer": 3,
-    "explain": "PCA trades interpretability for computational efficiency; high variance explained (>95%) ensures minimal information loss.",
+    "answer": 1,
+    "explain": "PCA transforms features into orthogonal components that lose their original meaning, creating interpretability challenges. Ensuring >95% variance explained minimizes information loss in the transformation while achieving computational efficiency.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2519,8 +2519,8 @@
       "The data is perfect",
       "More data alone will solve it"
     ],
-    "answer": 2,
-    "explain": "When both training and validation accuracy are low, the model lacks capacity to fit even training data (high bias/underfitting).",
+    "answer": 0,
+    "explain": "When both training and validation accuracy are low (and don't improve with more data), the model lacks capacity to fit even the training distribution — classic high bias/underfitting. Increasing model complexity (deeper architecture) addresses this; adding more data alone does not.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2539,8 +2539,8 @@
       "Continue using last successful model without alerting",
       "Deploy the broken model anyway"
     ],
-    "answer": 3,
-    "explain": "Pipeline failures indicate issues (data quality, drift, training bugs); alerts enable manual investigation and prevent deploying broken models.",
+    "answer": 1,
+    "explain": "SageMaker Pipelines should be configured with CloudWatch alarms and SNS notifications for execution failures, enabling the team to investigate root causes (data quality issues, training bugs, infrastructure failures) before rerunning. Deploying a broken model (option D) is never appropriate.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2559,8 +2559,8 @@
       "Random sampling is always fine",
       "Use only majority class for speed"
     ],
-    "answer": 3,
-    "explain": "Stratified sampling preserves target distribution; critical for imbalanced data to avoid biased prototyping on majority class only.",
+    "answer": 0,
+    "explain": "Stratified sampling ensures the prototype dataset maintains the same class distribution as the full dataset, critical for imbalanced targets where random sampling may exclude rare events entirely. Random sampling (option C) can produce unrepresentative samples for prototype testing.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2580,7 +2580,7 @@
       "Confidence cannot be measured"
     ],
     "answer": 2,
-    "explain": "Model calibration measures if predicted probabilities match true probabilities; uncalibrated models give false confidence.",
+    "explain": "Model calibration measures whether predicted probabilities match empirical outcome rates — a well-calibrated model predicting 80% churn should have 80% of those customers actually churn. Reliability diagrams or Brier scores quantify calibration quality for stakeholder confidence.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -2598,7 +2598,7 @@
       "Include them and let the model handle errors"
     ],
     "answer": 0,
-    "explain": "Corrupted images prevent training; detection and removal ensures clean training data and reproducible models.",
+    "explain": "Corrupted image files (truncated PNGs) cause training failures or produce garbage gradients when decoded; detecting and removing them before training ensures a clean, reproducible training run. Training frameworks may silently skip or crash on corrupt files.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2618,7 +2618,7 @@
       "Use domain adaptation: train on mix of in-domain and out-of-domain data; or fine-tune on target domain"
     ],
     "answer": 3,
-    "explain": "Domain adaptation exposes the model to both domains during training, improving generalization to target domain.",
+    "explain": "Domain adaptation trains on a mix of in-domain and out-of-domain data, teaching the model to generalize across both distributions. Alternatively, fine-tuning on target-domain data adapts the model to the new distribution without sacrificing in-domain performance.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2638,7 +2638,7 @@
       "Use CPU if business can tolerate 150ms; otherwise optimize model (quantization, distillation) to meet latency on cheaper instance"
     ],
     "answer": 3,
-    "explain": "GPU meets latency SLA but costs 30x more; model optimization enables meeting latency on cheaper CPU instances.",
+    "explain": "If latency SLA permits 150ms, CPU instances are 30x cheaper and sufficient; if not, model optimization (quantization to INT8, layer pruning, knowledge distillation) can reduce GPU-only models to CPU-viable latency without sacrificing all accuracy.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -2656,7 +2656,7 @@
       "Random alerting"
     ],
     "answer": 1,
-    "explain": "Alert fatigue reduces effectiveness; focus on critical metrics with thresholds that indicate real problems requiring investigation.",
+    "explain": "Critical metrics (prediction accuracy, P99 latency, error rate) with meaningful thresholds generate actionable alerts; alerting on all 50 metrics creates noise that drowns out real issues. CloudWatch alarm fatigue reduction improves on-call effectiveness.",
     "keywords": [
       "CloudWatch",
       "AWS",
@@ -2673,7 +2673,7 @@
       "Train a separate model for new users"
     ],
     "answer": 1,
-    "explain": "Cold-start mitigation includes content-based fallbacks and popularity-based defaults until user gets interaction history.",
+    "explain": "Cold-start mitigation uses content-based filtering (item features) or popularity-based recommendations until sufficient interaction history exists for collaborative filtering. Excluding new users (option A) loses acquisition value.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -2691,7 +2691,7 @@
       "Model B may be preferable: lower feature complexity, faster inference, easier to explain; 2% accuracy loss may be acceptable"
     ],
     "answer": 3,
-    "explain": "Simpler models (fewer features) reduce maintenance, improve interpretability, and may be preferred despite slight accuracy decrease.",
+    "explain": "Model B with 10 features is simpler, faster to serve (fewer feature computations), easier to explain for regulatory compliance, and less likely to overfit. The 2% accuracy tradeoff may be entirely acceptable for real-time production systems.",
     "keywords": [
       "Amazon-ECR",
       "container-registry",
@@ -2709,7 +2709,7 @@
       "Manual deployment only"
     ],
     "answer": 1,
-    "explain": "CI/CD validation and PR reviews catch pipeline definition errors before deployment, preventing production outages.",
+    "explain": "CI/CD validation runs pipeline definition linting, unit tests on step logic, and end-to-end pipeline tests on staging data before merging. Pull request reviews catch logical errors; automated checks catch syntax and schema validation failures.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2729,7 +2729,7 @@
       "Provide raw model weights"
     ],
     "answer": 1,
-    "explain": "SHAP explanations show feature contributions to individual predictions, providing transparent, interpretable explanations for stakeholders.",
+    "explain": "SageMaker Clarify generates SHAP values for each prediction showing individual feature contributions, creating the audit-ready, per-decision explanations required by lending regulations. Raw model weights (option D) are not decision-level explanations.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2749,7 +2749,7 @@
       "Ignore text and use only structured features"
     ],
     "answer": 0,
-    "explain": "Text features (sentiment, TF-IDF, embeddings) are derived numerically from raw text, enabling their use in standard ML models.",
+    "explain": "Text features for regression include TF-IDF vectors (word frequency statistics), sentiment scores, text length, keyword presence, and pre-trained embeddings from models like BERT — all producing numerical representations compatible with standard ML algorithms.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -2767,7 +2767,7 @@
       "Normalization has no effect on models"
     ],
     "answer": 1,
-    "explain": "Algorithms assuming normality (linear models) perform better; log transformation reduces skewness and stabilizes variance.",
+    "explain": "Log transformation normalizes right-skewed distributions (like income) toward Gaussian, satisfying normality assumptions of linear models and improving coefficient estimates. Tree-based models are scale-invariant and do not benefit from log transformation.",
     "keywords": [
       "normalization",
       "feature-scaling",
@@ -2787,7 +2787,7 @@
       "No difference; same statistics are used"
     ],
     "answer": 2,
-    "explain": "Batch norm must use population statistics during inference to avoid variance from small batch effects, ensuring stable predictions.",
+    "explain": "Batch normalization maintains running estimates of mean/variance during training (computed per batch); at inference, it uses population-wide statistics accumulated during training to ensure deterministic, stable predictions regardless of batch size.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2807,7 +2807,7 @@
       "Yes, always feasible"
     ],
     "answer": 1,
-    "explain": "Model loading time depends on size and instance speed; large models may exceed latency SLA; quantization or pre-warming required.",
+    "explain": "Loading a 5GB model from S3 to instance memory at cold start can take 30-120 seconds depending on instance storage speed, far exceeding a 30-second SLA. Solutions include quantization to reduce model size or configuring minimum instance counts to pre-warm endpoints.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2827,7 +2827,7 @@
       "Ignore bias if accuracy is high"
     ],
     "answer": 2,
-    "explain": "Fairness analysis reveals bias; retraining with fairness objectives or rule adjustments ensures equitable recommendations.",
+    "explain": "SageMaker Clarify's bias analysis identifies disparate impact in recommendation outputs across product ownership groups. Retraining with fairness constraints or adjusting business rules addresses systemic bias without sacrificing recommendation quality.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2847,7 +2847,7 @@
       "Overlapping windows in train/validation/test cause data leakage; validation/test windows may contain training data"
     ],
     "answer": 3,
-    "explain": "Sliding windows with temporal data create overlap; proper splitting (no overlap between train/validation/test) prevents leakage.",
+    "explain": "Sliding windows with step=1 create highly overlapping windows; validation windows containing days also in training windows cause data leakage. Strict temporal splits with non-overlapping boundaries (train before split date, validation/test after) prevent this.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2865,7 +2865,7 @@
       "Mean squared error (MSE)"
     ],
     "answer": 1,
-    "explain": "Multi-class token classification uses categorical cross-entropy; BERT outputs probabilities over entity classes for each token.",
+    "explain": "Named entity recognition (NER) is multi-class token classification (each token classified as disease, drug, symptom, or O); categorical cross-entropy computes loss across all entity classes per token. Binary cross-entropy is for binary tasks; MSE is for regression.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -2883,7 +2883,7 @@
       "Model consolidation is not possible"
     ],
     "answer": 2,
-    "explain": "Multi-model endpoints are efficient when different models have complementary traffic patterns (e.g., peak at different times).",
+    "explain": "SageMaker Multi-Model Endpoints load and unload models dynamically from S3 into shared memory; they are most efficient when models serve requests at different times (complementary traffic patterns), enabling high utilization. Models with identical peak traffic contend for shared resources.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2902,8 +2902,8 @@
       "The instance type changed",
       "Data drift may require model retraining; stale models sometimes accumulate more compute as input distributions change"
     ],
-    "answer": 3,
-    "explain": "While model code didn't change, concept drift may require retraining; also, gradual endpoint resource contention or instance degradation causes latency creep.",
+    "answer": 0,
+    "explain": "Gradual latency increase over 6 months with unchanged model code typically indicates resource contention — increasing request volume causing instance CPU/memory saturation. Endpoint scaling review or instance type upgrade resolves queue-induced latency growth.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2923,7 +2923,7 @@
       "Timestamps are always interpretable"
     ],
     "answer": 0,
-    "explain": "Raw timestamps (large, arbitrary values) provide no interpretability; derived temporal features (hour, day) capture periodic patterns.",
+    "explain": "Raw epoch timestamps (e.g., 1704067200000ms) are arbitrary large numbers that models cannot interpret meaningfully; derived features like hour-of-day, day-of-week, and is_weekend capture the periodic patterns that are actually predictive.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -2941,7 +2941,7 @@
       "Both are equally reliable"
     ],
     "answer": 2,
-    "explain": "Lower CV variance indicates consistent generalization across data subsets; high variance suggests performance depends on specific fold splits.",
+    "explain": "Model B's lower cross-validation variance (std=2%) indicates consistent performance across all data subsets, making it more reliable in production. Model A's high variance (std=15%) suggests performance is highly sensitive to the specific training samples seen.",
     "keywords": [
       "cross-validation",
       "model-evaluation",
@@ -2959,7 +2959,7 @@
       "Update endpoint with shadow variant, route subset of traffic, verify, then swap traffic weights"
     ],
     "answer": 3,
-    "explain": "Shadow variants enable safe testing; traffic is routed to new model while old model still handles main traffic, minimizing risk.",
+    "explain": "Shadow variants route a copy of live traffic to the new model without affecting user experience; the new model's predictions are logged but not served to users. This enables A/B comparison on real traffic before any production cutover.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -2979,7 +2979,7 @@
       "Chronological split ensures test set has representative seasonal periods"
     ],
     "answer": 3,
-    "explain": "Chronological splits ensure test set includes all seasonal periods, avoiding bias toward specific seasons.",
+    "explain": "Chronological splits ensure the test set contains data from all seasonal periods in production, providing realistic evaluation across seasonal variations. Random splits mix seasons between train/test, creating overly optimistic test metrics.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -2997,7 +2997,7 @@
       "Use undocumented data anyway"
     ],
     "answer": 1,
-    "explain": "Glue Catalog metadata (schema, tags, descriptions) ensures data governance and enables other teams to reuse data appropriately.",
+    "explain": "AWS Glue Data Catalog supports rich metadata: schema definitions, table descriptions, custom tags (team, domain, SLA), and business context documentation. This enables data discovery, governance, and appropriate reuse across ML teams.",
     "keywords": [
       "AWS-Glue",
       "ETL",
@@ -3015,7 +3015,7 @@
       "Smoothing is only for regression"
     ],
     "answer": 0,
-    "explain": "Label smoothing encourages the model to be less confident, preventing overfitting and improving calibration for uncertainty estimates.",
+    "explain": "Label smoothing replaces hard one-hot targets with soft distributions (0.05/0.9/0.05), preventing the model from becoming overconfident and improving calibration. Well-calibrated models produce better uncertainty estimates critical for downstream decision-making.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3035,7 +3035,7 @@
       "Register model in Model Registry; use CloudFormation or Terraform to deploy endpoints across regions consistently"
     ],
     "answer": 3,
-    "explain": "Model Registry + IaC (CloudFormation/Terraform) enables consistent endpoint replication across regions for global availability.",
+    "explain": "SageMaker Model Registry provides a central source of truth for model versions; CloudFormation or Terraform templates define endpoint configurations per region, enabling consistent, reproducible multi-region deployments from a single model artifact.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3055,7 +3055,7 @@
       "Model corruption"
     ],
     "answer": 1,
-    "explain": "Covariate shift (input distribution change) causes performance drop even if the input-output relationship unchanged.",
+    "explain": "Covariate shift occurs when P(X) — the input feature distribution — changes but P(Y|X) — the conditional relationship — remains constant. Different feature distributions in production reduce model performance on the new distribution.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3075,7 +3075,7 @@
       "No; tree-based models are invariant to feature scaling (they use splits, not distances)"
     ],
     "answer": 3,
-    "explain": "Tree models use feature splits, not distances; scaling irrelevant for them but necessary for distance-based (KNN, SVM, neural networks) models.",
+    "explain": "Tree-based models make decisions based on feature value thresholds; monotonic scaling transformations do not change relative orderings or split points, making scaling irrelevant. Distance-based models (SVM, KNN, neural networks) require scaling.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3095,7 +3095,7 @@
       "Both are identical"
     ],
     "answer": 2,
-    "explain": "Random search efficiently explores high-dimensional spaces; with limited budget, it often outperforms grid search covering fewer grid points.",
+    "explain": "Random search with 50 trials samples from the full continuous parameter space and often finds good configurations faster than grid search systematically covering fewer points in high-dimensional spaces. Bayesian optimization is even more efficient.",
     "keywords": [
       "hyperparameter-tuning",
       "model-optimization",
@@ -3113,7 +3113,7 @@
       "Validate model accuracy on external test set; conduct bias analysis; document limitations and get clinical review approval"
     ],
     "answer": 3,
-    "explain": "High-stakes medical models require external validation, bias analysis, and clinical review to ensure safety and fairness before deployment.",
+    "explain": "High-stakes medical models require validation on an external test set, SageMaker Clarify bias analysis across patient demographics, documentation of model limitations, and clinical expert review before deployment. Skipping validation (option A) violates FDA and medical device regulations.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3133,7 +3133,7 @@
       "Remove all features"
     ],
     "answer": 1,
-    "explain": "Feature selection (statistical tests, mutual information) and PCA reduce dimensionality while preserving predictive information.",
+    "explain": "Feature selection (mutual information, chi-squared tests) identifies the most predictive features from 10 years of transactions, while PCA reduces correlated features into orthogonal components. Both reduce dimensionality while preserving predictive information.",
     "keywords": [
       "PCA",
       "dimensionality-reduction",
@@ -3153,7 +3153,7 @@
       "Use early stopping at epoch 10 to prevent overfitting; the increasing validation loss indicates no further improvement"
     ],
     "answer": 3,
-    "explain": "Early stopping halts training when validation performance stops improving (or degrades), preventing overfitting and saving compute.",
+    "explain": "Early stopping monitors validation loss and halts training when it stops improving; the best model checkpoint (epoch 10) is saved and returned. Continuing training (option A) beyond this point only overfits to training data.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3173,7 +3173,7 @@
       "Approval is not possible"
     ],
     "answer": 1,
-    "explain": "Model Registry approval workflows enforce governance; CI/CD pipeline gates prevent deploying unapproved models to production.",
+    "explain": "SageMaker Model Registry approval workflows enforce a human approval gate before deployment; CI/CD pipelines run automated quality tests and block deployment until all gates pass. Manual approval per endpoint (option A) is the bottleneck alternative but Registry approval is the scalable automated process.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3193,7 +3193,7 @@
       "The model is unchanged"
     ],
     "answer": 1,
-    "explain": "Accuracy measures overall correctness; approval rate depends on prediction distribution and decision threshold, which can shift without accuracy change.",
+    "explain": "Approval rate changes without model retraining indicate prediction distribution shift (model scoring applicants higher overall) or business rule changes (threshold adjustment). This requires investigation into what caused the distribution shift.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -3211,7 +3211,7 @@
       "Remove entire records with PII"
     ],
     "answer": 1,
-    "explain": "PII masking (SSN hashing, name anonymization) removes sensitive information while preserving data utility for training.",
+    "explain": "SageMaker Data Wrangler and AWS Glue DataBrew provide automated PII detection and masking recipes (name hashing, email anonymization, SSN redaction), enabling compliant data sharing. Keeping PII intact (option C) violates GDPR and privacy regulations.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3231,7 +3231,7 @@
       "Slower convergence"
     ],
     "answer": 1,
-    "explain": "Gradient accumulation enables training with large effective batch sizes on memory-constrained GPUs, improving convergence stability.",
+    "explain": "Gradient accumulation sums gradients over N micro-batches before updating weights, simulating a batch size N times larger than fits in GPU memory. This enables BERT-scale training on hardware with limited memory without sacrificing the convergence benefits of large effective batch sizes.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3251,7 +3251,7 @@
       "Skip encryption for performance"
     ],
     "answer": 0,
-    "explain": "SageMaker supports VPC deployment with private subnets, S3 VPC endpoints, and encryption for meeting strict security requirements.",
+    "explain": "SageMaker endpoints deployed in private VPC subnets with no internet route satisfy no-internet requirements; S3 VPC gateway endpoints provide private access to model artifacts; KMS encryption handles data at rest/in-transit. Public subnets (option B) violate the security constraint.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3271,7 +3271,7 @@
       "Accept the predictions"
     ],
     "answer": 1,
-    "explain": "Out-of-range predictions often indicate the model has learned problematic extrapolation patterns; investigation and retraining may be needed.",
+    "explain": "Out-of-range predictions may indicate extrapolation to unseen input distributions; investigation determines if this reflects model errors, distributional shift, or legitimate new data patterns requiring retraining with extended ranges.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3291,7 +3291,7 @@
       "Always remove outliers"
     ],
     "answer": 1,
-    "explain": "RobustScaler using median/IQR handles outliers better than standard scaling; investigation determines if outliers are valid or errors.",
+    "explain": "RobustScaler uses median and IQR instead of mean/std, making it resilient to extreme outliers. Investigating outliers first determines if they are measurement errors (remove) or valid extreme cases (retain with robust scaling).",
     "keywords": [
       "outlier-detection",
       "data-cleaning",
@@ -3309,7 +3309,7 @@
       "Yes, customer behavior is stable over time"
     ],
     "answer": 2,
-    "explain": "Concept drift (changing patterns over 3 years) requires periodic retraining; drift monitoring identifies when retraining is necessary.",
+    "explain": "Customer behavior changes significantly over 3 years (new products, lifestyle shifts, economic changes); concept drift causes model predictions to degrade. SageMaker Model Monitor can detect when retraining is needed rather than retraining blindly on a fixed monthly schedule.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3329,7 +3329,7 @@
       "Embeddings are only for the original task"
     ],
     "answer": 2,
-    "explain": "Learned embeddings encode useful representations that transfer to other tasks, enabling efficient model development and better generalization.",
+    "explain": "Jointly trained user and item embeddings capture latent preference structures that transfer to other recommendation tasks, content similarity, clustering, and search. These embeddings encode more information than manually engineered features.",
     "keywords": [
       "feature-engineering",
       "data-preprocessing",
@@ -3349,7 +3349,7 @@
       "Custom code on user's application side only"
     ],
     "answer": 2,
-    "explain": "Custom containers encapsulate inference logic; deployment via SageMaker ensures consistency and simplifies inference architecture.",
+    "explain": "Custom Docker containers encapsulate the model, dependencies, and pre/post-processing logic, ensuring reproducibility across environments. Packaging inference code separately from the model container (option D) creates deployment complexity and dependency management issues.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3369,7 +3369,7 @@
       "The model cannot be explained"
     ],
     "answer": 2,
-    "explain": "SHAP explanations provide patient-specific feature importance, enabling auditable, explainable decisions required for compliance.",
+    "explain": "SageMaker Clarify SHAP explanations attribute each feature's contribution to a specific prediction, enabling clinicians and auditors to understand exactly which patient attributes drove the high-risk classification.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3389,7 +3389,7 @@
       "Use text directly in models"
     ],
     "answer": 1,
-    "explain": "Text preprocessing (cleaning, tokenization, feature extraction) is essential before ML training to convert unstructured text to usable form.",
+    "explain": "Unstructured text requires preprocessing (metadata removal, noise cleaning, tokenization) before ML training to convert it to usable numerical representations. Text cannot be fed directly to most ML algorithms without feature extraction steps.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3409,7 +3409,7 @@
       "Use a shallower network only"
     ],
     "answer": 1,
-    "explain": "Batch normalization and residual connections maintain stable gradient magnitudes through deep networks, enabling effective deep learning.",
+    "explain": "Batch normalization normalizes layer inputs to prevent internal covariate shift, maintaining gradient magnitudes through deep networks. Residual connections provide gradient highways that bypass problematic layers, both addressing vanishing gradients in deep architectures.",
     "keywords": [
       "neural-network",
       "deep-learning",
@@ -3429,7 +3429,7 @@
       "Risk of deploying broken/biased models; pipeline should include automated tests (accuracy, bias checks) before deployment"
     ],
     "answer": 3,
-    "explain": "Automated deployment without validation risks pushing broken models; quality gates (accuracy thresholds, bias checks) are essential.",
+    "explain": "Automated deployment pipelines without quality gates risk deploying models with data quality issues, bias, or bugs. Accuracy threshold checks, bias analysis, and latency tests are essential gates that prevent degraded models from reaching production.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3449,7 +3449,7 @@
       "Only accuracy matters"
     ],
     "answer": 0,
-    "explain": "Disparate impact (different approval rates across groups) is illegal discrimination; fairness analysis and retraining are required.",
+    "explain": "A 60% vs 40% recommendation rate difference for majority vs minority groups with identical qualifications is disparate impact, violating equal employment opportunity principles. SageMaker Clarify quantifies this disparity, and retraining with fairness objectives addresses the bias.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3469,7 +3469,7 @@
       "Combine all seasons into single trend"
     ],
     "answer": 2,
-    "explain": "Seasonal patterns are predictive; modeling them (seasonal ARIMA, seasonal neural networks) improves forecast accuracy.",
+    "explain": "Seasonal decomposition (STL, classical decomposition) separates trend, seasonal, and residual components, enabling explicit modeling of seasonal patterns. Removing seasonal patterns (option B) destroys predictive information critical for accurate forecasting.",
     "keywords": [
       "neural-network",
       "deep-learning",
@@ -3487,7 +3487,7 @@
       "F1-score, precision-recall curve, or ROC-AUC focus on minority class performance and avoid misleading high accuracy"
     ],
     "answer": 3,
-    "explain": "Accuracy is misleading on imbalanced data (predicting all negatives achieves high accuracy); use F1-score or ROC-AUC instead.",
+    "explain": "On 1% positive class data, a classifier predicting all negatives achieves 99% accuracy; F1-score averages precision and recall for the minority class, and ROC-AUC measures discriminability independent of threshold, both being meaningful metrics for imbalanced classification.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3507,7 +3507,7 @@
       "Manual review only"
     ],
     "answer": 2,
-    "explain": "CI/CD validation gates prevent bad models from reaching main branch; pre-commit hooks catch issues early in development.",
+    "explain": "CI/CD pre-commit hooks and pipeline validation enforce performance thresholds before merging — models below accuracy baseline or exceeding latency limits are rejected. PR code reviews catch architectural issues; automated tests verify correctness.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -3525,7 +3525,7 @@
       "Ignore the drop"
     ],
     "answer": 2,
-    "explain": "Small accuracy drops require investigation; not all drops warrant retraining; understanding cause informs decision.",
+    "explain": "A 2% accuracy drop (85% to 83%) is within normal measurement variance; statistical significance testing with confidence intervals determines whether it represents real degradation or sampling noise. Immediate retraining (option A) based on noise wastes resources.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3545,7 +3545,7 @@
       "Keep duplicates to increase dataset size"
     ],
     "answer": 0,
-    "explain": "Duplicates inflate dataset size without adding information; deduplication prevents train/test leakage where same customers appear in both.",
+    "explain": "Duplicate records inflate dataset size without adding information and create train-test leakage if the same customer appears in both sets. Entity resolution and deduplication should precede any train/test split.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3563,7 +3563,7 @@
       "Strong regularization (dropout, L2, early stopping) to prevent overfitting on small fine-tuning dataset"
     ],
     "answer": 3,
-    "explain": "Fine-tuning on small data easily overfits; strong regularization and early stopping preserve pre-trained knowledge while adapting to new task.",
+    "explain": "Fine-tuning pre-trained models on 100 examples is highly prone to overfitting; strong dropout, L2 weight decay, and early stopping preserve pre-trained representations while adapting to the new task without memorizing the small training set.",
     "keywords": [
       "overfitting",
       "regularization",
@@ -3583,7 +3583,7 @@
       "Larger models always perform better"
     ],
     "answer": 2,
-    "explain": "Model compression (quantization, pruning, distillation) reduces size and compute, enabling deployment on resource-constrained devices.",
+    "explain": "Model compression via INT8 quantization (4x size reduction), magnitude pruning, and knowledge distillation can reduce a 500MB model to fit in 256MB RAM while maintaining acceptable accuracy for edge deployment.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -3601,7 +3601,7 @@
       "Increase threshold arbitrarily"
     ],
     "answer": 0,
-    "explain": "False positive rate increase suggests threshold is too low or model has drifted; retraining or threshold adjustment addresses the issue.",
+    "explain": "False positive rate increase (1% to 5%) suggests the decision threshold is too low or the model's positive class scores have inflated. Threshold calibration or cost-sensitive retraining that penalizes false positives more heavily addresses this.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3621,7 +3621,7 @@
       "Test data should be oversampled more than training"
     ],
     "answer": 0,
-    "explain": "SMOTE generates synthetic training samples; test data must remain realistic and unmodified to accurately evaluate model performance.",
+    "explain": "SMOTE generates synthetic minority examples by interpolating between real minority samples; applying it to test data would contaminate evaluation with synthetic patterns not present in real production data, giving artificially optimistic performance estimates.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3641,7 +3641,7 @@
       "Batch size doesn't affect convergence"
     ],
     "answer": 0,
-    "explain": "Larger batches reduce stochastic noise (faster convergence) but can hurt generalization; batch size affects both speed and accuracy.",
+    "explain": "Larger batches (256 vs 128) average gradients over more samples per update, reducing gradient noise and enabling larger steps — converging faster. However, they can converge to sharper minima with lower generalization, causing slightly lower final accuracy.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3661,7 +3661,7 @@
       "Automation: define SageMaker Pipelines conditional steps that test these criteria before deploying; only deploy if all pass"
     ],
     "answer": 3,
-    "explain": "Pipeline conditional steps enforce quality gates; models deploy only if all criteria pass, preventing bad models from reaching production.",
+    "explain": "SageMaker Pipelines ConditionStep evaluates model accuracy, bias metrics, and latency checks; only if all three thresholds pass does the pipeline proceed to deployment. This prevents any single failing check from allowing a substandard model to reach production.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3681,7 +3681,7 @@
       "Convert all to single timezone arbitrarily"
     ],
     "answer": 1,
-    "explain": "Time-based features should reflect customer's local time (peak shopping hours vary by timezone); UTC features lack local context.",
+    "explain": "Temporal features should reflect the customer's local timezone to capture local behavioral patterns (peak shopping hours, weekend behavior). UTC hour features are meaningless for a customer in Tokyo where 9am UTC is 6pm local time.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -3699,7 +3699,7 @@
       "Covariate shift (data drift): input distribution changed but input-output relationship remains the same"
     ],
     "answer": 3,
-    "explain": "Covariate shift occurs when P(X) changes but P(Y|X) stays same; only input distribution drifted, not the causal relationship.",
+    "explain": "Covariate shift is defined as P(X) changing while P(Y|X) remains constant — the input distribution changed (different features in 2023) but the relationship between features and target is the same. This differs from concept drift where P(Y|X) changes.",
     "keywords": [
       "data-drift",
       "model-monitoring",
@@ -3719,7 +3719,7 @@
       "Manually manage each endpoint"
     ],
     "answer": 1,
-    "explain": "Model Registry with tags and Pipelines enable batch management of multiple models, reducing manual overhead for many endpoints.",
+    "explain": "Model Registry with segment tags enables querying all segment models at once; SageMaker Pipelines parallel steps can deploy/update multiple models simultaneously, reducing management overhead from O(n) manual steps to a single pipeline execution.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3739,7 +3739,7 @@
       "Model accuracy is still high, so it's acceptable"
     ],
     "answer": 0,
-    "explain": "Disparate impact based on income (proxy for other protected attributes) is discriminatory; fairness analysis and retraining required.",
+    "explain": "Systematic underprediction of dropout for low-income students is disparate impact — the model disadvantages a group correlated with protected attributes. SageMaker Clarify quantifies this disparity; fairness-aware retraining or income-debiased features addresses it.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3759,7 +3759,7 @@
       "Combine countries into regions"
     ],
     "answer": 2,
-    "explain": "High-cardinality one-hot encoding creates curse of dimensionality; target encoding or embeddings are more efficient.",
+    "explain": "One-hot encoding 195 countries creates 195 sparse binary columns, causing curse of dimensionality. Target encoding replaces each country with its mean target value (single compact feature). Embedding layers learn dense country representations in neural networks.",
     "keywords": [
       "data-labeling",
       "SageMaker-Ground-Truth",
@@ -3779,7 +3779,7 @@
       "Variance is irrelevant"
     ],
     "answer": 2,
-    "explain": "Mean CV accuracy = (90+88+92+85+89)/5 = 88.8%; low variance indicates robust, stable generalization.",
+    "explain": "Mean CV accuracy = (90+88+92+85+89)/5 = 88.8%; standard deviation of approximately 2.6% indicates stable performance across all five folds, suggesting the model generalizes consistently regardless of which data subset is used for training.",
     "keywords": [
       "cross-validation",
       "model-evaluation",
@@ -3797,7 +3797,7 @@
       "Pipelines cannot fail"
     ],
     "answer": 1,
-    "explain": "Automated pipelines require monitoring pipeline health and model quality; failures need investigation to prevent bad deployments.",
+    "explain": "Automated pipelines require monitoring pipeline execution health (failure rate, duration), model quality metrics, and deployment outcomes to detect silent failures. Treating pipelines as self-sufficient (option A) leads to undetected degradation in production.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3817,7 +3817,7 @@
       "All features drift equally"
     ],
     "answer": 2,
-    "explain": "Model Monitor provides feature-level drift metrics; identifying which features drifted guides investigation and potential retraining.",
+    "explain": "SageMaker Model Monitor provides per-feature statistics (mean, standard deviation, distribution histograms) comparing production data vs. baseline, identifying which specific features have drifted. Overall accuracy alone (option B) doesn't reveal which features are causing the performance change.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -3837,7 +3837,7 @@
       "Text length is irrelevant"
     ],
     "answer": 2,
-    "explain": "Padding/truncation standardizes input length for batch processing; preserves information while enabling efficient batching.",
+    "explain": "Padding adds zeros to shorter sequences and truncation cuts longer sequences to create uniform-length batches for efficient GPU processing. Padding masks indicate real vs. padded tokens, preventing the model from learning patterns in padding tokens.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3856,8 +3856,8 @@
       "Impute using mean/median/mode for numeric features; use categorical mode or create 'missing' category for categorical features",
       "Missing values should remain"
     ],
-    "answer": 0,
-    "explain": "Imputation preserves sample size and information; dropping rows wastes data unless missingness is systematic.",
+    "answer": 2,
+    "explain": "Imputation (mean/median for numeric, mode or 'missing' indicator for categorical) preserves sample count and avoids throwing away records that are otherwise complete. Dropping all rows with missing values (option A) is only appropriate when missingness rate is very high and imputation would introduce significant bias.",
     "keywords": [
       "missing-values",
       "imputation",
@@ -3874,8 +3874,8 @@
       "Patience has no effect",
       "Stop after 10 epochs"
     ],
-    "answer": 3,
-    "explain": "Early stopping patience=10 halts training if best validation loss doesn't improve for 10 epochs, balancing training duration and generalization.",
+    "answer": 1,
+    "explain": "Patience=10 means training stops if the validation metric doesn't improve for 10 consecutive epochs, then restores weights from the best epoch. Stopping after exactly 10 epochs (option D) regardless of improvement is just a fixed epoch limit, not early stopping.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3894,8 +3894,8 @@
       "Disable monitoring",
       "Latency cannot be improved"
     ],
-    "answer": 0,
-    "explain": "Model optimization and instance upgrades reduce latency; caching can serve repeated requests without computation.",
+    "answer": 1,
+    "explain": "Model optimization (INT8 quantization, operator fusion, TensorRT compilation) reduces inference compute time; faster instance types reduce per-inference latency; prediction caching serves repeated requests instantly. Accepting the latency violation (option A) breaches the SLA.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -3912,8 +3912,8 @@
       "Use fairness-aware threshold selection: choose threshold that equalized false positive rate or false negative rate across groups",
       "Thresholds cannot be adjusted"
     ],
-    "answer": 0,
-    "explain": "Fairness-aware threshold selection balances model utility with fairness constraints across protected attributes.",
+    "answer": 2,
+    "explain": "Fairness-aware threshold selection applies different decision thresholds per demographic group to equalize false positive (or false negative) rates, satisfying equalized odds fairness constraints. A single global threshold at 0.5 (option A) creates unequal error rates across groups.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -3930,8 +3930,8 @@
       "Use embedding layers (for neural networks) or label encoding with tree models; target encoding encodes by target mean",
       "Use all one-hot encoded features"
     ],
-    "answer": 3,
-    "explain": "Embedding and target encoding reduce dimensionality compared to one-hot encoding for high-cardinality features.",
+    "answer": 2,
+    "explain": "Embedding layers learn dense, compact representations (e.g., 32-dimensional) for hundreds of categorical values; target encoding computes the mean target value per category. Both are far more efficient than one-hot encoding, which creates hundreds of sparse binary columns.",
     "keywords": [
       "data-labeling",
       "SageMaker-Ground-Truth",
@@ -3950,8 +3950,8 @@
       "Stop immediately",
       "Increase learning rate"
     ],
-    "answer": 1,
-    "explain": "Learning rate decay and adaptive optimizers help escape plateaus and improve convergence to better minima.",
+    "answer": 0,
+    "explain": "When training plateaus at 80% with a fixed learning rate, applying learning rate decay or switching to Adam (which adapts per-parameter learning rates) can help escape the local minimum. Continuing for 1000 more epochs (option B) with the same LR is unlikely to improve if the loss surface has been fully explored.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -3970,8 +3970,8 @@
       "Deploy to only one region",
       "Register models in central Model Registry; replicate across regions using CloudFormation or Terraform"
     ],
-    "answer": 0,
-    "explain": "Central Model Registry with cross-region replication ensures consistent model versions across all regions.",
+    "answer": 3,
+    "explain": "Registering the authoritative model version in a central Model Registry and using CloudFormation/Terraform to deploy consistent endpoints across regions ensures version synchronization and prevents drift between regional deployments.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -3990,8 +3990,8 @@
       "This is impossible without retraining",
       "Prediction distribution shifted (higher predicted scores); decision threshold remained fixed; or business rule changed approval criteria"
     ],
-    "answer": 1,
-    "explain": "Approval rate depends on prediction distribution and threshold; either can shift without model retraining.",
+    "answer": 3,
+    "explain": "Without model retraining, loan approval rate can change if the input distribution shifted (applicants now have higher credit scores), causing more high-score predictions at a fixed threshold. A business rule threshold change would also shift approval rates without model changes.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4008,8 +4008,8 @@
       "All customers have same patterns",
       "Use raw timestamps"
     ],
-    "answer": 3,
-    "explain": "Customer-specific temporal patterns are more predictive than global time features; personalization improves model performance.",
+    "answer": 0,
+    "explain": "Customer-specific temporal patterns (individual's typical transaction hour, weekday preference) are more predictive than global time features, as different customers have different behavioral rhythms. Raw timestamps are not interpretable as features without aggregation.",
     "keywords": [
       "feature-engineering",
       "data-preprocessing",
@@ -4026,8 +4026,8 @@
       "Remove all regularization",
       "Regularization harms accuracy"
     ],
-    "answer": 2,
-    "explain": "L2 regularization and dropout reduce effective model capacity, combating overfitting indicated by high validation loss.",
+    "answer": 0,
+    "explain": "Training loss 0.1 vs. validation loss 0.3 indicates overfitting; L2 regularization penalizes large weights, dropout prevents co-adaptation, and data augmentation expands effective training set size. Removing regularization (option C) would worsen the training-validation gap.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4046,8 +4046,8 @@
       "Register models in Model Registry; use environment-specific deployment configs (instance types, scaling) from single model version",
       "Consistency is not possible"
     ],
-    "answer": 1,
-    "explain": "Model Registry enables single source of truth; environment-specific configs allow consistent model across different tiers.",
+    "answer": 2,
+    "explain": "Model Registry stores a single validated model version deployed consistently across dev, staging, and production; environment-specific endpoint configurations (instance types, auto-scaling, VPC settings) separate model quality concerns from deployment configuration.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -4066,8 +4066,8 @@
       "Low recall means the model is conservative; consider lowering decision threshold to recommend more items and improve recall",
       "Increase precision further"
     ],
-    "answer": 1,
-    "explain": "Recall improves by lowering threshold; precision-recall tradeoff means lower threshold increases recall at cost of precision.",
+    "answer": 2,
+    "explain": "High precision with low recall means the model only recommends items it is very confident about, missing many good recommendations. Lowering the recommendation score threshold increases recall at the cost of slightly lower precision (some less-relevant items included).",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4086,8 +4086,8 @@
       "Sequence length doesn't matter",
       "Use all historical events (years of data) per user"
     ],
-    "answer": 3,
-    "explain": "Fixed sequence windows balance computational efficiency with enough context; very long sequences provide diminishing returns.",
+    "answer": 0,
+    "explain": "Fixed-length sequence windows (e.g., last 10-50 events) balance computational efficiency with sufficient behavioral context. Using all historical events (option D) creates variable-length sequences requiring heavy padding for very old interactions that may not be predictive.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -4104,8 +4104,8 @@
       "Accuracy is independent of class distribution",
       "Yes, accuracy will remain 90%"
     ],
-    "answer": 3,
-    "explain": "Model trained on balanced data overfits to balanced distribution; deployment on imbalanced data causes performance degradation.",
+    "answer": 0,
+    "explain": "A model trained on 50/50 balanced data learns calibrated probabilities for balanced classes; deployed on 90/10 imbalanced production data, its decision threshold is miscalibrated. Recalibrating probabilities or retraining with class weights matching production distribution is required.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4124,8 +4124,8 @@
       "Slowness is unavoidable",
       "ONNX is always faster"
     ],
-    "answer": 3,
-    "explain": "ONNX Runtime can optimize ONNX models for CPU; some operators may have suboptimal CPU implementations.",
+    "answer": 0,
+    "explain": "ONNX Runtime (ORT) provides CPU-optimized graph execution plans and can apply operator fusion and INT8 quantization; some ONNX operators may have suboptimal CPU implementations that profiling reveals. ONNX is not always faster (option D) — it depends on runtime and optimization level.",
     "keywords": [
       "PyTorch",
       "deep-learning",
@@ -4142,8 +4142,8 @@
       "Production data is corrupted",
       "Test data is unrealistic"
     ],
-    "answer": 3,
-    "explain": "Large test-production gap indicates distribution shift; production data follows different distribution than test set.",
+    "answer": 0,
+    "explain": "A 99%-to-60% accuracy drop between test and production data is severe distribution shift — the model learned patterns specific to the test distribution that do not generalize. This indicates the test set was not a representative sample of real-world production data.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -4160,8 +4160,8 @@
       "Upsample to minute frequency",
       "Frequency doesn't matter"
     ],
-    "answer": 1,
-    "explain": "Resampling to business-relevant frequency reduces noise and aligns features with prediction granularity.",
+    "answer": 0,
+    "explain": "Resampling hourly data to daily frequency by aggregation (sum, mean, max) reduces noise and aligns feature granularity with business questions. Keeping hourly frequency (option B) adds unnecessary dimensionality and noise when daily predictions are the target.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -4178,8 +4178,8 @@
       "Delete earlier trees",
       "Always use many more trees"
     ],
-    "answer": 3,
-    "explain": "Gradient boosting convergence plateaus; continuing to add trees risks overfitting without accuracy improvement.",
+    "answer": 0,
+    "explain": "When validation accuracy plateaus after adding more gradient boosting trees, the model has converged; continuing to add trees overfits training data without validation improvement. Early stopping in XGBoost/LightGBM monitors validation metric and halts at the optimal number of trees.",
     "keywords": [
       "overfitting",
       "regularization",
@@ -4198,8 +4198,8 @@
       "Request waits for instance launch (cold start); adds latency; configure minimum capacity if cold starts are unacceptable",
       "Request fails instantly"
     ],
-    "answer": 0,
-    "explain": "Zero-capacity cold starts add latency; minimum capacity configuration ensures instant availability at cost of idle resources.",
+    "answer": 2,
+    "explain": "When auto-scaling scales to zero instances and a new request arrives, SageMaker must launch a new instance and load the model before serving — this cold start can take 1-5 minutes. Configuring a minimum instance count of 1 eliminates cold starts at the cost of idle instance charges.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -4217,8 +4217,8 @@
       "Bias cannot be measured",
       "Yes, 0.5 ratio is acceptable"
     ],
-    "answer": 3,
-    "explain": "80% rule: protected group should have 80%+ relative outcome rate; 0.5 ratio indicates significant disparity requiring mitigation.",
+    "answer": 1,
+    "explain": "The 80% rule (four-fifths rule) requires protected groups to receive outcomes at no less than 80% the rate of the advantaged group; a disparate impact ratio of 0.5 (50%) is well below this legal threshold and indicates statistically significant discrimination requiring remediation.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -4237,8 +4237,8 @@
       "Review data for PII and copyrighted content; redact PII and respect copyright; ensure ethical data practices",
       "Ignore ethical concerns"
     ],
-    "answer": 0,
-    "explain": "Responsible ML requires data governance: PII redaction, copyright respect, and ethical sourcing before training.",
+    "answer": 2,
+    "explain": "Web-scraped training data requires PII redaction (GDPR compliance), copyright assessment (fair use determination), and ethical review before use. Training on raw web data (option A) exposes the organization to regulatory fines and intellectual property liability.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4255,8 +4255,8 @@
       "Batch norm is working correctly",
       "Batch norm caused overfitting"
     ],
-    "answer": 2,
-    "explain": "Massive training-validation gap is extreme overfitting; regularization (dropout, L2) and data augmentation are needed.",
+    "answer": 0,
+    "explain": "Training loss 0.05 vs. validation loss 0.5 is a 10x difference indicating severe overfitting — the model has completely memorized training examples. Stronger regularization (dropout, L2, early stopping) and data augmentation are needed to address this.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4275,8 +4275,8 @@
       "Never use multi-model",
       "Always use multi-model"
     ],
-    "answer": 2,
-    "explain": "Multi-model endpoints are cost-efficient for low-traffic or intermittent models; shared capacity reduces overall cost.",
+    "answer": 1,
+    "explain": "SageMaker Multi-Model Endpoints efficiently serve models with low, intermittent traffic by dynamically loading and unloading models from a shared container — cost is proportional to instance hours rather than one instance per model. High-traffic or latency-critical models should use dedicated endpoints.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -4295,8 +4295,8 @@
       "Fraud patterns evolved (concept drift); previous features no longer detect fraud; retraining on recent data needed",
       "Recall is constant without retraining"
     ],
-    "answer": 1,
-    "explain": "Concept drift causes performance changes without model changes; fraud tactics evolve requiring periodic retraining.",
+    "answer": 2,
+    "explain": "Fraud patterns evolve as fraudsters adapt tactics; concept drift (changing P(Y|X)) causes previously effective detection features to lose discriminative power. Retraining on recent labeled fraud data restores recall by incorporating new fraud signatures.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4315,8 +4315,8 @@
       "Truncate to first 512 tokens, or summarize; extract key sections (problem, resolution) as features",
       "Use only the first sentence"
     ],
-    "answer": 1,
-    "explain": "Truncation, summarization, or key section extraction reduces long text to manageable size for training.",
+    "answer": 2,
+    "explain": "Transformer models (BERT, RoBERTa) have maximum sequence lengths (512-2048 tokens); long support transcripts require truncation, summarization, or extracting key sections (issue description, resolution). Using entire long transcripts (option B) exceeds model capacity and dilutes relevant signal.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4333,8 +4333,8 @@
       "Train on CPU",
       "Depth doesn't affect training speed"
     ],
-    "answer": 2,
-    "explain": "Batch normalization stabilizes deep networks, enabling faster convergence compared to non-normalized deep networks.",
+    "answer": 1,
+    "explain": "Batch normalization normalizes layer activations, preventing internal covariate shift and enabling higher learning rates for faster convergence. It is particularly effective in deep (5+ layer) networks where gradient flow issues slow training.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4353,8 +4353,8 @@
       "Each line manages independently",
       "Centralized Model Registry with approval workflows; each business line has deployment checklists and SLAs"
     ],
-    "answer": 0,
-    "explain": "Centralized governance with business-line-specific SLAs ensures accountability and quality across diverse models.",
+    "answer": 3,
+    "explain": "A centralized SageMaker Model Registry with approval workflows, business-line-specific deployment checklists, and SLA definitions provides governance accountability across diverse model portfolios. No governance (option A) leads to untested models reaching production.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -4373,8 +4373,8 @@
       "Continue using feature X",
       "Remove feature X or add fairness constraints; consider if X is a proxy for protected attributes"
     ],
-    "answer": 0,
-    "explain": "Explanations reveal problematic features (legal, ethical risks); removing illegal or discriminatory features preserves model utility.",
+    "answer": 3,
+    "explain": "When SHAP analysis reveals a legally prohibited feature as the top driver, the feature must be removed or constrained — its continued use creates legal liability. If the feature is a proxy for protected attributes, indirect use requires fairness analysis and remediation.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -4393,8 +4393,8 @@
       "Cyclicity doesn't matter",
       "Use day of year directly"
     ],
-    "answer": 3,
-    "explain": "Sin/cos encoding preserves cyclical structure; linear day values incorrectly suggest day 365 is far from day 1.",
+    "answer": 1,
+    "explain": "Sin/cos encoding maps the cyclical day-of-year to a 2D circle where day 1 and day 365 are adjacent, preserving calendar proximity. Linear day values (option D) incorrectly represent December 31 and January 1 as maximally far apart — a fundamental misrepresentation.",
     "keywords": [
       "categorical-encoding",
       "one-hot-encoding",
@@ -4411,8 +4411,8 @@
       "Recall cannot be improved",
       "Low recall means the model recommends very few items; users miss many good recommendations; increase recommendation count to improve recall"
     ],
-    "answer": 1,
-    "explain": "Recommendation coverage depends on recall; low recall misses opportunities; adjusting recommendation threshold improves recall.",
+    "answer": 3,
+    "explain": "10% recall means the model correctly recommends only 10% of items users would actually like — severe under-recommendation. Increasing the recommendation count (larger K) or lowering the score threshold improves recall at modest precision cost.",
     "keywords": [
       "precision",
       "classification-metrics",
@@ -4430,8 +4430,8 @@
       "No logging needed",
       "Logging is optional"
     ],
-    "answer": 0,
-    "explain": "Audit trails with full prediction context enable compliance verification and investigation of adverse outcomes.",
+    "answer": 1,
+    "explain": "Regulated industries require full audit trails: input features, model version, prediction output, confidence score, timestamp, and user/case ID. This enables compliance auditors to trace any individual decision and verify regulatory requirements were met.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -4448,8 +4448,8 @@
       "Drift cannot be detected without labels",
       "Retrain immediately"
     ],
-    "answer": 3,
-    "explain": "Prediction drift is an early signal but requires label confirmation before committing to expensive retraining.",
+    "answer": 0,
+    "explain": "Prediction distribution shift is an early warning signal but retraining requires confirmation through ground truth labels when available. Without label confirmation, aggressive retraining may introduce unnecessary instability; use prediction drift to trigger closer monitoring.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4468,8 +4468,8 @@
       "Geographic data is unsuitable for ML",
       "Yes, use coordinates directly"
     ],
-    "answer": 3,
-    "explain": "Geographic embeddings or grid cells capture spatial structure better than raw coordinates.",
+    "answer": 1,
+    "explain": "Geographic encoding approaches (H3 grid cells, distance to known locations, geohash embeddings) capture spatial structure meaningfully. Raw latitude/longitude coordinates (option D) provide no context about surrounding amenities or urban density.",
     "keywords": [
       "ROC-AUC",
       "model-evaluation",
@@ -4486,8 +4486,8 @@
       "Model is robust",
       "Fold variance doesn't matter"
     ],
-    "answer": 2,
-    "explain": "High fold variance indicates the model's performance depends heavily on specific data subsets; robustness requires low variance.",
+    "answer": 1,
+    "explain": "High cross-validation variance (one fold at 95%, others at 70%) indicates the model's performance is highly sensitive to which data subset it was trained on — typically due to data heterogeneity, class imbalance within folds, or overfitting on the outlier fold.",
     "keywords": [
       "cross-validation",
       "model-evaluation",
@@ -4505,8 +4505,8 @@
       "Use SageMaker endpoints only",
       "Export model to Docker container; deploy to Kubernetes; use SageMaker for training and export workflow"
     ],
-    "answer": 1,
-    "explain": "SageMaker models can be exported to Docker containers and deployed on Kubernetes for container-orchestrated inference.",
+    "answer": 3,
+    "explain": "SageMaker-trained models can be exported as Docker containers (or ONNX/TorchScript format) and deployed to Kubernetes using standard k8s Deployments and Services. SageMaker is fully compatible with Kubernetes-based inference infrastructure.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -4525,8 +4525,8 @@
       "Threshold changes are invisible to users",
       "Yes, threshold changes don't affect predictions"
     ],
-    "answer": 3,
-    "explain": "Business rule changes (threshold adjustments) affect metrics; impact must be monitored to ensure acceptable tradeoffs.",
+    "answer": 1,
+    "explain": "Threshold changes shift the operating point on the precision-recall curve, directly affecting false positive and false negative rates. Monitoring these downstream metrics after threshold changes ensures the business impact (customer experience, regulatory compliance) remains acceptable.",
     "keywords": [
       "precision",
       "classification-metrics",
@@ -4544,8 +4544,8 @@
       "Use images as-is",
       "Remove images with different specs"
     ],
-    "answer": 2,
-    "explain": "Standardized color space and resolution enable efficient batching; normalization stabilizes neural network training.",
+    "answer": 1,
+    "explain": "Standardizing color space (all RGB or all grayscale), resolution, and normalizing pixel values to [0,1] enables consistent batch processing in convolutional networks. Mixed formats and resolutions cause tensor shape errors or require variable-length processing.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4564,8 +4564,8 @@
       "Custom loops have no impact on results",
       "Debugging is impossible with custom loops"
     ],
-    "answer": 1,
-    "explain": "Custom training loops require careful implementation to avoid gradient issues, weight updates, or optimization bugs.",
+    "answer": 0,
+    "explain": "Custom PyTorch training loops require correct implementation of: zero_grad(), loss.backward(), optimizer.step(), and learning rate scheduling. Bugs (e.g., forgetting zero_grad()) cause gradient accumulation and training instability not present in high-level Keras/TF APIs.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4584,8 +4584,8 @@
       "Network latency, serialization, deserialization, or client-side processing adds overhead; profile to identify bottleneck",
       "Model optimization is the only solution"
     ],
-    "answer": 0,
-    "explain": "End-to-end latency includes network and processing overhead; profiling identifies which component dominates latency.",
+    "answer": 2,
+    "explain": "End-to-end latency includes network round-trip, request serialization (JSON/protobuf encoding), endpoint processing, and response deserialization; profiling client-to-endpoint network hops identifies which component dominates the 190ms overhead beyond 10ms model inference.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -4604,8 +4604,8 @@
       "Always retrain on any accuracy change",
       "Accuracy is static without retraining"
     ],
-    "answer": 1,
-    "explain": "Week-to-week variance is expected; sustained degradation over multiple weeks indicates real drift requiring investigation.",
+    "answer": 0,
+    "explain": "Week-to-week accuracy fluctuations of ±1% are within measurement variance and do not indicate systematic degradation. Monitoring for sustained multi-week trends (e.g., 3+ consecutive weeks of decline) distinguishes real drift from statistical noise.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4622,8 +4622,8 @@
       "No normalization needed",
       "Yes; apply feature scaling (StandardScaler or MinMaxScaler) so features contribute equally to distance-based models"
     ],
-    "answer": 2,
-    "explain": "Features with large range differences dominate distance-based models (KNN, SVM); normalization ensures fair contribution.",
+    "answer": 3,
+    "explain": "Features with very different ranges (age: 18-90, price: $1-$10,000) cause distance-based models (KNN, SVM) and neural networks to be dominated by high-magnitude features. StandardScaler or MinMaxScaler normalizes all features to comparable scales for fair distance computation.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4642,8 +4642,8 @@
       "Metrics are inconsistent",
       "Both metrics agree"
     ],
-    "answer": 2,
-    "explain": "On imbalanced data, AUC-ROC is misleadingly high; PR-AUC better reflects minority class performance.",
+    "answer": 1,
+    "explain": "AUC-ROC measures discriminability across all thresholds but is optimistic on imbalanced data because the large true-negative pool inflates specificity. PR-AUC focuses on positive class performance (precision and recall), making it more informative for minority class detection.",
     "keywords": [
       "precision",
       "classification-metrics",
@@ -4662,8 +4662,8 @@
       "Lookups are not possible",
       "Duplicate in each model copy"
     ],
-    "answer": 0,
-    "explain": "Large lookups should be stored separately to avoid bloating model files and enable fast updates.",
+    "answer": 1,
+    "explain": "Storing 1GB lookup tables in DynamoDB or ElastiCache enables millisecond retrieval during inference without loading the table into model memory. Embedding lookups in the model file (option A) increases model size, slows cold starts, and prevents independent updates.",
     "keywords": [
       "model-deployment",
       "SageMaker-Endpoint",
@@ -4682,8 +4682,8 @@
       "Only the probability",
       "Explanations cannot show feature importance"
     ],
-    "answer": 2,
-    "explain": "SHAP explanations show feature contributions to individual predictions, enabling stakeholders to understand model decisions.",
+    "answer": 0,
+    "explain": "SageMaker Clarify SHAP explanations identify top features driving the 80% churn prediction (e.g., 'no purchase in 90 days' +15%, 'increased support tickets' +12%), providing actionable insight for customer success teams to intervene before churn occurs.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -4702,8 +4702,8 @@
       "Capitalization has no effect",
       "Use case-sensitive tokenization only"
     ],
-    "answer": 0,
-    "explain": "Lowercasing normalizes text; different capitalizations of the same word should be treated identically in NLP tasks.",
+    "answer": 1,
+    "explain": "Lowercasing normalizes text so 'The Model', 'the model', and 'THE MODEL' map to the same token sequence, reducing vocabulary size and preventing the model from treating identical words differently based on capitalization.",
     "keywords": [
       "normalization",
       "feature-scaling",
@@ -4722,8 +4722,8 @@
       "Ensemble averaging reduces variance from uncorrelated model errors; majority voting on diverse models improves robustness",
       "Ensemble always combines predictions equally"
     ],
-    "answer": 3,
-    "explain": "Ensemble methods reduce variance by averaging independent models; diversity in errors maximizes variance reduction benefit.",
+    "answer": 2,
+    "explain": "Bagging trains multiple models on bootstrap samples; averaging their predictions reduces variance because independent model errors partially cancel out. The key requirement is model diversity — correlated models trained on identical data provide no variance reduction benefit.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -4740,8 +4740,8 @@
       "Keep all instances running always",
       "Use auto-scaling and spot instances; trade slight latency variance for significant cost savings"
     ],
-    "answer": 2,
-    "explain": "Auto-scaling removes idle capacity; spot instances reduce compute costs, accepting occasional interruptions and latency variance.",
+    "answer": 3,
+    "explain": "SageMaker endpoint auto-scaling removes idle instances during low traffic periods, and Spot managed inference reduces compute costs significantly. Keeping all instances running always (option C) wastes money on idle compute without availability benefit.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -4760,8 +4760,8 @@
       "Calibration is not measurable",
       "All probabilities are equally valid"
     ],
-    "answer": 1,
-    "explain": "Calibration: if model predicts 70% probability, outcomes should be positive 70% of time; mean probability 0.51 suggests poor calibration.",
+    "answer": 0,
+    "explain": "Model calibration is measured by comparing predicted probabilities to empirical outcome frequencies using reliability diagrams or Expected Calibration Error (ECE). A mean prediction of 0.51 does not confirm good calibration — only calibration plots comparing predicted vs. actual rates reveal the quality.",
     "keywords": [
       "AWS",
       "cloud-computing",
@@ -4778,8 +4778,8 @@
       "High cardinality features cannot be used",
       "Remove country entirely"
     ],
-    "answer": 0,
-    "explain": "Grouping rare categories and target encoding handle high-cardinality features efficiently without curse of dimensionality.",
+    "answer": 1,
+    "explain": "Grouping rare countries into 'Other' reduces cardinality; target encoding replaces each country with its mean target value (single compact feature); embedding layers learn dense country representations. One-hot encoding 195 countries (option A) creates 195 sparse columns.",
     "keywords": [
       "dimensionality-reduction",
       "PCA",
@@ -4798,8 +4798,8 @@
       "Encoder cannot be reused",
       "Encoder output is specific to translation"
     ],
-    "answer": 3,
-    "explain": "Pre-trained encoders learn useful language representations; these embeddings transfer to downstream NLP tasks.",
+    "answer": 1,
+    "explain": "Pre-trained seq2seq encoders learn rich contextual language representations that transfer to downstream tasks like sentiment classification, topic modeling, and NLI. This is the core idea behind models like BERT (encoder-only) — pre-training for reuse across NLP tasks.",
     "keywords": [
       "ROC-AUC",
       "model-evaluation",
@@ -4818,8 +4818,8 @@
       "Revert all models at once manually",
       "Stop all predictions"
     ],
-    "answer": 2,
-    "explain": "Model versioning and quick rollback capabilities minimize incident impact; practicing rollback procedures is essential.",
+    "answer": 1,
+    "explain": "Model Registry versioning enables reverting all endpoints to the previous approved model version in minutes via automated pipeline or SDK calls. Manual rollback of individual endpoints (option C) is too slow for a critical production bug affecting all models simultaneously.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -4838,8 +4838,8 @@
       "Yes, always retrain immediately",
       "No; investigate first: is drift from new patterns (retrain) or data quality issues (fix pipeline)?"
     ],
-    "answer": 2,
-    "explain": "Data drift requires investigation before action; addressing root cause (quality issues) may be preferable to retraining.",
+    "answer": 3,
+    "explain": "Data drift alerts require root cause analysis — drift from legitimate new patterns warrants retraining, while drift from upstream data quality bugs requires fixing the pipeline first. Immediate retraining (option C) on corrupted data could degrade model quality further.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -4858,8 +4858,8 @@
       "Remove DB B to ensure quality",
       "Weight DB A samples higher in training; use DB B to expand data; validate that mixing doesn't hurt performance"
     ],
-    "answer": 2,
-    "explain": "Data source weighting balances quality and quantity; validation ensures that combining sources doesn't introduce unwanted bias.",
+    "answer": 3,
+    "explain": "Sample weighting assigns higher importance to clean DB A records in the loss function while DB B adds data volume despite noise. Validation of the combined vs. single-source model performance determines if mixing adds value or introduces harmful noise.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4876,8 +4876,8 @@
       "Full batch has more stable gradients but requires storing gradients for all data; slower iteration; smaller batches better for wall-clock efficiency",
       "SGD is always faster"
     ],
-    "answer": 1,
-    "explain": "Full-batch gradient is stable but computationally expensive; mini-batch balances stability and iteration speed for practical training.",
+    "answer": 2,
+    "explain": "Full-batch gradient descent computes gradients over all data at each step (stable but one step requires processing the full dataset); mini-batch SGD takes more steps per epoch but each is fast, achieving better wall-clock efficiency. Full batch is rarely practical for large datasets.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4896,8 +4896,8 @@
       "Instance type may be insufficient or variable performance; monitor resource usage; consider larger instance types",
       "Evaluation is inherently random"
     ],
-    "answer": 3,
-    "explain": "Variable performance indicates resource bottleneck; scaling up instance type or improving evaluation code can stabilize latency.",
+    "answer": 2,
+    "explain": "Evaluation step duration variance typically indicates resource constraints — the evaluation dataset size or complexity varies, or the instance experiences CPU/memory pressure. Profiling resource utilization identifies the bottleneck and informs instance type selection.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -4916,8 +4916,8 @@
       "Recall cannot be improved further",
       "Improve precision"
     ],
-    "answer": 0,
-    "explain": "Missing frauds (false negatives) is costly; retraining with recall-focused objectives and threshold adjustment improve fraud detection.",
+    "answer": 1,
+    "explain": "Improving fraud recall from 92% to 95% requires: (1) analyzing the 8% missed frauds to understand their characteristics, (2) retraining with a recall-weighted loss or lower decision threshold that prioritizes catching fraud over avoiding false positives.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4936,8 +4936,8 @@
       "Weight low-confidence labels lower in loss function; consider retraining with high-confidence labels only to assess impact",
       "Use all labels without concern"
     ],
-    "answer": 0,
-    "explain": "Low-confidence labels may introduce noise; weighting or filtering can improve training signal quality.",
+    "answer": 2,
+    "explain": "Low-confidence labels introduce noise that degrades model performance; down-weighting these samples in the loss function reduces their influence while keeping the sample. Training on only high-confidence labels first and evaluating whether adding low-confidence labels helps determines the optimal strategy.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4956,8 +4956,8 @@
       "The model is correct",
       "Models always predict majority class"
     ],
-    "answer": 1,
-    "explain": "Skewed predictions despite balanced true distribution indicate training data imbalance or lack of class weighting.",
+    "answer": 0,
+    "explain": "A model predicting 99% class A on balanced (50/50) true data indicates it learned a biased training distribution — class imbalance during training, missing class balancing, or a bug in the training loop causing only one class to receive gradient updates.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -4974,8 +4974,8 @@
       "Process sequentially in Lambda",
       "This is impossible"
     ],
-    "answer": 2,
-    "explain": "Asynchronous patterns decouple request submission from inference execution, enabling processing of large batches beyond Lambda timeouts.",
+    "answer": 0,
+    "explain": "SageMaker async endpoints or SQS-based architectures decouple request ingestion from inference processing — Lambda writes requests to SQS, separate workers process them asynchronously and write results to S3. This handles long-running inference without Lambda timeout constraints.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -4994,8 +4994,8 @@
       "Model degradation is unexplainable",
       "Target distribution shifted; concept drift causes same inputs to have different outcomes; retrain on recent data"
     ],
-    "answer": 1,
-    "explain": "Concept drift (changed input-output relationship) with unchanged input distribution causes performance changes; retraining is needed.",
+    "answer": 3,
+    "explain": "Unchanged input distribution (same features) with increased false positives indicates concept drift — P(Y|X) changed, meaning the relationship between features and fraud outcome evolved. This differs from covariate shift where only P(X) changes.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -5014,8 +5014,8 @@
       "All words are known",
       "Rare words not in training vocabulary are ignored or assigned zero TF-IDF; consider using subword tokenization (BPE) to handle OOV"
     ],
-    "answer": 0,
-    "explain": "Out-of-vocabulary (OOV) words are not in training and get zero feature value; subword tokenization handles rare words.",
+    "answer": 3,
+    "explain": "TF-IDF vocabularies are fixed at training time; out-of-vocabulary words receive zero vector representations, losing their signal. Subword tokenization (BPE, WordPiece) decomposes rare words into known subunits, enabling partial representation of unseen vocabulary.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -5032,8 +5032,8 @@
       "Both are equally good",
       "Parameter count determines quality"
     ],
-    "answer": 2,
-    "explain": "Despite complexity, Model B's higher validation accuracy indicates better true performance; larger models can improve generalization if properly trained.",
+    "answer": 0,
+    "explain": "Model B achieves 79% validation accuracy (vs. 78% for Model A) despite 10,000x more parameters — if properly regularized, larger models can generalize better. However, monitoring for overfitting on the test set and considering inference cost tradeoffs remains important.",
     "keywords": [
       "model-training",
       "SageMaker-Training",
@@ -5052,8 +5052,8 @@
       "Force deployment anyway",
       "Check pipeline logs for failures; investigate if accuracy is consistently below threshold or if pipeline has errors"
     ],
-    "answer": 2,
-    "explain": "Lack of deployment indicates either performance consistently below threshold (investigation needed) or pipeline failures to diagnose.",
+    "answer": 3,
+    "explain": "Two weeks without deployment warrants investigation: either accuracy is consistently below the deployment threshold (data or concept drift) or the pipeline has a bug preventing successful runs. CloudWatch pipeline execution logs reveal which scenario occurred.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
@@ -5072,8 +5072,8 @@
       "This is always expected",
       "Feature importance is constant"
     ],
-    "answer": 1,
-    "explain": "Feature importance changes indicate distribution shifts; constant features provide no predictive power and warrant investigation.",
+    "answer": 0,
+    "explain": "Feature importance change (from high to zero for 'age') indicates the input distribution changed — if all customers now have the same age value, the feature provides no discrimination. This warrants investigation into the data pipeline for the age feature.",
     "keywords": [
       "Amazon-SageMaker",
       "managed-ML",
