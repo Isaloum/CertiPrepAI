@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { signIn, completeMFASignIn } from '../lib/cognito'
 import { useAuth } from '../contexts/AuthContext'
+import { trackLogin } from '../lib/analytics'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -28,6 +29,7 @@ export default function Login() {
         return
       }
       await refreshUser()
+      trackLogin('free')
       navigate('/dashboard')
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Sign in failed.')

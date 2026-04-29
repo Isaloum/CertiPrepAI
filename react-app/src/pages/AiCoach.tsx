@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 import { useAuth } from '../contexts/AuthContext'
+import { trackAiCoachOpened, trackAiCoachMessage } from '../lib/analytics'
 
 const AI_COACH_API = 'https://hyb325gocg.execute-api.us-east-1.amazonaws.com'
 
@@ -33,6 +34,7 @@ export default function AiCoach() {
   useEffect(() => {
     if (!loading && !user) navigate('/login')
     if (!loading && user && tier !== 'lifetime') navigate('/dashboard')
+    if (!loading && user && tier === 'lifetime') trackAiCoachOpened()
   }, [loading, user, tier])
 
   useEffect(() => {
@@ -57,7 +59,10 @@ export default function AiCoach() {
       const reply = data.reply
         || (res.status === 403 ? '🔒 AI Coach is exclusive to Yearly and Lifetime plan users.' : null)
         || 'Something went wrong. Please try again.'
-      setMessages(prev => [...prev, { role: 'assistant', content: reply }])
+      setMessages(prev => {
+        trackAiCoachMessage(prev.length)
+        return [...prev, { role: 'assistant', content: reply }]
+      })
     } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: 'Network error. Please try again.' }])
     }

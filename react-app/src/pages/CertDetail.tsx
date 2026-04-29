@@ -5,6 +5,7 @@ import Paywall from '../components/Paywall'
 import { useAuth } from '../contexts/AuthContext'
 import { getFreeUsage, updateFreeUsage, getMonthlyCert, setMonthlyCert, updateProgress, getBundleCerts } from '../lib/db'
 import { updateStreak } from '../lib/streak'
+import { trackCertStarted, trackQuestionAnswered, trackFreeLimitHit, trackBookmark } from '../lib/analytics'
 
 interface Question {
   cat: string
@@ -100,6 +101,7 @@ export default function CertDetail() {
       .then((qs: Question[]) => {
         setQuestions(qs)
         setFiltered(qs)
+        trackCertStarted(certId, tier || 'free')
       }).catch(() => navigate('/certifications'))
   }, [certId, navigate])
 
@@ -171,13 +173,15 @@ export default function CertDetail() {
 
   const handleReveal = useCallback(async () => {
     if (selected === null) return
-    if (tier === 'free' && usedCount >= FREE_LIMIT) { setShowPaywall(true); return }
+    if (tier === 'free' && usedCount >= FREE_LIMIT) { setShowPaywall(true); trackFreeLimitHit(certId || ''); return }
 
     setRevealed(true)
     setAnswered(a => a + 1)
     updateStreak()
-    if (selected === filtered[current].answer) setScore(s => s + 1)
+    const isCorrect = selected === filtered[current].answer
+    if (isCorrect) setScore(s => s + 1)
     else setWrongQuestions(w => [...w, filtered[current]])
+    trackQuestionAnswered(certId || '', filtered[current].cat || '', isCorrect, tier || 'free')
 
     // Persist free usage
     if (tier === 'free' && user) {

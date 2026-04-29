@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
+import { trackUpgradeClicked, trackCheckoutStarted } from '../lib/analytics'
 
 // Same constants + payload as Signup.tsx — proven to work
 const CHECKOUT_API = import.meta.env.VITE_CHECKOUT_API as string || 'https://34zglioc5a.execute-api.us-east-1.amazonaws.com/checkout'
@@ -135,6 +136,7 @@ export default function Pricing() {
   // ── Upgrade flow (proration) ──────────────────────────────────────────────
   const handleUpgradeClick = async (targetPlan: string) => {
     if (!user?.accessToken) return
+    trackUpgradeClicked(tier ?? 'free', targetPlan, 'pricing-page')
     setUpgradeModal({ targetPlan, loading: true, amountDue: null, amountDueFormatted: null, nextBillingDate: null, error: null, confirming: false })
 
     if (targetPlan === 'lifetime') {
@@ -187,6 +189,8 @@ export default function Pricing() {
     const key = plan.name.toLowerCase()
     // Logged-in user + paid plan → direct Stripe checkout, skip signup
     if (user?.email && PAID_PLANS.has(key)) {
+      trackUpgradeClicked(tier ?? 'free', key, 'pricing-page')
+      trackCheckoutStarted(key)
       setCheckingOut(plan.name)
       try {
         const res  = await fetch(CHECKOUT_API, {
@@ -448,6 +452,8 @@ export default function Pricing() {
                       <button
                         onClick={async () => {
                           if (user?.email) {
+                            trackUpgradeClicked(tier ?? 'free', 'bundle', 'pricing-bundle-addon')
+                            trackCheckoutStarted('bundle')
                             setCheckingOut('bundle')
                             try {
                               const res = await fetch(CHECKOUT_API, {

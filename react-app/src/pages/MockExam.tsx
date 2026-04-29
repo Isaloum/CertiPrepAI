@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
 import { saveExamResult, getMonthlyCert, getBundleCerts } from '../lib/db'
+import { trackMockExamCompleted } from '../lib/analytics'
 
 interface Question {
   cat: string
@@ -126,6 +127,7 @@ export default function MockExam() {
           })
           saveExamResult(certId, qs.length, correctCount, domainScores, user.accessToken)
             .catch(() => { /* silently ignore — result save failure doesn't affect UX */ })
+          trackMockExamCompleted(certId, correctCount, qs.length, user ? 'paid' : 'free')
           return ans
         })
         return qs
