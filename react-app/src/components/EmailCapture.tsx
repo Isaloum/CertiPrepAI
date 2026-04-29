@@ -157,7 +157,7 @@ export default function EmailCapture() {
             )}
 
             <p style={{ color: '#475569', fontSize: '0.75rem', textAlign: 'center', marginTop: '1rem', marginBottom: 0 }}>
-              Join 500+ AWS learners. No credit card required.
+              No spam. Unsubscribe anytime.
             </p>
           </>
         )}

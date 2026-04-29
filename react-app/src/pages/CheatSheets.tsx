@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Layout from '../components/Layout'
+import { useAuth } from '../contexts/AuthContext'
+import { getMonthlyCert, getBundleCerts } from '../lib/db'
 
 // ── Data mined from 3,958 questions + explanations ───────────────
 interface ServiceStat { name: string; count: number; domains: string[] }
@@ -612,8 +614,22 @@ const REMAINING_SHEETS: CertCheatSheet[] = [
 const ALL_SHEETS: CertCheatSheet[] = [...SHEETS, ...REMAINING_SHEETS]
 
 export default function CheatSheets() {
+  const { user, tier } = useAuth()
   const [selectedId, setSelectedId] = useState('saa-c03')
   const [activeTab, setActiveTab] = useState<'domains' | 'services' | 'choose' | 'traps' | 'patterns'>('domains')
+
+  useEffect(() => {
+    if (!user?.accessToken) return
+    if (tier === 'monthly') {
+      getMonthlyCert(user.accessToken)
+        .then(data => { if (data?.cert_id) setSelectedId(data.cert_id) })
+        .catch(() => {})
+    } else if (tier === 'bundle') {
+      getBundleCerts(user.accessToken)
+        .then(data => { if (data?.cert_ids?.[0]) setSelectedId(data.cert_ids[0]) })
+        .catch(() => {})
+    }
+  }, [user, tier])
 
   const sheet = ALL_SHEETS.find(s => s.id === selectedId)
 
