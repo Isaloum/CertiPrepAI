@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { signIn, completeMFASignIn } from '../lib/cognito'
 import { useAuth } from '../contexts/AuthContext'
-import { trackLogin } from '../lib/analytics'
+import { trackLogin, identifyUser } from '../lib/analytics'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -29,6 +29,7 @@ export default function Login() {
         return
       }
       await refreshUser()
+      identifyUser(email, email, 'free')
       trackLogin('free')
       navigate('/dashboard')
     } catch (err: unknown) {

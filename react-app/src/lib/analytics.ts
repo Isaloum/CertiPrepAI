@@ -1,37 +1,40 @@
 /**
- * CertiPrepAI Analytics — powered by Amazon Pinpoint
- * Tracks user behaviour across the entire app.
+ * CertiPrepAI Analytics — powered by PostHog
+ * Drop-in replacement for the deprecated Amazon Pinpoint integration.
+ * All existing call sites are unchanged — only this file changed.
  */
-import { Amplify } from 'aws-amplify'
-import { record, configureAutoTrack } from 'aws-amplify/analytics'
+import posthog from 'posthog-js'
 
-// ── Configure Amplify + Pinpoint ────────────────────────────────────────────
-Amplify.configure({
-  Analytics: {
-    Pinpoint: {
-      appId: 'c5d77298f70142dfb18f9814e9100e51',
-      region: 'us-east-1',
-    },
-  },
-})
-
-// Auto-track page views
-try {
-  configureAutoTrack({ enable: true, type: 'pageView', options: { eventName: 'page_view' } })
-} catch (_) { /* ignore if already configured */ }
-
-// ── Helper ───────────────────────────────────────────────────────────────────
-function track(name: string, attrs: Record<string, string> = {}, metrics: Record<string, number> = {}) {
-  try {
-    record({
-      name,
-      attributes: attrs,
-      metrics,
-    })
-  } catch (_) { /* never crash the app over analytics */ }
+// ── Init ─────────────────────────────────────────────────────────────────────
+if (typeof window !== 'undefined') {
+  posthog.init('phc_vQkqAhkS2zJBrqL5roLz8iquSgXWuucyBodeyNH99dsS', {
+    api_host: 'https://us.i.posthog.com',
+    capture_pageview: true,           // auto page views on every route change
+    capture_pageleave: true,          // time-on-page metrics
+    person_profiles: 'identified_only', // don't create anonymous profiles for crawlers
+    autocapture: false,               // we fire events manually for precision
+  })
 }
 
-// ── Events ───────────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function track(name: string, props: Record<string, string | number | boolean> = {}) {
+  try { posthog.capture(name, props) } catch (_) { /* never crash the app */ }
+}
+
+// ── Identity — call after login or signup ─────────────────────────────────────
+/** Links all subsequent events to a known user. Call on login + signup. */
+export function identifyUser(userId: string, email: string, plan: string) {
+  try {
+    posthog.identify(userId, { email, plan })
+  } catch (_) {}
+}
+
+/** Call on logout to disassociate the device from the user. */
+export function resetUser() {
+  try { posthog.reset() } catch (_) {}
+}
+
+// ── Events ────────────────────────────────────────────────────────────────────
 
 /** Called when a user views a certification detail page */
 export function trackCertStarted(certId: string, plan: string) {
@@ -40,7 +43,7 @@ export function trackCertStarted(certId: string, plan: string) {
 
 /** Called when a user answers a practice question */
 export function trackQuestionAnswered(certId: string, domain: string, correct: boolean, plan: string) {
-  track('question_answered', { cert_id: certId, domain, correct: String(correct), plan }, { correct_count: correct ? 1 : 0 })
+  track('question_answered', { cert_id: certId, domain, correct, plan })
 }
 
 /** Called when a free user hits the 20-question limit */
@@ -51,7 +54,7 @@ export function trackFreeLimitHit(certId: string) {
 /** Called when a mock exam is completed */
 export function trackMockExamCompleted(certId: string, score: number, total: number, plan: string) {
   const pct = Math.round((score / total) * 100)
-  track('mock_exam_completed', { cert_id: certId, plan, passed: String(pct >= 72) }, { score_pct: pct, correct: score, total })
+  track('mock_exam_completed', { cert_id: certId, plan, passed: pct >= 72, score_pct: pct, correct: score, total })
 }
 
 /** Called when a user clicks an upgrade button */
@@ -76,7 +79,7 @@ export function trackAiCoachOpened() {
 
 /** Called when AI Coach sends a message */
 export function trackAiCoachMessage(messageIndex: number) {
-  track('ai_coach_message_sent', {}, { message_index: messageIndex })
+  track('ai_coach_message_sent', { message_index: messageIndex })
 }
 
 /** Called when a user signs up */

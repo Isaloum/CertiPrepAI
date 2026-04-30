@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { resetUser } from '../lib/analytics'
 
 const ChevronDown = () => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '3px' }}>
@@ -43,6 +44,7 @@ export default function Navbar() {
   const isActive = (path: string) => location.pathname.startsWith(path) && path !== '/'
 
   const handleSignOut = async () => {
+    resetUser()
     await signOut()
     setUserMenuOpen(false)
     setMobileOpen(false)

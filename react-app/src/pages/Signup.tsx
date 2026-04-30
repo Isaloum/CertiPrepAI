@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { signUp, confirmSignUp } from '../lib/cognito'
-import { trackSignup } from '../lib/analytics'
+import { trackSignup, identifyUser } from '../lib/analytics'
 
 const CHECKOUT_API = import.meta.env.VITE_CHECKOUT_API as string || 'https://34zglioc5a.execute-api.us-east-1.amazonaws.com/checkout'
 
@@ -57,6 +57,7 @@ export default function Signup() {
     setLoading(true)
     try {
       await signUp(email, password)
+      identifyUser(email, email, 'free')
       trackSignup()
     } catch (err: unknown) {
       setLoading(false)
