@@ -17,12 +17,12 @@ const BASE = 'https://certiprepai.com'
 // ── Per-route defaults ───────────────────────────────────────────
 const ROUTE_META: Record<string, { title: string; description: string }> = {
   '/': {
-    title: 'CertiPrepAI — AWS Certification Practice Exams | 3,958 Questions',
-    description: 'Pass any AWS certification with 3,958 practice questions across 12 exams. SAA-C03, CLF-C02, DVA-C02, and more. Free mock exams, study guide, glossary.',
+    title: 'CertiPrepAI — AWS Certification Practice Exams | 3,910 Questions',
+    description: 'Pass any AWS certification with 3,910 practice questions across 12 exams. SAA-C03, CLF-C02, DVA-C02, and more. Free mock exams, study guide, glossary.',
   },
   '/certifications': {
     title: 'AWS Certifications — All 12 Exams | CertiPrepAI',
-    description: 'Browse all 12 AWS certification practice exams on CertiPrepAI. Foundational, Associate, Professional, and Specialty. 3,958 questions total.',
+    description: 'Browse all 12 AWS certification practice exams on CertiPrepAI. Foundational, Associate, Professional, and Specialty. 3,910 questions total.',
   },
   '/cert/saa-c03': {
     title: 'AWS Solutions Architect Associate (SAA-C03) Practice Exam | CertiPrepAI',
@@ -74,7 +74,7 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   },
   '/pricing': {
     title: 'Pricing — CertiPrepAI | Unlock All 12 AWS Certs',
-    description: 'Unlock all 3,958 practice questions across 12 AWS certifications. Monthly and yearly plans available. Start free.',
+    description: 'Unlock all 3,910 practice questions across 12 AWS certifications. Monthly and yearly plans available. Start free.',
   },
   '/resources': {
     title: 'AWS Study Resources — Courses, Cheat Sheets & Tools | CertiPrepAI',
@@ -110,7 +110,7 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   },
   '/about': {
     title: 'About CertiPrepAI — Built by an AWS Engineer',
-    description: 'CertiPrepAI is built by an AWS engineer who passed multiple certifications. 3,958 practice questions derived from official AWS documentation.',
+    description: 'CertiPrepAI is built by an AWS engineer who passed multiple certifications. 3,910 practice questions derived from official AWS documentation.',
   },
   '/login': {
     title: 'Log In | CertiPrepAI',
@@ -126,7 +126,7 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   },
   '/cheat-sheets': {
     title: 'AWS Certification Cheat Sheets — Domains, Traps & Patterns | CertiPrepAI',
-    description: 'Exam domains, top tested services, choose-when patterns, and common traps for all 12 AWS certifications. Mined from 3,958 real practice questions.',
+    description: 'Exam domains, top tested services, choose-when patterns, and common traps for all 12 AWS certifications. Mined from 3,910 real practice questions.',
   },
   '/dashboard': {
     title: 'Dashboard | CertiPrepAI',
@@ -155,8 +155,8 @@ const CERT_LD: Record<string, { name: string; description: string; questions: nu
 }
 
 const HOME_FAQ = [
-  { q: 'How many AWS certification practice questions does CertiPrepAI have?', a: 'CertiPrepAI has 3,958 practice questions covering all 12 active AWS certifications, including SAA-C03, CLF-C02, DVA-C02, and more.' },
-  { q: 'Is CertiPrepAI free to use?', a: 'Yes. You can practice 20 questions for free with no credit card required. Paid plans unlock all 3,958 questions and timed mock exams starting at $7/month.' },
+  { q: 'How many AWS certification practice questions does CertiPrepAI have?', a: 'CertiPrepAI has 3,910 practice questions covering all 12 active AWS certifications, including SAA-C03, CLF-C02, DVA-C02, and more.' },
+  { q: 'Is CertiPrepAI free to use?', a: 'Yes. You can practice 20 questions for free with no credit card required. Paid plans unlock all 3,910 questions and timed mock exams starting at $7/month.' },
   { q: 'Does CertiPrepAI include mock exams?', a: 'Yes. Each certification includes a timed mock exam with 65 questions and a 130-minute timer, matching the real AWS exam format.' },
   { q: 'Which AWS certifications are covered?', a: 'CertiPrepAI covers all 12 active AWS certifications: CLF-C02, AIF-C01, SAA-C03, DVA-C02, SOA-C02, DEA-C01, MLA-C01, GAI-C01, SAP-C02, DOP-C02, SCS-C03, and ANS-C01.' },
   { q: 'How is CertiPrepAI different from other AWS practice platforms?', a: 'CertiPrepAI is purpose-built for AWS exam prep. Every question includes a detailed explanation, domain filtering lets you focus on weak areas, and cheat sheets are mined directly from the question bank.' },
@@ -193,7 +193,7 @@ export default function SEOMeta({ title, description, canonical }: SEOProps) {
   useEffect(() => {
     const route = ROUTE_META[pathname]
     const t = title || route?.title || 'CertiPrepAI — AWS Certification Practice Exams'
-    const d = description || route?.description || 'Pass any AWS certification with 3,958 practice questions across 12 exams.'
+    const d = description || route?.description || 'Pass any AWS certification with 3,910 practice questions across 12 exams.'
     const url = canonical || `${BASE}${pathname}`
 
     // Title
@@ -229,7 +229,7 @@ export default function SEOMeta({ title, description, canonical }: SEOProps) {
       '@type': 'WebSite',
       name: 'CertiPrepAI',
       url: BASE,
-      description: 'AWS certification practice exams — 3,958 questions across 12 certifications.',
+      description: 'AWS certification practice exams — 3,910 questions across 12 certifications.',
     })
 
     // JSON-LD: Home page FAQ

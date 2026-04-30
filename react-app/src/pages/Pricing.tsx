@@ -510,7 +510,7 @@ export default function Pricing() {
               },
               {
                 q: 'Are questions scenario-based or just memorization?',
-                a: 'All 3,958 questions are scenario-based — the same style AWS uses on its real exams. Each answer includes a detailed explanation.',
+                a: 'All 3,910 questions are scenario-based — the same style AWS uses on its real exams. Each answer includes a detailed explanation.',
               },
               {
                 q: 'What is the timed mock exam?',

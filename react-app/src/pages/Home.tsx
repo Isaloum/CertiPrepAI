@@ -180,7 +180,7 @@ export default function Home() {
         <div style={{ maxWidth: '900px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', padding: '1.5rem 1rem', gap: '0.5rem' }}>
           {[
             { n: '12', label: 'Certifications' },
-            { n: '3,958', label: 'Questions' },
+            { n: '3,910', label: 'Questions' },
             { n: '65', label: 'Questions / Mock Exam' },
             { n: '130', label: 'Min Timer' },
             { n: '72%', label: 'AWS Pass Mark' },
@@ -243,7 +243,7 @@ export default function Home() {
               { n: '1', title: 'Create a free account', desc: 'Sign up in seconds — no credit card required' },
               { n: '2', title: 'Pick your cert', desc: 'Choose from 12 active AWS certifications' },
               { n: '3', title: 'Practice free', desc: '20 questions per cert included with every account' },
-              { n: '4', title: 'Upgrade for full access', desc: 'Unlock all 3,958 questions + mock exams' },
+              { n: '4', title: 'Upgrade for full access', desc: 'Unlock all 3,910 questions + mock exams' },
             ].map(s => (
               <div key={s.n} style={{ textAlign: 'center' }}>
                 <div style={{ width: '52px', height: '52px', background: 'linear-gradient(135deg, #2563eb, #1d4ed8)', color: '#fff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '1.25rem', margin: '0 auto 1rem', boxShadow: '0 4px 12px rgba(37,99,235,0.35)' }}>{s.n}</div>

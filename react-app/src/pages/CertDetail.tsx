@@ -699,7 +699,7 @@ export default function CertDetail() {
                 )}
                 <button onClick={() => navigate('/pricing')}
                   style={{ width: '100%', padding: '0.625rem', background: barColor, color: '#fff', fontWeight: 700, borderRadius: '0.625rem', border: 'none', cursor: 'pointer', fontSize: '0.825rem' }}>
-                  {freeRemaining === 0 ? 'Unlock to Continue →' : 'Unlock All 3,958 Questions →'}
+                  {freeRemaining === 0 ? 'Unlock to Continue →' : 'Unlock All 3,910 Questions →'}
                 </button>
               </div>
             )

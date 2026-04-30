@@ -4,7 +4,7 @@ import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
 import { getMonthlyCert, getBundleCerts } from '../lib/db'
 
-// ── Data mined from 3,958 questions + explanations ───────────────
+// ── Data mined from 3,910 questions + explanations ───────────────
 interface ServiceStat { name: string; count: number; domains: string[] }
 interface ChooseWhen { service: string; when: string; not: string }
 interface Trap { trap: string; why: string }
@@ -666,7 +666,7 @@ export default function CheatSheets() {
         <div style={{ position: 'absolute', top: '-60px', left: '15%', width: '300px', height: '300px', background: 'rgba(96,165,250,0.12)', borderRadius: '50%', filter: 'blur(70px)', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '999px', padding: '0.4rem 1rem', marginBottom: '1.25rem' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#93c5fd', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Mined from 3,958 questions</span>
+            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#93c5fd', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Mined from 3,910 questions</span>
           </div>
           <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 900, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.02em' }}>
             AWS Certification Cheat Sheets
