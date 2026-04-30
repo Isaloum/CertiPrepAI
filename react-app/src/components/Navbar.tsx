@@ -172,6 +172,8 @@ export default function Navbar() {
                 { to: '/resources', label: 'Resources' },
                 // Pricing: only for free users and logged-out visitors
                 ...(!isPremium ? [{ to: '/pricing', label: 'Pricing' }] : []),
+                // AI Coach: lifetime only
+                ...(tier === 'lifetime' ? [{ to: '/ai-coach', label: '🤖 AI Coach' }] : []),
               ].map(link => (
                 <Link key={link.to} to={link.to}
                   style={{ ...navItem(isActive(link.to)) }}
@@ -214,6 +216,7 @@ export default function Navbar() {
                         {[
                           { to: '/dashboard', icon: '🏠', label: 'My Dashboard' },
                           { to: '/certifications', icon: '📝', label: 'Practice' },
+                          ...(tier === 'lifetime' ? [{ to: '/ai-coach', icon: '🤖', label: 'AI Coach' }] : []),
                           ...(isPremium ? [{ to: '/billing', icon: '💳', label: 'Billing' }] : []),
                         ].map(item => (
                           <Link key={item.to} to={item.to} onClick={() => setUserMenuOpen(false)}
@@ -343,6 +346,7 @@ export default function Navbar() {
               { to: '/about', label: 'About' },
               ...(!isPremium ? [{ to: '/pricing', label: 'Pricing' }] : []),
               ...(isPremium ? [{ to: '/billing', label: '💳 Billing' }] : []),
+              ...(tier === 'lifetime' ? [{ to: '/ai-coach', label: '🤖 AI Coach' }] : []),
             ].map(link => (
               <Link key={link.to} to={link.to}
                 style={{ display: 'block', padding: '10px 8px', fontSize: '14px', fontWeight: 500, color: '#374151', textDecoration: 'none', borderRadius: '8px' }}

@@ -27,7 +27,6 @@ function buildDomainScoresMap(rows: CertProgress[]): Record<string, Record<strin
 }
 
 const CANCEL_API = import.meta.env.VITE_CANCEL_API || "https://hpcdl0ft8a.execute-api.us-east-1.amazonaws.com"
-const AI_COACH_API = import.meta.env.VITE_AI_COACH_API || "https://hyb325gocg.execute-api.us-east-1.amazonaws.com"
 
 const CERT_META: Record<string, { name: string; code: string; icon: string }> = {
   'clf-c02': { name: 'Cloud Practitioner', code: 'CLF-C02', icon: '☁️' },
@@ -87,11 +86,6 @@ export default function Dashboard() {
   const [mfaLoading, setMfaLoading] = useState(false)
   const [mfaError, setMfaError] = useState('')
   const [qrCodeUrl, setQrCodeUrl] = useState('')
-
-  // AI Coach state (lifetime only)
-  const [coachMessages, setCoachMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([])
-  const [coachInput, setCoachInput] = useState('')
-  const [coachLoading, setCoachLoading] = useState(false)
 
   useEffect(() => {
     if (!mfaSecret || !user) { setQrCodeUrl(''); return }
@@ -169,31 +163,6 @@ export default function Dashboard() {
       setMfaEnabled(false)
     } catch (err: unknown) { setMfaError(err instanceof Error ? err.message : 'Failed to disable MFA.') }
     setMfaLoading(false)
-  }
-
-  const sendCoachMessage = async () => {
-    if (!coachInput.trim() || coachLoading || !user) return
-    const userMsg = { role: 'user' as const, content: coachInput.trim() }
-    const history = coachMessages.map(m => ({ role: m.role, content: m.content }))
-    setCoachMessages(prev => [...prev, userMsg])
-    setCoachInput('')
-    setCoachLoading(true)
-    try {
-      const res = await fetch(AI_COACH_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.accessToken}` },
-        body: JSON.stringify({ message: userMsg.content, history }),
-      })
-      const data = await res.json()
-      const reply = data.reply
-        || (res.status === 403 ? '🔒 AI Coach is exclusive to Lifetime plan users. Upgrade at certiprepai.com/pricing' : null)
-        || data.error
-        || 'Sorry, something went wrong.'
-      setCoachMessages(prev => [...prev, { role: 'assistant', content: reply }])
-    } catch {
-      setCoachMessages(prev => [...prev, { role: 'assistant', content: 'Network error. Please try again.' }])
-    }
-    setCoachLoading(false)
   }
 
   const handleCancelSubscription = async () => {
@@ -687,75 +656,26 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* AI Coach — widget for lifetime only */}
+      {/* AI Coach — full page link for lifetime only */}
       {user && tier === 'lifetime' && (
-        <div style={{ background: 'linear-gradient(135deg, #0f172a, #1e3a8a)', borderRadius: '1.25rem', padding: '1.75rem', marginBottom: '1.5rem', boxShadow: '0 4px 24px rgba(0,0,0,0.15)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
-            <span style={{ fontSize: '1.5rem' }}>🤖</span>
+        <div style={{ background: 'linear-gradient(135deg, #0f172a, #1e3a8a)', borderRadius: '1.25rem', padding: '1.5rem 1.75rem', marginBottom: '1.5rem', boxShadow: '0 4px 24px rgba(0,0,0,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', flexShrink: 0 }}>
+              🤖
+            </div>
             <div>
               <div style={{ color: '#fff', fontWeight: 800, fontSize: '1rem' }}>AI Coach</div>
-              <div style={{ color: '#93c5fd', fontSize: '0.78rem' }}>Exclusive to Lifetime · Ask anything AWS</div>
+              <div style={{ color: '#93c5fd', fontSize: '0.8rem', marginTop: '2px' }}>Ask anything AWS — concepts, exam tips, service comparisons, why an answer is wrong</div>
             </div>
           </div>
-
-          {/* Chat messages */}
-          <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '0.75rem', padding: '1rem', minHeight: '120px', maxHeight: '320px', overflowY: 'auto', marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {coachMessages.length === 0 && (
-              <div style={{ color: '#64748b', fontSize: '0.85rem', textAlign: 'center', marginTop: '2rem' }}>
-                Ask me anything — AWS concepts, exam tips, service comparisons, why an answer is wrong…
-              </div>
-            )}
-            {coachMessages.map((m, i) => (
-              <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
-                <div style={{
-                  maxWidth: '85%', padding: '0.6rem 0.9rem', borderRadius: m.role === 'user' ? '1rem 1rem 0.25rem 1rem' : '1rem 1rem 1rem 0.25rem',
-                  background: m.role === 'user' ? '#2563eb' : 'rgba(255,255,255,0.1)',
-                  color: '#fff', fontSize: '0.85rem', lineHeight: 1.5, whiteSpace: 'pre-wrap',
-                }}>
-                  {m.content}
-                </div>
-              </div>
-            ))}
-            {coachLoading && (
-              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: '1rem 1rem 1rem 0.25rem', padding: '0.6rem 0.9rem', color: '#93c5fd', fontSize: '0.85rem', display: 'flex', gap: '4px', alignItems: 'center' }}>
-                  <span style={{ animation: 'bounce 1.2s infinite', display: 'inline-block' }}>●</span>
-                  <span style={{ animation: 'bounce 1.2s 0.2s infinite', display: 'inline-block' }}>●</span>
-                  <span style={{ animation: 'bounce 1.2s 0.4s infinite', display: 'inline-block' }}>●</span>
-                  <style>{`@keyframes bounce { 0%,80%,100%{opacity:.3;transform:scale(.8)} 40%{opacity:1;transform:scale(1)} }`}</style>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Input */}
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <input
-              type="text"
-              placeholder="e.g. What's the difference between SQS and SNS?"
-              value={coachInput}
-              onChange={e => setCoachInput(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && sendCoachMessage()}
-              disabled={coachLoading}
-              style={{
-                flex: 1, padding: '0.65rem 1rem', borderRadius: '0.625rem',
-                border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.1)',
-                color: '#fff', fontSize: '0.875rem', outline: 'none',
-              }}
-            />
-            <button
-              onClick={sendCoachMessage}
-              disabled={coachLoading || !coachInput.trim()}
-              style={{
-                padding: '0.65rem 1.25rem', background: '#2563eb', color: '#fff',
-                fontWeight: 700, borderRadius: '0.625rem', border: 'none',
-                cursor: coachLoading || !coachInput.trim() ? 'not-allowed' : 'pointer',
-                opacity: coachLoading || !coachInput.trim() ? 0.6 : 1, fontSize: '0.875rem',
-              }}
-            >
-              Ask →
-            </button>
-          </div>
+          <button
+            onClick={() => navigate('/ai-coach')}
+            style={{ padding: '10px 22px', background: '#2563eb', color: '#fff', fontWeight: 700, fontSize: '0.875rem', border: 'none', borderRadius: '10px', cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}
+            onMouseEnter={e => (e.currentTarget.style.background = '#1d4ed8')}
+            onMouseLeave={e => (e.currentTarget.style.background = '#2563eb')}
+          >
+            Open AI Coach →
+          </button>
         </div>
       )}
 
