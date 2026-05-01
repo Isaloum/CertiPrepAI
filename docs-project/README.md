@@ -70,7 +70,7 @@ User → Amplify (awsprepai.isaloumapps.com)
 ## ⚠️ Critical Notes for Next Agent
 1. **Work in `/Users/ihabsaloum/Desktop/Projects/AWSPrepAI`** — NOT the `/Users/ihabsaloum/AWSPrepAI` mount
 2. **Users must re-register** — Cognito starts fresh, no Supabase accounts migrated
-3. **Stripe webhook secret is live** — `whsec_zVo5j00za5nRqCutQfpEb10G7BmRBwhZ` — DO NOT regenerate
+3. **Stripe webhook secret is live** — stored in Lambda env var `STRIPE_WEBHOOK_SECRET` — DO NOT commit secrets to files
 4. **Fridayaiapp is a separate AWS account** — MCP is connected to `441393059130` (main), not Fridayaiapp
 5. **bumpie-staging VPC is kept intentionally** — NAT Gateway will be re-created in 2 weeks
 6. **Lambda URLs are hardcoded** in Amplify env vars — if Lambdas are recreated, update Amplify too
