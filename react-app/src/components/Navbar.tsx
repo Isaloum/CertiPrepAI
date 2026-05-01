@@ -79,8 +79,8 @@ export default function Navbar() {
   const practiceItems = [
     { to: '/certifications', bg: '#eff6ff', icon: '📝', label: 'Practice Quiz', sub: '3,910 questions · 12 certs' },
     { to: '/certifications?mode=mock', bg: '#f0fdf4', icon: '⏱️', label: 'Mock Exam', sub: 'Timed practice test · 65q · 130 min' },
-    { to: '/architecture-builder', bg: '#f5f3ff', icon: '🏗️', label: 'Architecture Builder', sub: 'Drag & drop AWS services' },
-    { to: '/visual-exam', bg: '#fff0f0', icon: '🎯', label: 'Visual Exam', sub: 'Diagram-based questions' },
+    { to: '/architecture-builder', bg: '#f5f3ff', icon: '🏗️', label: 'Architecture Builder', sub: 'Drag & drop AWS services · SAA-C03' },
+    { to: '/visual-exam', bg: '#fff0f0', icon: '🎯', label: 'Visual Exam', sub: 'Diagram-based questions · SAA-C03' },
     ...(!isPremium ? [{ to: '/sample-questions', bg: '#eff6ff', icon: '🆓', label: 'Sample Questions', sub: '20 free questions · no sign up' }] : []),
   ]
 
