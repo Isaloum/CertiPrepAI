@@ -3,7 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
 
-type Domain = 'all' | 'resilient' | 'secure' | 'performance' | 'cost'
+type SaaDomain = 'all' | 'resilient' | 'secure' | 'performance' | 'cost'
+type AifDomain = 'all' | 'managed-ai' | 'generative-ai' | 'ml-platform' | 'responsible-ai'
+type Domain = SaaDomain | AifDomain
 
 interface Service {
   name: string
@@ -25,7 +27,7 @@ interface ServiceGroup {
   services: Service[]
 }
 
-const GROUPS: ServiceGroup[] = [
+const SAA_GROUPS: ServiceGroup[] = [
   {
     id: 'resilient',
     label: 'Resilient Architectures',
@@ -352,11 +354,283 @@ const GROUPS: ServiceGroup[] = [
   },
 ]
 
+const AIF_GROUPS: ServiceGroup[] = [
+  {
+    id: 'managed-ai',
+    label: 'Managed AI Services',
+    color: '#0369a1',
+    bg: '#f0f9ff',
+    border: '#bae6fd',
+    description: 'Pre-built AI capabilities accessible via API — no ML expertise, no model training required.',
+    weight: 'Domains 1 & 3 — most tested pre-built services',
+    services: [
+      {
+        name: 'Amazon Rekognition',
+        icon: '👁️',
+        what: 'Computer vision service — detects objects, faces, scenes, text, and unsafe content in images and video',
+        when: 'You need image/video analysis without building or training a CV model',
+        examTip: 'Custom Labels extends Rekognition with your own image categories. Video analysis works on stored files or live streams.',
+        vs: 'vs SageMaker: Rekognition = no training, API only. SageMaker = build fully custom CV models',
+      },
+      {
+        name: 'Amazon Comprehend',
+        icon: '📝',
+        what: 'Natural Language Processing service — extracts entities, key phrases, sentiment, PII, and topics from text',
+        when: 'You need to analyze text at scale: customer reviews, support tickets, social media, clinical notes',
+        examTip: 'Comprehend Medical handles clinical text (HIPAA eligible). Custom Classification and Custom Entities let you define domain-specific categories.',
+        vs: 'vs Bedrock LLM: Comprehend = fast, structured, cheap, purpose-built. LLM = flexible, general, more expensive per call',
+      },
+      {
+        name: 'Amazon Textract',
+        icon: '📄',
+        what: 'Intelligent document processing — extracts text, forms (field:value pairs), and tables from PDFs and images',
+        when: 'You need to digitize structured documents: invoices, tax forms, medical records, contracts, insurance claims',
+        examTip: 'Goes beyond OCR — understands document structure. Queries API lets you ask specific questions: "What is the invoice total?" Pair with A2I for human review of low-confidence extractions.',
+        vs: 'vs standard OCR: Textract preserves form structure and table relationships. OCR only reads raw characters.',
+      },
+      {
+        name: 'Amazon Transcribe',
+        icon: '🎙️',
+        what: 'Automatic speech recognition — converts audio/video files or live streams to text',
+        when: 'You need to transcribe meetings, calls, medical consultations, podcasts, or subtitles',
+        examTip: 'Speaker diarization labels who said what. Custom Vocabulary improves accuracy for domain terms. Transcribe Call Analytics adds sentiment and issue detection for contact centers.',
+        vs: 'vs Amazon Polly: Transcribe = speech→text (listen). Polly = text→speech (speak).',
+      },
+      {
+        name: 'Amazon Polly',
+        icon: '🔊',
+        what: 'Text-to-speech service — converts text into natural-sounding speech using deep learning',
+        when: 'You need to add voice to an app, generate audio content, or build accessibility features',
+        examTip: 'Neural TTS produces the most lifelike voices. SSML tags control pronunciation, emphasis, and pauses. 60+ voices across 20+ languages.',
+        vs: 'vs Amazon Transcribe: Polly = text→speech. Transcribe = speech→text. They are inverse operations.',
+      },
+      {
+        name: 'Amazon Translate',
+        icon: '🌐',
+        what: 'Neural machine translation — translates text between 75+ language pairs in real-time or batch',
+        when: 'You need multilingual support: translate user content, localize apps, process foreign-language documents',
+        examTip: 'Custom Terminology preserves brand names, product names, and domain-specific terms across translations. Batch translation processes large S3 document sets.',
+        vs: 'vs third-party APIs: Translate integrates natively with IAM, VPC, and other AWS services. Same-VPC calls stay private.',
+      },
+      {
+        name: 'Amazon Kendra',
+        icon: '🔎',
+        what: 'Intelligent enterprise search — understands natural language questions and retrieves precise answers from your document corpus',
+        when: 'You need employees or customers to find answers across internal documents, wikis, SharePoint, Confluence, S3',
+        examTip: 'Unlike keyword search (which returns document lists), Kendra extracts and returns the specific answer passage. Kendra GenAI Edition integrates with Bedrock for RAG workflows.',
+        vs: 'vs Amazon OpenSearch: Kendra = semantic Q&A understanding. OpenSearch = keyword/vector search requiring custom NLP pipeline.',
+      },
+      {
+        name: 'Amazon Lex',
+        icon: '💬',
+        what: 'Conversational AI service — build chatbots and voice interfaces using the same technology as Alexa',
+        when: 'You need structured conversation flows: customer service bots, appointment booking, FAQ automation',
+        examTip: 'Key concepts: Intents (what the user wants), Slots (parameters to extract), Fulfillment (Lambda that executes the intent). Integrates natively with Amazon Connect for call center automation.',
+        vs: 'vs Amazon Bedrock: Lex = structured intent-based dialogue with defined flows. Bedrock = open-ended LLM generation without predefined paths.',
+      },
+      {
+        name: 'Amazon Personalize',
+        icon: '🛒',
+        what: 'Real-time personalization and recommendations — uses the same ML technology as amazon.com, without ML expertise',
+        when: 'You need product recommendations, content ranking, similar-item suggestions, or personalized search results',
+        examTip: 'Train on your historical interaction data (user-item-timestamp events). User-Personalization recipe = ranked feed per user. Similar-Items = item-to-item. Real-time event tracking updates recommendations as users browse.',
+        vs: 'vs building custom collaborative filtering: Personalize handles data ingestion, model training, hosting, and real-time serving — fully managed.',
+      },
+      {
+        name: 'Amazon Lookout for Metrics',
+        icon: '📉',
+        what: 'Automated anomaly detection for time-series business and operational metrics — no ML expertise required',
+        when: 'You need to detect unusual patterns in KPIs: revenue drops, traffic spikes, conversion rate changes, error rate increases',
+        examTip: 'Lookout for Equipment = industrial sensor anomalies. Lookout for Vision = visual defect detection on production lines. DevOps Guru = application operational anomalies.',
+        vs: 'vs CloudWatch Anomaly Detection: Lookout = business metrics with root-cause analysis. CloudWatch = infrastructure metrics with threshold alarms.',
+      },
+    ],
+  },
+  {
+    id: 'generative-ai',
+    label: 'Generative AI Platform',
+    color: '#7c3aed',
+    bg: '#faf5ff',
+    border: '#ddd6fe',
+    description: 'Foundation models, RAG pipelines, agentic workflows, and safety controls via Amazon Bedrock.',
+    weight: 'Domains 2 & 3 — highest exam weight (52% combined)',
+    services: [
+      {
+        name: 'Amazon Bedrock',
+        icon: '🪨',
+        what: 'Fully managed service providing serverless API access to leading foundation models from multiple providers',
+        when: 'You need to build generative AI applications without managing GPU infrastructure or FM licenses',
+        examTip: 'Customer data (prompts, completions, training data) is NEVER used to train the underlying base models — critical for compliance. Supports fine-tuning (Custom Models), RAG (Knowledge Bases), agents, and safety (Guardrails).',
+        vs: 'vs SageMaker JumpStart: Bedrock = serverless, API-first, multi-provider FMs. JumpStart = deploy FMs on SageMaker endpoints you manage.',
+      },
+      {
+        name: 'Amazon Bedrock Knowledge Bases',
+        icon: '📚',
+        what: 'Managed RAG pipeline — connects your S3 documents to a vector store and retrieves relevant context at inference time',
+        when: 'You need your FM to answer questions grounded in your own data (company docs, product manuals, policies) without retraining',
+        examTip: 'Flow: S3 documents → chunk → embed (Titan Embeddings) → store in vector DB → at query time: embed query → retrieve k nearest → inject into prompt → generate grounded answer. Reduces hallucination.',
+        vs: 'vs fine-tuning: Knowledge Bases = dynamic, updatable, no retraining. Fine-tuning = bakes knowledge into weights, requires retraining to update.',
+      },
+      {
+        name: 'Amazon Bedrock Agents',
+        icon: '🤖',
+        what: 'Managed agentic framework — orchestrates multi-step task execution using an FM as a reasoning engine with access to tools',
+        when: 'You need an AI system that autonomously plans and executes tasks: book appointments, query databases, trigger workflows',
+        examTip: 'The agent iterates: Reason → Act (call tool) → Observe result → Reason again. Action Groups define what tools are available (Lambda functions, API schemas). Knowledge Bases provide retrieval context.',
+        vs: 'vs Bedrock Knowledge Bases: Agents = take actions and execute tasks. Knowledge Bases = retrieve and answer. Agents can use Knowledge Bases as a tool.',
+      },
+      {
+        name: 'Amazon Bedrock Guardrails',
+        icon: '🛡️',
+        what: 'Safety and compliance layer applied at inference time — filters harmful content, blocks topics, redacts PII, and checks factual grounding',
+        when: 'You need to enforce responsible AI policies across all FM interactions without modifying the underlying model',
+        examTip: 'Controls: harmful content filters (hate/violence/sexual/self-harm severity levels), denied topics (block specific subjects), sensitive info redaction (PII, PHI, financial data), grounding check (RAG faithfulness score).',
+        vs: 'vs prompt engineering for safety: Guardrails = enforced, auditable, model-agnostic. Prompts = easily bypassed, not auditable.',
+      },
+      {
+        name: 'Amazon Titan',
+        icon: '⚡',
+        what: 'AWS-native family of foundation models available exclusively through Amazon Bedrock',
+        when: 'You need AWS-native FMs with deep AWS integration, data privacy guarantees, or embedded model generation',
+        examTip: 'Titan Text = LLM for text generation, summarization, Q&A. Titan Embeddings = convert text to dense vectors for RAG. Titan Image Generator = create and edit images from text. Titan Multimodal Embeddings = embed both text and images.',
+        vs: 'vs third-party FMs on Bedrock: Titan = AWS-native, no third-party dependency. Claude/Llama = often stronger on benchmarks but require Anthropic/Meta model access.',
+      },
+      {
+        name: 'Amazon Q',
+        icon: '💡',
+        what: 'AI-powered assistant built on Bedrock FMs — two variants: Q Business (enterprise knowledge) and Q Developer (coding)',
+        when: 'Employees need answers from company data (Q Business), or developers need coding assistance and AWS help (Q Developer)',
+        examTip: 'Q Business: connects to 40+ enterprise data sources (SharePoint, Salesforce, Confluence), respects IAM permissions, and answers questions about company data. Q Developer: available in VS Code, JetBrains, CLI — explains, generates, and debugs code.',
+        vs: 'vs Amazon Kendra: Kendra = search and retrieve documents. Q Business = conversational Q&A with summarization and actions on top of search.',
+      },
+    ],
+  },
+  {
+    id: 'ml-platform',
+    label: 'ML Development Platform',
+    color: '#b45309',
+    bg: '#fffbeb',
+    border: '#fde68a',
+    description: 'End-to-end managed platform for building, training, and deploying custom ML models at scale.',
+    weight: 'Domain 1 — AI/ML Fundamentals (20%)',
+    services: [
+      {
+        name: 'Amazon SageMaker Studio',
+        icon: '🔬',
+        what: 'Unified web-based IDE for the entire ML lifecycle — data preparation, training, debugging, and deployment',
+        when: 'Your ML team needs a collaborative, browser-based environment with integrated MLOps tooling',
+        examTip: 'SageMaker Studio is the umbrella product. Inside Studio: Data Wrangler (feature engineering), Experiments (tracking), Model Registry (versioning), Pipelines (MLOps automation), Clarify (bias + explainability).',
+        vs: 'vs SageMaker Notebooks (legacy): Studio = full IDE with integrated tooling. Classic Notebooks = standalone Jupyter only.',
+      },
+      {
+        name: 'SageMaker Training',
+        icon: '⚙️',
+        what: 'Managed training infrastructure — provision GPU/CPU clusters, run training scripts, and store model artifacts automatically',
+        when: 'You need to train a custom ML model at scale, without managing EC2 instances or cluster setup',
+        examTip: 'Training jobs are ephemeral — infrastructure is provisioned, training runs, artifacts saved to S3, infrastructure terminated. Spot training = up to 90% cost reduction for fault-tolerant training jobs.',
+        vs: 'vs EC2 self-managed: SageMaker Training = fully managed, auto-provision, auto-terminate. EC2 = you manage AMI, storage, monitoring.',
+      },
+      {
+        name: 'SageMaker JumpStart',
+        icon: '🚀',
+        what: 'Model hub — discover, deploy, and fine-tune pre-trained models (open-source FMs and task-specific models) with one click',
+        when: 'You want to start from a pre-trained model rather than training from scratch, or deploy open-source FMs like Llama',
+        examTip: 'Includes 300+ pre-trained models: FMs (Llama, Mistral), vision models, NLP models. Fine-tuning available for supported models. Deploys to SageMaker real-time endpoints.',
+        vs: 'vs Amazon Bedrock: JumpStart = you own and manage the endpoint infrastructure. Bedrock = fully serverless, pay-per-token, no infrastructure.',
+      },
+      {
+        name: 'SageMaker Data Wrangler',
+        icon: '🏭',
+        what: 'Visual, no-code feature engineering tool — transform, normalize, encode, and visualize data with 300+ built-in transforms',
+        when: 'Data scientists need to prepare and transform training data without writing extensive Spark or Pandas code',
+        examTip: 'Part of SageMaker Studio. Supports 50+ data sources. Generates automated data quality reports. Export transformations to SageMaker Pipelines for production reuse.',
+        vs: 'vs AWS Glue: Data Wrangler = interactive, visual, ML-focused. Glue = scalable ETL for large-scale data engineering pipelines.',
+      },
+      {
+        name: 'SageMaker Feature Store',
+        icon: '🗄️',
+        what: 'Centralized repository to store, share, and discover ML features across teams and models',
+        when: 'Multiple teams compute the same features (e.g., customer spend in last 30 days) and you want to avoid redundant computation',
+        examTip: 'Online store = low-latency feature retrieval for real-time inference. Offline store = S3-based for batch training. Features are versioned and time-stamped, enabling point-in-time correct training.',
+        vs: 'vs ad-hoc S3 features: Feature Store = governed, versioned, discoverable, shareable. S3 = unstructured, no lineage, easy to use stale features.',
+      },
+      {
+        name: 'SageMaker Automatic Model Tuning',
+        icon: '🎯',
+        what: 'Hyperparameter optimization — automatically searches for the best hyperparameter configuration using Bayesian optimization',
+        when: 'You need to optimize learning rate, batch size, regularization, network depth, or other training hyperparameters',
+        examTip: 'Bayesian optimization is smarter than grid search — it learns from previous runs to focus on promising regions of the hyperparameter space. Warm start reuses knowledge from a previous tuning job.',
+        vs: 'vs manual tuning: AMT = systematic, automated, efficient. Manual = trial and error, expensive, time-consuming.',
+      },
+    ],
+  },
+  {
+    id: 'responsible-ai',
+    label: 'Responsible AI & Governance',
+    color: '#166534',
+    bg: '#f0fdf4',
+    border: '#bbf7d0',
+    description: 'Fairness, explainability, monitoring, human oversight, and compliance for production AI systems.',
+    weight: 'Domain 4 (14%) + Domain 5 (14%) — both tested on exam',
+    services: [
+      {
+        name: 'Amazon SageMaker Clarify',
+        icon: '⚖️',
+        what: 'Detects bias in training data and trained models, and provides feature-level explainability using SHAP values',
+        when: 'You need to measure fairness before deployment, explain individual predictions, or satisfy regulatory transparency requirements',
+        examTip: 'Pre-training bias: detects imbalanced data before any training. Post-training bias: measures output fairness across demographic groups. Explainability: SHAP values show which features drove each prediction (positive = increases prediction, negative = decreases).',
+        vs: 'vs model monitoring: Clarify = point-in-time bias and explainability analysis. Model Monitor = continuous drift detection in production.',
+      },
+      {
+        name: 'Amazon SageMaker Model Monitor',
+        icon: '📉',
+        what: 'Continuously monitors deployed ML endpoints for data quality, model quality, bias, and feature attribution drift',
+        when: 'Your model is in production and you need alerts when real-world data diverges from training data or accuracy degrades',
+        examTip: 'Four monitors: (1) Data quality — detect schema/distribution changes. (2) Model quality — compare predictions to ground truth. (3) Bias drift — track fairness metrics. (4) Feature attribution drift — track SHAP value changes. Outputs to CloudWatch.',
+        vs: 'vs SageMaker Clarify: Clarify = pre-deployment analysis. Model Monitor = post-deployment continuous monitoring.',
+      },
+      {
+        name: 'Amazon Augmented AI (A2I)',
+        icon: '🌍',
+        what: 'Manages human review workflows for ML predictions — routes low-confidence or high-stakes outputs to human reviewers',
+        when: 'Your use case requires human oversight: medical decisions, content moderation, financial approvals, or regulatory compliance',
+        examTip: 'Built-in task types for Rekognition (content moderation) and Textract (document extraction) — no custom UI needed. For other use cases, create a custom task type. Three workforce options: Amazon Mechanical Turk, private team, or third-party vendor.',
+        vs: 'vs AWS Ground Truth: A2I = production human review for live predictions. Ground Truth = create labeled training datasets.',
+      },
+      {
+        name: 'AWS Ground Truth',
+        icon: '🏷️',
+        what: 'Managed data labeling service — creates high-quality training datasets using human annotators with active learning assistance',
+        when: 'You need to label large datasets for supervised learning: image bounding boxes, text classification, named entity recognition',
+        examTip: 'Active learning: Ground Truth uses a model trained on already-labeled data to auto-label high-confidence items, sending only uncertain items to humans. Reduces labeling cost by up to 70%. Supports Mechanical Turk, private teams, and vendor workforces.',
+        vs: 'vs Amazon A2I: Ground Truth = label training data offline. A2I = review live production model predictions.',
+      },
+      {
+        name: 'SageMaker Model Registry',
+        icon: '📋',
+        what: 'Central catalog for versioning, approving, and tracking ML models through their lifecycle from development to production',
+        when: 'You need governance over which model versions are approved for production and an audit trail of model deployments',
+        examTip: 'Models progress through statuses: PendingManualApproval → Approved → Rejected. Approval gates can trigger automated deployment pipelines. Stores model lineage: which training job, dataset, and code produced the model.',
+        vs: 'vs ad-hoc S3 model storage: Registry = governance, versioning, approval workflow, lineage. S3 = just file storage with no metadata.',
+      },
+      {
+        name: 'SageMaker Model Cards',
+        icon: '📝',
+        what: 'Structured documentation artifact that describes a model\'s purpose, performance, training data, limitations, and ethical considerations',
+        when: 'You need to document models for internal governance, regulatory review, or responsible AI accountability',
+        examTip: 'Model Cards live in SageMaker Model Dashboard alongside the Model Registry. AWS AI Service Cards provide similar transparency documentation for AWS managed AI services (Rekognition, Comprehend, etc.).',
+        vs: 'vs technical README: Model Cards = standardized, auditable, integrated with SageMaker governance. README = informal, unstructured.',
+      },
+    ],
+  },
+]
+
 export default function ServiceGroups() {
   const { isPremium } = useAuth()
   const navigate = useNavigate()
   const [activeDomain, setActiveDomain] = useState<Domain>('all')
   const [expandedService, setExpandedService] = useState<string | null>(null)
+  const [cert, setCert] = useState<'saa' | 'aif'>('saa')
 
   if (!isPremium) {
     return (
@@ -375,9 +649,10 @@ export default function ServiceGroups() {
     )
   }
 
+  const activeGroups = cert === 'saa' ? SAA_GROUPS : AIF_GROUPS
   const visibleGroups = activeDomain === 'all'
-    ? GROUPS
-    : GROUPS.filter(g => g.id === activeDomain)
+    ? activeGroups
+    : activeGroups.filter(g => g.id === activeDomain)
 
   return (
     <Layout>
@@ -388,41 +663,61 @@ export default function ServiceGroups() {
         textAlign: 'center',
         color: '#fff',
       }}>
-        <div style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.12em', color: '#60a5fa', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-          SAA-C03 · SERVICE GROUPS
-        </div>
-        <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 900, margin: '0 0 1rem', lineHeight: 1.2 }}>
+        <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 900, margin: '0 0 0.75rem', lineHeight: 1.2 }}>
           AWS Services — Side by Side
         </h1>
-        <p style={{ color: '#94a3b8', fontSize: '1rem', maxWidth: '560px', margin: '0 auto 0.75rem' }}>
-          Not what each service is — but <strong style={{ color: '#fff' }}>when to use it</strong> and <strong style={{ color: '#fff' }}>how it differs</strong> from the others. Built for SAA-C03.
+        <p style={{ color: '#94a3b8', fontSize: '1rem', maxWidth: '560px', margin: '0 auto 1.25rem' }}>
+          Not what each service is — but <strong style={{ color: '#fff' }}>when to use it</strong> and <strong style={{ color: '#fff' }}>how it differs</strong> from the others.
         </p>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)', borderRadius: '999px', padding: '4px 14px', fontSize: '0.78rem', fontWeight: 700, color: '#4ade80', marginBottom: '1rem' }}>
-          ✅ Service selection patterns from 1,098 real SAA-C03 practice questions
+
+        {/* Cert Switcher */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '1rem' }}>
+          {([
+            { id: 'saa', label: '☁️ SAA-C03', sub: 'Solutions Architect' },
+            { id: 'aif', label: '🤖 AIF-C01', sub: 'AI Practitioner' },
+          ] as const).map(c => (
+            <button
+              key={c.id}
+              onClick={() => { setCert(c.id); setActiveDomain('all'); setExpandedService(null) }}
+              style={{
+                padding: '10px 28px', borderRadius: '12px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer', transition: 'all 0.15s',
+                border: cert === c.id ? 'none' : '1px solid rgba(255,255,255,0.25)',
+                background: cert === c.id ? '#fff' : 'rgba(255,255,255,0.08)',
+                color: cert === c.id ? '#0f172a' : '#94a3b8',
+                boxShadow: cert === c.id ? '0 4px 12px rgba(0,0,0,0.3)' : 'none',
+              }}
+            >{c.label}</button>
+          ))}
+        </div>
+
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(34,197,94,0.15)', border: '1px solid rgba(34,197,94,0.3)', borderRadius: '999px', padding: '4px 14px', fontSize: '0.78rem', fontWeight: 700, color: '#4ade80', marginBottom: '1.25rem' }}>
+          ✅ {cert === 'saa' ? 'Service selection patterns from 1,050 real SAA-C03 practice questions' : 'Service selection patterns from 260 real AIF-C01 practice questions · Official exam domain aligned'}
         </div>
 
         {/* Domain filter tabs */}
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'center', marginTop: '1rem' }}>
-          {[
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {(cert === 'saa' ? [
             { id: 'all', label: 'All Domains' },
             { id: 'resilient', label: '🏗️ Resilient (26%)' },
             { id: 'secure', label: '🔐 Secure (30%)' },
             { id: 'performance', label: '⚡ Performance (24%)' },
             { id: 'cost', label: '💰 Cost (20%)' },
-          ].map(tab => (
+          ] : [
+            { id: 'all', label: 'All Groups' },
+            { id: 'managed-ai', label: '🤖 Managed AI' },
+            { id: 'generative-ai', label: '✨ Generative AI' },
+            { id: 'ml-platform', label: '🔬 ML Platform' },
+            { id: 'responsible-ai', label: '⚖️ Responsible AI' },
+          ]).map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveDomain(tab.id as Domain)}
               style={{
-                padding: '0.5rem 1.1rem',
-                borderRadius: '2rem',
+                padding: '0.5rem 1.1rem', borderRadius: '2rem', fontSize: '0.85rem', cursor: 'pointer', transition: 'all 0.15s',
                 border: activeDomain === tab.id ? 'none' : '1px solid rgba(255,255,255,0.2)',
                 background: activeDomain === tab.id ? '#2563eb' : 'rgba(255,255,255,0.08)',
                 color: activeDomain === tab.id ? '#fff' : '#94a3b8',
                 fontWeight: activeDomain === tab.id ? 700 : 500,
-                fontSize: '0.85rem',
-                cursor: 'pointer',
-                transition: 'all 0.15s',
               }}
             >
               {tab.label}
