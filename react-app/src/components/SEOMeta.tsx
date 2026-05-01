@@ -108,6 +108,10 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
     title: 'AWS Service Groups — Organized by Category | CertiPrepAI',
     description: 'All AWS services organized by category: compute, storage, database, networking, security, and more.',
   },
+  '/prompt-patterns': {
+    title: 'Prompt Patterns — AIF-C01 Techniques, Parameters & Security | CertiPrepAI',
+    description: 'Master prompt engineering for the AWS AI Practitioner exam. Zero-shot, few-shot, chain-of-thought, inference parameters, prompt injection defenses, and more.',
+  },
   '/about': {
     title: 'About CertiPrepAI — Built by an AWS Engineer',
     description: 'CertiPrepAI is built by an AWS engineer who passed multiple certifications. 3,910 practice questions derived from official AWS documentation.',

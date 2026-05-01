@@ -34,6 +34,7 @@ import ForgotPassword from './pages/ForgotPassword'
 import CheatSheets from './pages/CheatSheets'
 import Billing from './pages/Billing'
 import AiCoach from './pages/AiCoach'
+import PromptPatterns from './pages/PromptPatterns'
 import SEOMeta from './components/SEOMeta'
 
 const NotFound = () => (
@@ -82,6 +83,7 @@ export default function App() {
           <Route path="/cheat-sheets" element={<CheatSheets />} />
           <Route path="/billing" element={<Billing />} />
           <Route path="/ai-coach" element={<AiCoach />} />
+          <Route path="/prompt-patterns" element={<PromptPatterns />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>

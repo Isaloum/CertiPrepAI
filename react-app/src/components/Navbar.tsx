@@ -92,6 +92,7 @@ export default function Navbar() {
     { to: '/service-groups', bg: '#f0fdf4', icon: '🗂️', label: 'Service Groups', sub: 'Compare AWS services by category' },
     { to: '/comparisons', bg: '#fef3c7', icon: '⚖️', label: 'Service Comparisons', sub: 'X vs Y tables from real exam data' },
     { to: '/cheat-sheets', bg: '#fef2f2', icon: '📄', label: 'Cheat Sheets', sub: 'Domains, traps & patterns per cert' },
+    { to: '/prompt-patterns', bg: '#f5f3ff', icon: '✍️', label: 'Prompt Patterns', sub: 'AIF-C01 techniques, parameters & security' },
   ]
 
   const DropdownItem = ({ item }: { item: typeof practiceItems[0] }) => (
