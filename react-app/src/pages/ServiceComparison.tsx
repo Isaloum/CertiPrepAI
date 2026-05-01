@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import Layout from '../components/Layout'
+import { useAuth } from '../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 interface Comparison {
   a: string
@@ -196,7 +198,290 @@ const DATA: Group[] = [
   },
 ]
 
-const GROUP_COLORS: Record<string, { border: string; bg: string; text: string }> = {
+// ═══════════════════════════════════════════════════════════════════════════════
+// AIF-C01 COMPARISONS — AI Practitioner Exam
+// ═══════════════════════════════════════════════════════════════════════════════
+const AIF_DATA: Group[] = [
+  {
+    group: 'Model Adaptation', icon: '🧬',
+    comparisons: [
+      {
+        a: 'Prompting', b: 'Fine-tuning',
+        aFull: 'Prompt Engineering', bFull: 'Fine-tuning',
+        aSummary: 'Craft inputs to guide FM output — no model changes, no training cost, instant iteration',
+        bSummary: 'Update FM weights on your labeled dataset — specializes the model for your domain',
+        chooseA: [
+          'Fastest and cheapest first approach — start here before considering fine-tuning',
+          'Task can be solved with zero-shot or few-shot examples embedded in the prompt',
+          'Knowledge changes frequently — dynamic content belongs in RAG, not baked into weights',
+          'Limited labeled training data — prompting works without examples (zero-shot)',
+        ],
+        chooseB: [
+          'Model consistently underperforms even after extensive prompt engineering',
+          'Need to instill a specific writing style, tone, or domain vocabulary into the model itself',
+          'Large volume of high-quality labeled input-output pairs available for training',
+          'Repeated task at scale — fine-tuned model may need shorter prompts, reducing token cost',
+        ],
+      },
+      {
+        a: 'RAG', b: 'Fine-tuning',
+        aFull: 'Retrieval Augmented Generation (RAG)', bFull: 'Fine-tuning',
+        aSummary: 'Retrieve external facts at inference time and inject into context — no model changes',
+        bSummary: 'Bake domain knowledge into model weights through additional training on your data',
+        chooseA: [
+          'Knowledge base changes frequently — RAG reads current documents at inference time',
+          'Answers must be grounded in specific source documents with traceability',
+          'Primary goal is reducing hallucination — RAG provides verified facts per query',
+          'Faster and cheaper: no training job, no GPU cost, update knowledge by updating docs',
+        ],
+        chooseB: [
+          'Need the model to reason differently, not just access more facts',
+          'Task requires a specific output format or response style baked into model behavior',
+          'Latency is critical — RAG adds retrieval time; fine-tuned model responds directly',
+          'Domain terminology so specialized that the base model fundamentally misunderstands queries',
+        ],
+      },
+      {
+        a: 'Foundation Model', b: 'Traditional ML',
+        aFull: 'Foundation Model (FM)', bFull: 'Traditional ML Model',
+        aSummary: 'Large pre-trained model adaptable to many tasks via prompting or fine-tuning',
+        bSummary: 'Task-specific model trained from scratch on labeled data for one well-defined problem',
+        chooseA: [
+          'Need to handle diverse, open-ended tasks: text generation, Q&A, summarization, code',
+          'Limited labeled training data — FMs generalize well with few-shot prompting',
+          'Rapid deployment needed — no full ML pipeline development required',
+          'Unstructured data (text, images) where FMs have a proven advantage',
+        ],
+        chooseB: [
+          'Narrow, well-defined task with abundant labeled structured/tabular training data',
+          'Strict cost or latency constraints — traditional models (XGBoost, linear) are orders of magnitude smaller',
+          'Interpretability required — decision trees and linear models are more explainable than LLMs',
+          'Tabular data: gradient boosting (XGBoost, LightGBM) consistently outperforms LLMs',
+        ],
+      },
+    ],
+  },
+  {
+    group: 'Generative AI Services', icon: '✨',
+    comparisons: [
+      {
+        a: 'Bedrock', b: 'JumpStart',
+        aFull: 'Amazon Bedrock', bFull: 'SageMaker JumpStart',
+        aSummary: 'Serverless FM API — pay per token, zero infrastructure, multi-provider model catalog',
+        bSummary: 'Deploy and fine-tune open-source FMs on SageMaker endpoints you own and manage',
+        chooseA: [
+          'Need serverless, pay-per-token access with zero infrastructure management',
+          'Want proprietary FMs: Anthropic Claude, Amazon Titan, Stability AI via managed API',
+          'Need built-in RAG (Knowledge Bases), Agents, or Guardrails out of the box',
+          'Customer data privacy: prompts and completions never used to train base models',
+        ],
+        chooseB: [
+          'Need full control: specific instance type, VPC placement, or custom scaling config',
+          'Deploying open-source models (Llama, Mistral) with reserved capacity for cost optimization',
+          'Workload is high-volume and predictable — reserved endpoint cheaper than per-token billing',
+          'Need to run inference in a region or compliance boundary not supported by Bedrock',
+        ],
+      },
+      {
+        a: 'Knowledge Bases', b: 'Bedrock Agents',
+        aFull: 'Bedrock Knowledge Bases', bFull: 'Amazon Bedrock Agents',
+        aSummary: 'Managed RAG pipeline — retrieve relevant context from your docs and generate grounded answers',
+        bSummary: 'Agentic framework — plan and execute multi-step tasks autonomously using tools and APIs',
+        chooseA: [
+          'Use case is retrieve-and-answer: find the right document, then respond with grounded facts',
+          'Reducing hallucination is the primary goal — inject verified context before generation',
+          'Simpler implementation: no tool integration, no multi-step orchestration needed',
+          'Q&A over company documents: policies, manuals, FAQs, product documentation',
+        ],
+        chooseB: [
+          'Task requires multiple steps: query a database, call an API, then compose a response',
+          'Need the FM to take actions — not just answer questions, but create, update, or trigger things',
+          'Workflow involves the model reasoning about what to do next based on intermediate results',
+          'Agents can use Knowledge Bases as one of their tools when they need both retrieval and action',
+        ],
+      },
+      {
+        a: 'Amazon Q Business', b: 'Amazon Kendra',
+        aFull: 'Amazon Q Business', bFull: 'Amazon Kendra',
+        aSummary: 'Conversational enterprise assistant — Q&A, summarization, and actions on company data',
+        bSummary: 'Intelligent enterprise search — retrieves precise answers and passages from documents',
+        chooseA: [
+          'Users need a conversational interface: ask follow-up questions, get AI-generated summaries',
+          'Require the assistant to take actions based on answers (create tickets, send emails)',
+          'Want a fully managed solution without building a custom RAG pipeline',
+          'Need to combine document retrieval with generative summarization in one product',
+        ],
+        chooseB: [
+          'Primary need is precision document retrieval — users expect source document links',
+          'Integrating search capability into an existing application via Kendra API',
+          'Need exact passage extraction from highly regulated documents (legal, compliance)',
+          'Kendra GenAI Edition combines Kendra search with Bedrock when you need both',
+        ],
+      },
+    ],
+  },
+  {
+    group: 'Pre-built AI Services', icon: '🤖',
+    comparisons: [
+      {
+        a: 'Rekognition', b: 'Comprehend',
+        aFull: 'Amazon Rekognition', bFull: 'Amazon Comprehend',
+        aSummary: 'Computer vision — analyzes images and video for objects, faces, scenes, and text',
+        bSummary: 'Natural language processing — extracts entities, sentiment, and topics from text',
+        chooseA: [
+          'Input data is images or video (JPEG, PNG, MP4, or live streams)',
+          'Need to detect faces, objects, scenes, labels, PPE, or unsafe visual content',
+          'Text embedded within images (license plates, signs) — use Rekognition DetectText',
+          'Identity verification, content moderation, or surveillance on visual media',
+        ],
+        chooseB: [
+          'Input data is plain text (reviews, support tickets, social media, clinical notes)',
+          'Need sentiment analysis, entity extraction, key phrases, PII detection, or topic modeling',
+          'Classify text into custom categories or identify domain-specific named entities',
+          'Clinical/medical text: use Comprehend Medical (HIPAA eligible, trained on medical terminology)',
+        ],
+      },
+      {
+        a: 'Transcribe', b: 'Polly',
+        aFull: 'Amazon Transcribe', bFull: 'Amazon Polly',
+        aSummary: 'Speech-to-text — converts audio recordings or live audio streams into written text',
+        bSummary: 'Text-to-speech — converts written text into natural-sounding spoken audio output',
+        chooseA: [
+          'Converting recorded meetings, calls, interviews, or podcasts to text transcripts',
+          'Generating subtitles or closed captions from video content for accessibility',
+          'Analyzing call center recordings: speaker diarization, sentiment, issue categorization',
+          'Medical transcription of clinical consultations — use Transcribe Medical (HIPAA eligible)',
+        ],
+        chooseB: [
+          'Adding voice output to an application, chatbot, or voice assistant',
+          'Generating audio versions of articles, learning content, or notifications',
+          'Building accessibility features: text-to-audio for visually impaired users',
+          'IVR (Interactive Voice Response) systems that read dynamic prompts to callers',
+        ],
+      },
+      {
+        a: 'Textract', b: 'Comprehend',
+        aFull: 'Amazon Textract', bFull: 'Amazon Comprehend',
+        aSummary: 'Document processing — extracts structured data, forms, and tables from PDFs and images',
+        bSummary: 'Text analytics — analyzes plain text for sentiment, entities, and classification',
+        chooseA: [
+          'Input is a scanned document, PDF, or image containing forms, fields, or tables',
+          'Need to extract key:value pairs (e.g., "Invoice Date: 2026-01-15") from documents',
+          'Digitizing structured paperwork: tax forms, medical records, contracts, invoices',
+          'Preserving table structure from documents for downstream structured data processing',
+        ],
+        chooseB: [
+          'Input is already extracted plain text requiring deeper NLP analysis',
+          'Need sentiment, entity recognition, classification, or PII detection on text content',
+          'Typical pipeline: Textract extracts text from documents → Comprehend analyzes the extracted text',
+          'Detecting PII or medical entities in text strings (not embedded in scanned images)',
+        ],
+      },
+      {
+        a: 'Kendra', b: 'Lex',
+        aFull: 'Amazon Kendra', bFull: 'Amazon Lex',
+        aSummary: 'Intelligent search — finds precise answers in documents using NL question understanding',
+        bSummary: 'Conversational AI — structured chatbot with intent recognition and slot filling',
+        chooseA: [
+          'Users ask open-ended questions and need answers retrieved from large document repositories',
+          'No predefined conversation flow — queries are exploratory and knowledge retrieval-focused',
+          'Integrate search into an existing portal or application via API',
+          'Enterprise search over wikis, manuals, policies — users want source document access',
+        ],
+        chooseB: [
+          'Need a structured conversation flow with defined intents and data slots to collect',
+          'Building a task-completion chatbot: book appointment, check order status, reset password',
+          'Integrating with Amazon Connect for automated contact center call handling',
+          'Users follow predictable dialogue paths: identify intent → gather required parameters → fulfill',
+        ],
+      },
+    ],
+  },
+  {
+    group: 'ML Development', icon: '🔬',
+    comparisons: [
+      {
+        a: 'Real-Time Endpoint', b: 'Batch Transform',
+        aFull: 'SageMaker Real-Time Endpoint', bFull: 'SageMaker Batch Transform',
+        aSummary: 'Always-on inference endpoint — returns predictions immediately for individual requests',
+        bSummary: 'Offline batch job — processes large datasets and writes prediction outputs to S3',
+        chooseA: [
+          'Users or applications need predictions instantly: fraud detection, product recommendations',
+          'Low-latency requirement: response expected in milliseconds to seconds per request',
+          'Real-time interactive application where waiting is unacceptable (e.g., live recommendation engine)',
+          'Streaming use case: each incoming event must be scored immediately upon arrival',
+        ],
+        chooseB: [
+          'Need to score millions of records on a schedule — nightly batch, weekly re-scoring',
+          'No real-time latency requirement — results can be computed in advance and stored',
+          'Cost-effective: no idle endpoint cost; pay only for compute during the batch job itself',
+          'Pre-compute recommendations overnight, score batch of loan applications, bulk image analysis',
+        ],
+      },
+      {
+        a: 'SageMaker Clarify', b: 'Model Monitor',
+        aFull: 'Amazon SageMaker Clarify', bFull: 'Amazon SageMaker Model Monitor',
+        aSummary: 'Pre-deployment analysis — detects bias in training data and models, explains predictions',
+        bSummary: 'Post-deployment monitoring — continuously tracks drift, bias, and quality in production',
+        chooseA: [
+          'Detect bias in training data before any model is trained (class imbalance, label bias)',
+          'Measure output fairness across demographic groups in a trained model before deployment',
+          'Generate SHAP-based explanations of individual predictions for regulatory review or audits',
+          'Part of the model development process — bias report required before deployment approval',
+        ],
+        chooseB: [
+          'Model is already deployed and you need continuous automated quality assurance',
+          'Alert when production data distribution diverges significantly from training baseline',
+          'Track whether model accuracy degrades over time as real-world conditions evolve',
+          'Monitor bias drift and feature attribution drift to catch silent model failures',
+        ],
+      },
+    ],
+  },
+  {
+    group: 'Responsible AI', icon: '⚖️',
+    comparisons: [
+      {
+        a: 'Guardrails', b: 'Prompt Safety',
+        aFull: 'Amazon Bedrock Guardrails', bFull: 'Prompt-based Safety Instructions',
+        aSummary: 'Enforced safety layer applied at inference — auditable, model-agnostic, cannot be bypassed',
+        bSummary: 'Safety instructions embedded in the system prompt — flexible but bypassable by users',
+        chooseA: [
+          'Need enforceable, auditable safety controls — Guardrails produce CloudWatch logs per block',
+          'Compliance requirement: demonstrate content filtering with documented audit trail',
+          'Automatically redact PII/PHI from all FM responses regardless of what users request',
+          'Block specific denied topics (competitor names, legal advice) as a hard organizational policy',
+        ],
+        chooseB: [
+          'Lightweight guidance sufficient for low-risk, internal prototyping or research use',
+          'Need per-interaction flexibility to adjust safety tone without reconfiguring infrastructure',
+          'Early-stage development where enforcement overhead is premature',
+          'Critical note: prompt safety can be bypassed by determined users — always use Guardrails in production',
+        ],
+      },
+      {
+        a: 'Amazon A2I', b: 'Ground Truth',
+        aFull: 'Amazon Augmented AI (A2I)', bFull: 'AWS Ground Truth',
+        aSummary: 'Human review of live model predictions — routes low-confidence outputs to reviewers',
+        bSummary: 'Human data labeling — creates annotated training datasets for ML model development',
+        chooseA: [
+          'Model is in production and humans must review uncertain or high-stakes predictions',
+          'Regulatory requirement for human oversight of AI decisions in real time (financial, medical)',
+          'Low-confidence Textract extractions or Rekognition moderation flags need human verification',
+          'Building a quality assurance loop into your live AI pipeline with configurable thresholds',
+        ],
+        chooseB: [
+          'Building a new model that needs labeled training data — labeling happens before training',
+          'Creating image bounding boxes, text classifications, or transcription annotations at scale',
+          'Active learning: Ground Truth auto-labels high-confidence items, humans label the uncertain ones',
+          'Generating the ground truth dataset — not reviewing live production predictions',
+        ],
+      },
+    ],
+  },
+]
+
+const SAA_GROUP_COLORS: Record<string, { border: string; bg: string; text: string }> = {
   Compute:    { border: '#3b82f6', bg: '#eff6ff', text: '#1d4ed8' },
   Storage:    { border: '#10b981', bg: '#f0fdf4', text: '#065f46' },
   Database:   { border: '#8b5cf6', bg: '#f5f3ff', text: '#5b21b6' },
@@ -206,13 +491,43 @@ const GROUP_COLORS: Record<string, { border: string; bg: string; text: string }>
   Monitoring: { border: '#06b6d4', bg: '#ecfeff', text: '#0e7490' },
 }
 
+const AIF_GROUP_COLORS: Record<string, { border: string; bg: string; text: string }> = {
+  'Model Adaptation':        { border: '#7c3aed', bg: '#faf5ff', text: '#5b21b6' },
+  'Generative AI Services':  { border: '#2563eb', bg: '#eff6ff', text: '#1d4ed8' },
+  'Pre-built AI Services':   { border: '#ea580c', bg: '#fff7ed', text: '#9a3412' },
+  'ML Development':          { border: '#0891b2', bg: '#ecfeff', text: '#0e7490' },
+  'Responsible AI':          { border: '#16a34a', bg: '#f0fdf4', text: '#166534' },
+}
+
 export default function ServiceComparison() {
+  const { isPremium } = useAuth()
+  const navigate = useNavigate()
   const [activeGroup, setActiveGroup] = useState('All')
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [cert, setCert] = useState<'saa' | 'aif'>('saa')
 
-  const groups = ['All', ...DATA.map(g => g.group)]
-  const filtered = activeGroup === 'All' ? DATA : DATA.filter(g => g.group === activeGroup)
-  const totalPairs = DATA.reduce((acc, g) => acc + g.comparisons.length, 0)
+  if (!isPremium) {
+    return (
+      <Layout>
+        <div style={{ minHeight: '70vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🔒</div>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Study Tools are for members only</h2>
+          <p style={{ color: '#6b7280', maxWidth: '420px', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+            Upgrade to any paid plan to unlock Service Comparisons, Keywords, CheatSheets, and more.
+          </p>
+          <button onClick={() => navigate('/pricing')} style={{ padding: '12px 28px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '1rem' }}>
+            See Plans →
+          </button>
+        </div>
+      </Layout>
+    )
+  }
+
+  const activeData = cert === 'saa' ? DATA : AIF_DATA
+  const activeColors = cert === 'saa' ? SAA_GROUP_COLORS : AIF_GROUP_COLORS
+  const groups = ['All', ...activeData.map(g => g.group)]
+  const filtered = activeGroup === 'All' ? activeData : activeData.filter(g => g.group === activeGroup)
+  const totalPairs = activeData.reduce((acc, g) => acc + g.comparisons.length, 0)
 
   return (
     <Layout>
@@ -223,16 +538,36 @@ export default function ServiceComparison() {
           Service Comparisons
         </h1>
         <p style={{ color: '#94a3b8', fontSize: '0.95rem', maxWidth: '520px', margin: '0 auto 0.75rem' }}>
-          {totalPairs} side-by-side comparisons across {DATA.length} domains — the most-tested "X vs Y" questions on AWS exams.
+          {totalPairs} side-by-side comparisons across {activeData.length} groups — the most-tested "X vs Y" questions on the {cert === 'saa' ? 'SAA-C03' : 'AIF-C01'} exam.
         </p>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: '999px', padding: '4px 14px', fontSize: '0.75rem', fontWeight: 700, color: '#4ade80', marginBottom: '1.75rem' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: '999px', padding: '4px 14px', fontSize: '0.75rem', fontWeight: 700, color: '#4ade80', marginBottom: '1.25rem' }}>
           ✅ Derived from AWS official documentation and exam guide objectives
+        </div>
+
+        {/* Cert Switcher */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '1.5rem' }}>
+          {([
+            { id: 'saa', label: '☁️ SAA-C03' },
+            { id: 'aif', label: '🤖 AIF-C01' },
+          ] as const).map(c => (
+            <button
+              key={c.id}
+              onClick={() => { setCert(c.id); setActiveGroup('All'); setExpanded(null) }}
+              style={{
+                padding: '9px 26px', borderRadius: '12px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer', transition: 'all 0.15s',
+                border: cert === c.id ? 'none' : '1px solid rgba(255,255,255,0.25)',
+                background: cert === c.id ? '#fff' : 'rgba(255,255,255,0.08)',
+                color: cert === c.id ? '#0f172a' : '#94a3b8',
+                boxShadow: cert === c.id ? '0 4px 12px rgba(0,0,0,0.3)' : 'none',
+              }}
+            >{c.label}</button>
+          ))}
         </div>
 
         {/* Group filter */}
         <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           {groups.map(g => {
-            const color = GROUP_COLORS[g]
+            const color = activeColors[g]
             const isActive = activeGroup === g
             return (
               <button key={g} onClick={() => setActiveGroup(g)} style={{
@@ -243,7 +578,7 @@ export default function ServiceComparison() {
                 cursor: 'pointer', fontSize: '0.82rem',
                 fontWeight: isActive ? 700 : 400, transition: 'all 0.15s',
               }}>
-                {DATA.find(d => d.group === g)?.icon ?? '🔍'} {g}
+                {activeData.find(d => d.group === g)?.icon ?? '🔍'} {g}
               </button>
             )
           })}
@@ -252,7 +587,7 @@ export default function ServiceComparison() {
 
       <div style={{ maxWidth: '920px', margin: '0 auto', padding: '2.5rem 1.5rem' }}>
         {filtered.map(group => {
-          const gc = GROUP_COLORS[group.group] ?? { border: '#3b82f6', bg: '#eff6ff', text: '#1d4ed8' }
+          const gc = activeColors[group.group] ?? { border: '#3b82f6', bg: '#eff6ff', text: '#1d4ed8' }
           return (
             <div key={group.group} style={{ marginBottom: '2.5rem' }}>
               {/* Group header */}
@@ -328,10 +663,10 @@ export default function ServiceComparison() {
           <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🎯</div>
           <h3 style={{ color: '#f1f5f9', fontWeight: 700, margin: '0 0 0.5rem' }}>Test your knowledge</h3>
           <p style={{ color: '#94a3b8', fontSize: '0.875rem', margin: '0 0 1.25rem' }}>
-            These service comparisons appear in every AWS exam. Practice to lock them in.
+            These comparisons appear in every AWS exam. Practice questions to lock them in.
           </p>
-          <a href="/cert/saa-c03" style={{ display: 'inline-block', padding: '0.75rem 2rem', background: '#2563eb', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem' }}>
-            Practice SAA-C03 →
+          <a href={cert === 'saa' ? '/cert/saa-c03' : '/cert/aif-c01'} style={{ display: 'inline-block', padding: '0.75rem 2rem', background: '#2563eb', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem' }}>
+            Practice {cert === 'saa' ? 'SAA-C03' : 'AIF-C01'} Questions →
           </a>
         </div>
       </div>
