@@ -527,9 +527,14 @@ export default function VisualExam() {
                 Question {qIdx + 1} of {QUESTIONS.length}
               </span>
             </div>
-            <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 800, color: '#0f172a' }}>
-              Connect the AWS Architecture
-            </h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 800, color: '#0f172a' }}>
+                Connect the AWS Architecture
+              </h1>
+              <span style={{ display: 'inline-block', background: '#FF9900', color: '#fff', padding: '3px 10px', borderRadius: '999px', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.05em', flexShrink: 0 }}>
+                ☁️ SAA-C03
+              </span>
+            </div>
           </div>
           {/* Progress dots */}
           <div style={{ display: 'flex', gap: '6px' }}>

@@ -247,8 +247,13 @@ export default function ArchitectureBuilder() {
 
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <div style={{ display: 'inline-block', background: '#eff6ff', color: '#1d4ed8', padding: '4px 14px', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 700, marginBottom: '10px', letterSpacing: '0.05em' }}>
-              ARCHITECTURE BUILDER
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '10px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'inline-block', background: '#eff6ff', color: '#1d4ed8', padding: '4px 14px', borderRadius: '999px', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.05em' }}>
+                ARCHITECTURE BUILDER
+              </div>
+              <div style={{ display: 'inline-block', background: '#FF9900', color: '#fff', padding: '4px 12px', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em' }}>
+                ☁️ SAA-C03
+              </div>
             </div>
             <h1 style={{ fontSize: '1.7rem', fontWeight: 800, color: '#0f172a', margin: '0 0 6px' }}>Build AWS Architectures</h1>
             <p style={{ color: '#64748b', margin: 0 }}>Select the correct AWS services for each scenario · {completed.size}/{CHALLENGES.length} completed</p>
