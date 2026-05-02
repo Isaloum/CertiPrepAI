@@ -842,8 +842,21 @@ export default function CheatSheets() {
               </div>
             )}
 
+            {/* SAA-C03 Deep Study cross-link */}
+            {selectedId === 'saa-c03' && (
+              <div style={{ marginTop: '1.5rem', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '1rem', padding: '1rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                <div>
+                  <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#1d4ed8', margin: '0 0 0.2rem' }}>📖 Want to go deeper on SAA-C03?</p>
+                  <p style={{ fontSize: '0.8rem', color: '#3b82f6', margin: 0 }}>39-row decision matrix, 12 exam traps, 16 deep dives & a 30-day study plan.</p>
+                </div>
+                <Link to="/saa-guide" style={{ flexShrink: 0, padding: '0.5rem 1rem', background: '#2563eb', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, fontSize: '0.82rem', textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                  SAA-C03 Deep Study →
+                </Link>
+              </div>
+            )}
+
             {/* Practice CTA */}
-            <div style={{ marginTop: '2rem', background: 'linear-gradient(135deg, #0f172a, #1e3a8a)', borderRadius: '1.25rem', padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <div style={{ marginTop: '1.5rem', background: 'linear-gradient(135deg, #0f172a, #1e3a8a)', borderRadius: '1.25rem', padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
               <div>
                 <p style={{ fontSize: '0.9rem', fontWeight: 800, color: '#fff', margin: '0 0 0.25rem' }}>Ready to test yourself?</p>
                 <p style={{ fontSize: '0.82rem', color: '#93c5fd', margin: 0 }}>Practice with real {sheet.code} questions to reinforce what you just studied.</p>
