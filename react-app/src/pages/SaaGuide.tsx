@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
+import { useCertAccess } from '../hooks/useCertAccess'
 
 type Tab = 'matrix' | 'traps' | 'deepdives' | 'studyplan' | 'reference' | 'strategy'
 
@@ -304,6 +305,7 @@ const STORAGE_KEY = 'certiprepai-saa-study-plan'
 // ─── COMPONENT ────────────────────────────────────────────────────────────────
 export default function SaaGuide() {
   const { isPremium } = useAuth()
+  const { hasAccess, loading: certLoading } = useCertAccess('saa-c03')
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<Tab>('matrix')
   const [expanded, setExpanded] = useState<string | null>(null)
@@ -335,18 +337,53 @@ export default function SaaGuide() {
       )
     : MATRIX
 
+  // Still loading auth + cert check
+  if (certLoading) {
+    return (
+      <Layout>
+        <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '36px', height: '36px', border: '3px solid #e5e7eb', borderTopColor: '#2563eb', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+        </div>
+      </Layout>
+    )
+  }
+
+  // Free user — no plan at all
   if (!isPremium) {
     return (
       <Layout>
         <div style={{ minHeight: '70vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center' }}>
           <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🔒</div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Premium members only</h2>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Members only</h2>
           <p style={{ color: '#6b7280', maxWidth: '420px', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-            The SAA-C03 Complete Guide — Decision Matrix, Exam Traps, Deep Dives, and 30-Day Study Plan — is available on any paid plan.
+            The SAA-C03 Deep Study Guide is available on any paid plan that includes SAA-C03.
           </p>
           <button onClick={() => navigate('/pricing')} style={{ padding: '12px 28px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '1rem' }}>
             See Plans →
           </button>
+        </div>
+      </Layout>
+    )
+  }
+
+  // Paid user but their plan doesn't include SAA-C03
+  if (!hasAccess) {
+    return (
+      <Layout>
+        <div style={{ minHeight: '70vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🚫</div>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>SAA-C03 not in your plan</h2>
+          <p style={{ color: '#6b7280', maxWidth: '440px', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+            Your current plan doesn't include SAA-C03. Switch your cert selection or upgrade to Yearly / Lifetime to access all guides.
+          </p>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <button onClick={() => navigate('/dashboard')} style={{ padding: '12px 24px', background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
+              Switch Cert →
+            </button>
+            <button onClick={() => navigate('/billing')} style={{ padding: '12px 24px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
+              Upgrade Plan →
+            </button>
+          </div>
         </div>
       </Layout>
     )

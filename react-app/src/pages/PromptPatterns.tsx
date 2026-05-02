@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
+import { useCertAccess } from '../hooks/useCertAccess'
 
 type Tab = 'techniques' | 'parameters' | 'problems' | 'security' | 'bedrock'
 
@@ -643,22 +644,58 @@ const TAB_LIST: { id: Tab; label: string; count: number }[] = [
 
 export default function PromptPatterns() {
   const { isPremium } = useAuth()
+  const { hasAccess, loading: certLoading } = useCertAccess('aif-c01')
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<Tab>('techniques')
   const [expanded, setExpanded] = useState<string | null>(null)
 
+  // Still loading auth + cert check
+  if (certLoading) {
+    return (
+      <Layout>
+        <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '36px', height: '36px', border: '3px solid #e5e7eb', borderTopColor: '#7c3aed', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+        </div>
+      </Layout>
+    )
+  }
+
+  // Free user — no plan at all
   if (!isPremium) {
     return (
       <Layout>
         <div style={{ minHeight: '70vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center' }}>
           <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🔒</div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Study Tools are for members only</h2>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Members only</h2>
           <p style={{ color: '#6b7280', maxWidth: '420px', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-            Upgrade to any paid plan to unlock Prompt Patterns, Keywords, CheatSheets, and more.
+            Prompt Patterns is available on any paid plan that includes AIF-C01.
           </p>
-          <button onClick={() => navigate('/pricing')} style={{ padding: '12px 28px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '1rem' }}>
+          <button onClick={() => navigate('/pricing')} style={{ padding: '12px 28px', background: '#7c3aed', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '1rem' }}>
             See Plans →
           </button>
+        </div>
+      </Layout>
+    )
+  }
+
+  // Paid user but their plan doesn't include AIF-C01
+  if (!hasAccess) {
+    return (
+      <Layout>
+        <div style={{ minHeight: '70vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🚫</div>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>AIF-C01 not in your plan</h2>
+          <p style={{ color: '#6b7280', maxWidth: '440px', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+            Your current plan doesn't include AIF-C01. Switch your cert selection or upgrade to Yearly / Lifetime to access all content.
+          </p>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <button onClick={() => navigate('/dashboard')} style={{ padding: '12px 24px', background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
+              Switch Cert →
+            </button>
+            <button onClick={() => navigate('/billing')} style={{ padding: '12px 24px', background: '#7c3aed', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
+              Upgrade Plan →
+            </button>
+          </div>
         </div>
       </Layout>
     )
