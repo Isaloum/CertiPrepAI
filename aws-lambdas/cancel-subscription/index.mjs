@@ -2,11 +2,9 @@ import https from 'https'
 import {
   CognitoIdentityProviderClient,
   GetUserCommand,
-  AdminUpdateUserAttributesCommand,
 } from '@aws-sdk/client-cognito-identity-provider'
 
 const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY
-const USER_POOL_ID  = process.env.COGNITO_USER_POOL_ID || 'us-east-1_bqEVRsi2b'
 const cognito = new CognitoIdentityProviderClient({ region: 'us-east-1' })
 
 function stripeGet(path) {
@@ -19,13 +17,21 @@ function stripeGet(path) {
   })
 }
 
-function stripeDelete(path) {
+// POST to Stripe (for cancel_at_period_end=true)
+function stripePost(path, body) {
+  const payload = new URLSearchParams(body).toString()
   return new Promise((resolve, reject) => {
     const req = https.request({
-      hostname: 'api.stripe.com', path, method: 'DELETE',
-      headers: { Authorization: `Bearer ${STRIPE_SECRET}`, 'Content-Length': 0 },
+      hostname: 'api.stripe.com', path, method: 'POST',
+      headers: {
+        Authorization: `Bearer ${STRIPE_SECRET}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(payload),
+      },
     }, res => { let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(JSON.parse(d))) })
-    req.on('error', reject); req.end()
+    req.on('error', reject)
+    req.write(payload)
+    req.end()
   })
 }
 
@@ -50,27 +56,32 @@ export const handler = async (event) => {
     const email = attrs.email
     const stripeCustomerId = attrs['custom:stripe_customer_id']
 
-    // Cancel all active Stripe subscriptions if customer exists
-    if (stripeCustomerId) {
-      const subs = await stripeGet(`/v1/subscriptions?customer=${stripeCustomerId}&status=active&limit=10`)
-      for (const sub of subs.data || []) {
-        await stripeDelete(`/v1/subscriptions/${sub.id}`)
-        console.log(`Cancelled Stripe subscription ${sub.id} for ${email}`)
-      }
+    if (!stripeCustomerId) {
+      return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'No Stripe customer found.' }) }
     }
 
-    // Set plan to free in Cognito
-    await cognito.send(new AdminUpdateUserAttributesCommand({
-      UserPoolId: USER_POOL_ID,
-      Username: email,
-      UserAttributes: [{ Name: 'custom:plan', Value: 'free' }],
-    }))
+    // Find active subscriptions
+    const subs = await stripeGet(`/v1/subscriptions?customer=${stripeCustomerId}&status=active&limit=10`)
+    if (!subs.data || subs.data.length === 0) {
+      return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'No active subscription found.' }) }
+    }
 
-    console.log(`Plan set to free for ${email}`)
+    // Set cancel_at_period_end=true on each active subscription
+    // DO NOT set Cognito to free — the Stripe webhook handles that at period end
+    let periodEnd = null
+    for (const sub of subs.data) {
+      const updated = await stripePost(`/v1/subscriptions/${sub.id}`, { cancel_at_period_end: 'true' })
+      periodEnd = updated.current_period_end // Unix timestamp
+      console.log(`Scheduled cancellation for Stripe subscription ${sub.id} for ${email}, period ends: ${new Date(periodEnd * 1000).toISOString()}`)
+    }
+
     return {
       statusCode: 200,
       headers: CORS,
-      body: JSON.stringify({ message: 'Subscription cancelled successfully.' }),
+      body: JSON.stringify({
+        message: 'Subscription will cancel at end of billing period.',
+        periodEnd, // Unix timestamp — frontend converts to human date
+      }),
     }
   } catch (err) {
     console.error('Cancel error:', err)

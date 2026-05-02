@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
 
-const CANCELLED_KEY = 'certiprepai-plan-cancelled'
+const CANCELLED_KEY  = 'certiprepai-plan-cancelled'
+const EXPIRY_KEY     = 'certiprepai-plan-expiry'
 
 const CHECKOUT_API = 'https://34zglioc5a.execute-api.us-east-1.amazonaws.com/checkout'
 const UPGRADE_API  = 'https://d8bmltyjpe.execute-api.us-east-1.amazonaws.com'
@@ -45,14 +46,23 @@ export default function Billing() {
   const [cancelModal, setCancelModal] = useState<'idle' | 'confirm' | 'loading' | 'done' | 'error'>('idle')
   const [cancelError, setCancelError] = useState('')
   const [isCancelled, setIsCancelled] = useState(false)
+  const [accessUntil, setAccessUntil] = useState<string | null>(null)
 
   // Persist cancelled state across page refreshes (cleared when tier drops to free)
   useEffect(() => {
     if (tier === 'free') {
       localStorage.removeItem(CANCELLED_KEY)
+      localStorage.removeItem(EXPIRY_KEY)
       setIsCancelled(false)
+      setAccessUntil(null)
     } else {
-      setIsCancelled(localStorage.getItem(CANCELLED_KEY) === 'true')
+      const cancelled = localStorage.getItem(CANCELLED_KEY) === 'true'
+      setIsCancelled(cancelled)
+      const expiry = localStorage.getItem(EXPIRY_KEY)
+      if (expiry) {
+        const d = new Date(parseInt(expiry, 10) * 1000)
+        setAccessUntil(d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }))
+      }
     }
   }, [tier])
 
@@ -66,6 +76,11 @@ export default function Billing() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Cancellation failed.')
       localStorage.setItem(CANCELLED_KEY, 'true')
+      if (data.periodEnd) {
+        localStorage.setItem(EXPIRY_KEY, String(data.periodEnd))
+        const d = new Date(data.periodEnd * 1000)
+        setAccessUntil(d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }))
+      }
       setIsCancelled(true)
       setCancelModal('done')
     } catch (err: unknown) {
@@ -189,10 +204,13 @@ export default function Billing() {
             <span style={{ fontSize: '1.2rem', flexShrink: 0 }}>⚠️</span>
             <div>
               <p style={{ fontWeight: 700, color: '#92400e', fontSize: '0.875rem', margin: '0 0 0.25rem' }}>
-                Your subscription is cancelled
+                Cancellation scheduled
               </p>
               <p style={{ color: '#78350f', fontSize: '0.8rem', margin: 0, lineHeight: 1.6 }}>
-                You still have full access to your current plan until your billing period ends — nothing changes until then. After that, your account moves to the free tier.
+                {accessUntil
+                  ? <>Your plan stays active and <strong>you keep full access until {accessUntil}</strong>. After that, your account moves to the free tier.</>
+                  : <>Your plan stays active until your billing period ends. After that, your account moves to the free tier.</>
+                }
               </p>
             </div>
           </div>
@@ -331,7 +349,10 @@ export default function Billing() {
                   Subscription cancelled
                 </h3>
                 <p style={{ color: '#6b7280', fontSize: '0.875rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-                  You'll keep full access until your billing period ends. We're sorry to see you go — you're always welcome back.
+                  {accessUntil
+                    ? <>You'll keep full access until <strong style={{ color: '#111827' }}>{accessUntil}</strong>. After that your account reverts to free. We're sorry to see you go — you're always welcome back.</>
+                    : <>You'll keep full access until your billing period ends. We're sorry to see you go — you're always welcome back.</>
+                  }
                 </p>
                 <button
                   onClick={() => setCancelModal('idle')}
