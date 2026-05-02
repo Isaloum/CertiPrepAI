@@ -1,12 +1,16 @@
 /**
  * checkout/index.js
  * AWS Lambda — creates a Stripe Checkout session and returns the redirect URL.
+ *
+ * Duplicate-payment protections:
+ *  1. Idempotency key → same request within 24h returns the same Stripe session
+ *  2. Existing subscription check → blocks paid users from buying again via checkout
  */
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const PRICE_IDS = {
   monthly:  process.env.STRIPE_PRICE_MONTHLY  || 'price_1TB1YCE9neqrFM5LDbyzVSnv',
-  bundle:   process.env.STRIPE_PRICE_BUNDLE   || 'price_BUNDLE_REPLACE_ME', // set STRIPE_PRICE_BUNDLE Lambda env var
+  bundle:   process.env.STRIPE_PRICE_BUNDLE   || 'price_BUNDLE_REPLACE_ME',
   yearly:   process.env.STRIPE_PRICE_YEARLY   || 'price_1TED8EE9neqrFM5LCIL9P0Yp',
   lifetime: process.env.STRIPE_PRICE_LIFETIME || 'price_1TED9ME9neqrFM5LeKAAEWTO',
 };
@@ -58,6 +62,27 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid email format' }) };
     }
 
+    // ── Duplicate protection: check for existing active Stripe subscription ──────
+    // Only applies when email is known (logged-in users). Skip for anonymous.
+    if (email) {
+      const customers = await stripe.customers.list({ email: email.toLowerCase().trim(), limit: 5 });
+      for (const customer of customers.data) {
+        const activeSubs = await stripe.subscriptions.list({
+          customer: customer.id,
+          status: 'active',
+          limit: 5,
+        });
+        if (activeSubs.data.length > 0) {
+          console.warn(`[checkout] Blocked duplicate checkout for ${email} — already has active subscription`);
+          return {
+            statusCode: 409,
+            headers: CORS,
+            body: JSON.stringify({ error: 'You already have an active subscription. Go to Billing to manage your plan.' }),
+          };
+        }
+      }
+    }
+
     const mode = PLAN_MODES[plan];
     const appUrl = process.env.APP_URL || 'https://certiprepai.com';
 
@@ -66,21 +91,24 @@ exports.handler = async (event) => {
       line_items: [{ price: PRICE_IDS[plan], quantity: 1 }],
       mode,
       metadata: { product: 'awsprepai_premium', tier: plan },
-      // Bundle users go to dashboard to pick their 3 certs immediately after payment
       success_url: plan === 'bundle'
         ? `${appUrl}/dashboard?upgrade=bundle`
         : `${appUrl}/certifications?upgrade=success`,
       cancel_url: `${appUrl}/pricing?cancelled=1`,
     };
 
-    // NOTE: intentionally NOT passing customer_email — passing the email
-    // causes Stripe to detect Link accounts and show the Link auth popup.
-
     if (mode === 'subscription') {
       sessionParams.subscription_data = { trial_period_days: 3 };
     }
 
-    const session = await stripe.checkout.sessions.create(sessionParams);
+    // ── Idempotency key: email + plan + current UTC day ──────────────────────────
+    // Same user buying the same plan on the same day → Stripe returns the same session
+    const dayStamp = new Date().toISOString().slice(0, 10) // e.g. '2026-05-02'
+    const idempotencyKey = `checkout-${(email || 'anon').toLowerCase().replace(/[^a-z0-9]/g, '')}-${plan}-${dayStamp}`
+
+    const session = await stripe.checkout.sessions.create(sessionParams, {
+      idempotencyKey,
+    });
 
     return {
       statusCode: 200,

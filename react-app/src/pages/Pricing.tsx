@@ -202,7 +202,11 @@ export default function Pricing() {
         })
         const data = await res.json()
         if (data.url) { window.location.href = data.url; return }
-        // API returned but no URL — show error, don't redirect to signup
+        // 409 = already subscribed
+        if (res.status === 409) {
+          navigate('/billing')
+          return
+        }
         alert('Checkout error. Please try again or contact support.')
       } catch {
         alert('Unable to start checkout. Please try again.')
@@ -393,6 +397,7 @@ export default function Pricing() {
 
                 {/* CTA Button */}
                 <button
+                  disabled={checkingOut !== null || isCurrent}
                   onClick={() => {
                     if (isCurrent) return
                     if (isUpgrade) { handleUpgradeClick(plan.name.toLowerCase()); return }
