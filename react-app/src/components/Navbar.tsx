@@ -97,6 +97,7 @@ export default function Navbar() {
     { to: '/cheat-sheets', bg: '#fef2f2', icon: '📄', label: 'Cheat Sheets', sub: 'Domains, traps & patterns per cert', badge: '' },
     // AIF-C01 specific — only show if user has AIF access (or still loading)
     ...(aifLoading || hasAifAccess ? [{ to: '/prompt-patterns', bg: '#f5f3ff', icon: '✍️', label: 'Prompt Patterns', sub: 'AIF-C01 techniques, parameters & security', badge: '' }] : []),
+    ...(aifLoading || hasAifAccess ? [{ to: '/aif-guide', bg: '#f5f3ff', icon: '📖', label: 'AIF-C01 Deep Study', sub: 'Decision matrix, traps & 30-day study plan', badge: '' }] : []),
     // SAA-C03 specific — only show if user has SAA access (or still loading)
     ...(saaLoading || hasSaaAccess ? [{ to: '/saa-guide', bg: '#eff6ff', icon: '📖', label: 'SAA-C03 Deep Study', sub: 'Decision matrix, traps & 30-day study plan', badge: '' }] : []),
   ]

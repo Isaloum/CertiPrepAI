@@ -116,6 +116,10 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
     title: 'SAA-C03 Complete Study Guide — Decision Matrix, Traps & Deep Dives | CertiPrepAI',
     description: 'The complete SAA-C03 encyclopedia: 39-row decision matrix, 12 exam traps, 16 deep dives, 30-day study plan, port numbers, and exam strategy.',
   },
+  '/aif-guide': {
+    title: 'AIF-C01 Complete Study Guide — Decision Matrix, Traps & Deep Dives | CertiPrepAI',
+    description: 'The complete AIF-C01 encyclopedia: 30-row decision matrix, 12 exam traps, 16 deep dives covering Bedrock, RAG, Guardrails, Responsible AI, and a 30-day study plan.',
+  },
   '/about': {
     title: 'About CertiPrepAI — Built by an AWS Engineer',
     description: 'CertiPrepAI is built by an AWS engineer who passed multiple certifications. 3,910 practice questions derived from official AWS documentation.',
