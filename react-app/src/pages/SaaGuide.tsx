@@ -357,9 +357,9 @@ export default function SaaGuide() {
   // ── Deep dive content renderer ──────────────────────────────────────────────
   const renderDeepDive = (id: string) => {
     const tip = (text: string) => (
-      <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '10px', padding: '0.875rem 1rem', marginTop: '0.75rem' }}>
-        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#92400e', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.35rem' }}>💡 Exam tip</div>
-        <div style={{ fontSize: '0.85rem', color: '#78350f', lineHeight: 1.6 }}>{text}</div>
+      <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', padding: '0.875rem 1rem', marginTop: '0.75rem' }}>
+        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.35rem' }}>💡 Exam tip</div>
+        <div style={{ fontSize: '0.85rem', color: '#374151', lineHeight: 1.6 }}>{text}</div>
       </div>
     )
     const heading = (text: string) => (
@@ -659,9 +659,9 @@ export default function SaaGuide() {
                           <div style={{ fontSize: '0.8rem', color: '#166534', lineHeight: 1.5 }}>{t.correctWhy}</div>
                         </div>
                       </div>
-                      <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '10px', padding: '0.875rem 1rem' }}>
-                        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#92400e', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.35rem' }}>💡 Remember this</div>
-                        <div style={{ fontSize: '0.875rem', color: '#78350f', lineHeight: 1.6 }}>{t.tip}</div>
+                      <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '10px', padding: '0.875rem 1rem' }}>
+                        <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: '0.35rem' }}>💡 Remember this</div>
+                        <div style={{ fontSize: '0.875rem', color: '#374151', lineHeight: 1.6 }}>{t.tip}</div>
                       </div>
                     </div>
                   )}
@@ -689,7 +689,7 @@ export default function SaaGuide() {
                       <div style={{ fontSize: '0.78rem', color: '#6b7280', marginTop: '0.15rem' }}>{d.summary}</div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-                      <span style={{ background: '#fef3c7', color: '#92400e', border: '1px solid #fde68a', borderRadius: '999px', fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px' }}>{d.badge}</span>
+                      <span style={{ background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb', borderRadius: '999px', fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px' }}>{d.badge}</span>
                       <span style={{ color: '#9ca3af' }}>{isOpen ? '▲' : '▼'}</span>
                     </div>
                   </button>
@@ -739,8 +739,8 @@ export default function SaaGuide() {
                         <div style={{ flex: 1 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.35rem', flexWrap: 'wrap' }}>
                             <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#9ca3af' }}>Day {day.day}</span>
-                            <span style={{ fontWeight: 700, fontSize: '0.88rem', color: done ? '#15803d' : isExam ? '#92400e' : '#111827' }}>{day.title}</span>
-                            {isExam && <span style={{ background: '#fef3c7', color: '#92400e', border: '1px solid #fde68a', borderRadius: '999px', fontSize: '0.68rem', fontWeight: 700, padding: '1px 8px' }}>Milestone</span>}
+                            <span style={{ fontWeight: 700, fontSize: '0.88rem', color: done ? '#15803d' : '#111827' }}>{day.title}</span>
+                            {isExam && <span style={{ background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb', borderRadius: '999px', fontSize: '0.68rem', fontWeight: 700, padding: '1px 8px' }}>Milestone</span>}
                           </div>
                           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
                             {day.topics.map((topic, i) => (
