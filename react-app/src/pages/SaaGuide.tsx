@@ -623,7 +623,7 @@ export default function SaaGuide() {
       </div>
 
       {/* Tab bar */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', padding: '0 1rem', display: 'flex', gap: '0', overflowX: 'auto' }}>
+      <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', padding: '0 1rem', display: 'flex', gap: '0', overflowX: 'auto', justifyContent: 'center' }}>
         {TAB_LIST.map(t => (
           <button key={t.id} onClick={() => { setActiveTab(t.id); setExpanded(null); setSearch('') }}
             style={{ padding: '0.9rem 1rem', background: 'none', border: 'none', cursor: 'pointer', fontWeight: activeTab === t.id ? 700 : 500, fontSize: '0.85rem', whiteSpace: 'nowrap', color: activeTab === t.id ? '#1d4ed8' : '#6b7280', borderBottom: activeTab === t.id ? '2px solid #1d4ed8' : '2px solid transparent', transition: 'all 0.15s' }}>

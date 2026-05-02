@@ -595,7 +595,7 @@ export default function AifGuide() {
       </div>
 
       {/* ── Tabs ── */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', padding: '0 1rem', display: 'flex', gap: '0', overflowX: 'auto' }}>
+      <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', padding: '0 1rem', display: 'flex', gap: '0', overflowX: 'auto', justifyContent: 'center' }}>
         {TAB_LIST.map(t => (
           <button key={t.id} onClick={() => { setActiveTab(t.id); setExpanded(null); setSearch('') }}
             style={{ padding: '0.875rem 1rem', fontSize: '0.82rem', fontWeight: activeTab === t.id ? 700 : 500, color: activeTab === t.id ? '#7c3aed' : '#6b7280', background: 'none', border: 'none', borderBottom: activeTab === t.id ? '2px solid #7c3aed' : '2px solid transparent', cursor: 'pointer', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '5px' }}>
