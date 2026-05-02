@@ -563,7 +563,7 @@ export default function SaaGuide() {
     <Layout>
       {/* Hero */}
       <div style={{ background: 'linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 50%, #1e3a5f 100%)', padding: '2.5rem 1.5rem 2rem', textAlign: 'center', color: '#fff' }}>
-        <div style={{ display: 'inline-block', background: 'rgba(255,153,0,0.2)', border: '1px solid rgba(255,153,0,0.5)', borderRadius: '999px', padding: '4px 14px', fontSize: '0.75rem', fontWeight: 700, color: '#fbbf24', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>
+        <div style={{ display: 'inline-block', background: 'rgba(147,197,253,0.15)', border: '1px solid rgba(147,197,253,0.4)', borderRadius: '999px', padding: '4px 14px', fontSize: '0.75rem', fontWeight: 700, color: '#bfdbfe', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>
           ☁️ SAA-C03 · COMPLETE STUDY GUIDE
         </div>
         <h1 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.25rem)', fontWeight: 900, margin: '0 0 0.75rem', lineHeight: 1.2 }}>
