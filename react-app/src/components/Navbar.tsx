@@ -82,8 +82,8 @@ export default function Navbar() {
   const practiceItems = [
     { to: '/certifications', bg: '#eff6ff', icon: '📝', label: 'Practice Quiz', sub: '3,910 questions · 12 certs', badge: '' },
     { to: '/certifications?mode=mock', bg: '#f0fdf4', icon: '⏱️', label: 'Mock Exam', sub: 'Timed practice test · 65q · 130 min', badge: '' },
-    { to: '/architecture-builder', bg: '#f5f3ff', icon: '🏗️', label: 'Architecture Builder', sub: 'Drag & drop AWS services', badge: 'SAA-C03' },
-    { to: '/visual-exam', bg: '#fff0f0', icon: '🎯', label: 'Visual Exam', sub: 'Diagram-based questions', badge: 'SAA-C03' },
+    { to: '/architecture-builder', bg: '#f5f3ff', icon: '🏗️', label: 'Architecture Builder', sub: 'Drag & drop AWS services', badge: '' },
+    { to: '/visual-exam', bg: '#fff0f0', icon: '🎯', label: 'Visual Exam', sub: 'Diagram-based questions', badge: '' },
     ...(!isPremium ? [{ to: '/sample-questions', bg: '#eff6ff', icon: '🆓', label: 'Sample Questions', sub: '20 free questions · no sign up', badge: '' }] : []),
   ]
 
@@ -96,9 +96,9 @@ export default function Navbar() {
     { to: '/comparisons', bg: '#fff7ed', icon: '⚖️', label: 'Service Comparisons', sub: 'X vs Y tables from real exam data', badge: '' },
     { to: '/cheat-sheets', bg: '#fef2f2', icon: '📄', label: 'Cheat Sheets', sub: 'Domains, traps & patterns per cert', badge: '' },
     // AIF-C01 specific — only show if user has AIF access (or still loading)
-    ...(aifLoading || hasAifAccess ? [{ to: '/prompt-patterns', bg: '#f5f3ff', icon: '✍️', label: 'Prompt Patterns', sub: 'AIF-C01 techniques, parameters & security', badge: 'AIF-C01' }] : []),
+    ...(aifLoading || hasAifAccess ? [{ to: '/prompt-patterns', bg: '#f5f3ff', icon: '✍️', label: 'Prompt Patterns', sub: 'AIF-C01 techniques, parameters & security', badge: '' }] : []),
     // SAA-C03 specific — only show if user has SAA access (or still loading)
-    ...(saaLoading || hasSaaAccess ? [{ to: '/saa-guide', bg: '#eff6ff', icon: '📖', label: 'SAA-C03 Deep Study', sub: 'Decision matrix, traps & 30-day study plan', badge: 'SAA-C03' }] : []),
+    ...(saaLoading || hasSaaAccess ? [{ to: '/saa-guide', bg: '#eff6ff', icon: '📖', label: 'SAA-C03 Deep Study', sub: 'Decision matrix, traps & 30-day study plan', badge: '' }] : []),
   ]
 
   const DropdownItem = ({ item }: { item: typeof practiceItems[0] }) => (
