@@ -30,6 +30,7 @@ export default function AiCoach() {
   const [isLoading, setIsLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!loading && !user) navigate('/login')
@@ -38,7 +39,10 @@ export default function AiCoach() {
   }, [loading, user, tier])
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const container = messagesContainerRef.current
+    if (container) {
+      container.scrollTop = container.scrollHeight
+    }
   }, [messages, isLoading])
 
   const send = async (text?: string) => {
@@ -93,7 +97,7 @@ export default function AiCoach() {
         </div>
 
         {/* Chat area */}
-        <div style={{ flex: 1, background: 'linear-gradient(135deg, #0f172a, #1e293b)', borderRadius: '1.25rem', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1rem', minHeight: '420px' }}>
+        <div style={{ flex: 1, background: 'linear-gradient(135deg, #0f172a, #1e293b)', borderRadius: '1.25rem', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1rem', height: 'calc(100vh - 280px)', minHeight: '420px' }}>
 
           {/* Empty state */}
           {messages.length === 0 && (
@@ -120,7 +124,7 @@ export default function AiCoach() {
 
           {/* Messages */}
           {messages.length > 0 && (
-            <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
+            <div ref={messagesContainerRef} style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
               {messages.map((m, i) => (
                 <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
                   {m.role === 'assistant' && (
