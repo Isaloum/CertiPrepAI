@@ -55,6 +55,18 @@ export async function confirmSignUp(email: string, code: string): Promise<void> 
   })
 }
 
+// ─── Resend Confirmation Code ─────────────────────────────────────
+export async function resendConfirmationCode(email: string): Promise<void> {
+  const normalizedEmail = email.trim().toLowerCase()
+  return new Promise((resolve, reject) => {
+    const user = new CognitoUser({ Username: normalizedEmail, Pool: userPool })
+    user.resendConfirmationCode((err) => {
+      if (err) reject(err)
+      else resolve()
+    })
+  })
+}
+
 // ─── Sign In ─────────────────────────────────────────────────────
 export async function signIn(email: string, password: string): Promise<AuthUser | 'MFA_REQUIRED'> {
   const normalizedEmail = email.trim().toLowerCase()

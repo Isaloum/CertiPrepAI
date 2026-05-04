@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { signIn, completeMFASignIn } from '../lib/cognito'
+import { signIn, completeMFASignIn, confirmSignUp, resendConfirmationCode } from '../lib/cognito'
 import { useAuth } from '../contexts/AuthContext'
 import { trackLogin, identifyUser } from '../lib/analytics'
 
@@ -15,6 +15,10 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [mfaRequired, setMfaRequired] = useState(false)
   const [totpCode, setTotpCode] = useState('')
+  const [unconfirmed, setUnconfirmed] = useState(false)
+  const [verifyCode, setVerifyCode] = useState('')
+  const [resendSuccess, setResendSuccess] = useState(false)
+  const [resendLoading, setResendLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -33,9 +37,45 @@ export default function Login() {
       trackLogin('free')
       navigate('/dashboard')
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Sign in failed.')
+      const msg = err instanceof Error ? err.message : 'Sign in failed.'
+      if (msg.includes('User is not confirmed') || msg.includes('UserNotConfirmedException')) {
+        setUnconfirmed(true)
+        setError('')
+      } else {
+        setError(msg)
+      }
     }
     setLoading(false)
+  }
+
+  const handleVerifySubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!verifyCode) { setError('Enter the verification code.'); return }
+    setLoading(true)
+    setError('')
+    try {
+      await confirmSignUp(email, verifyCode)
+      // Auto sign in after confirmation
+      await signIn(email, password)
+      await refreshUser()
+      navigate('/dashboard')
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Invalid code. Try again.')
+    }
+    setLoading(false)
+  }
+
+  const handleResend = async () => {
+    setResendLoading(true)
+    setResendSuccess(false)
+    setError('')
+    try {
+      await resendConfirmationCode(email)
+      setResendSuccess(true)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to resend code.')
+    }
+    setResendLoading(false)
   }
 
   const handleMFASubmit = async (e: React.FormEvent) => {
@@ -125,7 +165,46 @@ export default function Login() {
         justifyContent: 'center',
         padding: '3rem',
       }}>
-        {mfaRequired ? (
+        {unconfirmed ? (
+          <>
+            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+              <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>📧</div>
+              <h1 style={{ fontSize: '1.4rem', fontWeight: 900, color: '#111827', marginBottom: '0.4rem' }}>Verify your email</h1>
+              <p style={{ color: '#6b7280', fontSize: '0.88rem', lineHeight: 1.5 }}>
+                We sent a verification code to <strong>{email}</strong>. Check your inbox and spam folder.
+              </p>
+            </div>
+            <form onSubmit={handleVerifySubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <input
+                type="text"
+                value={verifyCode}
+                onChange={e => setVerifyCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                placeholder="Enter 6-digit code"
+                autoFocus
+                maxLength={6}
+                style={{ width: '100%', padding: '0.85rem', fontSize: '1.5rem', letterSpacing: '0.4em', textAlign: 'center', border: '2px solid #e5e7eb', borderRadius: '0.75rem', outline: 'none', boxSizing: 'border-box' }}
+              />
+              {error && (
+                <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '0.5rem', padding: '0.6rem 0.85rem', fontSize: '0.83rem', color: '#b91c1c' }}>{error}</div>
+              )}
+              {resendSuccess && (
+                <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '0.5rem', padding: '0.6rem 0.85rem', fontSize: '0.83rem', color: '#166534' }}>✅ New code sent — check your inbox and spam folder.</div>
+              )}
+              <button type="submit" disabled={loading || verifyCode.length < 6}
+                style={{ width: '100%', padding: '0.85rem', background: loading || verifyCode.length < 6 ? '#93c5fd' : '#2563eb', color: '#fff', fontWeight: 700, fontSize: '0.95rem', border: 'none', borderRadius: '0.75rem', cursor: loading || verifyCode.length < 6 ? 'not-allowed' : 'pointer' }}>
+                {loading ? 'Verifying…' : 'Verify & Log In'}
+              </button>
+              <button type="button" onClick={handleResend} disabled={resendLoading}
+                style={{ background: 'none', border: '1px solid #e5e7eb', borderRadius: '0.75rem', padding: '0.75rem', color: '#374151', fontSize: '0.85rem', cursor: resendLoading ? 'not-allowed' : 'pointer', fontWeight: 500 }}>
+                {resendLoading ? 'Sending…' : '📨 Resend verification code'}
+              </button>
+              <button type="button" onClick={() => { setUnconfirmed(false); setVerifyCode(''); setError('') }}
+                style={{ background: 'none', border: 'none', color: '#6b7280', fontSize: '0.83rem', cursor: 'pointer', textDecoration: 'underline' }}>
+                ← Back to login
+              </button>
+            </form>
+          </>
+        ) : mfaRequired ? (
           <>
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
               <div style={{ fontSize: '3rem', marginBottom: '0.75rem' }}>🔐</div>
