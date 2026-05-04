@@ -12,6 +12,7 @@ interface Comparison {
   bSummary: string
   chooseA: string[]
   chooseB: string[]
+  hot?: boolean
 }
 
 interface Group {
@@ -52,6 +53,7 @@ const DATA: Group[] = [
         bSummary: 'Provision new EC2 instances — scaling takes 2-5 minutes to complete',
         chooseA: ['Handle sudden traffic burst within seconds (not minutes)', 'Short-duration workloads (max 15 minutes per execution)', 'Event-driven: API calls, S3 uploads, SQS messages, DynamoDB streams', 'Zero idle cost — pay only for actual execution time'],
         chooseB: ['Long-running workloads exceeding Lambda 15-minute limit', 'Need persistent state, large memory, or specific OS configuration', 'Cost optimization at scale: Reserved Instances cheaper than Lambda at sustained high load', 'Applications requiring full OS control or custom runtimes'],
+        hot: true,
       },
     ],
   },
@@ -86,6 +88,7 @@ const DATA: Group[] = [
         bSummary: 'Automatically copy objects to a bucket in another region after upload',
         chooseA: ['Global users need to upload large files to a single S3 bucket quickly', 'Reduce upload time by routing through CloudFront edge locations', 'Fastest aggregation of data from global locations into one region'],
         chooseB: ['Need objects automatically available in another region for compliance or DR', 'Reduce cross-region read latency by keeping a copy closer to readers', 'Disaster recovery: objects automatically replicated to backup region (15-min SLA with S3 RTC)'],
+        hot: true,
       },
       {
         a: 'File Gateway', b: 'Tape Gateway',
@@ -94,6 +97,25 @@ const DATA: Group[] = [
         bSummary: 'Virtual tape library → S3/Glacier for backup software integration',
         chooseA: ['On-premises apps need to store files in S3 via NFS or SMB protocol', 'Require local cache to reduce data egress charges and provide low-latency access', 'Hybrid file sharing: on-prem staff access files locally, stored durably in S3', 'Files must be accessible via SMB — use File Gateway, not Tape Gateway'],
         chooseB: ['Existing backup software uses tape library interface (iSCSI VTL)', 'Replace physical tape infrastructure with virtual tapes backed by S3 and Glacier', 'Cost-effective long-term backup — tapes automatically archived to Glacier', 'Note: Tape Gateway does NOT provide local cache or immediate file access'],
+        hot: true,
+      },
+      {
+        a: 'EFS', b: 'FSx for Windows',
+        aFull: 'Amazon EFS', bFull: 'Amazon FSx for Windows File Server',
+        aSummary: 'POSIX-compliant NFS file system — Linux workloads, auto-scales',
+        bSummary: 'Fully managed Windows file server — SMB, NTFS, Active Directory integrated',
+        chooseA: ['Linux EC2 instances need shared file storage', 'POSIX permissions required', 'Auto-scaling storage without pre-provisioning'],
+        chooseB: ['Windows workloads needing SMB protocol and NTFS permissions', 'Active Directory integration for file-level access control', 'SQL Server, SharePoint, or Windows home directories on AWS'],
+        hot: true,
+      },
+      {
+        a: 'EBS', b: 'Instance Store',
+        aFull: 'Amazon EBS', bFull: 'EC2 Instance Store',
+        aSummary: 'Persistent block storage — survives instance stop/terminate, detachable',
+        bSummary: 'Ephemeral local storage — highest IOPS, lost when instance stops or fails',
+        chooseA: ['Data must persist beyond instance lifecycle', 'Database storage, root volumes, durable block I/O'],
+        chooseB: ['Temporary scratch space, buffers, caches — data loss acceptable', 'Need highest possible I/O throughput and lowest latency (local NVMe)'],
+        hot: true,
       },
     ],
   },
@@ -120,6 +142,16 @@ const DATA: Group[] = [
         bSummary: 'In-memory cache — sub-ms latency, ephemeral, for read acceleration',
         chooseA: ['Primary data store that needs to persist', 'Write-heavy workloads with durable storage'],
         chooseB: ['Cache frequently-read data to reduce DB load', 'Session storage, leaderboards, real-time analytics', 'Sub-millisecond latency required'],
+        hot: true,
+      },
+      {
+        a: 'Redis', b: 'Memcached',
+        aFull: 'ElastiCache for Redis', bFull: 'ElastiCache for Memcached',
+        aSummary: 'Feature-rich cache — persistence, pub/sub, sorted sets, replication, failover',
+        bSummary: 'Simple, fast cache — multithreaded, pure caching, no persistence or replication',
+        chooseA: ['Need data persistence (cache survives restart)', 'Pub/sub messaging, leaderboards, session tokens', 'Multi-AZ with automatic failover required', 'Complex data structures: sorted sets, hashes, lists'],
+        chooseB: ['Simple key-value caching with no persistence requirement', 'Multi-threaded workloads that benefit from horizontal scaling', 'Simplest possible cache — no failover, no replication, lowest overhead'],
+        hot: true,
       },
       {
         a: 'Aurora Reader Endpoint', b: 'Aurora Custom Endpoint',
@@ -128,6 +160,7 @@ const DATA: Group[] = [
         bSummary: 'Routes to a SPECIFIC SUBSET of replicas you define — by size, config, or role',
         chooseA: ['Simple read scaling where all replicas are the same instance size', 'Want automatic load balancing across all available read replicas', 'No need to differentiate between production reads and reporting queries'],
         chooseB: ['Cluster has replicas of different sizes (e.g., r5.4xlarge for prod, r5.large for reports)', 'Route production traffic to high-capacity instances and reporting to low-capacity', 'Aurora does NOT do this automatically — you must create custom endpoints explicitly'],
+        hot: true,
       },
     ],
   },
@@ -140,6 +173,7 @@ const DATA: Group[] = [
         bSummary: 'Pub/Sub — fan-out messages to multiple subscribers simultaneously',
         chooseA: ['Decouple microservices with a buffer', 'Ensure each message is processed exactly once (FIFO)', 'Handle traffic spikes without losing messages'],
         chooseB: ['Send notifications to multiple endpoints at once', 'Fan-out to SQS + Lambda + email + SMS simultaneously', 'Push-based delivery to subscribers'],
+        hot: true,
       },
       {
         a: 'SQS', b: 'EventBridge', aFull: 'Amazon SQS', bFull: 'Amazon EventBridge',
@@ -147,6 +181,23 @@ const DATA: Group[] = [
         bSummary: 'Event bus — content-based routing, 90+ AWS sources, SaaS integrations',
         chooseA: ['Simple point-to-point decoupling', 'Need persistent queue with retry logic'],
         chooseB: ['Route events based on content/patterns', 'Integrate with SaaS apps (Salesforce, Zendesk)', 'React to AWS service events (EC2 state changes)'],
+      },
+      {
+        a: 'Step Functions', b: 'SQS',
+        aFull: 'AWS Step Functions', bFull: 'Amazon SQS',
+        aSummary: 'Workflow orchestration — visual state machine, retry logic, error handling built in',
+        bSummary: 'Message queue — decouples producers and consumers, simple async buffering',
+        chooseA: ['Multi-step workflows with branching, retries, and error handling', 'Long-running processes (up to 1 year) across multiple Lambda functions', 'Need visual workflow with audit trail of each step execution'],
+        chooseB: ['Simple decoupling between two services', 'Buffer and retry individual messages without orchestration logic', 'High-throughput message passing without workflow complexity'],
+      },
+      {
+        a: 'Kinesis Data Streams', b: 'Kinesis Firehose',
+        aFull: 'Amazon Kinesis Data Streams', bFull: 'Amazon Kinesis Data Firehose',
+        aSummary: 'Custom real-time streaming — you manage consumers, replay, sub-second latency',
+        bSummary: 'Managed delivery pipeline — auto-delivers to S3/Redshift/OpenSearch, no consumer code',
+        chooseA: ['Custom processing logic on the stream (Lambda, KCL consumer)', 'Need to replay records or have multiple independent consumers', 'Sub-second latency processing of streaming data'],
+        chooseB: ['Just need to load streaming data into S3, Redshift, or OpenSearch with no code', 'Batch, compress, and transform before loading — managed by AWS', 'Simpler setup: no shards to manage, auto-scales, pay per GB ingested'],
+        hot: true,
       },
     ],
   },
@@ -159,6 +210,7 @@ const DATA: Group[] = [
         bSummary: 'Layer 4 — TCP/UDP, ultra-low latency, millions of req/sec, static IP',
         chooseA: ['Web applications with HTTP/HTTPS traffic', 'Content-based routing (path, host, headers)', 'WebSocket or HTTP/2 support needed'],
         chooseB: ['Extreme performance — millions of requests/second', 'TCP/UDP workloads (gaming, IoT, VoIP)', 'Need static IP or Elastic IP on load balancer'],
+        hot: true,
       },
       {
         a: 'CloudFront', b: 'Global Accelerator', aFull: 'Amazon CloudFront', bFull: 'AWS Global Accelerator',
@@ -166,6 +218,7 @@ const DATA: Group[] = [
         bSummary: 'Network accelerator — routes TCP/UDP over AWS backbone, non-HTTP traffic',
         chooseA: ['Cache and serve static content (images, JS, CSS, video)', 'Reduce latency for global web users', 'DDoS protection with AWS WAF integration'],
         chooseB: ['Non-HTTP workloads (TCP/UDP, gaming, IoT)', 'Need static Anycast IP addresses', 'Consistent performance regardless of content cacheability'],
+        hot: true,
       },
       {
         a: 'Direct Connect', b: 'VPN', aFull: 'AWS Direct Connect', bFull: 'AWS Site-to-Site VPN',
@@ -173,6 +226,15 @@ const DATA: Group[] = [
         bSummary: 'Encrypted tunnel over internet — fast setup, lower cost, variable latency',
         chooseA: ['Consistent, high-bandwidth connection to AWS', 'Sensitive data requiring private link (compliance)', 'Production workloads needing predictable performance'],
         chooseB: ['Quick setup (hours vs weeks for Direct Connect)', 'Backup connection for Direct Connect failover', 'Lower cost, acceptable variable latency'],
+      },
+      {
+        a: 'VPC Peering', b: 'Transit Gateway',
+        aFull: 'VPC Peering', bFull: 'AWS Transit Gateway',
+        aSummary: 'Direct 1-to-1 connection between two VPCs — simple, low cost, no transitive routing',
+        bSummary: 'Central hub connecting many VPCs and on-prem networks — transitive routing supported',
+        chooseA: ['Connect two VPCs with simple, low-latency connectivity', 'No need for transitive routing between multiple VPCs', 'Lowest cost option for single VPC-to-VPC connectivity'],
+        chooseB: ['Connect many VPCs (10+) through a single hub — avoids N×(N-1)/2 peering mesh', 'Need transitive routing: VPC A → Transit Gateway → VPC B → on-prem', 'Centralized network management across accounts and regions'],
+        hot: true,
       },
     ],
   },
@@ -185,6 +247,7 @@ const DATA: Group[] = [
         bSummary: 'DDoS protection — absorbs volumetric attacks at Layer 3/4',
         chooseA: ['Block application-layer attacks (SQL injection, XSS)', 'Rate limiting and bot control', 'Custom rules based on IP, geo, request patterns'],
         chooseB: ['Protection against volumetric DDoS attacks', 'Shield Standard: free, automatic for all AWS customers', 'Shield Advanced: 24/7 DRT team, cost protection, Layer 7'],
+        hot: true,
       },
       {
         a: 'GuardDuty', b: 'Inspector', aFull: 'Amazon GuardDuty', bFull: 'Amazon Inspector',
@@ -192,6 +255,7 @@ const DATA: Group[] = [
         bSummary: 'Vulnerability scanner — scans EC2/containers/Lambda for CVEs and misconfigs',
         chooseA: ['Detect compromised instances, crypto mining, unusual API calls', 'Continuous monitoring of CloudTrail, VPC Flow Logs, DNS logs'],
         chooseB: ['Scan workloads for known CVEs before attackers find them', 'Compliance: identify unpatched OS/packages', 'Automated vulnerability assessment'],
+        hot: true,
       },
       {
         a: 'Secrets Manager', b: 'KMS', aFull: 'AWS Secrets Manager', bFull: 'AWS KMS',
@@ -211,6 +275,7 @@ const DATA: Group[] = [
         bSummary: 'API audit log — who did what, when, from where across your AWS account',
         chooseA: ['Monitor EC2 CPU, Lambda duration, RDS connections', 'Set alarms to auto-scale or notify on thresholds', 'Centralize application logs'],
         chooseB: ['Audit: who deleted the S3 bucket?', 'Compliance: prove all API calls are logged', 'Detect unauthorized IAM changes'],
+        hot: true,
       },
       {
         a: 'CloudWatch', b: 'X-Ray', aFull: 'Amazon CloudWatch', bFull: 'AWS X-Ray',
@@ -225,6 +290,7 @@ const DATA: Group[] = [
         bSummary: 'Configuration history — tracks what your resources look like over time',
         chooseA: ['Who made this change? (IAM user, role, time)', 'Security investigation and forensics'],
         chooseB: ['Was this S3 bucket public last Tuesday?', 'Compliance: are all EC2 instances using approved AMIs?', 'Remediate non-compliant resources automatically'],
+        hot: true,
       },
       {
         a: 'CloudWatch Default Metrics', b: 'CloudWatch Custom Metrics',
@@ -233,6 +299,7 @@ const DATA: Group[] = [
         bSummary: 'Additional metrics requiring CloudWatch Agent — memory, disk space, logs',
         chooseA: ['Monitoring CPU utilization, network in/out, or disk read/write operations', 'No agent installation needed — metrics appear automatically for EC2 instances', 'Standard infrastructure monitoring that does not require OS-level visibility'],
         chooseB: ['Need memory utilization — NOT available by default, must install CloudWatch Agent', 'Disk space utilization, disk swap, page file — all require the agent', 'Collect application logs from inside EC2 instances', 'Install CloudWatch Agent on both Linux and Windows EC2 instances'],
+        hot: true,
       },
       {
         a: 'CloudWatch', b: 'RDS Enhanced Monitoring',
@@ -241,6 +308,7 @@ const DATA: Group[] = [
         bSummary: 'OS-agent metrics — per-process and per-thread CPU/memory on the DB host',
         chooseA: ['Standard RDS monitoring: CPU%, memory%, storage, connections, IOPS', 'Setting alarms on high-level DB instance metrics', 'No requirement to see per-process breakdown'],
         chooseB: ['Need to see which specific database process or thread is consuming CPU', 'Granular OS-level visibility: memory per process, CPU per thread', 'Troubleshoot DB performance at the process level — not just the instance level', 'Data stored in CloudWatch Logs (RDSOSMetrics group), not standard CloudWatch metrics'],
+        hot: true,
       },
     ],
   },
@@ -254,6 +322,7 @@ const DATA: Group[] = [
         bSummary: 'Standalone LDAP directory in AWS — no on-premises AD required',
         chooseA: ['Company already has an on-premises Active Directory', 'Want AWS services to authenticate against existing corporate AD credentials', 'Need to redirect auth without replicating or storing directory data in AWS', 'Granting AWS Console/EC2 access to employees using existing corporate usernames'],
         chooseB: ['No existing on-premises AD — need a new directory in AWS', 'Smaller organizations needing basic Active Directory-compatible features', 'Development/test environments needing an LDAP directory without on-prem dependency', 'Subset of AD features: user accounts, groups, Kerberos SSO, but not full Microsoft AD'],
+        hot: true,
       },
       {
         a: 'SAML 2.0 + AD FS', b: 'Web Identity Federation',
@@ -262,6 +331,7 @@ const DATA: Group[] = [
         bSummary: 'App user auth — end users sign in with Google, Facebook, Amazon, or Cognito',
         chooseA: ['Corporate employees need AWS Console or API access using company credentials', 'Identity provider is Microsoft Active Directory with AD FS', 'Federated single sign-on for internal workforce accessing AWS resources', 'Compliance: centralize authentication in existing corporate IdP'],
         chooseB: ['Mobile or web app users authenticating via social login (Google, Facebook)', 'Consumer-facing applications where users create their own accounts', 'Need to grant app users temporary AWS credentials to access S3/DynamoDB directly', 'Amazon Cognito is the AWS-native Web Identity Federation service'],
+        hot: true,
       },
       {
         a: 'Organizations', b: 'RAM',
@@ -270,6 +340,7 @@ const DATA: Group[] = [
         bSummary: 'Resource sharing — share specific AWS resources across accounts without duplicating',
         chooseA: ['Centrally manage multiple AWS accounts under one organization', 'Apply Service Control Policies (SCPs) to restrict what accounts can do', 'Consolidated billing across all accounts', 'Create Organizational Units (OUs) for account grouping'],
         chooseB: ['Share Transit Gateways, VPC subnets, or License Manager configs across accounts', 'Avoid duplicating the same resource in every account', 'Grant specific cross-account resource access without full account management', 'Organizations + RAM together: Organizations consolidates, RAM shares resources within it'],
+        hot: true,
       },
     ],
   },
@@ -291,6 +362,7 @@ const DATA: Group[] = [
         bSummary: 'Your code encrypts data locally, but sends the KMS KeyId to AWS to generate data key',
         chooseA: ['Compliance: master key must NEVER be sent to or stored in AWS', 'Both unencrypted data AND master key must stay on-premises', 'Strictest data sovereignty requirements — you manage key lifecycle entirely'],
         chooseB: ['Want client-side encryption benefits with KMS key management (rotation, CloudTrail)', 'Unencrypted data never reaches S3, but AWS KMS generates and manages the data key', 'Easier key management than self-managing a client master key'],
+        hot: true,
       },
       {
         a: 'KMS CMK', b: 'KMS Custom Key Store (CloudHSM)',
@@ -720,7 +792,12 @@ export default function ServiceComparison() {
                           <div style={{ fontSize: '0.78rem', color: '#6b7280', marginTop: '0.2rem', lineHeight: 1.4 }}>{c.aSummary}</div>
                         </div>
                         {/* VS badge */}
-                        <div style={{ background: gc.bg, border: `1px solid ${gc.border}40`, borderRadius: '999px', padding: '0.25rem 0.625rem', fontSize: '0.7rem', fontWeight: 800, color: gc.text, flexShrink: 0 }}>VS</div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
+                          <div style={{ background: gc.bg, border: `1px solid ${gc.border}40`, borderRadius: '999px', padding: '0.25rem 0.625rem', fontSize: '0.7rem', fontWeight: 800, color: gc.text }}>VS</div>
+                          {c.hot && (
+                            <div style={{ background: '#fff7ed', border: '1px solid #fb923c', borderRadius: '999px', padding: '2px 8px', fontSize: '0.62rem', fontWeight: 800, color: '#c2410c', whiteSpace: 'nowrap' }}>🔥 Exam Trap</div>
+                          )}
+                        </div>
                         {/* Service B */}
                         <div>
                           <div style={{ fontWeight: 800, color: '#111827', fontSize: '0.95rem' }}>{c.bFull}</div>
