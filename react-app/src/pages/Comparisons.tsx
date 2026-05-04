@@ -11,6 +11,7 @@ const comparisons = [
     emoji: '🗄️',
     tag: 'Database',
     examFreq: '31 questions across AWS certification exams',
+    hot: true,
     rows: [
       { feature: 'Purpose', a: 'High Availability & Failover', b: 'Read Scaling & Performance' },
       { feature: 'Replication type', a: 'Synchronous', b: 'Asynchronous' },
@@ -44,6 +45,7 @@ const comparisons = [
     emoji: '🔒',
     tag: 'Security',
     examFreq: 'Core security concept across AWS certification exams',
+    hot: true,
     rows: [
       { feature: 'Level', a: 'Instance level', b: 'Subnet level' },
       { feature: 'Stateful?', a: 'YES — return traffic auto-allowed', b: 'NO — must explicitly allow inbound AND outbound' },
@@ -124,6 +126,7 @@ const comparisons = [
     emoji: '📨',
     tag: 'Messaging',
     examFreq: '52 questions across AWS certification exams',
+    hot: true,
     rows: [
       { feature: 'Model', a: 'Pull (polling)', b: 'Push (pub/sub)', c: 'Pull or push (consumer)' },
       { feature: 'Consumer count', a: 'One consumer per message', b: 'Multiple subscribers receive same message', c: 'Multiple consumers, independent position' },
@@ -158,6 +161,7 @@ const comparisons = [
     emoji: '🔑',
     tag: 'Security',
     examFreq: 'Key security pattern across AWS certification exams',
+    hot: true,
     rows: [
       { feature: 'Auto rotation', a: 'YES — built-in for RDS, Redshift, custom via Lambda', b: 'NO — manual rotation only' },
       { feature: 'Cost', a: '~$0.40/secret/month + API calls', b: 'Free for Standard tier, $0.05/10K API calls (Advanced)' },
@@ -190,6 +194,7 @@ const comparisons = [
     emoji: '🛡️',
     tag: 'Security',
     examFreq: '10 questions across AWS certification exams',
+    hot: true,
     rows: [
       { feature: 'Protects against', a: 'L7 web attacks (SQLi, XSS, rate abuse)', b: 'DDoS attacks (L3/L4/L7)', c: 'Threats & anomalies (all types)' },
       { feature: 'Mode', a: 'Active blocking', b: 'Active blocking', c: 'Detection only (no blocking)' },
@@ -219,6 +224,160 @@ const comparisons = [
     colC: 'Firehose',
     tip: '"Big data processing frameworks" = EMR. "CSV to Parquet with crawler" = Glue. "Load streaming data to S3/Redshift/OpenSearch/Splunk" = Firehose. Kinesis Data Streams → Firehose is a common pipeline.',
   },
+  {
+    id: 'lambda-vs-asg',
+    title: 'Lambda vs EC2 Auto Scaling',
+    emoji: '⚡',
+    tag: 'Compute',
+    examFreq: 'High-frequency burst scaling trap on SAA-C03',
+    hot: true,
+    colA: 'Lambda',
+    colB: 'EC2 Auto Scaling',
+    rows: [
+      { feature: 'Scale speed', a: 'Seconds — immediate burst', b: 'Minutes — provision + boot' },
+      { feature: 'Max execution', a: '15 minutes per invocation', b: 'Unlimited — always-on instances' },
+      { feature: 'Idle cost', a: 'Zero — pay per execution ms', b: 'Pay per hour even when idle' },
+      { feature: 'State', a: 'Stateless — no local disk persistence', b: 'Stateful — EBS persists between invocations' },
+      { feature: 'Cold start', a: 'Yes — first invocation delay (ms to s)', b: 'No cold start (instance already running)' },
+      { feature: 'Use when', a: '"Respond in seconds to spike" or "event-driven"', b: '"Long-running", "stateful", or "custom OS"' },
+    ],
+    tip: 'Key exam trap: "respond to sudden traffic spike within seconds" = Lambda. EC2 Auto Scaling takes 2-5 minutes to provision and pass health checks. If the answer choices include minutes vs seconds — Lambda wins on burst speed.',
+  },
+  {
+    id: 'waf-rate-vs-shield',
+    title: 'WAF Rate-Based Rule vs Shield Advanced',
+    emoji: '🛡️',
+    tag: 'Security',
+    examFreq: 'Classic DDoS vs application-layer confusion on SAA-C03',
+    hot: true,
+    colA: 'WAF Rate-Based Rule',
+    colB: 'Shield Advanced',
+    rows: [
+      { feature: 'Layer', a: 'Layer 7 — application (HTTP)', b: 'Layer 3/4 — network/transport' },
+      { feature: 'What it blocks', a: 'IPs exceeding a request rate threshold', b: 'Volumetric DDoS floods (Gbps-level)' },
+      { feature: 'How it works', a: 'Tracks requests per IP per 5-min window, auto-blocks offenders', b: 'Absorbs network-level flood traffic automatically' },
+      { feature: 'Manual blocklist?', a: 'No — dynamic, automatic per-IP enforcement', b: 'No — automatic mitigation' },
+      { feature: 'Cost', a: 'WAF pricing (per rule + per request)', b: '$3,000/month + data transfer' },
+      { feature: 'Use when', a: '"Block IPs exceeding a rate" or "bot scraping"', b: '"DDoS attack", "Gbps flood", "SYN flood"' },
+    ],
+    tip: 'Exam trap: "automatically block IPs that exceed a request rate" = WAF rate-based rule (NOT Shield). Shield Advanced protects against volumetric network floods, not per-IP application throttling. Your wrong answer in the practice exam.',
+  },
+  {
+    id: 'ad-connector-vs-simple-ad',
+    title: 'AD Connector vs Simple AD vs AWS Managed AD',
+    emoji: '🏢',
+    tag: 'Security',
+    examFreq: 'Identity federation trap — SAA-C03 Secure Architectures domain',
+    hot: true,
+    colA: 'AD Connector',
+    colB: 'Simple AD',
+    threeWay: true,
+    colC: 'AWS Managed AD',
+    rows: [
+      { feature: 'On-prem AD required?', a: 'YES — proxies to existing on-prem AD', b: 'NO — standalone in AWS', c: 'NO — full AD replicated in cloud' },
+      { feature: 'User data in AWS?', a: 'None — just a proxy gateway', b: 'YES — stored in AWS', c: 'YES — stored in AWS' },
+      { feature: 'AD features', a: 'Inherits from on-prem AD', b: 'Subset (Samba 4) — no trusts', c: 'Full Microsoft AD — trusts, group policies' },
+      { feature: 'MFA support', a: 'YES (RADIUS)', b: 'NO', c: 'YES' },
+      { feature: 'Use when', a: '"Existing on-prem AD, no data in AWS"', b: '"Small org, no on-prem, basic LDAP"', c: '"Full Microsoft AD in the cloud"' },
+    ],
+    tip: 'Exam trigger: "existing on-prem Active Directory, no user data stored in AWS" = AD Connector. "No on-prem AD, need a new directory" = Simple AD. "Need full Microsoft AD features in AWS" = AWS Managed AD.',
+  },
+  {
+    id: 'saml-vs-web-identity',
+    title: 'SAML 2.0 Federation vs Web Identity Federation',
+    emoji: '🔑',
+    tag: 'Security',
+    examFreq: 'Corporate vs consumer identity — SAA-C03 Secure Architectures domain',
+    hot: true,
+    colA: 'SAML 2.0 (AD FS)',
+    colB: 'Web Identity Federation',
+    rows: [
+      { feature: 'User type', a: 'Corporate employees', b: 'Consumer app users' },
+      { feature: 'Identity provider', a: 'Microsoft Active Directory via AD FS', b: 'Google, Facebook, Amazon, Cognito' },
+      { feature: 'Protocol', a: 'SAML 2.0 assertion → STS AssumeRoleWithSAML', b: 'OAuth token → STS AssumeRoleWithWebIdentity' },
+      { feature: 'User data in AWS?', a: 'No IAM users needed — federated via IdP', b: 'No IAM users needed — federated via IdP' },
+      { feature: 'AWS service', a: 'IAM Identity Center (SSO) or direct STS', b: 'Amazon Cognito Identity Pools' },
+      { feature: 'Use when', a: '"Employees access AWS using corporate login"', b: '"Mobile app users sign in with Google"' },
+    ],
+    tip: 'Never confuse these two. "Corporate employees + Active Directory" = SAML 2.0. "Mobile/web app users + social login" = Web Identity Federation / Cognito. The exam always makes one of these the wrong answer.',
+  },
+  {
+    id: 's3-object-lock-modes',
+    title: 'S3 Object Lock: Compliance vs Governance vs Legal Hold',
+    emoji: '🔒',
+    tag: 'Storage',
+    examFreq: 'WORM storage compliance trap — SAA-C03',
+    hot: true,
+    colA: 'Compliance Mode',
+    colB: 'Governance Mode',
+    threeWay: true,
+    colC: 'Legal Hold',
+    rows: [
+      { feature: 'Who can delete?', a: 'Nobody — not even root account', b: 'Users with s3:BypassGovernanceRetention', c: 'Nobody until removed' },
+      { feature: 'Retention period', a: 'Fixed — cannot be shortened', b: 'Can be shortened by privileged users', c: 'No time period — indefinite' },
+      { feature: 'Override possible?', a: 'NO — strictest mode', b: 'YES — with special permission', c: 'YES — can be removed anytime' },
+      { feature: 'Use when', a: '"Regulators require nobody can delete (including root)"', b: '"Protect most users but allow admins to override"', c: '"Hold evidence indefinitely — no fixed date"' },
+    ],
+    tip: '"Nobody, not even root, can delete before the retention period" = Compliance mode. "Admin can override" = Governance. "No time period, hold until investigation ends" = Legal Hold. Compliance is the strictest option.',
+  },
+  {
+    id: 'cloudwatch-default-vs-custom',
+    title: 'CloudWatch Default Metrics vs Custom Metrics',
+    emoji: '📊',
+    tag: 'Monitoring',
+    examFreq: 'Memory/disk visibility gap — high-frequency SAA-C03 trap',
+    hot: true,
+    colA: 'Default EC2 Metrics',
+    colB: 'Custom Metrics (Agent)',
+    rows: [
+      { feature: 'Source', a: 'Hypervisor — outside the OS', b: 'CloudWatch Agent — inside the OS' },
+      { feature: 'CPU utilization', a: 'YES ✓', b: 'YES ✓ (more granular)' },
+      { feature: 'Memory utilization', a: 'NO ✗ — not available by default', b: 'YES ✓ — requires Agent' },
+      { feature: 'Disk space used', a: 'NO ✗ — only disk I/O ops', b: 'YES ✓ — requires Agent' },
+      { feature: 'Swap usage', a: 'NO ✗', b: 'YES ✓ — requires Agent' },
+      { feature: 'Cost', a: 'Free — included with EC2', b: 'Custom metric charge per metric/month' },
+      { feature: 'Use when', a: 'Monitoring CPU, network, disk I/O ops', b: '"Memory utilization", "disk space", "swap" visibility needed' },
+    ],
+    tip: 'Most common SAA-C03 memory trap: "CloudWatch shows normal CPU but the app is struggling" = install CloudWatch Agent to see memory. Default metrics NEVER include memory or disk space — the hypervisor cannot see inside the OS.',
+  },
+  {
+    id: 'iam-db-auth-vs-secrets-manager',
+    title: 'IAM DB Authentication vs Secrets Manager',
+    emoji: '🗄️',
+    tag: 'Security',
+    examFreq: 'No-password RDS access pattern — SAA-C03',
+    colA: 'IAM DB Authentication',
+    colB: 'Secrets Manager',
+    rows: [
+      { feature: 'Password stored?', a: 'NO — generates a 15-min token', b: 'YES — stored and encrypted' },
+      { feature: 'How it works', a: 'EC2 instance role generates auth token via RDS API', b: 'App retrieves secret at runtime via API call' },
+      { feature: 'Token expiry', a: '15 minutes — auto-renewed', b: 'N/A — password rotates on schedule' },
+      { feature: 'SSL required?', a: 'YES — enforced automatically', b: 'No (but recommended)' },
+      { feature: 'Auto-rotation', a: 'N/A — no password to rotate', b: 'YES — native rotation for RDS' },
+      { feature: 'Use when', a: '"No password stored anywhere", "token-based auth", "instance role"', b: '"Auto-rotate DB credentials", "store API keys"' },
+    ],
+    tip: 'Exam trigger: "connect to RDS WITHOUT storing any password" = IAM DB Authentication. "Auto-rotate database passwords" = Secrets Manager. Both avoid hardcoding, but IAM DB Auth stores zero credentials anywhere.',
+  },
+  {
+    id: 'file-vs-tape-gateway',
+    title: 'File Gateway vs Tape Gateway vs Volume Gateway',
+    emoji: '🗂️',
+    tag: 'Storage',
+    examFreq: 'Hybrid cloud storage type confusion — SAA-C03',
+    hot: true,
+    colA: 'File Gateway',
+    colB: 'Tape Gateway',
+    threeWay: true,
+    colC: 'Volume Gateway',
+    rows: [
+      { feature: 'Protocol', a: 'NFS / SMB (file access)', b: 'iSCSI VTL (virtual tape)', c: 'iSCSI (block storage)' },
+      { feature: 'Stored in', a: 'S3 (each file = S3 object)', b: 'S3 and Glacier', c: 'S3 (Stored) or EBS snapshots (Cached)' },
+      { feature: 'Local cache', a: 'YES — recently accessed files cached', b: 'NO local cache', c: 'YES (Cached mode) or full copy (Stored mode)' },
+      { feature: 'Replaces', a: 'On-prem NAS / file server', b: 'Physical tape library', c: 'On-prem SAN / block storage' },
+      { feature: 'Use when', a: '"On-prem apps need NFS/SMB to S3 with local cache"', b: '"Replace tape backups with virtual tapes to Glacier"', c: '"On-prem block storage backed by AWS"' },
+    ],
+    tip: 'Exam trap: File Gateway = local cache for low-latency file access via NFS/SMB. Tape Gateway = NO local cache, virtual tapes go to Glacier. "Replace tape library" → Tape Gateway. "Local cache + S3 + NFS" → File Gateway.',
+  },
 ]
 
 const tagColors: Record<string, string> = {
@@ -230,6 +389,7 @@ const tagColors: Record<string, string> = {
   Messaging: '#f97316',
   Containers: '#06b6d4',
   Analytics: '#6366f1',
+  Monitoring: '#e879f9',
 }
 
 export default function Comparisons() {
@@ -329,6 +489,17 @@ export default function Comparisons() {
                           fontWeight: 600,
                         }}>{comp.tag}</span>
                         <span style={{ fontSize: '0.72rem', color: '#64748b' }}>🎯 {comp.examFreq}</span>
+                        {(comp as any).hot && (
+                          <span style={{
+                            background: '#431407',
+                            border: '1px solid #c2410c',
+                            borderRadius: '4px',
+                            padding: '0.1rem 0.5rem',
+                            fontSize: '0.7rem',
+                            fontWeight: 700,
+                            color: '#fb923c',
+                          }}>🔥 Exam Trap</span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -345,28 +516,32 @@ export default function Comparisons() {
                           <tr>
                             <th style={{ textAlign: 'left', padding: '0.5rem 0.75rem', color: '#64748b', fontWeight: 600, borderBottom: '1px solid #1e3a5f', width: '25%' }}>Feature</th>
                             <th style={{ textAlign: 'left', padding: '0.5rem 0.75rem', color: '#38bdf8', fontWeight: 700, borderBottom: '1px solid #1e3a5f', background: '#0c1a2e' }}>
-                              {comp.id.includes('spot') ? 'Spot' :
-                               comp.id.includes('geolocation') ? 'Geolocation' :
-                               comp.id.includes('sqs') ? 'SQS' :
-                               comp.id.includes('ecs') ? 'ECS' :
-                               comp.id.includes('secrets') ? 'Secrets Manager' :
-                               comp.id.includes('glacier') ? 'Expedited' :
-                               comp.id.includes('waf') ? 'WAF' :
-                               comp.id.includes('emr') ? 'EMR' :
-                               comp.id.includes('gateway') ? 'Gateway Endpoint' :
-                               comp.title.split(' vs ')[0]?.replace('RDS ', '').replace('Route 53: ', '').replace('Amazon ', '').replace('AWS ', '')}
+                              {(comp as any).colA ?? (
+                                comp.id.includes('spot') ? 'Spot' :
+                                comp.id.includes('geolocation') ? 'Geolocation' :
+                                comp.id.includes('sqs') ? 'SQS' :
+                                comp.id.includes('ecs') ? 'ECS' :
+                                comp.id.includes('secrets') ? 'Secrets Manager' :
+                                comp.id.includes('glacier') ? 'Expedited' :
+                                comp.id.includes('waf') ? 'WAF' :
+                                comp.id.includes('emr') ? 'EMR' :
+                                comp.id.includes('gateway') ? 'Gateway Endpoint' :
+                                comp.title.split(' vs ')[0]?.replace('RDS ', '').replace('Route 53: ', '').replace('Amazon ', '').replace('AWS ', '')
+                              )}
                             </th>
                             <th style={{ textAlign: 'left', padding: '0.5rem 0.75rem', color: '#a78bfa', fontWeight: 700, borderBottom: '1px solid #1e3a5f', background: '#0c1a2e' }}>
-                              {comp.id.includes('spot') ? 'On-Demand' :
-                               comp.id.includes('geolocation') ? 'Geoproximity' :
-                               comp.id.includes('sqs') ? 'SNS' :
-                               comp.id.includes('ecs') ? 'EKS' :
-                               comp.id.includes('secrets') ? 'SSM Parameter Store' :
-                               comp.id.includes('glacier') ? 'Standard' :
-                               comp.id.includes('waf') ? 'Shield' :
-                               comp.id.includes('emr') ? 'Glue' :
-                               comp.id.includes('gateway') ? 'Interface Endpoint' :
-                               comp.title.split(' vs ')[1]?.replace('Read Replica', 'Read Replica').replace('Route 53: ', '')}
+                              {(comp as any).colB ?? (
+                                comp.id.includes('spot') ? 'On-Demand' :
+                                comp.id.includes('geolocation') ? 'Geoproximity' :
+                                comp.id.includes('sqs') ? 'SNS' :
+                                comp.id.includes('ecs') ? 'EKS' :
+                                comp.id.includes('secrets') ? 'SSM Parameter Store' :
+                                comp.id.includes('glacier') ? 'Standard' :
+                                comp.id.includes('waf') ? 'Shield' :
+                                comp.id.includes('emr') ? 'Glue' :
+                                comp.id.includes('gateway') ? 'Interface Endpoint' :
+                                comp.title.split(' vs ')[1]?.replace('Read Replica', 'Read Replica').replace('Route 53: ', '')
+                              )}
                             </th>
                             {comp.threeWay && (
                               <th style={{ textAlign: 'left', padding: '0.5rem 0.75rem', color: '#34d399', fontWeight: 700, borderBottom: '1px solid #1e3a5f', background: '#0c1a2e' }}>
