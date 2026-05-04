@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import * as Sentry from '@sentry/react'
 import { getSession, signOut as cognitoSignOut, type AuthUser } from '../lib/cognito'
 
 const IDLE_TIMEOUT   = 30 * 60 * 1000  // 30 min → auto-logout
@@ -37,12 +38,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const refreshUser = async () => {
     const u = await getSession()
     setUser(u)
+    if (u) {
+      Sentry.setUser({ email: u.email, id: u.id, plan: u.tier })
+    } else {
+      Sentry.setUser(null)
+    }
   }
 
   useEffect(() => {
     getSession().then((u) => {
       setUser(u)
       setLoading(false)
+      if (u) {
+        Sentry.setUser({ email: u.email, id: u.id, plan: u.tier })
+      }
     })
   }, [])
 
@@ -55,6 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     cognitoSignOut()
     setUser(null)
     setShowWarning(false)
+    Sentry.setUser(null)
   }
 
   const clearAllTimers = () => {
