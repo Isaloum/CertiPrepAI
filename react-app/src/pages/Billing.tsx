@@ -112,17 +112,23 @@ export default function Billing() {
     // Lifetime: new checkout session
     if (plan.key === 'lifetime') {
       setUpgradeModal({ plan, state: 'loading' })
+      const controller = new AbortController()
+      const timer = setTimeout(() => controller.abort(), 15000)
       try {
         const res = await fetch(CHECKOUT_API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ plan: 'lifetime', email: user!.email }),
+          signal: controller.signal,
         })
+        clearTimeout(timer)
         const data = await res.json()
         if (data.url) { window.location.href = data.url; return }
         setUpgradeModal(prev => prev ? { ...prev, state: 'preview', error: data.error || 'Could not create checkout session.' } : null)
-      } catch {
-        setUpgradeModal(prev => prev ? { ...prev, state: 'preview', error: 'Network error. Try again.' } : null)
+      } catch (e: unknown) {
+        clearTimeout(timer)
+        const msg = e instanceof Error && e.name === 'AbortError' ? 'Request timed out. Please try again.' : 'Network error. Try again.'
+        setUpgradeModal(prev => prev ? { ...prev, state: 'preview', error: msg } : null)
       }
       return
     }
