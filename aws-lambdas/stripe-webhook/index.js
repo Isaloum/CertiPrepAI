@@ -70,6 +70,23 @@ exports.handler = async (event) => {
     if (email) {
       try { await setCognitoUserTier(email, tier); }
       catch (err) { console.error('[webhook] Upgrade failed:', err.message); }
+
+      // When upgrading to lifetime, cancel any active subscriptions so the user
+      // isn't double-billed for both their old plan and the lifetime purchase.
+      if (tier === 'lifetime') {
+        try {
+          const customers = await stripe.customers.list({ email: email.toLowerCase().trim(), limit: 5 });
+          for (const customer of customers.data) {
+            const activeSubs = await stripe.subscriptions.list({ customer: customer.id, status: 'active', limit: 10 });
+            for (const sub of activeSubs.data) {
+              await stripe.subscriptions.cancel(sub.id);
+              console.log(`[webhook] Cancelled subscription ${sub.id} for ${email} after lifetime purchase`);
+            }
+          }
+        } catch (err) {
+          console.error('[webhook] Failed to cancel old subscription after lifetime purchase:', err.message);
+        }
+      }
     }
     return { statusCode: 200, body: JSON.stringify({ received: true, tier }) };
   }

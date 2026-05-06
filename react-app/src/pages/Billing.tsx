@@ -120,7 +120,7 @@ export default function Billing() {
         })
         const data = await res.json()
         if (data.url) { window.location.href = data.url; return }
-        setUpgradeModal(prev => prev ? { ...prev, state: 'preview', error: 'Could not create checkout session.' } : null)
+        setUpgradeModal(prev => prev ? { ...prev, state: 'preview', error: data.error || 'Could not create checkout session.' } : null)
       } catch {
         setUpgradeModal(prev => prev ? { ...prev, state: 'preview', error: 'Network error. Try again.' } : null)
       }

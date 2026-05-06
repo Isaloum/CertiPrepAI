@@ -64,7 +64,8 @@ exports.handler = async (event) => {
 
     // ── Duplicate protection: check for existing active Stripe subscription ──────
     // Only applies when email is known (logged-in users). Skip for anonymous.
-    if (email) {
+    // Skip for lifetime — it's a one-time payment and a valid upgrade from any subscription.
+    if (email && mode === 'subscription') {
       const customers = await stripe.customers.list({ email: email.toLowerCase().trim(), limit: 5 });
       for (const customer of customers.data) {
         const activeSubs = await stripe.subscriptions.list({
