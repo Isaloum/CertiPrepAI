@@ -187,7 +187,7 @@ export default function Home() {
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center', padding: '0.5rem' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 900, color: '#60a5fa' }}>{s.n}</div>
-              <div style={{ fontSize: '0.7rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '0.2rem' }}>{s.label}</div>
+              <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '0.2rem' }}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -278,7 +278,7 @@ export default function Home() {
                   <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', flexShrink: 0 }}>{t.avatar}</div>
                   <div>
                     <div style={{ fontWeight: 700, color: '#111827', fontSize: '0.85rem' }}>{t.name}</div>
-                    <div style={{ fontSize: '0.75rem', color: '#22c55e', fontWeight: 600 }}>✅ {t.role}</div>
+                    <div style={{ fontSize: '0.75rem', color: '#15803d', fontWeight: 600 }}>✅ {t.role}</div>
                   </div>
                 </div>
               </div>
