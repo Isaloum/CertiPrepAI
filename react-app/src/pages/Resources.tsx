@@ -141,7 +141,7 @@ export default function Resources() {
                   {section.icon}
                 </div>
                 <h2 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#111827', margin: 0 }}>{section.category}</h2>
-                <span style={{ fontSize: '0.75rem', color: '#9ca3af', fontWeight: 600 }}>{section.items.length} resources</span>
+                <span style={{ fontSize: '0.75rem', color: '#6b7280', fontWeight: 600 }}>{section.items.length} resources</span>
               </div>
 
               {/* Cards grid */}
@@ -177,7 +177,7 @@ export default function Resources() {
                           }}>
                             {item.free ? 'FREE' : 'PAID'}
                           </span>
-                          <span style={{ color: '#9ca3af', fontSize: '0.9rem' }}>↗</span>
+                          <span style={{ color: '#6b7280', fontSize: '0.9rem' }}>↗</span>
                         </div>
                       </div>
                       <div style={{ fontSize: '0.8rem', color: hovered ? section.text + 'cc' : '#6b7280', lineHeight: 1.55 }}>{item.desc}</div>

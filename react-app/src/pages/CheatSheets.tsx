@@ -813,7 +813,7 @@ export default function CheatSheets() {
                   const pct = Math.round((svc.count / max) * 100)
                   return (
                     <div key={svc.name} style={{ padding: '0.875rem 1.5rem', borderBottom: i < sheet.topServices.length - 1 ? '1px solid #f9fafb' : 'none', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#9ca3af', width: '20px', textAlign: 'right' }}>#{i + 1}</span>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#6b7280', width: '20px', textAlign: 'right' }}>#{i + 1}</span>
                       <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#111827', width: '140px' }}>{svc.name}</span>
                       <div style={{ flex: 1, height: '8px', background: '#f3f4f6', borderRadius: '999px' }}>
                         <div style={{ width: `${pct}%`, height: '100%', background: sheet.color, borderRadius: '999px', opacity: 0.8 }} />
@@ -874,7 +874,7 @@ export default function CheatSheets() {
                       {p.services.map((s, si) => (
                         <span key={s} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                           <span style={{ background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: '0.5rem', padding: '0.25rem 0.625rem', fontSize: '0.75rem', fontWeight: 700, color: '#0369a1' }}>{s}</span>
-                          {si < p.services.length - 1 && <span style={{ color: '#9ca3af', fontSize: '0.75rem' }}>→</span>}
+                          {si < p.services.length - 1 && <span style={{ color: '#6b7280', fontSize: '0.75rem' }}>→</span>}
                         </span>
                       ))}
                     </div>

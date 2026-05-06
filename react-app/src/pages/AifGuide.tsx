@@ -614,7 +614,7 @@ export default function AifGuide() {
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by requirement, service, or keyword…"
               style={{ width: '100%', padding: '0.75rem 1rem', border: '1px solid #e5e7eb', borderRadius: '10px', fontSize: '0.875rem', marginBottom: '1rem', outline: 'none', boxSizing: 'border-box' as const }} />
             {filteredMatrix.length === 0
-              ? <div style={{ textAlign: 'center', color: '#9ca3af', padding: '2rem', fontSize: '0.875rem' }}>No matches for "{search}"</div>
+              ? <div style={{ textAlign: 'center', color: '#6b7280', padding: '2rem', fontSize: '0.875rem' }}>No matches for "{search}"</div>
               : <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   {filteredMatrix.map((row, i) => (
                     <div key={i} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px', padding: '0.875rem 1rem', display: 'flex', alignItems: 'flex-start', gap: '0.875rem', flexWrap: 'wrap' }}>
@@ -646,9 +646,9 @@ export default function AifGuide() {
                     <span style={{ fontSize: '1.4rem', flexShrink: 0 }}>{t.icon}</span>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontWeight: 700, fontSize: '0.92rem', color: '#111827' }}>{t.title}</div>
-                      <div style={{ fontSize: '0.78rem', color: '#9ca3af', marginTop: '0.15rem' }}>Triggered by: {t.trigger}</div>
+                      <div style={{ fontSize: '0.78rem', color: '#6b7280', marginTop: '0.15rem' }}>Triggered by: {t.trigger}</div>
                     </div>
-                    <span style={{ color: '#9ca3af', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
+                    <span style={{ color: '#6b7280', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
                   </button>
                   {isOpen && (
                     <div style={{ borderTop: '1px solid #f3f4f6', padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
@@ -696,7 +696,7 @@ export default function AifGuide() {
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
                       <span style={{ background: '#f3f4f6', color: '#6b7280', border: '1px solid #e5e7eb', borderRadius: '999px', fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px' }}>{d.badge}</span>
-                      <span style={{ color: '#9ca3af' }}>{isOpen ? '▲' : '▼'}</span>
+                      <span style={{ color: '#6b7280' }}>{isOpen ? '▲' : '▼'}</span>
                     </div>
                   </button>
                   {isOpen && (
@@ -722,7 +722,7 @@ export default function AifGuide() {
                 <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg, #7c3aed, #a78bfa)', borderRadius: '999px', transition: 'width 0.3s' }} />
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem' }}>
-                <span style={{ fontSize: '0.75rem', color: '#9ca3af' }}>{progress}% complete</span>
+                <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>{progress}% complete</span>
                 {checkedDays.size > 0 && (
                   <button onClick={() => setCheckedDays(new Set())} style={{ fontSize: '0.75rem', color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}>Reset</button>
                 )}

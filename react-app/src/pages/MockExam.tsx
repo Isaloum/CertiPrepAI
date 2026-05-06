@@ -481,7 +481,7 @@ export default function MockExam() {
             {meta.icon} {meta.code} — Mock Exam
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <div style={{ fontSize: '0.875rem', color: '#94a3b8' }}>{answered}/{questions.length} answered</div>
+            <div style={{ fontSize: '0.875rem', color: '#64748b' }}>{answered}/{questions.length} answered</div>
             <div style={{ fontWeight: 800, fontSize: '1rem', color: timerColor, fontVariantNumeric: 'tabular-nums' }}>
               ⏱ {formatTime(timeLeft)}
             </div>

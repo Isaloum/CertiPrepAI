@@ -343,7 +343,7 @@ export default function Pricing() {
                       {plan.price}
                     </span>
                     {plan.oldPrice && (
-                      <span style={{ fontSize: '0.85rem', color: '#9ca3af', textDecoration: 'line-through', marginBottom: '0.2rem' }}>
+                      <span style={{ fontSize: '0.85rem', color: '#6b7280', textDecoration: 'line-through', marginBottom: '0.2rem' }}>
                         {plan.oldPrice}
                       </span>
                     )}
@@ -452,7 +452,7 @@ export default function Pricing() {
                       </div>
                     ) : userRank > 1.5 ? (
                       // yearly/lifetime users — bundle is a downgrade, hide it
-                      <div style={{ textAlign: 'center', padding: '0.5rem', background: '#f3f4f6', borderRadius: '0.6rem', fontSize: '0.75rem', color: '#9ca3af', border: '1.5px solid #e5e7eb' }}>
+                      <div style={{ textAlign: 'center', padding: '0.5rem', background: '#f3f4f6', borderRadius: '0.6rem', fontSize: '0.75rem', color: '#6b7280', border: '1.5px solid #e5e7eb' }}>
                         Not available on your plan
                       </div>
                     ) : (
@@ -541,7 +541,7 @@ export default function Pricing() {
               <h2 style={{ fontSize: '1.5rem', fontWeight: 900, margin: '0 0 0.5rem' }}>
                 You're all set — time to practice!
               </h2>
-              <p style={{ color: '#9ca3af', margin: '0 0 1.5rem', fontSize: '0.95rem' }}>
+              <p style={{ color: '#6b7280', margin: '0 0 1.5rem', fontSize: '0.95rem' }}>
                 Your plan is active. Head to your certifications and start studying.
               </p>
               <button
@@ -558,7 +558,7 @@ export default function Pricing() {
               <h2 style={{ fontSize: '1.5rem', fontWeight: 900, margin: '0 0 0.5rem' }}>
                 Ready to pass your AWS cert?
               </h2>
-              <p style={{ color: '#9ca3af', margin: '0 0 1.5rem', fontSize: '0.95rem' }}>
+              <p style={{ color: '#6b7280', margin: '0 0 1.5rem', fontSize: '0.95rem' }}>
                 20 free questions — no credit card, no sign-up.
               </p>
               <button

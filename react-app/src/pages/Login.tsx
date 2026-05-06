@@ -121,7 +121,7 @@ export default function Login() {
             Welcome back.<br />
             <span style={{ color: '#60a5fa' }}>Keep practicing.</span>
           </h2>
-          <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginBottom: '2.5rem', lineHeight: 1.6 }}>
+          <p style={{ color: '#64748b', fontSize: '0.95rem', marginBottom: '2.5rem', lineHeight: 1.6 }}>
             Pick up right where you left off — your progress, scores, and study plan are waiting.
           </p>
 
@@ -293,7 +293,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => setShowPassword(v => !v)}
-                style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', padding: '0.2rem', color: '#9ca3af', display: 'flex', alignItems: 'center' }}
+                style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', padding: '0.2rem', color: '#6b7280', display: 'flex', alignItems: 'center' }}
                 tabIndex={-1}
               >
                 {showPassword

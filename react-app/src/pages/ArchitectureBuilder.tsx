@@ -181,7 +181,7 @@ export default function ArchitectureBuilder() {
             <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>🏗️</div>
             <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px' }}>Architecture Builder requires a subscription</h2>
             <p style={{ color: '#64748b', marginBottom: '8px' }}>10 hands-on challenges · Drag AWS services to build real architectures · Instant feedback.</p>
-            <p style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '24px' }}>Available on Monthly ($7/mo), Yearly ($67/yr), and Lifetime ($147) plans.</p>
+            <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '24px' }}>Available on Monthly ($7/mo), Yearly ($67/yr), and Lifetime ($147) plans.</p>
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
               {!user && <button onClick={() => navigate('/signup')} style={{ padding: '10px 24px', borderRadius: '10px', background: '#f1f5f9', color: '#475569', border: 'none', fontWeight: 700, cursor: 'pointer' }}>Sign Up Free</button>}
               <button onClick={() => navigate('/pricing')} style={{ padding: '12px 28px', borderRadius: '10px', background: '#2563eb', color: '#fff', border: 'none', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
@@ -307,7 +307,7 @@ export default function ArchitectureBuilder() {
 
               {/* Canvas — selected services */}
               <div style={{ background: '#fff', borderRadius: '16px', padding: '20px', minHeight: '200px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', marginBottom: '16px' }}>
-                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#94a3b8', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#64748b', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Your Architecture ({placed.length} service{placed.length !== 1 ? 's' : ''} selected)
                 </div>
 
@@ -335,7 +335,7 @@ export default function ArchitectureBuilder() {
                           <span>{svc.emoji}</span>
                           <span style={{ fontWeight: 700, color: '#1e293b', fontSize: '0.88rem' }}>{svc.name}</span>
                           {checked && (isRequired ? <span style={{ color: '#16a34a' }}>✓</span> : <span style={{ color: '#dc2626' }}>✗</span>)}
-                          {!checked && <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>×</span>}
+                          {!checked && <span style={{ color: '#64748b', fontSize: '0.75rem' }}>×</span>}
                         </div>
                       )
                     })}
@@ -401,7 +401,7 @@ export default function ArchitectureBuilder() {
 
             {/* Right: Service Panel */}
             <div style={{ background: '#fff', borderRadius: '16px', padding: '20px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', alignSelf: 'start', position: 'sticky', top: '20px', maxHeight: 'calc(100vh - 80px)', overflowY: 'auto' }}>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#94a3b8', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#64748b', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 AWS Services
               </div>
 
@@ -442,7 +442,7 @@ export default function ArchitectureBuilder() {
                       <span style={{ fontSize: '1.1rem' }}>{svc.emoji}</span>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontWeight: 700, color: '#1e293b', fontSize: '0.85rem' }}>{svc.name}</div>
-                        <div style={{ color: '#94a3b8', fontSize: '0.72rem' }}>{svc.desc}</div>
+                        <div style={{ color: '#64748b', fontSize: '0.72rem' }}>{svc.desc}</div>
                       </div>
                       {isPlaced && <span style={{ color: svc.color, fontWeight: 700, fontSize: '0.8rem' }}>✓</span>}
                     </div>

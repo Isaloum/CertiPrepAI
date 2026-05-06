@@ -107,7 +107,7 @@ const DIAGRAMS: Diagram[] = [
     nodes: [
       { id: 'app',      label: 'Application',         x: 310, y: 70,  color: '#475569' },
       { id: 'primary',  label: 'RDS Primary\n(AZ-a)', x: 310, y: 260, color: '#1A73E8' },
-      { id: 'standby',  label: 'RDS Standby\n(AZ-b)', x: 660, y: 260, color: '#9ca3af' },
+      { id: 'standby',  label: 'RDS Standby\n(AZ-b)', x: 660, y: 260, color: '#6b7280' },
       { id: 'replica1', label: 'Read\nReplica 1',     x: 110, y: 460, color: '#16a34a' },
       { id: 'replica2', label: 'Read\nReplica 2',     x: 510, y: 460, color: '#16a34a' },
     ],
@@ -175,7 +175,7 @@ const DIAGRAMS: Diagram[] = [
     ],
     nodes: [
       { id: 'speed', label: 'Recovery\nSpeed ↑', x: 60,  y: 80,  color: '#16a34a' },
-      { id: 'br',    label: 'Backup &\nRestore', x: 310, y: 80,  color: '#9ca3af' },
+      { id: 'br',    label: 'Backup &\nRestore', x: 310, y: 80,  color: '#6b7280' },
       { id: 'pl',    label: 'Pilot\nLight',      x: 310, y: 280, color: '#475569' },
       { id: 'ws',    label: 'Warm\nStandby',     x: 310, y: 480, color: '#2563eb' },
       { id: 'aa',    label: 'Active-\nActive',   x: 310, y: 680, color: '#16a34a' },
@@ -366,7 +366,7 @@ const DIAGRAMS: Diagram[] = [
       { id: 'std',      label: 'S3 Standard\n0+ days',             x: 310, y: 80,  color: '#1A73E8' },
       { id: 'int-tier', label: 'Intelligent\nTiering',             x: 310, y: 220, color: '#0891b2' },
       { id: 'std-ia',   label: 'S3 Standard-IA\nafter 30 days',    x: 310, y: 360, color: '#16a34a' },
-      { id: 'one-zone', label: 'One Zone-IA\nSingle AZ',           x: 310, y: 500, color: '#ca8a04' },
+      { id: 'one-zone', label: 'One Zone-IA\nSingle AZ',           x: 310, y: 500, color: '#b45309' },
       { id: 'gl-inst',  label: 'Glacier Instant\nafter 90 days',   x: 310, y: 640, color: '#7C3AED' },
       { id: 'gl-flex',  label: 'Glacier Flexible\nafter 180 days', x: 310, y: 780, color: '#475569' },
       { id: 'deep',     label: 'Glacier Deep\nArchive\n365+ days', x: 310, y: 930, color: '#374151' },
@@ -608,7 +608,7 @@ export default function Diagrams() {
             <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>🗺️</div>
             <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px' }}>Architecture Diagrams requires a subscription</h2>
             <p style={{ color: '#64748b', marginBottom: '8px' }}>14 interactive SAA-C03 architecture diagrams with visual explanations and key exam points.</p>
-            <p style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '24px' }}>Available on Monthly ($7/mo), Yearly ($67/yr), and Lifetime ($147) plans.</p>
+            <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '24px' }}>Available on Monthly ($7/mo), Yearly ($67/yr), and Lifetime ($147) plans.</p>
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
               {!user && <button onClick={() => navigate('/signup')} style={{ padding: '10px 24px', borderRadius: '10px', background: '#f1f5f9', color: '#475569', border: 'none', fontWeight: 700, cursor: 'pointer' }}>Sign Up Free</button>}
               <button onClick={() => navigate('/pricing')} style={{ padding: '12px 28px', borderRadius: '10px', background: '#2563eb', color: '#fff', border: 'none', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
@@ -681,7 +681,7 @@ export default function Diagrams() {
                 {/* Info */}
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <p style={{ color: '#475569', lineHeight: '1.7', fontSize: '1rem', marginBottom: '20px' }}>{activeDiagram.description}</p>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
                     Key Exam Points
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', flexGrow: 1, gap: '4px' }}>
@@ -727,7 +727,7 @@ export default function Diagrams() {
                           {n.label.split('\n')[0]}
                         </span>
                       ))}
-                      {d.nodes.length > 3 && <span style={{ background: '#f1f5f9', color: '#94a3b8', padding: '2px 8px', borderRadius: '6px', fontSize: '0.72rem' }}>+{d.nodes.length - 3} more</span>}
+                      {d.nodes.length > 3 && <span style={{ background: '#f1f5f9', color: '#64748b', padding: '2px 8px', borderRadius: '6px', fontSize: '0.72rem' }}>+{d.nodes.length - 3} more</span>}
                     </div>
                     <div style={{ marginTop: '12px', color: color, fontSize: '0.82rem', fontWeight: 600 }}>View diagram →</div>
                   </div>

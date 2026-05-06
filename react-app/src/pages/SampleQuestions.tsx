@@ -393,7 +393,7 @@ export default function SampleQuestions() {
               {pct >= 80 ? 'Excellent! You are well-prepared.' : pct >= 60 ? 'Good effort. Review the missed questions.' : 'Keep studying — you will get there!'}
             </p>
             {!isPaid && (
-              <p style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '32px' }}>
+              <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '32px' }}>
                 These are free sample questions. Sign up for access to 3,910 full questions across all 12 certs.
               </p>
             )}
@@ -435,7 +435,7 @@ export default function SampleQuestions() {
           <div style={{ background: '#e2e8f0', borderRadius: '999px', height: '6px', marginBottom: '8px' }}>
             <div style={{ background: '#2563eb', height: '6px', borderRadius: '999px', width: `${((current + 1) / questions.length) * 100}%`, transition: 'width 0.3s' }} />
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', color: '#94a3b8', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', color: '#64748b', marginBottom: '24px' }}>
             <span>Question {current + 1} of {questions.length}</span>
             <span>Score: {score}/{answers.length}</span>
           </div>
@@ -558,7 +558,7 @@ export default function SampleQuestions() {
           {isPaid ? (
             <div style={{ marginTop: '32px', background: '#0f172a', borderRadius: '16px', padding: '24px', textAlign: 'center' }}>
               <p style={{ color: '#4ade80', fontWeight: 700, fontSize: '1rem', margin: '0 0 8px' }}>✅ You have full access</p>
-              <p style={{ color: '#94a3b8', margin: '0 0 16px', fontSize: '0.85rem' }}>3,910 questions across all 12 AWS certifications</p>
+              <p style={{ color: '#64748b', margin: '0 0 16px', fontSize: '0.85rem' }}>3,910 questions across all 12 AWS certifications</p>
               <button
                 onClick={() => navigate('/certifications')}
                 style={{ padding: '10px 24px', borderRadius: '10px', background: '#2563eb', color: '#fff', border: 'none', fontWeight: 700, cursor: 'pointer', fontSize: '0.9rem' }}
@@ -568,7 +568,7 @@ export default function SampleQuestions() {
             </div>
           ) : (
             <div style={{ marginTop: '32px', background: '#0f172a', borderRadius: '16px', padding: '24px', textAlign: 'center' }}>
-              <p style={{ color: '#94a3b8', margin: '0 0 8px', fontSize: '0.85rem' }}>Want more? Get full access to</p>
+              <p style={{ color: '#64748b', margin: '0 0 8px', fontSize: '0.85rem' }}>Want more? Get full access to</p>
               <p style={{ color: '#fff', fontWeight: 700, fontSize: '1.1rem', margin: '0 0 16px' }}>
                 3,910 questions across all 12 AWS certifications
               </p>

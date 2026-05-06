@@ -192,7 +192,7 @@ export default function AiCoach() {
           </button>
         </div>
 
-        <p style={{ color: '#d1d5db', fontSize: '0.72rem', textAlign: 'center', marginTop: '0.75rem' }}>
+        <p style={{ color: '#6b7280', fontSize: '0.72rem', textAlign: 'center', marginTop: '0.75rem' }}>
           AI Coach uses Claude · Answers may contain errors — always verify with official AWS documentation.
         </p>
       </div>

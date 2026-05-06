@@ -762,7 +762,7 @@ export default function ServiceGroups() {
         <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 900, margin: '0 0 0.75rem', lineHeight: 1.2 }}>
           AWS Services — Side by Side
         </h1>
-        <p style={{ color: '#94a3b8', fontSize: '1rem', maxWidth: '560px', margin: '0 auto 1.25rem' }}>
+        <p style={{ color: '#64748b', fontSize: '1rem', maxWidth: '560px', margin: '0 auto 1.25rem' }}>
           Not what each service is — but <strong style={{ color: '#fff' }}>when to use it</strong> and <strong style={{ color: '#fff' }}>how it differs</strong> from the others.
         </p>
 
@@ -893,7 +893,7 @@ export default function ServiceGroups() {
                           <div style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.1rem' }}>{service.what}</div>
                         </div>
                       </div>
-                      <span style={{ color: '#9ca3af', fontSize: '1.2rem', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
+                      <span style={{ color: '#6b7280', fontSize: '1.2rem', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
                     </button>
 
                     {/* Expanded content */}
@@ -950,7 +950,7 @@ export default function ServiceGroups() {
           marginTop: '1rem',
         }}>
           <div style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '0.5rem' }}>Ready to test your knowledge?</div>
-          <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '1.25rem' }}>Practice real SAA-C03 scenario questions across all service domains</p>
+          <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '1.25rem' }}>Practice real SAA-C03 scenario questions across all service domains</p>
           <Link
             to="/certifications"
             style={{

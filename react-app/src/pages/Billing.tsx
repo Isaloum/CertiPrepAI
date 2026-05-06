@@ -99,7 +99,7 @@ export default function Billing() {
     return (
       <Layout>
         <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ color: '#9ca3af', fontSize: '0.95rem' }}>Loading…</div>
+          <div style={{ color: '#6b7280', fontSize: '0.95rem' }}>Loading…</div>
         </div>
       </Layout>
     )
@@ -245,7 +245,7 @@ export default function Billing() {
                     <div key={plan.key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.25rem', borderRadius: '0.75rem', border: '1px solid #e5e7eb', background: '#f9fafb', opacity: 0.6 }}>
                       <div>
                         <div style={{ fontWeight: 600, color: '#374151', fontSize: '0.95rem' }}>{plan.name} — {plan.price}</div>
-                        <div style={{ color: '#9ca3af', fontSize: '0.8rem', marginTop: '2px' }}>Not available as a downgrade</div>
+                        <div style={{ color: '#6b7280', fontSize: '0.8rem', marginTop: '2px' }}>Not available as a downgrade</div>
                       </div>
                     </div>
                   )
@@ -277,7 +277,7 @@ export default function Billing() {
         {tier !== 'free' && tier !== 'lifetime' && (
           <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem' }}>
             {isCancelled ? (
-              <p style={{ color: '#9ca3af', fontSize: '0.8rem', margin: 0 }}>
+              <p style={{ color: '#6b7280', fontSize: '0.8rem', margin: 0 }}>
                 Cancellation is already scheduled. You'll lose access when your billing period ends.
                 Changed your mind? Email <a href="mailto:support@certiprepai.com" style={{ color: '#2563eb' }}>support@certiprepai.com</a>.
               </p>
@@ -287,7 +287,7 @@ export default function Billing() {
                   <p style={{ fontWeight: 700, color: '#374151', fontSize: '0.875rem', margin: '0 0 0.2rem' }}>
                     Cancel Subscription
                   </p>
-                  <p style={{ color: '#9ca3af', fontSize: '0.8rem', margin: 0 }}>
+                  <p style={{ color: '#6b7280', fontSize: '0.8rem', margin: 0 }}>
                     You'll keep access until the end of your current billing period.
                   </p>
                 </div>
@@ -372,7 +372,7 @@ export default function Billing() {
                 <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '0.5rem', padding: '0.6rem 0.85rem', color: '#b91c1c', fontSize: '0.83rem', marginBottom: '1.25rem', textAlign: 'center' }}>
                   {cancelError}
                 </div>
-                <p style={{ color: '#9ca3af', fontSize: '0.8rem', textAlign: 'center', marginBottom: '1.25rem' }}>
+                <p style={{ color: '#6b7280', fontSize: '0.8rem', textAlign: 'center', marginBottom: '1.25rem' }}>
                   Please email <a href="mailto:support@certiprepai.com" style={{ color: '#2563eb' }}>support@certiprepai.com</a> if this keeps happening.
                 </p>
                 <button

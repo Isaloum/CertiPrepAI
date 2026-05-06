@@ -523,7 +523,7 @@ export default function VisualExam() {
               <span style={{ background: '#dbeafe', color: '#1d4ed8', borderRadius: '8px', padding: '4px 12px', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.05em' }}>
                 VISUAL EXAM
               </span>
-              <span style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
+              <span style={{ color: '#64748b', fontSize: '0.85rem' }}>
                 Question {qIdx + 1} of {QUESTIONS.length}
               </span>
             </div>

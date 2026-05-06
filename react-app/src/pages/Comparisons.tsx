@@ -415,7 +415,7 @@ export default function Comparisons() {
         <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#f8fafc', marginBottom: '0.5rem' }}>
           Service Comparisons
         </h1>
-        <p style={{ color: '#94a3b8', fontSize: '0.95rem', maxWidth: '540px', margin: '0 auto 1.5rem' }}>
+        <p style={{ color: '#64748b', fontSize: '0.95rem', maxWidth: '540px', margin: '0 auto 1.5rem' }}>
           The most-tested "X vs Y" comparisons across 12 AWS certifications — derived from AWS official documentation, exam guide objectives, and AWS whitepapers.
         </p>
         {/* Tag filter */}

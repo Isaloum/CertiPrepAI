@@ -711,7 +711,7 @@ export default function PromptPatterns() {
         <h1 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.25rem)', fontWeight: 900, margin: '0 0 0.75rem', lineHeight: 1.2 }}>
           Prompt Patterns
         </h1>
-        <p style={{ color: '#94a3b8', fontSize: '0.95rem', maxWidth: '580px', margin: '0 auto 0.75rem', lineHeight: 1.6 }}>
+        <p style={{ color: '#64748b', fontSize: '0.95rem', maxWidth: '580px', margin: '0 auto 0.75rem', lineHeight: 1.6 }}>
           Every prompt engineering concept, inference parameter, failure mode, and security risk the AIF-C01 exam tests — with real examples, root causes, and AWS-specific mitigations.
         </p>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: '999px', padding: '4px 14px', fontSize: '0.75rem', fontWeight: 700, color: '#4ade80' }}>
@@ -763,7 +763,7 @@ export default function PromptPatterns() {
                       <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#111827' }}>{t.name}</div>
                       <div style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.15rem' }}>{t.what}</div>
                     </div>
-                    <span style={{ color: '#9ca3af', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
+                    <span style={{ color: '#6b7280', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
                   </button>
 
                   {isOpen && (
@@ -809,7 +809,7 @@ export default function PromptPatterns() {
                       <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#111827' }}>{p.name}</div>
                       <div style={{ fontSize: '0.78rem', color: '#0891b2', fontWeight: 600, marginTop: '0.1rem', fontFamily: 'monospace' }}>Range: {p.range}</div>
                     </div>
-                    <span style={{ color: '#9ca3af', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
+                    <span style={{ color: '#6b7280', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
                   </button>
 
                   {isOpen && (
@@ -863,7 +863,7 @@ export default function PromptPatterns() {
                       <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#111827' }}>{p.problem}</div>
                       <div style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.15rem' }}>{p.symptom}</div>
                     </div>
-                    <span style={{ color: '#9ca3af', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
+                    <span style={{ color: '#6b7280', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
                   </button>
 
                   {isOpen && (
@@ -912,7 +912,7 @@ export default function PromptPatterns() {
                       <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#111827' }}>{r.name}</div>
                       <div style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.15rem' }}>{r.what}</div>
                     </div>
-                    <span style={{ color: '#9ca3af', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
+                    <span style={{ color: '#6b7280', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
                   </button>
 
                   {isOpen && (
@@ -963,7 +963,7 @@ export default function PromptPatterns() {
                       <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#111827' }}>{b.name}</div>
                       <div style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '0.15rem', lineHeight: 1.4 }}>{b.concept.slice(0, 100)}…</div>
                     </div>
-                    <span style={{ color: '#9ca3af', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
+                    <span style={{ color: '#6b7280', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
                   </button>
 
                   {isOpen && (
@@ -1000,7 +1000,7 @@ export default function PromptPatterns() {
         <div style={{ marginTop: '2.5rem', background: 'linear-gradient(135deg, #0f172a, #1e1b4b)', borderRadius: '1.25rem', padding: '2rem', textAlign: 'center' }}>
           <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🤖</div>
           <h3 style={{ color: '#f1f5f9', fontWeight: 700, margin: '0 0 0.5rem' }}>Put it into practice</h3>
-          <p style={{ color: '#94a3b8', fontSize: '0.875rem', margin: '0 0 1.25rem' }}>
+          <p style={{ color: '#64748b', fontSize: '0.875rem', margin: '0 0 1.25rem' }}>
             These prompt engineering concepts appear across the 260 AIF-C01 practice questions.
           </p>
           <a href="/cert/aif-c01" style={{ display: 'inline-block', padding: '0.75rem 2rem', background: '#7c3aed', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem' }}>

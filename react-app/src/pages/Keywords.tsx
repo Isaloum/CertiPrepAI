@@ -405,7 +405,7 @@ export default function Keywords() {
             <p style={{ color: '#6b7280', fontSize: '1rem', margin: '0 0 4px' }}>
               Spot these words in a question → know exactly which AWS service to pick.
             </p>
-            <p style={{ color: '#9ca3af', fontSize: '0.85rem', margin: 0 }}>
+            <p style={{ color: '#6b7280', fontSize: '0.85rem', margin: 0 }}>
               {activeKeywords.length} exam scenarios · {activeCategories.length - 1} categories · {cert === 'saa' ? 'SAA-C03' : 'AIF-C01'} aligned
             </p>
           </div>

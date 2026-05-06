@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -8,36 +8,55 @@ function ScrollToTop() {
   return null
 }
 
-import Home from './pages/Home'
-import Certifications from './pages/Certifications'
-import CertDetail from './pages/CertDetail'
-import Pricing from './pages/Pricing'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import Dashboard from './pages/Dashboard'
-import MockExam from './pages/MockExam'
-import About from './pages/About'
-import Resources from './pages/Resources'
-import Glossary from './pages/Glossary'
-import PaymentSuccess from './pages/PaymentSuccess'
-import SampleQuestions from './pages/SampleQuestions'
-import VisualExam from './pages/VisualExam'
-import ArchitectureBuilder from './pages/ArchitectureBuilder'
-import Diagrams from './pages/Diagrams'
-import Terms from './pages/Terms'
-import Keywords from './pages/Keywords'
-import StudyGuide from './pages/StudyGuide'
-import ServiceGroups from './pages/ServiceGroups'
-import Comparisons from './pages/Comparisons'
-import ServiceComparison from './pages/ServiceComparison'
-import ForgotPassword from './pages/ForgotPassword'
-import CheatSheets from './pages/CheatSheets'
-import Billing from './pages/Billing'
-import AiCoach from './pages/AiCoach'
-import PromptPatterns from './pages/PromptPatterns'
-import SaaGuide from './pages/SaaGuide'
-import AifGuide from './pages/AifGuide'
+// Lazy-loaded routes — each page loads only when visited (mobile performance fix)
+const Home                = lazy(() => import('./pages/Home'))
+const Certifications      = lazy(() => import('./pages/Certifications'))
+const CertDetail          = lazy(() => import('./pages/CertDetail'))
+const Pricing             = lazy(() => import('./pages/Pricing'))
+const Login               = lazy(() => import('./pages/Login'))
+const Signup              = lazy(() => import('./pages/Signup'))
+const Dashboard           = lazy(() => import('./pages/Dashboard'))
+const MockExam            = lazy(() => import('./pages/MockExam'))
+const About               = lazy(() => import('./pages/About'))
+const Resources           = lazy(() => import('./pages/Resources'))
+const Glossary            = lazy(() => import('./pages/Glossary'))
+const PaymentSuccess      = lazy(() => import('./pages/PaymentSuccess'))
+const SampleQuestions     = lazy(() => import('./pages/SampleQuestions'))
+const VisualExam          = lazy(() => import('./pages/VisualExam'))
+const ArchitectureBuilder = lazy(() => import('./pages/ArchitectureBuilder'))
+const Diagrams            = lazy(() => import('./pages/Diagrams'))
+const Terms               = lazy(() => import('./pages/Terms'))
+const Keywords            = lazy(() => import('./pages/Keywords'))
+const StudyGuide          = lazy(() => import('./pages/StudyGuide'))
+const ServiceGroups       = lazy(() => import('./pages/ServiceGroups'))
+const Comparisons         = lazy(() => import('./pages/Comparisons'))
+const ServiceComparison   = lazy(() => import('./pages/ServiceComparison'))
+const ForgotPassword      = lazy(() => import('./pages/ForgotPassword'))
+const CheatSheets         = lazy(() => import('./pages/CheatSheets'))
+const Billing             = lazy(() => import('./pages/Billing'))
+const AiCoach             = lazy(() => import('./pages/AiCoach'))
+const PromptPatterns      = lazy(() => import('./pages/PromptPatterns'))
+const SaaGuide            = lazy(() => import('./pages/SaaGuide'))
+const AifGuide            = lazy(() => import('./pages/AifGuide'))
+
 import SEOMeta from './components/SEOMeta'
+
+const PageLoader = () => (
+  <div style={{
+    minHeight: '100vh', display: 'flex', alignItems: 'center',
+    justifyContent: 'center', background: '#f9fafb',
+  }}>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{
+        width: '40px', height: '40px', border: '3px solid #e5e7eb',
+        borderTop: '3px solid #2563eb', borderRadius: '50%',
+        animation: 'spin 0.8s linear infinite', margin: '0 auto 1rem',
+      }} />
+      <p style={{ color: '#6b7280', fontSize: '0.9rem' }}>Loading…</p>
+    </div>
+    <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+  </div>
+)
 
 const NotFound = () => (
   <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f9fafb' }}>
@@ -58,38 +77,40 @@ export default function App() {
       <AuthProvider>
         <ScrollToTop />
         <SEOMeta />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/certifications" element={<Certifications />} />
-          <Route path="/cert/:certId" element={<CertDetail />} />
-          <Route path="/mock-exam/:certId" element={<MockExam />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/resources" element={<Resources />} />
-          <Route path="/glossary" element={<Glossary />} />
-          <Route path="/payment-success" element={<PaymentSuccess />} />
-          <Route path="/sample-questions" element={<SampleQuestions />} />
-          <Route path="/visual-exam" element={<VisualExam />} />
-          <Route path="/architecture-builder" element={<ArchitectureBuilder />} />
-          <Route path="/diagrams" element={<Diagrams />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/study-guide" element={<StudyGuide />} />
-          <Route path="/keywords" element={<Keywords />} />
-          <Route path="/service-groups" element={<ServiceGroups />} />
-          <Route path="/comparisons" element={<Comparisons />} />
-          <Route path="/service-comparison" element={<ServiceComparison />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/cheat-sheets" element={<CheatSheets />} />
-          <Route path="/billing" element={<Billing />} />
-          <Route path="/ai-coach" element={<AiCoach />} />
-          <Route path="/prompt-patterns" element={<PromptPatterns />} />
-          <Route path="/saa-guide" element={<SaaGuide />} />
-          <Route path="/aif-guide" element={<AifGuide />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/certifications" element={<Certifications />} />
+            <Route path="/cert/:certId" element={<CertDetail />} />
+            <Route path="/mock-exam/:certId" element={<MockExam />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/glossary" element={<Glossary />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/sample-questions" element={<SampleQuestions />} />
+            <Route path="/visual-exam" element={<VisualExam />} />
+            <Route path="/architecture-builder" element={<ArchitectureBuilder />} />
+            <Route path="/diagrams" element={<Diagrams />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/study-guide" element={<StudyGuide />} />
+            <Route path="/keywords" element={<Keywords />} />
+            <Route path="/service-groups" element={<ServiceGroups />} />
+            <Route path="/comparisons" element={<Comparisons />} />
+            <Route path="/service-comparison" element={<ServiceComparison />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/cheat-sheets" element={<CheatSheets />} />
+            <Route path="/billing" element={<Billing />} />
+            <Route path="/ai-coach" element={<AiCoach />} />
+            <Route path="/prompt-patterns" element={<PromptPatterns />} />
+            <Route path="/saa-guide" element={<SaaGuide />} />
+            <Route path="/aif-guide" element={<AifGuide />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </AuthProvider>
     </BrowserRouter>
   )

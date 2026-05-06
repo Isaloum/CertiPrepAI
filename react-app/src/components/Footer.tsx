@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext'
 export default function Footer() {
   const { isPremium } = useAuth()
   return (
-    <footer style={{ background: '#0f172a', color: '#94a3b8', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+    <footer style={{ background: '#0f172a', color: '#64748b', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '3rem 1.5rem 2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '2rem' }}>
 
         {/* Brand */}

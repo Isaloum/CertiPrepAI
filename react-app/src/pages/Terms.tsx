@@ -73,7 +73,7 @@ export default function Terms() {
         ))}
 
         <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '1.5rem', marginTop: '1rem' }}>
-          <p style={{ fontSize: '0.8rem', color: '#9ca3af' }}>
+          <p style={{ fontSize: '0.8rem', color: '#6b7280' }}>
             CertiPrepAI is not affiliated with, endorsed by, or in any way officially connected with Amazon Web Services or its affiliates.
           </p>
         </div>

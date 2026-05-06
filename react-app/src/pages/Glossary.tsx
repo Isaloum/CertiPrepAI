@@ -192,7 +192,7 @@ export default function Glossary() {
 
           {/* Search */}
           <div style={{ position: 'relative', marginBottom: '20px' }}>
-            <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '1rem' }}>🔍</span>
+            <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#64748b', fontSize: '1rem' }}>🔍</span>
             <input
               id="glossary-search"
               name="search"
@@ -228,14 +228,14 @@ export default function Glossary() {
           </div>
 
           {/* Results count */}
-          <p style={{ color: '#94a3b8', fontSize: '0.85rem', marginBottom: '16px' }}>
+          <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '16px' }}>
             Showing {filtered.length} of {terms.length} terms
           </p>
 
           {/* Terms list */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {filtered.length === 0 && (
-              <div style={{ textAlign: 'center', padding: '48px', color: '#94a3b8' }}>
+              <div style={{ textAlign: 'center', padding: '48px', color: '#64748b' }}>
                 No terms match your search.
               </div>
             )}
@@ -280,7 +280,7 @@ export default function Glossary() {
                       }}>
                         {t.category}
                       </span>
-                      <span style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
+                      <span style={{ color: '#64748b', fontSize: '0.85rem' }}>
                         {isOpen ? '▲' : '▼'}
                       </span>
                     </div>

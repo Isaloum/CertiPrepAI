@@ -512,7 +512,7 @@ export default function Dashboard() {
                           <span style={{ fontWeight: 700, color: '#111827', fontSize: '0.875rem' }}>{meta.name}</span>
                           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexShrink: 0, marginLeft: '0.5rem' }}>
                             {passing && <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#16a34a', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '0.1rem 0.5rem', borderRadius: '999px' }}>✓ Passing</span>}
-                            <span style={{ fontSize: '0.72rem', color: '#9ca3af' }}>Last: {practiced}</span>
+                            <span style={{ fontSize: '0.72rem', color: '#6b7280' }}>Last: {practiced}</span>
                           </div>
                         </div>
 
@@ -609,7 +609,7 @@ export default function Dashboard() {
                   <img src={qrCodeUrl} alt="MFA QR Code" style={{ width: '180px', height: '180px', borderRadius: '0.5rem', border: '1px solid #e5e7eb' }} />
                 </div>
               )}
-              <p style={{ fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.4rem', textAlign: 'center' }}>
+              <p style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.4rem', textAlign: 'center' }}>
                 Can't scan? Enter this key manually:
               </p>
               <div style={{ background: '#f3f4f6', borderRadius: '0.5rem', padding: '0.75rem 1rem', fontFamily: 'monospace', fontSize: '0.85rem', letterSpacing: '0.1em', wordBreak: 'break-all', marginBottom: '1rem', color: '#1d4ed8', fontWeight: 700, textAlign: 'center' }}>

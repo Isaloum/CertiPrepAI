@@ -204,7 +204,7 @@ export default function SkillRadarChart({ certOptions, progressMap, domainScores
           )
         })}
       </div>
-      <p style={{ fontSize: '0.7rem', color: '#9ca3af', marginTop: '0.75rem', textAlign: 'right' }}>
+      <p style={{ fontSize: '0.7rem', color: '#6b7280', marginTop: '0.75rem', textAlign: 'right' }}>
         {hasPracticed ? 'Gap = Your Score − Exam Weight · 🟢 above · 🔴 below' : 'Practice this cert to see your gap score'}
       </p>
     </div>

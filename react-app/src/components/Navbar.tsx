@@ -111,7 +111,7 @@ export default function Navbar() {
       <div>
         <div style={{ fontWeight: 600, fontSize: '13px', color: '#111827' }}>{item.label}</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '11px', color: '#9ca3af' }}>{item.sub}</span>
+          <span style={{ fontSize: '11px', color: '#6b7280' }}>{item.sub}</span>
           {item.badge && (
             <span style={{ fontSize: '10px', fontWeight: 700, color: '#92400e', background: '#fef3c7', border: '1px solid #fde68a', padding: '1px 6px', borderRadius: '999px', letterSpacing: '0.04em' }}>
               {item.badge}
@@ -226,7 +226,7 @@ export default function Navbar() {
                     <div style={{ position: 'absolute', top: '100%', right: '0', paddingTop: '8px', zIndex: 100 }}>
                       <div style={{ width: '220px', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)', padding: '6px' }}>
                         <div style={{ padding: '10px 12px', borderBottom: '1px solid #f3f4f6', marginBottom: '4px' }}>
-                          <div style={{ fontSize: '12px', color: '#9ca3af', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.email}</div>
+                          <div style={{ fontSize: '12px', color: '#6b7280', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.email}</div>
                           <div style={{ fontSize: '12px', fontWeight: 600, color: '#2563eb', marginTop: '2px' }}>{tierBadge[tier] ?? '🆓 Free'}</div>
                         </div>
                         {[
@@ -318,7 +318,7 @@ export default function Navbar() {
 
             {/* Practice section */}
             <div style={{ marginBottom: '0.5rem' }}>
-              <div style={{ fontSize: '11px', fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.06em', padding: '4px 8px', marginBottom: '4px' }}>Practice</div>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', padding: '4px 8px', marginBottom: '4px' }}>Practice</div>
               {practiceItems.map(item => (
                 <Link key={item.label} to={item.to}
                   style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 8px', borderRadius: '10px', textDecoration: 'none' }}
@@ -328,7 +328,7 @@ export default function Navbar() {
                   <div style={{ width: '34px', height: '34px', background: item.bg, borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', flexShrink: 0 }}>{item.icon}</div>
                   <div>
                     <div style={{ fontWeight: 600, fontSize: '14px', color: '#111827' }}>{item.label}</div>
-                    <div style={{ fontSize: '11px', color: '#9ca3af' }}>{item.sub}</div>
+                    <div style={{ fontSize: '11px', color: '#6b7280' }}>{item.sub}</div>
                   </div>
                 </Link>
               ))}
@@ -338,7 +338,7 @@ export default function Navbar() {
 
             {/* Study section */}
             <div style={{ marginBottom: '0.5rem' }}>
-              <div style={{ fontSize: '11px', fontWeight: 700, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.06em', padding: '4px 8px', marginBottom: '4px' }}>Study</div>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.06em', padding: '4px 8px', marginBottom: '4px' }}>Study</div>
               {studyItems.map(item => (
                 <Link key={item.label} to={item.to}
                   style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 8px', borderRadius: '10px', textDecoration: 'none' }}
@@ -348,7 +348,7 @@ export default function Navbar() {
                   <div style={{ width: '34px', height: '34px', background: item.bg, borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', flexShrink: 0 }}>{item.icon}</div>
                   <div>
                     <div style={{ fontWeight: 600, fontSize: '14px', color: '#111827' }}>{item.label}</div>
-                    <div style={{ fontSize: '11px', color: '#9ca3af' }}>{item.sub}</div>
+                    <div style={{ fontSize: '11px', color: '#6b7280' }}>{item.sub}</div>
                   </div>
                 </Link>
               ))}

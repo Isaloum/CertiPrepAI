@@ -210,7 +210,7 @@ export default function Signup() {
             Pass your AWS cert.<br />
             <span style={{ color: '#60a5fa' }}>Practice smarter.</span>
           </h2>
-          <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginBottom: '2.5rem', lineHeight: 1.6 }}>
+          <p style={{ color: '#64748b', fontSize: '0.95rem', marginBottom: '2.5rem', lineHeight: 1.6 }}>
             Scenario-based questions with instant explanations — for every active AWS certification.
           </p>
 
@@ -307,7 +307,7 @@ export default function Signup() {
               <button
                 type="button"
                 onClick={() => setShowPassword(v => !v)}
-                style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', padding: '0.2rem', color: '#9ca3af', display: 'flex', alignItems: 'center' }}
+                style={{ position: 'absolute', right: '0.75rem', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', padding: '0.2rem', color: '#6b7280', display: 'flex', alignItems: 'center' }}
                 tabIndex={-1}
               >
                 {showPassword
@@ -380,7 +380,7 @@ export default function Signup() {
           </button>
         </form>
 
-        <p style={{ fontSize: '0.75rem', color: '#9ca3af', textAlign: 'center', marginTop: '1rem' }}>
+        <p style={{ fontSize: '0.75rem', color: '#6b7280', textAlign: 'center', marginTop: '1rem' }}>
           By signing up you agree to our{' '}
           <Link to="/terms" style={{ color: '#6b7280', textDecoration: 'underline' }}>Terms & Privacy Policy</Link>
         </p>

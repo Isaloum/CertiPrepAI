@@ -94,7 +94,7 @@ const SampleQuestion = () => (
       borderRadius: '0.75rem', border: '1px solid rgba(34,197,94,0.2)',
     }}>
       <div style={{ color: '#22c55e', fontSize: '0.7rem', fontWeight: 800, marginBottom: '0.25rem' }}>✅ Correct! Here's why:</div>
-      <p style={{ color: '#94a3b8', fontSize: '0.75rem', lineHeight: 1.6, margin: 0 }}>
+      <p style={{ color: '#64748b', fontSize: '0.75rem', lineHeight: 1.6, margin: 0 }}>
         ElastiCache (Redis) stores session data outside EC2, allowing any instance to read sessions — fully scalable and fault-tolerant.
       </p>
     </div>
@@ -122,7 +122,7 @@ export default function Home() {
               Pass Your AWS Cert.<br />
               <span style={{ color: '#60a5fa' }}>Practice Smarter.</span>
             </h1>
-            <p style={{ color: '#94a3b8', fontSize: '1.1rem', lineHeight: 1.75, marginBottom: '2rem', maxWidth: '460px' }}>
+            <p style={{ color: '#64748b', fontSize: '1.1rem', lineHeight: 1.75, marginBottom: '2rem', maxWidth: '460px' }}>
               Built by someone actively studying for SAA-C03 — 1,050 deep scenario questions with real explanations. 11 other certs included with 260 questions each.
             </p>
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
@@ -338,7 +338,7 @@ export default function Home() {
             <h2 style={{ fontSize: '2.25rem', fontWeight: 900, color: '#fff', margin: '0 0 0.6rem', letterSpacing: '-0.02em' }}>
               Simple, honest pricing
             </h2>
-            <p style={{ color: '#94a3b8', fontSize: '1.05rem', margin: 0 }}>
+            <p style={{ color: '#64748b', fontSize: '1.05rem', margin: 0 }}>
               Start free — no card needed. Upgrade when you're ready.
             </p>
           </div>

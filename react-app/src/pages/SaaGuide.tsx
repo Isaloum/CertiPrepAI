@@ -647,7 +647,7 @@ export default function SaaGuide() {
               style={{ width: '100%', padding: '10px 16px', border: '1px solid #d1d5db', borderRadius: '10px', fontSize: '0.9rem', marginBottom: '1rem', boxSizing: 'border-box', outline: 'none' }}
             />
             {filteredMatrix.length === 0 && (
-              <div style={{ textAlign: 'center', color: '#9ca3af', padding: '2rem', fontSize: '0.875rem' }}>No matches for "{search}"</div>
+              <div style={{ textAlign: 'center', color: '#6b7280', padding: '2rem', fontSize: '0.875rem' }}>No matches for "{search}"</div>
             )}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               {filteredMatrix.map((row, i) => (
@@ -678,9 +678,9 @@ export default function SaaGuide() {
                     <span style={{ fontSize: '1.4rem', flexShrink: 0 }}>{t.icon}</span>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontWeight: 700, fontSize: '0.92rem', color: '#111827' }}>{t.title}</div>
-                      <div style={{ fontSize: '0.78rem', color: '#9ca3af', marginTop: '0.15rem' }}>Triggered by: {t.trigger}</div>
+                      <div style={{ fontSize: '0.78rem', color: '#6b7280', marginTop: '0.15rem' }}>Triggered by: {t.trigger}</div>
                     </div>
-                    <span style={{ color: '#9ca3af', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
+                    <span style={{ color: '#6b7280', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
                   </button>
                   {isOpen && (
                     <div style={{ borderTop: '1px solid #f3f4f6', padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
@@ -727,7 +727,7 @@ export default function SaaGuide() {
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
                       <span style={{ background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb', borderRadius: '999px', fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px' }}>{d.badge}</span>
-                      <span style={{ color: '#9ca3af' }}>{isOpen ? '▲' : '▼'}</span>
+                      <span style={{ color: '#6b7280' }}>{isOpen ? '▲' : '▼'}</span>
                     </div>
                   </button>
                   {isOpen && (
@@ -752,7 +752,7 @@ export default function SaaGuide() {
               <div style={{ background: '#f3f4f6', borderRadius: '999px', height: '10px', overflow: 'hidden' }}>
                 <div style={{ background: 'linear-gradient(90deg, #2563eb, #1d4ed8)', height: '100%', width: `${progress}%`, borderRadius: '999px', transition: 'width 0.3s' }} />
               </div>
-              <div style={{ fontSize: '0.78rem', color: '#9ca3af', marginTop: '0.5rem' }}>{progress}% complete {progress === 100 ? '🎉 Ready for the exam!' : progress >= 70 ? '— almost there!' : ''}</div>
+              <div style={{ fontSize: '0.78rem', color: '#6b7280', marginTop: '0.5rem' }}>{progress}% complete {progress === 100 ? '🎉 Ready for the exam!' : progress >= 70 ? '— almost there!' : ''}</div>
             </div>
             {weeks.map(week => (
               <div key={week} style={{ marginBottom: '1.5rem' }}>
@@ -775,7 +775,7 @@ export default function SaaGuide() {
                         </div>
                         <div style={{ flex: 1 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.35rem', flexWrap: 'wrap' }}>
-                            <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#9ca3af' }}>Day {day.day}</span>
+                            <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#6b7280' }}>Day {day.day}</span>
                             <span style={{ fontWeight: 700, fontSize: '0.88rem', color: done ? '#15803d' : '#111827' }}>{day.title}</span>
                             {isExam && <span style={{ background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb', borderRadius: '999px', fontSize: '0.68rem', fontWeight: 700, padding: '1px 8px' }}>Milestone</span>}
                           </div>

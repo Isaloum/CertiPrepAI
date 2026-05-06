@@ -717,7 +717,7 @@ export default function ServiceComparison() {
         <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#f8fafc', marginBottom: '0.5rem' }}>
           Service Comparisons
         </h1>
-        <p style={{ color: '#94a3b8', fontSize: '0.95rem', maxWidth: '520px', margin: '0 auto 0.75rem' }}>
+        <p style={{ color: '#64748b', fontSize: '0.95rem', maxWidth: '520px', margin: '0 auto 0.75rem' }}>
           {totalPairs} side-by-side comparisons across {activeData.length} groups — the most-tested "X vs Y" questions on the {cert === 'saa' ? 'SAA-C03' : 'AIF-C01'} exam.
         </p>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.25)', borderRadius: '999px', padding: '4px 14px', fontSize: '0.75rem', fontWeight: 700, color: '#4ade80', marginBottom: '1.25rem' }}>
@@ -774,7 +774,7 @@ export default function ServiceComparison() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', paddingBottom: '0.625rem', borderBottom: `2px solid ${gc.border}20` }}>
                 <span style={{ fontSize: '1.25rem' }}>{group.icon}</span>
                 <h2 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#111827', margin: 0 }}>{group.group}</h2>
-                <span style={{ fontSize: '0.72rem', color: '#9ca3af', fontWeight: 600 }}>{group.comparisons.length} comparisons</span>
+                <span style={{ fontSize: '0.72rem', color: '#6b7280', fontWeight: 600 }}>{group.comparisons.length} comparisons</span>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -803,7 +803,7 @@ export default function ServiceComparison() {
                           <div style={{ fontWeight: 800, color: '#111827', fontSize: '0.95rem' }}>{c.bFull}</div>
                           <div style={{ fontSize: '0.78rem', color: '#6b7280', marginTop: '0.2rem', lineHeight: 1.4 }}>{c.bSummary}</div>
                         </div>
-                        <span style={{ color: '#9ca3af', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
+                        <span style={{ color: '#6b7280', flexShrink: 0 }}>{isOpen ? '▲' : '▼'}</span>
                       </button>
 
                       {/* Expanded — choose A vs choose B */}
@@ -847,7 +847,7 @@ export default function ServiceComparison() {
         <div style={{ textAlign: 'center', marginTop: '1rem', padding: '2rem', background: 'linear-gradient(135deg, #0f172a, #1e3a8a)', borderRadius: '1.25rem' }}>
           <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🎯</div>
           <h3 style={{ color: '#f1f5f9', fontWeight: 700, margin: '0 0 0.5rem' }}>Test your knowledge</h3>
-          <p style={{ color: '#94a3b8', fontSize: '0.875rem', margin: '0 0 1.25rem' }}>
+          <p style={{ color: '#64748b', fontSize: '0.875rem', margin: '0 0 1.25rem' }}>
             These comparisons appear in every AWS exam. Practice questions to lock them in.
           </p>
           <a href={cert === 'saa' ? '/cert/saa-c03' : '/cert/aif-c01'} style={{ display: 'inline-block', padding: '0.75rem 2rem', background: '#2563eb', color: '#fff', borderRadius: '0.75rem', fontWeight: 700, textDecoration: 'none', fontSize: '0.95rem' }}>

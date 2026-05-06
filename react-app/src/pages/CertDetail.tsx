@@ -432,15 +432,15 @@ export default function CertDetail() {
             <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginBottom: '2rem' }}>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '2.5rem', fontWeight: 900, color: passed ? '#16a34a' : '#ef4444' }}>{scorePercent}%</div>
-                <div style={{ fontSize: '0.75rem', color: '#9ca3af', textTransform: 'uppercase', fontWeight: 700, marginTop: '0.25rem' }}>Score</div>
+                <div style={{ fontSize: '0.75rem', color: '#6b7280', textTransform: 'uppercase', fontWeight: 700, marginTop: '0.25rem' }}>Score</div>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#1f2937' }}>{score}/{answered}</div>
-                <div style={{ fontSize: '0.75rem', color: '#9ca3af', textTransform: 'uppercase', fontWeight: 700, marginTop: '0.25rem' }}>Correct</div>
+                <div style={{ fontSize: '0.75rem', color: '#6b7280', textTransform: 'uppercase', fontWeight: 700, marginTop: '0.25rem' }}>Correct</div>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '2.5rem', fontWeight: 900, color: '#3b82f6' }}>72%</div>
-                <div style={{ fontSize: '0.75rem', color: '#9ca3af', textTransform: 'uppercase', fontWeight: 700, marginTop: '0.25rem' }}>Pass Mark</div>
+                <div style={{ fontSize: '0.75rem', color: '#6b7280', textTransform: 'uppercase', fontWeight: 700, marginTop: '0.25rem' }}>Pass Mark</div>
               </div>
             </div>
             <div style={{ background: '#f3f4f6', borderRadius: '9999px', height: '12px', marginBottom: '2rem' }}>
@@ -476,7 +476,7 @@ export default function CertDetail() {
     }
     if (i === q.answer) return { background: '#f0fdf4', border: '2px solid #22c55e', color: '#15803d' }
     if (i === selected) return { background: '#fef2f2', border: '2px solid #ef4444', color: '#b91c1c' }
-    return { background: '#f9fafb', border: '2px solid #f3f4f6', color: '#9ca3af' }
+    return { background: '#f9fafb', border: '2px solid #f3f4f6', color: '#6b7280' }
   }
 
   return (
@@ -488,7 +488,7 @@ export default function CertDetail() {
         <button onClick={() => navigate('/certifications')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280', fontSize: '0.875rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
           ← Back
         </button>
-        <span style={{ color: '#d1d5db' }}>|</span>
+        <span style={{ color: '#6b7280' }}>|</span>
         <span style={{ fontWeight: 800, color: '#111827', fontSize: '0.875rem' }}>{meta.icon} {meta.code} — {meta.name}</span>
         <span style={{ fontSize: '0.6rem', fontWeight: 800, background: '#dcfce7', color: '#15803d', padding: '2px 8px', borderRadius: '4px', letterSpacing: '0.08em', textTransform: 'uppercase', border: '1px solid #bbf7d0' }}>PRACTICE</span>
         {tier === 'monthly' && (
@@ -551,7 +551,7 @@ export default function CertDetail() {
                 >
                   🔖
                 </button>
-                <span style={{ fontSize: '0.8rem', color: '#9ca3af', fontWeight: 600 }}>{current + 1} / {filtered.length}</span>
+                <span style={{ fontSize: '0.8rem', color: '#6b7280', fontWeight: 600 }}>{current + 1} / {filtered.length}</span>
               </div>
             </div>
 
@@ -635,7 +635,7 @@ export default function CertDetail() {
 
           {/* Score card */}
           <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '1.25rem', padding: '1.5rem', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
-            <p style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: '#9ca3af', marginBottom: '1rem', letterSpacing: '0.06em' }}>Session Score</p>
+            <p style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: '#6b7280', marginBottom: '1rem', letterSpacing: '0.06em' }}>Session Score</p>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
               <div>
                 <div style={{ fontSize: '2.25rem', fontWeight: 900, color: scorePercent >= 72 ? '#16a34a' : answered === 0 ? '#111827' : '#3b82f6' }}>
@@ -653,7 +653,7 @@ export default function CertDetail() {
                 <div style={{ background: '#f3f4f6', borderRadius: '9999px', height: '8px', marginBottom: '0.5rem' }}>
                   <div style={{ height: '8px', borderRadius: '9999px', background: scorePercent >= 72 ? '#22c55e' : '#3b82f6', width: `${scorePercent}%`, transition: 'width 0.4s' }} />
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#9ca3af', fontWeight: 600 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#6b7280', fontWeight: 600 }}>
                   <span>0%</span><span style={{ color: '#3b82f6', fontWeight: 800 }}>72% to pass</span><span>100%</span>
                 </div>
               </>
@@ -662,7 +662,7 @@ export default function CertDetail() {
 
           {/* Progress card */}
           <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '1.25rem', padding: '1.5rem', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
-            <p style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: '#9ca3af', marginBottom: '1rem', letterSpacing: '0.06em' }}>Progress</p>
+            <p style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: '#6b7280', marginBottom: '1rem', letterSpacing: '0.06em' }}>Progress</p>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
               <span style={{ fontSize: '0.875rem', color: '#374151', fontWeight: 600 }}>Question {current + 1} of {filtered.length}</span>
               <span style={{ fontSize: '0.875rem', fontWeight: 800, color: '#3b82f6' }}>{progress}%</span>
@@ -719,7 +719,7 @@ export default function CertDetail() {
 
           {/* Tip card */}
           <div style={{ background: '#f9fafb', border: '1px solid #f3f4f6', borderRadius: '1.25rem', padding: '1.25rem' }}>
-            <p style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: '#9ca3af', marginBottom: '0.5rem', letterSpacing: '0.06em' }}>💡 Exam Tip</p>
+            <p style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: '#6b7280', marginBottom: '0.5rem', letterSpacing: '0.06em' }}>💡 Exam Tip</p>
             <p style={{ fontSize: '0.825rem', color: '#6b7280', lineHeight: 1.55, margin: 0 }}>
               Read every option carefully. AWS exams often have 2 correct-sounding answers — the right one is the <strong>most cost-effective or operationally efficient</strong>.
             </p>
