@@ -9,6 +9,7 @@ export default defineConfig({
     global: 'globalThis',
   },
   build: {
+    modulePreload: { polyfill: false }, // disable inline polyfill that violates CSP script-src
     rollupOptions: {
       output: {
         chunkFileNames: 'assets/[name]-[hash].js',
