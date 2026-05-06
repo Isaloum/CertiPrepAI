@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { signIn, completeMFASignIn, confirmSignUp, resendConfirmationCode } from '../lib/cognito'
+import { signIn, completeMFASignIn, confirmSignUp, resendConfirmationCode, getSession } from '../lib/cognito'
 import { useAuth } from '../contexts/AuthContext'
 import { trackLogin, identifyUser } from '../lib/analytics'
 
@@ -33,8 +33,10 @@ export default function Login() {
         return
       }
       await refreshUser()
-      identifyUser(email, email, 'free')
-      trackLogin('free')
+      const session = await getSession()
+      const userPlan = session?.tier ?? 'free'
+      identifyUser(session?.id ?? email, email, userPlan)
+      trackLogin(userPlan)
       navigate('/dashboard')
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Sign in failed.'

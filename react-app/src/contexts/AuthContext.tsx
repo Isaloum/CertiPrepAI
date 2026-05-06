@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import * as Sentry from '@sentry/react'
 import { getSession, signOut as cognitoSignOut, type AuthUser } from '../lib/cognito'
+import { identifyUser, resetUser as analyticsReset } from '../lib/analytics'
 
 const IDLE_TIMEOUT   = 30 * 60 * 1000  // 30 min → auto-logout
 const WARN_BEFORE    =      60 * 1000  // warn 60 s before logout
@@ -51,6 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false)
       if (u) {
         Sentry.setUser({ email: u.email, id: u.id, plan: u.tier })
+        identifyUser(u.id, u.email, u.tier ?? 'free')  // re-identify returning users
       }
     })
   }, [])
@@ -65,6 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null)
     setShowWarning(false)
     Sentry.setUser(null)
+    analyticsReset()  // disassociate PostHog identity on logout
   }
 
   const clearAllTimers = () => {
