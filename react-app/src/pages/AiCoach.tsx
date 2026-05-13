@@ -61,7 +61,7 @@ export default function AiCoach() {
       })
       const data = await res.json()
       const reply = data.reply
-        || (res.status === 403 ? '🔒 AI Coach is exclusive to Yearly and Lifetime plan users.' : null)
+        || (res.status === 403 ? '🔒 AI Coach is exclusive to Lifetime plan members.' : null)
         || 'Something went wrong. Please try again.'
       setMessages(prev => {
         trackAiCoachMessage(prev.length)

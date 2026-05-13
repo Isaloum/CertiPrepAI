@@ -5,7 +5,7 @@ import { trackSignup, identifyUser } from '../lib/analytics'
 
 const CHECKOUT_API = import.meta.env.VITE_CHECKOUT_API as string || 'https://34zglioc5a.execute-api.us-east-1.amazonaws.com/checkout'
 
-const PAID_PLANS = new Set(['monthly', 'yearly', 'lifetime'])
+const PAID_PLANS = new Set(['monthly', 'bundle', 'yearly', 'lifetime'])
 
 const perks = [
   { icon: '📋', text: '3,910 scenario-based questions' },

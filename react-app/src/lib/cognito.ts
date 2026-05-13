@@ -26,7 +26,7 @@ export const userPool = new CognitoUserPool({
 export interface AuthUser {
   id: string
   email: string
-  tier: 'free' | 'monthly' | 'yearly' | 'lifetime'
+  tier: 'free' | 'monthly' | 'bundle' | 'yearly' | 'lifetime'
   accessToken: string
   idToken: string
 }
@@ -146,7 +146,7 @@ function sessionToUser(email: string, session: CognitoUserSession): AuthUser {
   const accessToken = session.getAccessToken()
   const payload     = idToken.payload
   const rawTier     = payload['custom:plan'] as string | undefined
-  const tier = (rawTier === 'monthly' || rawTier === 'yearly' || rawTier === 'lifetime')
+  const tier = (rawTier === 'monthly' || rawTier === 'bundle' || rawTier === 'yearly' || rawTier === 'lifetime')
     ? rawTier : 'free'
   return {
     id:           payload['sub'] as string,
