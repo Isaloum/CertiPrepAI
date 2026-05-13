@@ -1,5 +1,5 @@
 # CertiPrepAI — Claude Context
-_Last updated: 2026-05-01 (session 3)_
+_Last updated: 2026-05-13 (full audit session)_
 
 ## What this project is
 AWS certification prep SaaS. React frontend on AWS Amplify, serverless backend on Lambda + DynamoDB + Cognito.
@@ -35,18 +35,23 @@ onChange={e => setEmail(e.target.value.trim().toLowerCase())}
 Amplify was NOT injecting VITE_* env vars into the Vite build. All API URLs are hardcoded:
 - `react-app/src/lib/db.ts` → `const DB_API = "https://dzhvi7oz29.execute-api.us-east-1.amazonaws.com"`
 - `react-app/src/pages/Dashboard.tsx` → `const CANCEL_API = "https://hpcdl0ft8a.execute-api.us-east-1.amazonaws.com"`
-- `react-app/src/pages/Dashboard.tsx` → `const AI_COACH_API = "https://hyb325gocg.execute-api.us-east-1.amazonaws.com"`
+- `react-app/src/pages/AiCoach.tsx` → `const AI_COACH_API = "https://hyb325gocg.execute-api.us-east-1.amazonaws.com"`
+- `react-app/src/pages/Pricing.tsx` + `Billing.tsx` + `Signup.tsx` → `CHECKOUT_API = "https://34zglioc5a.execute-api.us-east-1.amazonaws.com/checkout"`
+- `react-app/src/pages/Pricing.tsx` + `Billing.tsx` → `UPGRADE_API = "https://d8bmltyjpe.execute-api.us-east-1.amazonaws.com"`
 - Do NOT revert to env vars unless you fix Amplify build injection first.
 
 ### 4. Lambda zips must include node_modules
 Always: `npm install` then zip before deploying. Use `coach.zip` or any name — NOT `lambda.zip` (turns into hyperlink in Claude chat).
 ```bash
+cd aws-lambdas/FUNCTION-NAME && npm install
 zip -r coach.zip index.js node_modules/
 aws lambda update-function-code --function-name FUNCTION_NAME --zip-file fileb://coach.zip
 ```
 
-### 5. Vite 8 config
-Must have `base: '/'` in `vite.config.ts` or Amplify deployment breaks.
+### 5. Vite config
+Must have `base: '/'` and `define: { global: 'globalThis' }` in `vite.config.ts`.
+- `base: '/'` — Amplify deployment breaks without it
+- `define: { global: 'globalThis' }` — AWS/Cognito SDK needs `global`; this replaces it at build time so NO inline script is needed in index.html. Never add `<script>window.global=...</script>` to index.html — it violates CSP.
 
 ### 6. Stripe cancellation = cancel_at_period_end: true
 Cancel Lambda sets `cancel_at_period_end: true` on Stripe — user keeps access until billing period ends.
@@ -74,11 +79,21 @@ macOS `sed -i ''` does NOT interpret `\n` as newline in replacement strings. Use
 python3 -c "f=open('file.tsx').read(); f=f.replace('old','new'); open('file.tsx','w').write(f)"
 ```
 
+### 12. bundle tier MUST be in cognito.ts
+The `AuthUser` type and `sessionToUser()` in `cognito.ts` MUST include `'bundle'` in the tier union type and the conditional check. If missing, bundle users are treated as free. Fixed May 2026 — never remove it.
+
+### 13. Stripe webhook Lambda env vars (ALL THREE required)
+`awsprepai-stripe-webhook` needs ALL THREE env vars or it crashes:
+- `STRIPE_SECRET_KEY` — the restricted API key
+- `STRIPE_WEBHOOK_SECRET` — `whsec_A1seLNW08cP1cUDmRGp82PNvPNcUOQ1W`
+- `COGNITO_USER_POOL_ID` — `us-east-1_bqEVRsi2b`
+Missing `COGNITO_USER_POOL_ID` = downgrades silently fail (users keep paid plan after canceling forever).
+
 ---
 
 ## Frontend Structure
 - `docs/` — Only CNAME, favicon, robots.txt, sitemap.xml remain (static HTML deleted April 2026)
-- `react-app/` — Vite 8 + React + TypeScript → deployed via AWS Amplify. This is the ONLY frontend.
+- `react-app/` — Vite + React + TypeScript → deployed via AWS Amplify. This is the ONLY frontend.
 
 ---
 
@@ -86,22 +101,17 @@ python3 -c "f=open('file.tsx').read(); f=f.replace('old','new'); open('file.tsx'
 
 | File | Purpose |
 |------|---------|
-| `react-app/src/lib/cognito.ts` | All auth functions. Email normalization MANDATORY. |
+| `react-app/src/lib/cognito.ts` | All auth functions. Email normalization MANDATORY. `bundle` MUST be in AuthUser type + sessionToUser. |
 | `react-app/src/lib/db.ts` | DynamoDB API wrapper. Uses ACCESS token. DB_API hardcoded. |
+| `react-app/src/lib/analytics.ts` | PostHog wrapper. Key: `phc_vQkqAhkS2zJBrqL5roLz8iquSgXWuucyBodeyNH99dsS`. Public key — safe in bundle. |
 | `react-app/src/contexts/AuthContext.tsx` | Auth state. Exposes: user, tier, isPremium, isFullAccess, loading. |
-| `react-app/src/components/Navbar.tsx` | Nav. Pricing hidden for paid. Billing shown for paid. AI Coach for lifetime only. Dropdown items have `badge` field (amber pill) — SAA-C03 on Architecture Builder + Visual Exam, AIF-C01 on Prompt Patterns. |
+| `react-app/src/components/Navbar.tsx` | Nav. Pricing hidden for paid. Billing shown for paid. AI Coach tab hidden (accessible only via /ai-coach). |
 | `react-app/src/pages/Login.tsx` | Email normalized on input onChange. |
-| `react-app/src/pages/Signup.tsx` | Email normalized. Password strength indicator. |
-| `react-app/src/pages/Dashboard.tsx` | Plan display, cert selection, Skill Radar Chart. AI Coach widget for lifetime only. Cancel button REMOVED. |
+| `react-app/src/pages/Signup.tsx` | Email normalized. Password strength indicator. PAID_PLANS includes bundle. |
+| `react-app/src/pages/Dashboard.tsx` | Plan display, cert selection, Skill Radar Chart. AI Coach widget for lifetime only. Cancel button REMOVED (dead modal state remains — harmless). |
 | `react-app/src/pages/Pricing.tsx` | Checkout + upgrade flows. Upgrade buttons with prorated preview modal. |
-| `react-app/src/pages/Billing.tsx` | ✅ NEW — /billing page. Current plan + upgrade options for paying users. |
-| `react-app/src/pages/AiCoach.tsx` | ✅ NEW — /ai-coach full page. Lifetime only (redirects others to /dashboard). |
-| `react-app/src/pages/PromptPatterns.tsx` | ✅ NEW — /prompt-patterns. AIF-C01 prompt engineering reference. isPremium gate. 5 tabs: Techniques (10), Parameters (7), Problems & Fixes (9), Security (6), Bedrock (6). 38 items total. |
-| `react-app/src/pages/Keywords.tsx` | Cert switcher: SAA-C03 ↔ AIF-C01. `saacKeywords` + `aifKeywords` (48 AIF items). `SAA_CATEGORIES` + `AIF_CATEGORIES`. |
-| `react-app/src/pages/ServiceGroups.tsx` | Cert switcher: SAA-C03 ↔ AIF-C01. `SAA_GROUPS` + `AIF_GROUPS` (4 groups, 28 AI services). |
-| `react-app/src/pages/ServiceComparison.tsx` | isPremium gate added. Cert switcher: SAA-C03 ↔ AIF-C01. `AIF_DATA` (15 comparisons, 5 groups). |
-| `react-app/src/pages/ArchitectureBuilder.tsx` | SAA-C03 badge in hero. Drag-and-drop canvas. SAA-C03 services only. |
-| `react-app/src/pages/VisualExam.tsx` | SAA-C03 badge next to title. Diagram connect questions. SAA-C03 only. |
+| `react-app/src/pages/Billing.tsx` | /billing page. Current plan + upgrade options for paying users. |
+| `react-app/src/pages/AiCoach.tsx` | /ai-coach full page. Lifetime only (redirects others to /dashboard). Error message: "Lifetime plan members" only. |
 | `react-app/src/pages/CertDetail.tsx` | Practice mode. Bookmark questions. Retry wrong answers. Free tier 20q gating. |
 | `react-app/src/pages/MockExam.tsx` | Timed mock exam. Saves per-domain scores. Monthly/bundle gating. |
 | `react-app/src/pages/CheatSheets.tsx` | All 12 cert cheat sheets. 5 tabs per cert. |
@@ -109,15 +119,16 @@ python3 -c "f=open('file.tsx').read(); f=f.replace('old','new'); open('file.tsx'
 | `react-app/src/components/SEOMeta.tsx` | Per-route meta tags + JSON-LD schemas. |
 | `react-app/src/components/SkillRadarChart.tsx` | Radar chart using real per-domain DynamoDB scores. |
 | `react-app/src/components/EmailCapture.tsx` | Centered modal popup at 60% scroll. Saves to awsprepai-leads. No auth required. Hidden for logged-in users. |
-| `react-app/src/components/MarkdownRenderer.tsx` | Lightweight markdown renderer for AI Coach. No deps. Handles headers, bold, italic, code blocks, lists. |
+| `react-app/src/components/MarkdownRenderer.tsx` | Lightweight markdown renderer for AI Coach. No deps. |
 | `react-app/src/components/Footer.tsx` | Auth-aware footer. Hides Sample Questions + shows Manage Subscription for paid users. |
-| `aws-lambdas/ai-coach/index.js` | AI Coach Lambda. Lifetime-only gating (`custom:plan === 'lifetime'`). |
-| `aws-lambdas/cancel-subscription/index.mjs` | Cancels Stripe sub (period end). Does NOT touch Cognito plan. |
-| `aws-lambdas/upgrade-subscription/index.mjs` | Handles preview + execute for plan upgrades with Stripe proration. |
+| `aws-lambdas/ai-coach/index.js` | AI Coach Lambda. **Lifetime-only** (`custom:plan === 'lifetime'`). Fixed May 2026. |
+| `aws-lambdas/cancel-subscription/index.mjs` | Cancels Stripe sub (period end). Does NOT touch Cognito plan. Uses raw https (no SDK). |
+| `aws-lambdas/upgrade-subscription/index.mjs` | Handles preview + execute for plan upgrades with Stripe proration. USER_POOL_ID hardcoded inside. |
 | `aws-lambdas/awsprepai-db/index.js` | DynamoDB CRUD. `capture_lead` requires NO auth. All others require ACCESS token. |
-| `aws-lambdas/stripe-webhook/index.js` | Handles Stripe webhook → writes plan to Cognito + DynamoDB at period end. |
-| `aws-lambdas/checkout/index.js` | Creates Stripe checkout session. |
-| `aws-lambdas/email-drip/index.mjs` | 3-email drip sequence (welcome, day3, day7). Triggered by awsprepai-db after capture_lead. Uses SES + EventBridge Scheduler. FROM: hello@certiprepai.com. |
+| `aws-lambdas/stripe-webhook/index.js` | Stripe events → Cognito + DynamoDB. Needs all 3 env vars (see critical note #13). |
+| `aws-lambdas/checkout/index.js` | Creates Stripe checkout session. Reuses existing Stripe customer by email (no duplicates). |
+| `aws-lambdas/email-drip/index.mjs` | 3-email drip (welcome, day3, day7). Prices: $7/$67/$147. FROM: hello@certiprepai.com. Unsubscribe link = homepage (CAN-SPAM risk — known). |
+| `aws-lambdas/verify-session/index.js` | Called after checkout redirect. Upgrades Cognito tier. Redundant with webhook but kept as fallback while webhook is unstable. |
 
 ---
 
@@ -126,13 +137,14 @@ python3 -c "f=open('file.tsx').read(); f=f.replace('old','new'); open('file.tsx'
 | Resource | ID/Value |
 |----------|--------|
 | Cognito User Pool | `us-east-1_bqEVRsi2b` |
-| Lambda: awsprepai-checkout | Creates Stripe checkout session |
+| Lambda: awsprepai-checkout | Creates Stripe checkout session. Reuses existing customer by email. |
 | Lambda: awsprepai-cancel-subscription | Cancels sub at period end (API Gateway behind it) |
-| Lambda: awsprepai-verify-session | Session verification |
-| Lambda: awsprepai-stripe-webhook | Stripe events → Cognito + DynamoDB |
+| Lambda: awsprepai-verify-session | Session verification after checkout redirect |
+| Lambda: awsprepai-stripe-webhook | Stripe events → Cognito + DynamoDB. Needs STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET + COGNITO_USER_POOL_ID |
 | Lambda: awsprepai-db | DynamoDB CRUD (API Gateway behind it) |
 | Lambda: awsprepai-ai-coach | AI Coach via Claude Haiku. **Lifetime-only.** |
 | Lambda: awsprepai-upgrade-subscription | Upgrade with Stripe proration |
+| Lambda: awsprepai-email-drip | 3-email drip sequence |
 | IAM Role for Lambdas | `arn:aws:iam::441393059130:role/awsprepai-checkout-role` |
 | DynamoDB: awsprepai-users | ⚠️ Does NOT exist — user data stored in Cognito attributes only |
 | DynamoDB: awsprepai-progress | (user_id PK, cert_id SK) — stores domain_scores map |
@@ -144,8 +156,14 @@ python3 -c "f=open('file.tsx').read(); f=f.replace('old','new'); open('file.tsx'
 | API Gateway: Cancel | `https://hpcdl0ft8a.execute-api.us-east-1.amazonaws.com` |
 | API Gateway: AI Coach | `https://hyb325gocg.execute-api.us-east-1.amazonaws.com` |
 | API Gateway: Upgrade | `https://d8bmltyjpe.execute-api.us-east-1.amazonaws.com` |
+| API Gateway: Checkout | `https://34zglioc5a.execute-api.us-east-1.amazonaws.com/checkout` |
 | API Gateway: Stripe Webhook | `https://515bmmrebh.execute-api.us-east-1.amazonaws.com` |
 | CloudFront | `E149XOHRPMJ4D1` → `d10nn383a5lev5.cloudfront.net` |
+| WAF | `awsprepai-waf` — attached to CloudFront. Rules: RateLimitRule + AWSManagedRulesCommonRuleSet |
+| CloudWatch Alarm | `certiprepai-db-errors` — alerts on awsprepai-db Lambda errors ≥3 in 5min |
+| Sentry | DSN: `https://ff11893839d989559b8b45663789b544@o4511333066145792.ingest.us.sentry.io/4511333070667776`. Production-only. |
+| UptimeRobot | Monitors https://certiprepai.com every 5min |
+| GitHub Actions CI | `.github/workflows/ci.yml` — runs `npm install` + `npm run build` on every push to main |
 
 ---
 
@@ -170,29 +188,42 @@ const isFullAccess = tier === 'yearly' || tier === 'lifetime'
 | monthly | $7/mo | 1 cert (pick from 12) | ❌ |
 | bundle | $17/mo | 3 certs (pick from 12) | ❌ |
 | yearly | $67/yr | All 12 certs | ❌ |
-| lifetime | $147 once | All 12 certs | ✅ Widget on Dashboard |
+| lifetime | $147 once | All 12 certs | ✅ Widget on Dashboard + /ai-coach page |
+
+---
+
+## Stripe Price IDs (live)
+| Plan | Price ID |
+|------|----------|
+| monthly | `price_1TB1YCE9neqrFM5LDbyzVSnv` |
+| bundle | `price_1TEh73E9neqrFM5L2Q38zGJF` |
+| yearly | `price_1TED8EE9neqrFM5LCIL9P0Yp` |
+| lifetime | `price_1TED9ME9neqrFM5LeKAAEWTO` |
 
 ---
 
 ## Navbar Logic (Tier-based)
 
-| User State | Pricing Tab | AI Coach Tab | Billing in Dropdown |
-|------------|-------------|--------------|---------------------|
-| Logged out | ✅ Visible | ❌ | ❌ |
-| Free | ✅ Visible | ❌ | ❌ |
-| Monthly / Bundle / Yearly / Lifetime | ❌ Hidden | ❌ | ✅ |
+| User State | Pricing Tab | Billing in Dropdown |
+|------------|-------------|---------------------|
+| Logged out | ✅ Visible | ❌ |
+| Free | ✅ Visible | ❌ |
+| Monthly / Bundle / Yearly / Lifetime | ❌ Hidden | ✅ |
 
 ---
 
 ## Stripe Keys
 
-### Restricted key (active)
-- Key: stored directly in Lambda env vars on `awsprepai-checkout` and `awsprepai-upgrade-subscription` — do NOT put key in files
+### Restricted key (checkout + upgrade Lambdas)
+- Stored in Lambda env vars — do NOT put in source files
 - Permissions: Checkout Sessions Write, Customers Write, Subscriptions Write
+
+### Full secret key (cancel + verify-session Lambdas)
+- ⚠️ These use full `sk_live` key — should eventually be replaced with restricted key
 
 ### Webhook
 - Endpoint: `https://515bmmrebh.execute-api.us-east-1.amazonaws.com`
-- Secret stored as: `STRIPE_WEBHOOK_SECRET` in `awsprepai-stripe-webhook` Lambda
+- Secret: `STRIPE_WEBHOOK_SECRET` env var in `awsprepai-stripe-webhook` Lambda
 
 ---
 
@@ -201,21 +232,22 @@ const isFullAccess = tier === 'yearly' || tier === 'lifetime'
 - Mailboxes: support@, noreply@, hello@
 - DNS: MX, SPF, DKIM, DMARC, autodiscover records set in Route 53
 - Statement descriptor on Stripe: CertiPrepAI
+- ⚠️ WorkMail deprecated March 31, 2027 — migrate to Zoho Mail (free) before Jan 2027
+- SES MAIL FROM: mail.certiprepai.com (MX + SPF records in Route 53)
 
 ---
 
 ## Test Accounts
 | Email | Plan | Notes |
 |-------|------|-------|
-| ihabsaloum@gmail.com | Free | Test account |
-| ihabsaloum@hotmail.com | Monthly (paid) | Check Cognito before testing |
-| testuser@certiprepai.com | Monthly | Password: `Test1234!` — created 2026-05-01 for premium feature testing |
+| ihabsaloum85@gmail.com | Free (all Stripe subs canceled) | Primary test account |
+| ihabsaloum@hotmail.com | Free | Was monthly, now free |
 
 To restore plan manually:
 ```bash
 aws cognito-idp admin-update-user-attributes \
   --user-pool-id us-east-1_bqEVRsi2b \
-  --username ihabsaloum@hotmail.com \
+  --username user@example.com \
   --user-attributes Name=custom:plan,Value=monthly
 ```
 
@@ -229,60 +261,46 @@ aws cognito-idp admin-update-user-attributes \
 
 ---
 
-## ✅ Built This Session (April 28, 2026)
+## ✅ Launch Readiness (May 13, 2026) — All Systems Go
 
-| # | Item | Details |
-|---|------|---------|
-| 1 | /billing page | `react-app/src/pages/Billing.tsx` — current plan card + upgrade options with prorated modal |
-| 2 | /ai-coach page | `react-app/src/pages/AiCoach.tsx` — full-page chat, lifetime-only, redirects others to /dashboard |
-| 3 | Navbar tier logic | Pricing tab hidden for paid. Sample Questions hidden for paid. Billing shown for paid. |
-| 4 | Dashboard AI Coach | Cancel button removed. Lifetime: AI Coach widget. Yearly: upgrade prompt removed. |
-| 5 | AI Coach Lambda | Lifetime-only gating (`custom:plan === 'lifetime'`) |
-| 6 | AI Coach markdown | MarkdownRenderer.tsx — renders headers, bold, code blocks, lists in AI responses |
-| 7 | CloudFront 404 fix | Custom error responses: 404+403 → /index.html (200). Fixes SPA hard refresh. |
-| 8 | Pricing fixes | Yearly: $67/yr. Lifetime: $147. AI Coach removed from yearly description. |
-| 9 | Auth-aware UI | Home, About, Footer, SampleQuestions, ServiceGroups all show different CTAs for paid vs free users |
-| 10 | Billing cancel note | Changed from "go to dashboard" → "email support@certiprepai.com" |
-| 11 | Broken links fixed | ServiceGroups `/practice` → `/certifications` |
-| 12 | EmailCapture redesign | Sticky bottom banner → centered modal popup (appears at 60% scroll) |
-| 13 | No Refund Policy | Added as section 5 in Terms.tsx |
-| 14 | Upgrade flow | awsprepai-upgrade-subscription Lambda + API Gateway. Prorated preview before charging. |
-| 15 | WorkMail | certiprepai.com org. support@, noreply@, hello@ mailboxes. DNS in Route 53. |
-| 16 | Paid-user UI cleanup | Home: pricing teaser hidden for paid. Pricing: bottom CTA → "Go to Certifications". SampleQuestions: redirect paid to /certifications. Comparisons: bottom CTA → "Go to Your Certifications" for paid. |
-
----
-
-## ✅ Built This Session (May 1, 2026)
-
-| # | Item | Details |
-|---|------|---------|
-| 1 | Prompt Patterns page | `/prompt-patterns` — 5 tabs, 38 items total. isPremium gate. Covers AIF-C01 Domains 2, 4 & 5. |
-| 2 | Prompt Patterns: Techniques | 10 techniques: Zero-Shot, Few-Shot, CoT, ReAct, Prompt Chaining, Tree of Thought, Role, Instruction, Context Injection, Structured Output |
-| 3 | Prompt Patterns: Parameters | 7 parameters: Temperature, Top-p, Top-k, Max Tokens, Stop Sequences, Repetition Penalty, Beam Search |
-| 4 | Prompt Patterns: Problems | 9 failure modes: Hallucination, Verbose, Wrong Format, Off-Topic, Inconsistent Persona, Context Overflow, Safety False Positive, Lost in the Middle, Repetitive Output |
-| 5 | Prompt Patterns: Security | 6 risks: Prompt Injection, Indirect Prompt Injection, Jailbreaking, Sensitive Data Leakage, Data Poisoning, Excessive Agency |
-| 6 | Prompt Patterns: Bedrock tab | NEW 5th tab — 6 items: System Prompt vs User Message API, Guardrails config, Knowledge Bases vs Agents, Model selection, Token economics, Fine-tuning vs RAG decision tree |
-| 7 | AIF-C01 Keywords | Keywords.tsx cert switcher: SAA-C03 ↔ AIF-C01. 48 AIF-C01 keywords across 5 categories. |
-| 8 | AIF-C01 Service Groups | ServiceGroups.tsx cert switcher. AIF_GROUPS: 4 groups, 28 AI/ML services. |
-| 9 | AIF-C01 Service Comparison | ServiceComparison.tsx cert switcher + isPremium gate (was unprotected). AIF_DATA: 15 comparisons. |
-| 10 | Stripe webhook secret rotated | Leaked secret removed from docs-project/README.md. New secret `whsec_A1seLNW08cP1cUDmRGp82PNvPNcUOQ1W` stored in Lambda env only. |
-| 11 | CLAUDE.md prompt templates | 5 reusable prompt templates added: New Page, New Lambda, UI Change, Gating, Deploy & Ship. |
-| 12 | Test account created | `testuser@certiprepai.com` / `Test1234!` — plan: monthly. Use for premium feature testing. |
-| 13 | SAA-C03 badges | Architecture Builder + Visual Exam: orange SAA-C03 badge in page hero + amber pill in navbar dropdown. |
-| 14 | Navbar dropdown badges | `badge` field added to practiceItems/studyItems. Amber pill renders when badge is non-empty. AIF-C01 on Prompt Patterns. |
+| System | Status |
+|--------|--------|
+| Site uptime (7 days) | ✅ 100% |
+| SSL certificate | ✅ A+ |
+| Page speed (LCP) | ✅ 1.1s (Google wants <2.5s) |
+| Total Blocking Time | ✅ 0ms |
+| Stripe checkout | ✅ Working, no duplicate customers |
+| Stripe webhook | ✅ Fixed (was missing COGNITO_USER_POOL_ID) |
+| Cancel subscription | ✅ Working |
+| Upgrade subscription | ✅ Working |
+| AI Coach (lifetime) | ✅ Lifetime-only gate confirmed |
+| Email drip prices | ✅ Fixed ($7/$67/$147) |
+| bundle tier auth | ✅ Fixed (was treating bundle as free) |
+| CI/CD | ✅ GitHub Actions on every push |
+| PostHog analytics | ✅ Active |
+| Sentry error tracking | ✅ Active |
+| UptimeRobot monitoring | ✅ Active |
 
 ---
 
-## 🔲 What's Next (Backlog)
+## 🔲 Known Issues & Backlog
 
 | Priority | Item |
 |----------|------|
-| 🔴 High | Manually verify Stripe prices in dashboard: $7/mo, $17/mo, $67/yr, $147 lifetime (restricted key can't read prices via API) |
-| 🟡 Medium | CLF-C02 study tools — Keywords + Service Groups for highest-volume entry-level cert |
-| 🟡 Medium | Downgrade flow (yearly → monthly not yet built) |
-| 🟡 Medium | Analytics already integrated (PostHog `phc_vQkqAhkS2zJBrqL5roLz8iquSgXWuucyBodeyNH99dsS`) — review dashboards |
-| 🟢 Low | Move hardcoded API URLs back to env vars (fix Amplify build injection first) |
-| 🟢 Low | WAF in front of API Gateway (rate limiting, DDoS protection) |
+| 🔴 High | Downgrade flow (yearly → monthly) not built — clicking lower plan on Pricing hits checkout, could create duplicate subscription |
+| 🟡 Medium | Billing.tsx: `navigate('/login')` called during render (not in useEffect) — React anti-pattern, causes warning |
+| 🟡 Medium | upgrade-subscription Lambda: Cognito updated before Stripe confirms payment — user could get free upgrade if card fails |
+| 🟡 Medium | CAN-SPAM: email drip "unsubscribe" link goes to homepage, not real unsubscribe mechanism |
+| 🟡 Medium | Terms.tsx mentions "3-day free trial" but no trial logic exists — legal risk |
+| 🟡 Medium | CLF-C02 study tools — Keywords + Service Groups for highest-volume entry cert |
+| 🟡 Medium | PostHog: Signup.tsx passes email as userId instead of Cognito sub — creates duplicate profiles |
+| 🟡 Medium | SkillRadarChart domain catKeys may not match CertDetail domain keys for gai-c01 |
+| 🟢 Low | SEOMeta: /sample-questions, /visual-exam, /architecture-builder missing dedicated meta tags |
+| 🟢 Low | Move hardcoded API URLs to env vars (fix Amplify build injection first) |
+| 🟢 Low | Zoho Mail migration — WorkMail deprecated March 2027 |
+| 🟢 Low | Replace full sk_live keys in cancel + verify-session with restricted keys |
+
+---
 
 ## ⚠️ Deploy Checklist (run after every push)
 ```bash
@@ -295,7 +313,7 @@ aws cloudfront create-invalidation --distribution-id E149XOHRPMJ4D1 --paths "/*"
 ---
 
 ## Monthly AWS Cost (~$17-18/mo)
-- WorkMail: ~$8 (for TaxFlowAI — keep it)
+- WorkMail: ~$8 (shared with TaxFlowAI)
 - Route 53: ~$5
 - Amplify: ~$2
 - Lambda/Cognito/DynamoDB: ~$1-2
@@ -320,31 +338,30 @@ aws logs tail /aws/lambda/FUNCTION_NAME --since 10m
 # Check Amplify builds
 aws amplify list-jobs --app-id d2pm3jfcsesli7 --branch-name main --max-results 5
 
-# Deploy Lambda (use coach.zip, NOT lambda.zip — turns into hyperlink in Claude)
-zip -r coach.zip index.js node_modules/
-aws lambda update-function-code --function-name FUNCTION_NAME --zip-file fileb://coach.zip
+# Deploy Lambda
+cd aws-lambdas/FUNCTION-NAME && npm install
+zip -r deploy.zip index.js node_modules/
+aws lambda update-function-code --function-name FUNCTION_NAME --zip-file fileb://deploy.zip
 
 # CloudFront cache clear
 aws cloudfront create-invalidation --distribution-id E149XOHRPMJ4D1 --paths "/*"
 
 # Remove git lock
 rm -f ~/Desktop/Projects/CertiPrepAI/.git/HEAD.lock
+
+# Fix webhook Lambda env vars (all 3 required)
+aws lambda update-function-configuration \
+  --function-name awsprepai-stripe-webhook \
+  --environment "Variables={STRIPE_SECRET_KEY=YOUR_KEY,STRIPE_WEBHOOK_SECRET=whsec_A1seLNW08cP1cUDmRGp82PNvPNcUOQ1W,COGNITO_USER_POOL_ID=us-east-1_bqEVRsi2b}"
 ```
 
 ---
 
 ## 🧠 How to Prompt Claude for This Project
 
-Use these templates every time you ask Claude to build something.
-The more specific the prompt, the less back-and-forth needed.
-
----
-
 ### 🟦 Template 1 — New Page
-
 ```
 Create a new page at `react-app/src/pages/[PageName].tsx`.
-
 - Route: /[route-name] (add to react-app/src/App.tsx)
 - Pattern: same structure as [ClosestExistingPage].tsx
 - Access: [free | isPremium | isFullAccess | tier === 'lifetime']
@@ -355,13 +372,9 @@ Create a new page at `react-app/src/pages/[PageName].tsx`.
 - Do NOT: [add anything to Dashboard | change auth logic | touch cognito.ts]
 ```
 
----
-
 ### 🟩 Template 2 — New Lambda
-
 ```
 Create a new Lambda at `aws-lambdas/[function-name]/index.js`.
-
 - Function name: awsprepai-[function-name]
 - Trigger: API Gateway HTTP (method: POST | GET)
 - Auth: [Cognito ACCESS token in Authorization header | no auth required]
@@ -370,16 +383,11 @@ Create a new Lambda at `aws-lambdas/[function-name]/index.js`.
 - AWS services used: [DynamoDB table X | SES | Stripe | Cognito]
 - Error handling: return 400 for missing fields, 401 for bad token, 500 for AWS errors
 - Do NOT: use idToken — always ACCESS token for Cognito GetUserCommand
-- Zip: coach.zip (never lambda.zip)
 ```
 
----
-
-### 🟨 Template 3 — UI Change / Feature Tweak
-
+### 🟨 Template 3 — UI Change
 ```
 In `react-app/src/pages/[File].tsx`:
-
 - Find: [describe the section or paste the exact text]
 - Change: [what to change and why]
 - Access rule: [keep existing | change to isPremium | lifetime only]
@@ -387,41 +395,28 @@ In `react-app/src/pages/[File].tsx`:
 - Do NOT: change any other file unless I list it here
 ```
 
----
-
-### 🟥 Template 4 — Gating / Access Control
-
+### 🟥 Template 4 — Gating
 ```
 Gate [feature/page/component] behind [isPremium | isFullAccess | tier === 'lifetime'].
-
 - File: react-app/src/pages/[File].tsx
 - Import: { isPremium } from useAuth() — already in AuthContext
-- If blocked: show paywall card with [lock emoji + message + "See Plans →" button → /pricing]
-- Paywall pattern: same as Keywords.tsx
+- If blocked: show paywall card with lock emoji + message + "See Plans →" button → /pricing
 - Do NOT change the underlying data fetching — only wrap in the gate
 ```
 
----
-
 ### 🟪 Template 5 — Deploy & Ship
-
 ```
-Build and deploy this change:
-
-1. Run local build: cd react-app && npm run build
+1. cd react-app && npm run build
 2. Fix any TypeScript errors (no unused vars — TS6133 fails Amplify)
-3. git add [specific files only]
-4. git commit -m "[short description]"
+3. git add [specific files]
+4. git commit -m "[description]"
 5. git push origin main
 6. Wait ~90s for Amplify build
-7. Invalidate CloudFront: aws cloudfront create-invalidation --distribution-id E149XOHRPMJ4D1 --paths "/*"
+7. aws cloudfront create-invalidation --distribution-id E149XOHRPMJ4D1 --paths "/*"
 8. Test in fresh incognito window at https://certiprepai.com
 ```
 
----
-
-### ✅ Golden Rules for All Prompts
-
+### ✅ Golden Rules
 | Rule | Why |
 |------|-----|
 | Always name the exact file path | No guessing where it goes |
