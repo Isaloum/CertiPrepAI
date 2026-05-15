@@ -33,6 +33,7 @@ export default function Navbar() {
   const { user, isPremium, tier, signOut, loading } = useAuth()
   const { hasAccess: hasSaaAccess, loading: saaLoading } = useCertAccess('saa-c03')
   const { hasAccess: hasAifAccess, loading: aifLoading } = useCertAccess('aif-c01')
+  const { hasAccess: hasClfAccess, loading: clfLoading } = useCertAccess('clf-c02')
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768)
@@ -100,6 +101,8 @@ export default function Navbar() {
     ...(aifLoading || hasAifAccess ? [{ to: '/aif-guide', bg: '#f5f3ff', icon: '📖', label: 'AIF-C01 Deep Study', sub: 'Decision matrix, traps & 30-day study plan', badge: '' }] : []),
     // SAA-C03 specific — only show if user has SAA access (or still loading)
     ...(saaLoading || hasSaaAccess ? [{ to: '/saa-guide', bg: '#eff6ff', icon: '📖', label: 'SAA-C03 Deep Study', sub: 'Decision matrix, traps & 30-day study plan', badge: '' }] : []),
+    // CLF-C02 specific — only show if user has CLF access (or still loading)
+    ...(clfLoading || hasClfAccess ? [{ to: '/clf-guide', bg: '#ecfdf5', icon: '📖', label: 'CLF-C02 Deep Study', sub: 'Cloud Practitioner decision matrix, traps & study plan', badge: '' }] : []),
   ]
 
   const DropdownItem = ({ item }: { item: typeof practiceItems[0] }) => (

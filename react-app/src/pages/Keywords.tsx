@@ -304,6 +304,82 @@ const aifKeywords: Keyword[] = [
 ]
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// CLF-C02 KEYWORDS — Cloud Practitioner Exam
+// ═══════════════════════════════════════════════════════════════════════════════
+const clfKeywords: Keyword[] = [
+
+  // ─── CLOUD CONCEPTS ───────────────────────────────────────────────────────────
+  { icon: '☁️', keyword: 'no upfront cost / pay-as-you-go / variable expense', hint: 'Cloud shifts spending from CapEx (buy hardware upfront) to OpEx (pay monthly for what you use). No depreciation, no over-provisioning.', services: ['OpEx model (monthly bill)', 'vs CapEx (servers, facilities, upfront)'], category: 'cloud-concepts' },
+  { icon: '📈', keyword: 'scale up and down instantly / handle traffic spikes', hint: 'Elasticity = automatically add or remove resources based on demand. Traditional data centres are fixed capacity — cloud is not.', services: ['EC2 Auto Scaling', 'AWS Lambda (automatic)', 'Elastic Load Balancing'], category: 'cloud-concepts' },
+  { icon: '🌍', keyword: 'deploy globally in minutes / multiple regions', hint: 'AWS has 30+ Regions worldwide. Deploy your app anywhere with a few clicks — months faster than building physical infrastructure.', services: ['AWS Regions (30+ worldwide)', 'Availability Zones (2-6 per region)', 'Edge Locations (CloudFront CDN, 400+)'], category: 'cloud-concepts' },
+  { icon: '💰', keyword: 'economies of scale / lower per-unit cost', hint: 'AWS aggregates usage of hundreds of thousands of customers. This massive scale reduces per-unit cost, which AWS passes to customers as lower prices.', services: ['AWS scale → lower prices over time', 'Volume pricing tiers (S3, data transfer)'], category: 'cloud-concepts' },
+  { icon: '🏠', keyword: 'private company data center / maximum control', hint: 'Private cloud = all infrastructure owned and operated by one organisation on-premises. Maximum control and security, but highest cost and least elasticity.', services: ['On-premises / Private Cloud', 'VMware (on-prem virtualisation)', 'AWS Outposts (AWS hardware on-prem)'], category: 'cloud-concepts' },
+  { icon: '🔗', keyword: 'sensitive data on-prem + cloud burst / connected both', hint: 'Hybrid cloud connects on-premises infrastructure to AWS. Keeps sensitive or legacy workloads local while using cloud for elastic workloads.', services: ['Hybrid Cloud (on-prem + AWS)', 'AWS Direct Connect (private link)', 'AWS Storage Gateway (bridge on-prem to S3)'], category: 'cloud-concepts' },
+  { icon: '🖥️', keyword: 'rent raw compute / manage your own OS / IaaS', hint: 'IaaS = Infrastructure as a Service. Provider manages hardware and virtualisation. You manage OS, middleware, applications. Most control among cloud models.', services: ['IaaS: Amazon EC2', 'You manage: OS, patches, middleware, app, data'], category: 'cloud-concepts' },
+  { icon: '🧩', keyword: 'deploy code without managing servers / PaaS', hint: 'PaaS = Platform as a Service. Provider manages OS and runtime. You deploy only your application code and data.', services: ['PaaS: Elastic Beanstalk, RDS', 'You manage: app code + data only'], category: 'cloud-concepts' },
+  { icon: '📱', keyword: 'use software without installing anything / SaaS', hint: 'SaaS = Software as a Service. Provider manages everything. You simply use the application through a browser.', services: ['SaaS: Amazon Chime, WorkDocs, Amazon Q', 'You manage: configuration and data only'], category: 'cloud-concepts' },
+  { icon: '⏱️', keyword: 'stop guessing capacity / provision exactly what you need', hint: 'On-premises forces you to guess peak capacity and buy upfront. Cloud lets you provision exactly what you need now, then scale later.', services: ['Auto Scaling (EC2, DynamoDB, Lambda)', 'Provision as needed, not ahead of need'], category: 'cloud-concepts' },
+
+  // ─── IAM / SECURITY ───────────────────────────────────────────────────────────
+  { icon: '🔑', keyword: 'EC2 needs to access S3 / Lambda needs DynamoDB', hint: 'Grant AWS services access using IAM Roles, not IAM User access keys. Roles provide temporary auto-rotating credentials. Never hardcode access keys in code or EC2.', services: ['IAM Role (temporary credentials, auto-rotate)', 'vs IAM User access keys (long-term, risky)'], category: 'iam-security' },
+  { icon: '🛡️', keyword: 'root account / secure account owner / lock away', hint: 'Root account has unlimited access — it cannot be restricted by IAM. Enable MFA immediately. Delete root access keys. Use IAM admin user for daily tasks.', services: ['MFA on root account (mandatory)', 'IAM Admin User for daily tasks', 'Never share root credentials'], category: 'iam-security' },
+  { icon: '👥', keyword: 'multiple users with same permissions / group permissions', hint: 'Create an IAM Group, attach policies to the group, and add users to the group. Users inherit all group permissions. Easier than attaching policies to each user individually.', services: ['IAM Group → attach policy once → add users', 'vs IAM User policies (harder to manage at scale)'], category: 'iam-security' },
+  { icon: '🔐', keyword: 'minimum permissions / least privilege / only what is needed', hint: 'Principle of Least Privilege: grant only the permissions required to perform the specific task. Start with no access and add only what is needed.', services: ['IAM Policies (JSON Allow/Deny)', 'AWS Managed Policies (pre-built for common use cases)', 'Customer Managed Policies (custom)'], category: 'iam-security' },
+  { icon: '🤝', keyword: 'who patches the OS / who is responsible for what', hint: 'Shared Responsibility Model: AWS manages hardware, data centres, and managed service OS. Customer manages EC2 OS patches, IAM, data encryption, and application security.', services: ['AWS: hardware, data centres, managed service OS (RDS, Lambda)', 'Customer: EC2 OS, IAM policies, data, app code, encryption choice'], category: 'iam-security' },
+  { icon: '🕵️', keyword: 'detect unusual API calls / threat detection / no agents', hint: 'GuardDuty uses ML to detect threats by analysing VPC Flow Logs, CloudTrail, and DNS queries. No agents required. Works automatically across your account.', services: ['Amazon GuardDuty (threat detection, ML-based)', 'Analyses: VPC Flow Logs + CloudTrail + DNS', 'No agents, no changes to your infrastructure'], category: 'iam-security' },
+  { icon: '📋', keyword: 'audit who did what / API call history / compliance log', hint: 'CloudTrail records every AWS API call: who made it, what resource, when, and from where. Essential for security forensics, compliance audits, and incident investigation.', services: ['AWS CloudTrail (API audit trail)', 'Who + What + When + From where', 'Stores to S3. Query with Athena.'], category: 'iam-security' },
+  { icon: '✅', keyword: 'check if resources are compliant / config drift / history', hint: 'AWS Config records the configuration state of resources over time and evaluates them against compliance rules. Alerts when configuration drifts from desired state.', services: ['AWS Config (configuration history + compliance)', 'Config Rules (AWS-managed or custom Lambda)', 'Complements CloudTrail (who did it) — Config records what the resource looks like'], category: 'iam-security' },
+  { icon: '🚫', keyword: 'SQL injection / XSS / block malicious web traffic / Layer 7', hint: 'WAF (Web Application Firewall) filters HTTP traffic before it reaches your application. Blocks SQL injection, XSS, and other OWASP Top 10 attacks. Attaches to ALB or CloudFront.', services: ['AWS WAF (Layer 7, HTTP/HTTPS)', 'Block: SQL injection, XSS, bad IPs, rate limits', 'Attach to: ALB, CloudFront, API Gateway'], category: 'iam-security' },
+  { icon: '💥', keyword: 'DDoS attack / protect from volumetric attack', hint: 'Shield Standard is free and automatically protects all AWS resources. Shield Advanced is paid, provides 24/7 DRT support and cost protection against DDoS-related spikes.', services: ['AWS Shield Standard (free, automatic, L3/L4)', 'AWS Shield Advanced ($3000/month, L7, DRT, cost protection)'], category: 'iam-security' },
+  { icon: '🔒', keyword: 'encrypt data at rest / S3 encryption / EBS encryption', hint: 'Encryption at rest protects stored data. AWS provides tools but enabling encryption is the customer\'s responsibility. Use SSE-S3 (simple), SSE-KMS (auditable), or client-side.', services: ['AWS KMS (Key Management Service)', 'SSE-S3 (AWS-managed key, simple)', 'SSE-KMS (CMK, full audit + control)'], category: 'iam-security' },
+  { icon: '🔎', keyword: 'vulnerability scan / check EC2 for CVEs / container images', hint: 'Amazon Inspector continuously scans EC2 instances and ECR container images for software vulnerabilities (CVEs) and network exposure. No manual scheduling needed.', services: ['Amazon Inspector (automated CVE scanning)', 'Scans: EC2 instances + ECR container images', 'Continuous — not one-time'], category: 'iam-security' },
+  { icon: '💽', keyword: 'find PII in S3 / classify sensitive data / data discovery', hint: 'Amazon Macie uses ML to automatically discover, classify, and protect sensitive data in S3. Identifies PII (names, SSNs, credit cards) and alerts on over-permissioned buckets.', services: ['Amazon Macie (ML-based S3 PII detection)', 'Identifies: SSNs, credit cards, health data', 'Alerts on: public buckets, unencrypted data'], category: 'iam-security' },
+
+  // ─── COMPUTE ─────────────────────────────────────────────────────────────────
+  { icon: '🖥️', keyword: 'virtual server / full OS control / web server / application server', hint: 'EC2 provides resizable virtual servers in the cloud. You choose the OS, instance type, and software. You are responsible for OS patches and security.', services: ['Amazon EC2 (IaaS, virtual servers)', '750 hrs/month free tier (t2.micro)', 'Choose: OS, instance type, storage, networking'], category: 'compute' },
+  { icon: '⚡', keyword: 'run code without servers / event-driven / pay per request', hint: 'Lambda is serverless compute. Upload your function, specify the trigger. AWS runs it automatically. Pay only per request and duration (milliseconds). No EC2 to manage.', services: ['AWS Lambda (serverless)', 'Triggers: S3, API Gateway, DynamoDB, EventBridge', 'Max: 15 min. Pay: per request + ms duration'], category: 'compute' },
+  { icon: '📦', keyword: 'containerise application / Docker / no EC2 management', hint: 'Fargate runs containers without managing EC2 clusters. ECS orchestrates containers with AWS-native tooling. Kubernetes expertise? Use EKS. For simplest ops: ECS Fargate.', services: ['Amazon ECS with Fargate (serverless containers)', 'Amazon EKS (Kubernetes)', 'AWS Fargate (no EC2 to manage)'], category: 'compute' },
+  { icon: '🧩', keyword: 'deploy web app / do not want to manage infrastructure / PaaS', hint: 'Elastic Beanstalk is AWS\'s PaaS. You upload code; Beanstalk handles EC2, load balancing, auto-scaling, and monitoring. You keep full control but skip manual infrastructure setup.', services: ['AWS Elastic Beanstalk (PaaS)', 'Provisions: EC2, ALB, ASG, RDS', 'Free service — pay only for underlying resources'], category: 'compute' },
+  { icon: '💰', keyword: 'steady-state 24/7 production workload / commit 1 or 3 years', hint: 'Reserved Instances offer up to 72% discount in exchange for a 1- or 3-year commitment. Best for predictable, always-on production workloads like databases and web servers.', services: ['EC2 Reserved Instances (Standard: 72% off, fixed type)', 'EC2 Reserved Instances (Convertible: 54% off, flexible)', 'EC2 Savings Plans (also covers Lambda + Fargate)'], category: 'compute' },
+  { icon: '🎲', keyword: 'batch job / fault-tolerant / can be interrupted / cheapest compute', hint: 'Spot Instances use unused EC2 capacity at up to 90% discount. AWS can interrupt with 2-minute notice. Use only for flexible, fault-tolerant workloads — never for databases or critical services.', services: ['EC2 Spot Instances (up to 90% off)', '2-min interruption notice', 'Use for: batch processing, ML training, rendering, HPC'], category: 'compute' },
+
+  // ─── STORAGE ─────────────────────────────────────────────────────────────────
+  { icon: '🗂️', keyword: 'store files / images / videos / backups / data lake', hint: 'S3 is object storage: unlimited capacity, 11 nines durability, pay only for what you use. Accessible from anywhere via HTTP. Not a file system — use EFS for that.', services: ['Amazon S3 (object storage)', '11 nines durability (99.999999999%)', 'Use: backups, static websites, data lakes, media'], category: 'storage' },
+  { icon: '📊', keyword: 'access S3 data frequently / standard performance needed', hint: 'S3 Standard is the default storage class — high availability, high throughput, low latency. No minimum storage duration. No retrieval fees. Most expensive per-GB.', services: ['S3 Standard (default, frequent access)', 'High availability (99.99%)', 'No retrieval fee, no minimum duration'], category: 'storage' },
+  { icon: '📉', keyword: 'data accessed once a month or less / pay less for storage', hint: 'S3 Standard-IA (Infrequent Access) costs less to store but charges a per-GB retrieval fee. Best for data that is important but not accessed often (DR copies, monthly reports).', services: ['S3 Standard-IA (lower storage, retrieval fee)', '30-day minimum storage duration', 'Use: DR backups, quarterly reports'], category: 'storage' },
+  { icon: '🧊', keyword: 'archive / compliance / rarely accessed / long-term retention', hint: 'S3 Glacier tiers for archiving: Instant (ms retrieval), Flexible (1-12 hr), Deep Archive (12-48 hr). Cheapest storage on AWS. For regulatory retention, audit trails, cold data.', services: ['S3 Glacier Instant Retrieval (ms, quarterly access)', 'S3 Glacier Flexible Retrieval (mins-hours, yearly access)', 'S3 Glacier Deep Archive (12-48 hrs, cheapest, rarely accessed)'], category: 'storage' },
+  { icon: '💾', keyword: 'EC2 operating system disk / database volume / persistent block storage', hint: 'EBS is block storage that attaches to one EC2 instance (like a hard drive). Persistent — data survives EC2 stop/restart. Required for the OS volume of every EC2 instance.', services: ['Amazon EBS (Elastic Block Store)', 'Attached to one EC2 (usually)', 'Persists after instance stop/start'], category: 'storage' },
+  { icon: '📁', keyword: 'shared file system / multiple EC2 access simultaneously / Linux NFS', hint: 'EFS provides a shared NFS file system accessible by many EC2 instances at once. Auto-scales. Linux only. Use for shared application data, CMS, home directories, analytics.', services: ['Amazon EFS (Elastic File System, NFS)', 'Multiple EC2 instances simultaneously', 'Auto-scales, Linux only (not Windows)'], category: 'storage' },
+  { icon: '🚛', keyword: 'migrate petabytes / limited internet bandwidth / physical device', hint: 'AWS Snow Family for offline data migration when internet transfer would take too long. Snowcone (8-14 TB), Snowball Edge (80 TB), Snowmobile (100 PB, truck).', services: ['AWS Snowcone (8-14 TB)', 'AWS Snowball Edge (80 TB)', 'AWS Snowmobile (100 PB, truck)'], category: 'storage' },
+
+  // ─── DATABASE ─────────────────────────────────────────────────────────────────
+  { icon: '🗄️', keyword: 'relational database / SQL / MySQL / PostgreSQL / ACID', hint: 'RDS is a managed relational database service. AWS handles backups, patching, Multi-AZ failover. You pick the engine. No OS-level access — that is AWS\'s responsibility.', services: ['Amazon RDS (MySQL, PostgreSQL, Oracle, SQL Server, MariaDB)', 'AWS patches OS and DB engine', 'You manage: DB config, users, queries'], category: 'database' },
+  { icon: '🚀', keyword: 'NoSQL / key-value / millisecond / flexible schema / auto-scale', hint: 'DynamoDB is a fully managed serverless NoSQL database. Single-digit millisecond latency at any scale. No schema. Automatically scales capacity. Great for mobile, web, gaming.', services: ['Amazon DynamoDB (NoSQL, serverless)', 'Single-digit ms latency at any scale', 'Auto-scales capacity. No table joins.'], category: 'database' },
+  { icon: '📊', keyword: 'analyze large dataset / business intelligence / data warehouse / OLAP', hint: 'Redshift is a managed columnar data warehouse optimised for analytics (OLAP). Run complex SQL queries across petabytes. Separate from OLTP (transactional) databases like RDS.', services: ['Amazon Redshift (data warehouse, OLAP)', 'Columnar storage for fast aggregate queries', 'vs RDS (OLTP) vs DynamoDB (NoSQL)'], category: 'database' },
+
+  // ─── NETWORKING ─────────────────────────────────────────────────────────────
+  { icon: '🌐', keyword: 'isolate resources in private network / define IP range / VPC', hint: 'A VPC (Virtual Private Cloud) is a logically isolated network within AWS. You define IP ranges, subnets, route tables, and access controls. Every AWS account gets a default VPC.', services: ['Amazon VPC (Virtual Private Cloud)', 'Subnets: public (internet access) or private', 'Security Groups + NACLs control traffic'], category: 'networking' },
+  { icon: '⚡', keyword: 'speed up content delivery / cache globally / CDN / CloudFront', hint: 'CloudFront is AWS\'s CDN. It caches content at 400+ edge locations worldwide, serving users from the nearest cache instead of your origin server. HTTP/HTTPS only.', services: ['Amazon CloudFront (CDN)', '400+ global edge locations', 'Reduces latency for static and dynamic content'], category: 'networking' },
+  { icon: '🌍', keyword: 'DNS / route users to website / domain name management', hint: 'Route 53 is AWS\'s scalable DNS web service. It translates domain names to IP addresses and can route traffic based on latency, geography, health checks, or weighted splits.', services: ['Amazon Route 53 (DNS)', 'Routing: Simple, Weighted, Latency, Failover, Geolocation', 'Domain registration + DNS management'], category: 'networking' },
+  { icon: '🔌', keyword: 'private connection to on-premises / dedicated fiber / not internet', hint: 'Direct Connect provides a dedicated private fiber connection from your facility to AWS. Consistent bandwidth and latency, unlike VPN over the internet. Does NOT encrypt by default.', services: ['AWS Direct Connect (private fiber, not internet)', 'Consistent bandwidth + latency', 'NOT encrypted by default — add VPN for encryption'], category: 'networking' },
+
+  // ─── BILLING & PRICING ────────────────────────────────────────────────────────
+  { icon: '📈', keyword: 'visualize spending / analyse cost by service / forecast', hint: 'Cost Explorer lets you visualise and analyse your AWS spending. Filter by service, region, tag, or account. Forecast future costs based on usage patterns.', services: ['AWS Cost Explorer (analyse + forecast)', 'Filter: service, region, tag, linked account', 'Forecasts up to 12 months ahead'], category: 'billing' },
+  { icon: '🚨', keyword: 'alert when bill exceeds limit / notify on spending threshold', hint: 'AWS Budgets sends email or SNS alerts when your actual or forecasted spend exceeds a threshold you define. Also supports usage budgets and reservation coverage budgets.', services: ['AWS Budgets (cost alerts)', 'Alert types: cost, usage, RI coverage, Savings Plans coverage', 'Sends to: email or SNS topic'], category: 'billing' },
+  { icon: '💡', keyword: 'estimate cost before building / how much will this cost', hint: 'AWS Pricing Calculator is a free web tool to model any AWS architecture and estimate monthly costs before you deploy anything. No sign-in required.', services: ['AWS Pricing Calculator (estimate before building)', 'Free, no account required', 'Add services, configure, get monthly estimate'], category: 'billing' },
+  { icon: '🏢', keyword: 'one bill for multiple accounts / volume discount across accounts', hint: 'AWS Organizations enables Consolidated Billing: one monthly bill for all accounts. Volume discounts aggregate across all accounts. Management account pays for all member accounts.', services: ['AWS Organizations (multi-account management)', 'Consolidated Billing (one bill)', 'Volume discounts aggregated across accounts'], category: 'billing' },
+  { icon: '🔍', keyword: 'cost recommendations / underutilised resources / security checks', hint: 'Trusted Advisor checks your AWS environment for cost, security, performance, reliability, and service limit improvements. Basic checks are free; full access requires Business/Enterprise support.', services: ['AWS Trusted Advisor (best practice checks)', 'Categories: cost, security, performance, reliability, limits', 'Full access: Business or Enterprise support only'], category: 'billing' },
+  { icon: '🧮', keyword: 'calculate total cost of ownership / compare on-prem vs cloud', hint: 'AWS TCO Calculator (now part of Pricing Calculator) helps you compare the true cost of running workloads on-premises vs in AWS, including hardware, staffing, facilities, and power.', services: ['AWS Pricing Calculator (TCO comparison)', 'Include: hardware, facilities, power, cooling, staffing', 'CapEx (on-prem) vs OpEx (cloud)'], category: 'billing' },
+
+  // ─── SUPPORT PLANS ────────────────────────────────────────────────────────────
+  { icon: '📞', keyword: 'dedicated Technical Account Manager / TAM', hint: 'Only Enterprise and Enterprise On-Ramp plans include a Technical Account Manager (TAM). Enterprise = dedicated TAM. On-Ramp = pool of TAMs shared with other customers.', services: ['Enterprise Support (dedicated TAM)', 'Enterprise On-Ramp (pool of TAMs)', 'NOT included in Basic, Developer, or Business'], category: 'support' },
+  { icon: '⚡', keyword: 'fastest critical response / 15 minute response / mission critical', hint: 'Only Enterprise Support offers <15-minute critical (P1) response time. Enterprise On-Ramp = <30 min. Business = <1 hour. Developer = 12-24 hr business hours. Basic = none.', services: ['Enterprise Support (<15 min critical)', 'Enterprise On-Ramp (<30 min critical)', 'Business Support (<1 hour critical, 24/7)'], category: 'support' },
+  { icon: '✅', keyword: 'full Trusted Advisor checks / all 115+ checks / no limit', hint: 'Full Trusted Advisor access (all 115+ checks) is available only on Business, Enterprise On-Ramp, and Enterprise plans. Basic and Developer plans get only 6 basic checks.', services: ['Business Support (full Trusted Advisor, 115+ checks)', 'vs Basic/Developer (6 checks only)', 'Checks: cost, security, performance, reliability, limits'], category: 'support' },
+  { icon: '🏢', keyword: '24/7 support with phone / production environment SLA', hint: 'Business Support is the minimum plan with 24/7 phone and chat support. Required for production SLAs. Includes full Trusted Advisor, AWS Health API, and Infrastructure Event Management (IEM, paid add-on).', services: ['Business Support ($100+/month)', '24/7 phone + chat support', 'Full Trusted Advisor + AWS Health API'], category: 'support' },
+  { icon: '🧪', keyword: 'cheapest paid support / testing and development environment', hint: 'Developer Support ($29+/month) provides email support during business hours, 1 primary contact, and general guidance response within 12-24 hours. Best for non-production environments.', services: ['Developer Support ($29+/month)', 'Business hours email only', '1 primary contact. No phone/chat.'], category: 'support' },
+]
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // CATEGORIES
 // ═══════════════════════════════════════════════════════════════════════════════
 const SAA_CATEGORIES = [
@@ -333,6 +409,18 @@ const AIF_CATEGORIES = [
   { id: 'security-governance',  label: '🔒 Security & Governance' },
 ]
 
+const CLF_CATEGORIES = [
+  { id: 'all',           label: '⭐ All' },
+  { id: 'cloud-concepts', label: '☁️ Cloud Concepts' },
+  { id: 'iam-security',  label: '🔐 IAM & Security' },
+  { id: 'compute',       label: '🖥️ Compute' },
+  { id: 'storage',       label: '📦 Storage' },
+  { id: 'database',      label: '🗄️ Database' },
+  { id: 'networking',    label: '🌐 Networking' },
+  { id: 'billing',       label: '💰 Billing & Cost' },
+  { id: 'support',       label: '📞 Support Plans' },
+]
+
 const CAT_COLORS: Record<string, { bg: string; text: string; border: string; tag: string }> = {
   caching:      { bg: '#fff7ed', text: '#c2410c', border: '#fed7aa', tag: '#ea580c' },
   availability: { bg: '#eff6ff', text: '#1d4ed8', border: '#bfdbfe', tag: '#2563eb' },
@@ -348,6 +436,10 @@ const CAT_COLORS: Record<string, { bg: string; text: string; border: string; tag
   monitoring:   { bg: '#f0f9ff', text: '#0369a1', border: '#bae6fd', tag: '#0284c7' },
   compute:      { bg: '#fff7ed', text: '#9a3412', border: '#fed7aa', tag: '#c2410c' },
   governance:          { bg: '#f0f9ff', text: '#075985', border: '#bae6fd', tag: '#0369a1' },
+  'cloud-concepts':    { bg: '#ecfdf5', text: '#065f46', border: '#6ee7b7', tag: '#059669' },
+  'iam-security':      { bg: '#fef2f2', text: '#b91c1c', border: '#fecaca', tag: '#dc2626' },
+  billing:             { bg: '#f0fdf4', text: '#15803d', border: '#bbf7d0', tag: '#16a34a' },
+  support:             { bg: '#fff7ed', text: '#c2410c', border: '#fed7aa', tag: '#ea580c' },
   foundations:         { bg: '#eff6ff', text: '#1d4ed8', border: '#bfdbfe', tag: '#2563eb' },
   'generative-ai':     { bg: '#faf5ff', text: '#7e22ce', border: '#e9d5ff', tag: '#9333ea' },
   'aws-ai-services':   { bg: '#fff7ed', text: '#c2410c', border: '#fed7aa', tag: '#ea580c' },
@@ -360,7 +452,7 @@ export default function Keywords() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('all')
-  const [cert, setCert] = useState<'saa' | 'aif'>('saa')
+  const [cert, setCert] = useState<'saa' | 'aif' | 'clf'>('saa')
 
   if (!isPremium) {
     return (
@@ -379,8 +471,8 @@ export default function Keywords() {
     )
   }
 
-  const activeKeywords = cert === 'saa' ? saacKeywords : aifKeywords
-  const activeCategories = cert === 'saa' ? SAA_CATEGORIES : AIF_CATEGORIES
+  const activeKeywords = cert === 'saa' ? saacKeywords : cert === 'aif' ? aifKeywords : clfKeywords
+  const activeCategories = cert === 'saa' ? SAA_CATEGORIES : cert === 'aif' ? AIF_CATEGORIES : CLF_CATEGORIES
 
   const filtered = activeKeywords.filter(k => {
     const matchCat = category === 'all' || k.category === category
@@ -406,21 +498,22 @@ export default function Keywords() {
               Spot these words in a question → know exactly which AWS service to pick.
             </p>
             <p style={{ color: '#6b7280', fontSize: '0.85rem', margin: 0 }}>
-              {activeKeywords.length} exam scenarios · {activeCategories.length - 1} categories · {cert === 'saa' ? 'SAA-C03' : 'AIF-C01'} aligned
+              {activeKeywords.length} exam scenarios · {activeCategories.length - 1} categories · {cert === 'saa' ? 'SAA-C03' : cert === 'clf' ? 'CLF-C02' : 'AIF-C01'} aligned
             </p>
           </div>
 
           {/* Cert Switcher */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
             {([
               { id: 'saa', label: '☁️ SAA-C03', sub: 'Solutions Architect Associate' },
+              { id: 'clf', label: '🌥️ CLF-C02', sub: 'Cloud Practitioner' },
               { id: 'aif', label: '🤖 AIF-C01', sub: 'AI Practitioner' },
             ] as const).map(c => (
               <button
                 key={c.id}
                 onClick={() => { setCert(c.id); setCategory('all'); setSearch('') }}
                 style={{
-                  padding: '10px 28px', borderRadius: '12px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer', transition: 'all 0.15s',
+                  padding: '10px 24px', borderRadius: '12px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer', transition: 'all 0.15s',
                   border: cert === c.id ? 'none' : '1.5px solid #e2e8f0',
                   background: cert === c.id ? '#0f172a' : '#fff',
                   color: cert === c.id ? '#fff' : '#374151',
@@ -433,7 +526,7 @@ export default function Keywords() {
           {/* Source badge */}
           <div style={{ textAlign: 'center', marginBottom: '28px' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '999px', padding: '4px 14px', fontSize: '0.78rem', fontWeight: 700, color: '#16a34a' }}>
-              ✅ {cert === 'saa' ? 'Patterns extracted from 1,050 real SAA-C03 practice questions' : 'Patterns extracted from 260 real AIF-C01 practice questions · Based on official AWS exam guide domains'}
+              ✅ {cert === 'saa' ? 'Patterns extracted from 1,050 real SAA-C03 practice questions' : cert === 'clf' ? 'Patterns extracted from real CLF-C02 practice questions · Based on official AWS exam guide domains' : 'Patterns extracted from 260 real AIF-C01 practice questions · Based on official AWS exam guide domains'}
             </div>
           </div>
 

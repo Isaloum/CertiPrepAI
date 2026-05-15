@@ -38,6 +38,7 @@ const AiCoach             = lazy(() => import('./pages/AiCoach'))
 const PromptPatterns      = lazy(() => import('./pages/PromptPatterns'))
 const SaaGuide            = lazy(() => import('./pages/SaaGuide'))
 const AifGuide            = lazy(() => import('./pages/AifGuide'))
+const ClfGuide            = lazy(() => import('./pages/ClfGuide'))
 const Unsubscribe         = lazy(() => import('./pages/Unsubscribe'))
 
 import SEOMeta from './components/SEOMeta'
@@ -109,6 +110,7 @@ export default function App() {
             <Route path="/prompt-patterns" element={<PromptPatterns />} />
             <Route path="/saa-guide" element={<SaaGuide />} />
             <Route path="/aif-guide" element={<AifGuide />} />
+            <Route path="/clf-guide" element={<ClfGuide />} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
