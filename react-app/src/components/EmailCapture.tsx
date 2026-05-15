@@ -21,13 +21,19 @@ export default function EmailCapture() {
     if (user) return
     if (localStorage.getItem(STORAGE_KEY)) return
 
+    let timer: ReturnType<typeof setTimeout> | null = null
+
     const onScroll = () => {
-      const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight)
-      if (scrolled > 0.6) setVisible(true)
+      if (timer) return // already started countdown
+      if (window.scrollY < 50) return // ignore tiny accidental scrolls
+      timer = setTimeout(() => setVisible(true), 2000)
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (timer) clearTimeout(timer)
+    }
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
