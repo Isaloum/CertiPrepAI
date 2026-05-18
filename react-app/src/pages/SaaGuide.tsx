@@ -9,7 +9,7 @@ import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
 import { useCertAccess } from '../hooks/useCertAccess'
 
-type Tab = 'matrix' | 'traps' | 'deepdives' | 'studyplan' | 'reference' | 'strategy'
+type Tab = 'matrix' | 'traps' | 'deepdives' | 'studyplan' | 'reference' | 'strategy' | 'numbers'
 
 // ─── DECISION MATRIX ─────────────────────────────────────────────────────────
 interface MatrixRow { requirement: string; solution: string; why: string }
@@ -278,6 +278,137 @@ const DEEP_DIVES = [
   { id: 'stepfn', title: 'Step Functions & Advanced Integration', icon: '🔗', badge: '1–2 questions', summary: 'Orchestrate Lambda with retries, branching, parallel execution, error handling.' },
 ]
 
+// ─── NUMBERS TAB DATA ─────────────────────────────────────────────────────────
+interface NumberRow { service: string; fact: string; value: string }
+
+const CRITICAL_NUMBERS: NumberRow[] = [
+  { service: 'S3', fact: 'Max object size', value: '5 TB' },
+  { service: 'S3', fact: 'Multipart upload threshold', value: '>100 MB recommended, required >5 GB' },
+  { service: 'S3', fact: 'Durability', value: '99.999999999% (11 nines)' },
+  { service: 'S3', fact: 'Standard-IA minimum storage', value: '30 days' },
+  { service: 'S3', fact: 'Glacier Flexible/Deep Archive min storage', value: '90 days' },
+  { service: 'S3', fact: 'Glacier Deep Archive min storage', value: '180 days' },
+  { service: 'Lambda', fact: 'Max execution time', value: '15 minutes (900 sec)' },
+  { service: 'Lambda', fact: 'Max memory', value: '10,240 MB (10 GB)' },
+  { service: 'Lambda', fact: 'Max deployment package (zipped)', value: '50 MB' },
+  { service: 'Lambda', fact: 'Max deployment package (unzipped)', value: '250 MB' },
+  { service: 'SQS', fact: 'Max message size', value: '256 KB' },
+  { service: 'SQS', fact: 'Max message retention', value: '14 days' },
+  { service: 'SQS', fact: 'Visibility timeout max', value: '12 hours' },
+  { service: 'SQS', fact: 'Delay queue max', value: '15 minutes' },
+  { service: 'SQS FIFO', fact: 'Max throughput (standard)', value: '3,000 TPS with batching' },
+  { service: 'DynamoDB', fact: 'Max item size', value: '400 KB' },
+  { service: 'DynamoDB', fact: 'Partition key max length', value: '2,048 bytes' },
+  { service: 'RDS', fact: 'Max storage (most engines)', value: '64 TB' },
+  { service: 'Aurora', fact: 'Max storage (auto-scales)', value: '128 TB' },
+  { service: 'Aurora', fact: 'Max read replicas', value: '15' },
+  { service: 'Aurora', fact: 'Failover time', value: '<30 seconds' },
+  { service: 'RDS Multi-AZ', fact: 'Failover time', value: '1–2 minutes' },
+  { service: 'VPC', fact: 'CIDR range allowed', value: '/16 (65,536 IPs) to /28 (16 IPs)' },
+  { service: 'VPC', fact: 'Subnets per VPC (soft limit)', value: '200' },
+  { service: 'VPC', fact: 'First 4 + last 1 IPs reserved', value: '5 IPs per subnet (unusable)' },
+  { service: 'Security Group', fact: 'Rules per SG', value: '60 inbound + 60 outbound' },
+  { service: 'Security Group', fact: 'SGs per ENI', value: '5' },
+  { service: 'NACL', fact: 'Rules per NACL', value: '20 inbound + 20 outbound (default soft limit)' },
+  { service: 'EC2', fact: 'Spot interruption notice', value: '2 minutes' },
+  { service: 'EC2', fact: 'Spread placement group max per AZ', value: '7 instances' },
+  { service: 'EBS gp3', fact: 'Baseline IOPS', value: '3,000 (scalable to 16,000)' },
+  { service: 'EBS io2 Block Express', fact: 'Max IOPS', value: '256,000' },
+  { service: 'EFS', fact: 'Infrequent Access savings', value: 'Up to 92% vs EFS Standard' },
+  { service: 'Direct Connect', fact: 'Port speeds', value: '1 Gbps, 10 Gbps, 100 Gbps' },
+  { service: 'CloudFront', fact: 'Default TTL', value: '24 hours (86,400 sec)' },
+  { service: 'Route 53', fact: 'Health check interval', value: '10 or 30 seconds' },
+  { service: 'KMS', fact: 'Envelope encryption key size', value: 'Data key up to 4 KB per API call' },
+  { service: 'Kinesis Data Streams', fact: 'Shard write throughput', value: '1 MB/s or 1,000 records/s' },
+  { service: 'Kinesis Data Streams', fact: 'Shard read throughput', value: '2 MB/s per consumer' },
+  { service: 'Kinesis Data Streams', fact: 'Default retention', value: '24 hours (up to 365 days)' },
+  { service: 'API Gateway', fact: 'Default timeout', value: '29 seconds' },
+  { service: 'SNS', fact: 'Max message size', value: '256 KB' },
+  { service: 'Step Functions Standard', fact: 'Max duration', value: '1 year' },
+  { service: 'Step Functions Express', fact: 'Max duration', value: '5 minutes' },
+  { service: 'Transit Gateway', fact: 'Max VPC attachments', value: '5,000' },
+  { service: 'ALB', fact: 'Idle connection timeout', value: '60 seconds (default)' },
+  { service: 'Secrets Manager', fact: 'Cost per secret', value: '~$0.40/secret/month' },
+]
+
+interface DistinctionRow { scenario: string; answer: string; trap?: string }
+
+const DISTINCTIONS_STORAGE: DistinctionRow[] = [
+  { scenario: 'Store objects/files — any size, HTTP access', answer: 'Amazon S3', trap: 'Not EBS — EBS requires EC2 attachment' },
+  { scenario: 'Block storage for ONE EC2 instance (OS, DB volume)', answer: 'Amazon EBS', trap: 'EBS is AZ-locked — cannot cross AZs' },
+  { scenario: 'Shared file system — Linux, multiple EC2 simultaneously', answer: 'Amazon EFS (NFS)', trap: 'EBS cannot attach to multiple EC2 (except io2 Multi-Attach)' },
+  { scenario: 'Shared file system — Windows, SMB, Active Directory', answer: 'FSx for Windows File Server', trap: 'EFS is Linux/POSIX only — never Windows' },
+  { scenario: 'High-performance parallel file system for HPC/ML', answer: 'FSx for Lustre', trap: 'Not EFS — Lustre is for HPC throughput, not general file sharing' },
+  { scenario: 'Archive, rarely accessed, cheapest long-term storage', answer: 'S3 Glacier Deep Archive', trap: 'Not S3 Standard-IA — S3 IA still more expensive than Glacier' },
+  { scenario: 'Unknown or changing access patterns — auto-tier', answer: 'S3 Intelligent-Tiering', trap: 'Not Lifecycle — use Lifecycle only when access pattern is KNOWN' },
+  { scenario: 'Highest IOPS ever — ephemeral, EC2-local NVMe', answer: 'EC2 Instance Store', trap: 'Data lost on stop/terminate — never for persistent data' },
+]
+
+const DISTINCTIONS_COMPUTE: DistinctionRow[] = [
+  { scenario: 'Variable/unpredictable traffic, short executions', answer: 'AWS Lambda', trap: 'Lambda max = 15 min. Not for long-running jobs.' },
+  { scenario: 'Long-running (>15 min), stateful, needs OS access', answer: 'EC2 or Fargate', trap: 'Lambda is limited to 15 minutes — cannot run video encoding jobs' },
+  { scenario: 'Batch, fault-tolerant, can be interrupted', answer: 'EC2 Spot Instances', trap: 'Never Spot for databases or anything that cannot be interrupted' },
+  { scenario: 'Steady-state 24/7 production workload', answer: 'Reserved Instances / Savings Plans', trap: 'On-Demand is wasteful for predictable workloads' },
+  { scenario: 'Containerised app — no EC2 management', answer: 'ECS or EKS with Fargate', trap: 'Fargate = no EC2 cluster management. EKS = Kubernetes (need expertise)' },
+  { scenario: 'HPC — lowest inter-node latency, tight coupling', answer: 'Cluster Placement Group + EFA', trap: 'Spread PG = max availability, not low latency' },
+  { scenario: 'Maximize availability — each instance on different rack', answer: 'Spread Placement Group', trap: 'Max 7 per AZ — not for large clusters' },
+]
+
+const DISTINCTIONS_NETWORKING: DistinctionRow[] = [
+  { scenario: 'HTTP/HTTPS routing — path, host, query string', answer: 'ALB (Layer 7)', trap: 'NLB cannot do path routing — it is Layer 4 only' },
+  { scenario: 'TCP/UDP — ultra-low latency, static IP per AZ', answer: 'NLB (Layer 4)', trap: 'ALB has no static IP and cannot handle non-HTTP protocols' },
+  { scenario: 'Inline security appliance (Palo Alto, Check Point)', answer: 'GWLB (Layer 3)', trap: 'Neither ALB nor NLB — GWLB is transparent bump-in-wire' },
+  { scenario: 'Block a specific IP address explicitly', answer: 'NACL Deny rule', trap: 'Security Groups are allow-only — no Deny rules' },
+  { scenario: 'Instance-level stateful firewall', answer: 'Security Group', trap: 'NACL is stateless — must allow return traffic manually' },
+  { scenario: 'Connect many VPCs — transitive hub-and-spoke', answer: 'Transit Gateway', trap: 'VPC Peering is non-transitive — A↔B + B↔C ≠ A↔C' },
+  { scenario: 'CDN — cache HTTP content at edge globally', answer: 'CloudFront', trap: 'Global Accelerator does NOT cache — it just routes faster over AWS backbone' },
+  { scenario: 'Static Anycast IPs + TCP/UDP global acceleration', answer: 'Global Accelerator', trap: 'CloudFront is HTTP-only and DNS-based — no static IP' },
+  { scenario: 'Dedicated private fiber to on-premises', answer: 'AWS Direct Connect', trap: 'Direct Connect is NOT encrypted by default — add VPN for encryption' },
+]
+
+const DISTINCTIONS_DB: DistinctionRow[] = [
+  { scenario: 'Relational, SQL, complex queries, ACID', answer: 'RDS (MySQL, PostgreSQL, Oracle…)', trap: '' },
+  { scenario: 'RDS with 5x MySQL speed, auto-scale storage to 128 TB', answer: 'Amazon Aurora', trap: '' },
+  { scenario: 'RDS HA failover — standby in another AZ', answer: 'RDS Multi-AZ', trap: 'Multi-AZ standby is NOT readable — it is failover only' },
+  { scenario: 'Scale READ traffic for RDS', answer: 'RDS Read Replicas', trap: 'Multi-AZ does NOT serve reads — only Read Replicas do' },
+  { scenario: 'NoSQL, key-value, single-digit ms, auto-scale', answer: 'DynamoDB', trap: '' },
+  { scenario: 'Microsecond cache for DynamoDB reads', answer: 'DynamoDB DAX', trap: 'DAX only works with DynamoDB — not RDS or other DBs' },
+  { scenario: 'Sub-ms in-memory cache for RDS or general use', answer: 'ElastiCache (Redis or Memcached)', trap: 'DAX is DynamoDB-only — for RDS caching, use ElastiCache' },
+  { scenario: 'Analytics — OLAP queries over petabytes', answer: 'Amazon Redshift', trap: 'Not RDS — Redshift is columnar warehouse, not OLTP' },
+  { scenario: 'Graph relationships — social, fraud, recommendations', answer: 'Amazon Neptune', trap: '' },
+  { scenario: 'MongoDB-compatible document store', answer: 'Amazon DocumentDB', trap: '' },
+]
+
+const ARCH_PATTERNS: { label: string; pattern: string }[] = [
+  { label: 'Decouple (async)', pattern: 'SQS (queue) + Lambda/EC2 workers' },
+  { label: 'Fan-out', pattern: 'SNS → multiple SQS queues / Lambda / Email / SMS' },
+  { label: 'Event-driven', pattern: 'EventBridge → Lambda / Step Functions / SQS' },
+  { label: 'Static website', pattern: 'S3 + CloudFront + Route 53 + ACM (SSL/TLS)' },
+  { label: 'Serverless API', pattern: 'API Gateway + Lambda + DynamoDB' },
+  { label: 'Microservices', pattern: 'ALB (path routing) + ECS Fargate + API Gateway' },
+  { label: 'Hybrid cloud', pattern: 'Direct Connect / VPN + Storage Gateway + DataSync' },
+  { label: 'Backup strategy', pattern: 'AWS Backup + S3 Versioning + Cross-Region Replication' },
+  { label: 'Cost optimisation', pattern: 'Compute Optimizer + Trusted Advisor + Savings Plans + S3 Lifecycle' },
+  { label: 'Multi-region DR', pattern: 'Aurora Global DB + DynamoDB Global Tables + Route 53 Failover' },
+  { label: 'Big data pipeline', pattern: 'Kinesis Streams → Lambda / Firehose → S3 → Athena / Redshift' },
+  { label: 'VPC private access to AWS', pattern: 'VPC Gateway Endpoint (S3/DDB free) or Interface Endpoint (PrivateLink)' },
+]
+
+const QUICK_TRAPS: { wrong: string; right: string }[] = [
+  { wrong: 'Lambda for 30-min video encoding', right: 'ECS/Fargate or EC2 (Lambda max = 15 min)' },
+  { wrong: 'Spot Instances for a database', right: 'On-Demand or Reserved (Spot can be interrupted)' },
+  { wrong: 'EBS for shared storage across EC2s', right: 'EFS (Linux) or FSx for Windows (Windows)' },
+  { wrong: 'Multi-AZ for read scaling', right: 'Read Replicas (Multi-AZ standby is not readable)' },
+  { wrong: 'Direct Connect = encrypted', right: 'Direct Connect + VPN for encryption (DX alone is not encrypted)' },
+  { wrong: 'Security Group to block an IP', right: 'NACL Deny rule (SGs are allow-only)' },
+  { wrong: 'NAT Instance vs NAT Gateway = same', right: 'NAT Gateway: managed, HA, scales automatically. NAT Instance: you manage HA.' },
+  { wrong: 'CloudFront for TCP/UDP with static IP', right: 'Global Accelerator (CloudFront = HTTP only, no static IP)' },
+  { wrong: 'DAX to cache RDS queries', right: 'ElastiCache (DAX is DynamoDB-only)' },
+  { wrong: '"Enable encryption" vaguely for S3', right: 'SSE-S3, SSE-KMS, or SSE-C (each has different key control implications)' },
+  { wrong: 'VPC Peering for 5 VPCs = transitive', right: 'Transit Gateway (peering is non-transitive — 5 VPCs = 10 peering connections)' },
+  { wrong: 'DynamoDB stores 10 TB log files', right: 'S3 + Athena (DynamoDB max item = 400 KB)' },
+]
+
 // ─── STRATEGY TIPS ────────────────────────────────────────────────────────────
 const STRATEGY_TIPS = [
   { icon: '🚩', title: 'Flag and Move', desc: 'If a question takes more than 90 seconds, flag it and move on. Return at the end. You have 130 minutes for 65 questions — that\'s 2 minutes each. Never let one question cost you three.' },
@@ -298,9 +429,34 @@ const TAB_LIST: { id: Tab; label: string; count: string }[] = [
   { id: 'studyplan', label: '📅 Study Plan',        count: '30 days' },
   { id: 'reference', label: '🔌 Quick Reference',   count: `${PORTS.length} ports` },
   { id: 'strategy',  label: '🏆 Exam Strategy',     count: `${STRATEGY_TIPS.length} tips` },
+  { id: 'numbers',   label: '📊 Numbers & Facts',   count: `${CRITICAL_NUMBERS.length}` },
 ]
 
 const STORAGE_KEY = 'certiprepai-saa-study-plan'
+
+// ─── HELPER COMPONENT ────────────────────────────────────────────────────────
+function ServiceDistinctionTable({ rows }: { rows: { scenario: string; answer: string; trap?: string }[] }) {
+  return (
+    <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', background: '#eff6ff', padding: '8px 14px', fontWeight: 700, fontSize: '0.78rem', color: '#1e40af', gap: '8px' }}>
+        <span>Scenario / Requirement</span><span>Correct Service</span>
+      </div>
+      {rows.map((row, i) => (
+        <div key={i} style={{ padding: '10px 14px', borderTop: '1px solid #f3f4f6', background: i % 2 === 0 ? '#fff' : '#fafafa' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '10px', alignItems: 'start' }}>
+            <span style={{ fontSize: '0.85rem', color: '#374151', lineHeight: 1.5 }}>{row.scenario}</span>
+            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#059669', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '3px 12px', borderRadius: '6px', whiteSpace: 'nowrap' }}>{row.answer}</span>
+          </div>
+          {row.trap && (
+            <div style={{ marginTop: '4px', fontSize: '0.75rem', color: '#b45309', background: '#fef9c3', border: '1px solid #fde047', borderRadius: '6px', padding: '3px 8px', display: 'inline-block' }}>
+              ⚠️ Trap: {row.trap}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
 
 // ─── COMPONENT ────────────────────────────────────────────────────────────────
 export default function SaaGuide() {
@@ -908,6 +1064,133 @@ export default function SaaGuide() {
                 ))}
               </div>
             </div>
+          </div>
+        )}
+
+        {/* ── NUMBERS & FACTS ── */}
+        {activeTab === 'numbers' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+
+            {/* Intro */}
+            <div style={{ background: 'linear-gradient(135deg, #eff6ff, #dbeafe)', border: '1px solid #bfdbfe', borderRadius: '14px', padding: '1.25rem' }}>
+              <div style={{ fontWeight: 800, fontSize: '1rem', color: '#1e40af', marginBottom: '6px' }}>📊 {CRITICAL_NUMBERS.length} Critical Numbers to Memorise</div>
+              <div style={{ color: '#3b82f6', fontSize: '0.875rem', lineHeight: 1.6 }}>
+                These exact values appear in SAA-C03 questions. Knowing them removes all ambiguity. Scan this table in your final 48 hours before the exam.
+              </div>
+            </div>
+
+            {/* Critical Numbers Table */}
+            <div>
+              <h3 style={{ fontWeight: 800, fontSize: '1rem', color: '#111827', marginBottom: '0.75rem' }}>🔢 Critical Numbers</h3>
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr auto', background: '#eff6ff', padding: '8px 14px', fontWeight: 700, fontSize: '0.78rem', color: '#1e40af', gap: '8px' }}>
+                  <span>Service</span><span>Fact</span><span>Value</span>
+                </div>
+                {CRITICAL_NUMBERS.map((row, i) => (
+                  <div key={i} style={{ display: 'grid', gridTemplateColumns: '120px 1fr auto', padding: '9px 14px', borderTop: '1px solid #f3f4f6', background: i % 2 === 0 ? '#fff' : '#fafafa', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontWeight: 700, fontSize: '0.78rem', color: '#1d4ed8', fontFamily: 'monospace' }}>{row.service}</span>
+                    <span style={{ fontSize: '0.82rem', color: '#374151' }}>{row.fact}</span>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#111827', background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '2px 10px', borderRadius: '6px', whiteSpace: 'nowrap' }}>{row.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Service Distinctions */}
+            <div>
+              <h3 style={{ fontWeight: 800, fontSize: '1rem', color: '#111827', marginBottom: '0.75rem' }}>⚡ Service Distinctions — Storage</h3>
+              <ServiceDistinctionTable rows={DISTINCTIONS_STORAGE} />
+            </div>
+
+            <div>
+              <h3 style={{ fontWeight: 800, fontSize: '1rem', color: '#111827', marginBottom: '0.75rem' }}>⚡ Service Distinctions — Compute</h3>
+              <ServiceDistinctionTable rows={DISTINCTIONS_COMPUTE} />
+            </div>
+
+            <div>
+              <h3 style={{ fontWeight: 800, fontSize: '1rem', color: '#111827', marginBottom: '0.75rem' }}>⚡ Service Distinctions — Networking</h3>
+              <ServiceDistinctionTable rows={DISTINCTIONS_NETWORKING} />
+            </div>
+
+            <div>
+              <h3 style={{ fontWeight: 800, fontSize: '1rem', color: '#111827', marginBottom: '0.75rem' }}>⚡ Service Distinctions — Databases</h3>
+              <ServiceDistinctionTable rows={DISTINCTIONS_DB} />
+            </div>
+
+            {/* Architecture Patterns */}
+            <div>
+              <h3 style={{ fontWeight: 800, fontSize: '1rem', color: '#111827', marginBottom: '0.75rem' }}>🧠 Architecture Patterns to Memorise</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {ARCH_PATTERNS.map((p, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '10px', padding: '10px 14px' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, background: '#eff6ff', color: '#1d4ed8', border: '1px solid #bfdbfe', padding: '2px 10px', borderRadius: '6px', whiteSpace: 'nowrap', flexShrink: 0 }}>{p.label}</span>
+                    <span style={{ fontSize: '0.85rem', color: '#374151', lineHeight: 1.5 }}>→ {p.pattern}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Traps */}
+            <div>
+              <h3 style={{ fontWeight: 800, fontSize: '1rem', color: '#111827', marginBottom: '0.75rem' }}>🚫 Common Exam Traps — Quick Reference</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {QUICK_TRAPS.map((t, i) => (
+                  <div key={i} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '10px', padding: '10px 14px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', alignItems: 'start' }}>
+                    <div style={{ display: 'flex', gap: '6px', alignItems: 'flex-start' }}>
+                      <span style={{ color: '#ef4444', fontWeight: 700, fontSize: '0.8rem', flexShrink: 0 }}>❌</span>
+                      <span style={{ fontSize: '0.82rem', color: '#6b7280', lineHeight: 1.5 }}>{t.wrong}</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: '6px', alignItems: 'flex-start' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700, fontSize: '0.8rem', flexShrink: 0 }}>✅</span>
+                      <span style={{ fontSize: '0.82rem', color: '#111827', fontWeight: 600, lineHeight: 1.5 }}>{t.right}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Pricing quick pick */}
+            <div>
+              <h3 style={{ fontWeight: 800, fontSize: '1rem', color: '#111827', marginBottom: '0.75rem' }}>💰 EC2 Pricing Models — When to Use</h3>
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden' }}>
+                {[
+                  { model: 'On-Demand', discount: '0% (list price)', when: 'Short-term, unpredictable, testing, getting started', color: '#6b7280' },
+                  { model: 'Savings Plans', discount: 'Up to 72%', when: 'Flexible commitment — covers EC2, Lambda, and Fargate across types/regions', color: '#059669' },
+                  { model: 'Reserved Instances', discount: 'Up to 72%', when: 'Predictable, steady-state, specific instance type/region, 1–3 yr', color: '#2563eb' },
+                  { model: 'Spot Instances', discount: 'Up to 90%', when: 'Fault-tolerant, flexible, batch, stateless. Can be interrupted with 2-min notice.', color: '#d97706' },
+                  { model: 'Dedicated Hosts', discount: 'No discount (premium)', when: 'Compliance, BYOL (Bring Your Own Licence), physical server isolation', color: '#7c3aed' },
+                ].map((p, i) => (
+                  <div key={i} style={{ display: 'grid', gridTemplateColumns: '160px 100px 1fr', padding: '10px 14px', borderTop: i > 0 ? '1px solid #f3f4f6' : 'none', background: i % 2 === 0 ? '#fff' : '#fafafa', alignItems: 'start', gap: '8px' }}>
+                    <span style={{ fontWeight: 700, fontSize: '0.85rem', color: '#111827' }}>{p.model}</span>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: p.color }}>{p.discount}</span>
+                    <span style={{ fontSize: '0.8rem', color: '#6b7280', lineHeight: 1.5 }}>{p.when}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* HA vs DR table */}
+            <div>
+              <h3 style={{ fontWeight: 800, fontSize: '1rem', color: '#111827', marginBottom: '0.75rem' }}>🌐 HA vs DR — Key Distinction</h3>
+              <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden' }}>
+                {[
+                  { term: 'High Availability (HA)', def: 'Survive AZ failure', impl: 'Multi-AZ RDS + ALB across AZs + Auto Scaling across AZs' },
+                  { term: 'Disaster Recovery (DR)', def: 'Survive Region failure', impl: 'Multi-Region deployment + S3 CRR + Route 53 Failover Routing' },
+                  { term: 'RTO', def: 'Recovery Time Objective', impl: 'How fast you restore service — time to recover' },
+                  { term: 'RPO', def: 'Recovery Point Objective', impl: 'How much data loss is acceptable — time between backups' },
+                  { term: 'Pilot Light', def: 'Core DB always running in DR region', impl: 'DB replicated. App tier stopped. Scale up on failover.' },
+                  { term: 'Warm Standby', def: 'Scaled-down full env always running', impl: 'Always on in secondary region. Scale to full on failover.' },
+                  { term: 'Multi-Site Active/Active', def: 'Full prod in 2+ regions simultaneously', impl: 'Route 53 latency/geolocation. Near-zero RTO. Highest cost.' },
+                ].map((r, i) => (
+                  <div key={i} style={{ display: 'grid', gridTemplateColumns: '180px 200px 1fr', padding: '9px 14px', borderTop: i > 0 ? '1px solid #f3f4f6' : 'none', background: i % 2 === 0 ? '#fff' : '#fafafa', alignItems: 'start', gap: '8px' }}>
+                    <span style={{ fontWeight: 700, fontSize: '0.82rem', color: '#1d4ed8' }}>{r.term}</span>
+                    <span style={{ fontSize: '0.8rem', color: '#374151' }}>{r.def}</span>
+                    <span style={{ fontSize: '0.8rem', color: '#6b7280', lineHeight: 1.5 }}>{r.impl}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
         )}
 
