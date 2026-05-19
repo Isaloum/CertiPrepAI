@@ -294,6 +294,10 @@ aws cognito-idp admin-update-user-attributes \
 | 21 | CLF gap coverage (exhaustive drill-down) | `ClfGuide.tsx` Decision Matrix +6 rows: AWS Artifact, CloudFormation, DMS, Site-to-Site VPN, Aurora, CUR. Codex new section: Securing a New Account (4 steps), Direct Connect vs VPN comparison table, Data Transfer Pricing (IN free / OUT billed / cross-region billed), AWS Artifact callout panel. |
 | 22 | AIF gap coverage (exhaustive drill-down) | `AifGuide.tsx` Decision Matrix +7 rows: SageMaker Canvas, Data Wrangler, Batch Transform, Transcribe Call Analytics, Connect+Lex, Panorama, MTurk. Codex new section: MDLC 7 phases table, Precision/Recall/F1 formulas with when-to-use, Data Drift vs Concept Drift side-by-side, SageMaker inference types (Real-Time/Serverless/Batch/Async), Amazon Q Business vs Q Developer full comparison table. |
 | 23 | SAA layout fixes | Security section: removed 2-col grid that left tall white gap (switched to flex column). HA checklist: fixed to `repeat(3, 1fr)` for uniform box sizes. Lambda@Edge cards: fixed to `repeat(2, 1fr)` 2×2 grid (was 4-col in narrow container = unreadable). Codex tab badge: set to `'6'` (6 parts). |
+| 24 | CLF second-pass gap coverage | `ClfGuide.tsx` Decision Matrix +3 rows: S3 Intelligent-Tiering, Amazon SQS (decoupling), AWS Compute Optimizer. Codex new panel: 4 Cloud Architecture Design Principles (Design for Failure, Decouple Components, Implement Elasticity, Think Parallel). Codex Databases table: DAX (DynamoDB Accelerator, microsecond latency, drop-in compatible). |
+| 25 | AIF second-pass gap coverage | `AifGuide.tsx` Decision Matrix +2 rows: SageMaker Studio (unified ML IDE), SageMaker Model Cards (governance/responsible AI). Codex RL card: added AWS DeepRacer as the specific AWS service for learning Reinforcement Learning. |
+| 26 | Audit fixes (full pass) | Home.tsx H1 typo fixed (`for<br/>` → `for <br/>`). index.html: 3,958→3,910 (all 5 occurrences). SEOMeta.tsx: og:image + twitter:image added to all routes. `/sample-questions` + `/clf-guide` added to ROUTE_META. sitemap.xml: 12→27 URLs (all 12 cert pages + study guide pages). og-image.svg created (1200×630 branded). Converted to og-image.png via sips. |
+| 27 | SkillRadarChart improvements | Empty state: ghost chart replaced with motivating message + "Start Practicing →" CTA button. Domain cards: now show attempted count + correct% underneath gap score (e.g. "12 questions · 75% correct"). Domain table hidden entirely until user has practiced. |
 
 ### Study Guide Tab Structure (as of May 18, 2026)
 
@@ -359,7 +363,7 @@ aws cognito-idp admin-update-user-attributes \
 | 🟡 Medium | CLF-C02 study tools — Keywords + Service Groups for highest-volume entry cert |
 | 🟡 Medium | PostHog: Signup.tsx passes email as userId instead of Cognito sub — creates duplicate profiles |
 | 🟡 Medium | SkillRadarChart domain catKeys may not match CertDetail domain keys for gai-c01 |
-| 🟢 Low | SEOMeta: /sample-questions, /visual-exam, /architecture-builder missing dedicated meta tags |
+| 🟢 Low | SEOMeta: /visual-exam, /architecture-builder still missing dedicated meta tags |
 | 🟢 Low | Move hardcoded API URLs to env vars (fix Amplify build injection first) |
 | 🟢 Low | Zoho Mail migration — WorkMail deprecated March 2027 |
 | 🟢 Low | Replace full sk_live keys in cancel + verify-session with restricted keys |
