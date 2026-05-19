@@ -1,5 +1,5 @@
 # CertiPrepAI — Claude Context
-_Last updated: 2026-05-13 (full audit session)_
+_Last updated: 2026-05-18_
 
 ## What this project is
 AWS certification prep SaaS. React frontend on AWS Amplify, serverless backend on Lambda + DynamoDB + Cognito.
@@ -280,6 +280,68 @@ aws cognito-idp admin-update-user-attributes \
 | PostHog analytics | ✅ Active |
 | Sentry error tracking | ✅ Active |
 | UptimeRobot monitoring | ✅ Active |
+
+---
+
+## ✅ Built This Session (May 18, 2026) — Study Guide Expansion
+
+| # | Item | Details |
+|---|------|---------|
+| 17 | SAA-C03 Architect's Codex (8th tab) | Added to `SaaGuide.tsx`. 6-part codex: Architect's Mindset, Service Selection Decision Trees (Storage/Database/Compute/Network/Integration), Security (IAM Evaluation Logic, Condition Operators, Cross-Account Role, Directory Services), HA/DR (4 tiers: Backup→Pilot Light→Warm Standby→Active-Active), Cost Optimisation, Exam Strategy. Plus Appendix: Ports/CIDR/Acronyms. |
+| 18 | SAA-C03 Gap Coverage | Added 26 new rows to Decision Matrix (exam-critical + medium priority). Added DynamoDB RCU/WCU math section to Numbers & Facts tab (formulas + worked examples). Expanded Codex Part 1 Security with IAM Condition Operators panel, Cross-Account Role Delegation panel, Directory Services comparison. Expanded Codex Part 2 with specialty DBs (QLDB, Neptune, Timestream, Managed Blockchain) and Lambda@Edge 4-stage decision tree. |
+| 19 | CLF-C02 Codex (7th tab) | Added to `ClfGuide.tsx`. Green scheme (#059669). Covers: 6 Cloud Advantages, Deployment Models (Public/Private/Hybrid), Service Models (IaaS/PaaS/SaaS — Lambda = FaaS fixed), Global Infrastructure (AZ min-2 note), Core Services (5 panels), Shared Responsibility + IAM + Security Services, Billing (RI=72% fixed, Free Tier, Support Plans table, Cost Tools), Exam Strategy (question patterns, elimination tricks), CLF Mantra. |
+| 20 | AIF-C01 Codex (7th tab) | Added to `AifGuide.tsx`. Purple scheme (#7c3aed). Covers: 4 ML types, 10-term AI glossary, Bedrock deep card (models/KB/Agents/Guardrails), Pre-built AI services by category, SageMaker components, AI chips (Trainium/Inferentia), 4 Responsible AI pillars, Bedrock Guardrails 5 types, HITL/A2I, use-case decision tree, 14 keyword→service mappings, Bedrock vs SageMaker table, AIF Mantra. |
+
+### Study Guide Tab Structure (as of May 18, 2026)
+
+**SaaGuide.tsx** — 8 tabs
+| Tab ID | Label | Content |
+|--------|-------|---------|
+| `matrix` | 🎯 Decision Matrix | ~90+ requirement→solution rows |
+| `traps` | ⚠️ Exam Traps | Wrong-answer patterns with explanations |
+| `deepdives` | 🔬 Deep Dives | Domain-specific technical breakdowns |
+| `studyplan` | 📅 Study Plan | 4-week structured study schedule |
+| `reference` | 📋 Quick Reference | Service limits, CIDR blocks, port numbers |
+| `strategy` | 🧠 Exam Strategy | Test-taking tactics and time management |
+| `numbers` | 🔢 Numbers & Facts | Critical numbers, RCU/WCU math, service distinctions |
+| `codex` | 🧭 Architect's Codex | 6-part decision framework + Appendix |
+
+**ClfGuide.tsx** — 7 tabs
+| Tab ID | Label | Content |
+|--------|-------|---------|
+| `matrix` | 🎯 Decision Matrix | CLF scenario→service mappings |
+| `traps` | ⚠️ Exam Traps | CLF common wrong-answer patterns |
+| `deepdives` | 🔬 Deep Dives | Cloud concepts, billing, security deep dives |
+| `studyplan` | 📅 Study Plan | CLF study schedule |
+| `reference` | 📋 Quick Reference | CLF quick reference tables |
+| `strategy` | 🧠 Exam Strategy | CLF test-taking tactics |
+| `codex` | 🧭 CLF Codex | Cloud fundamentals, global infra, billing, exam mantra |
+
+**AifGuide.tsx** — 7 tabs
+| Tab ID | Label | Content |
+|--------|-------|---------|
+| `matrix` | 🎯 Decision Matrix | AIF scenario→service mappings |
+| `traps` | ⚠️ Exam Traps | AIF common wrong-answer patterns |
+| `deepdives` | 🔬 Deep Dives | ML/AI domain deep dives |
+| `studyplan` | 📅 Study Plan | AIF study schedule |
+| `reference` | 📋 Quick Reference | AIF quick reference tables |
+| `strategy` | 🧠 Exam Strategy | AIF test-taking tactics |
+| `codex` | 🧭 AIF Codex | ML types, Bedrock, SageMaker, Responsible AI, exam mantra |
+
+### Content Placement Rules (established this session)
+| Content Type | → Tab |
+|--------------|-------|
+| Scenario → service mappings | Decision Matrix |
+| Numeric limits and thresholds | Numbers & Facts |
+| Formulas with worked examples | Numbers & Facts |
+| Conceptual frameworks / decision trees | Codex |
+| Wrong-answer patterns | Exam Traps |
+
+### Content Accuracy Fixes Applied
+| File | Fix |
+|------|-----|
+| SaaGuide Codex | Pilot Light ≠ Warm Standby (separate DR tiers). Active/Active RTO = "Seconds / Near-zero". Port 3389 (RDP) added to Appendix. |
+| ClfGuide Codex | Lambda = FaaS (not PaaS). AZ minimum = 2 (some regions only have 2). RI discount = 72% (not 75%). |
 
 ---
 
