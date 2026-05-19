@@ -230,13 +230,13 @@ export default function SEOMeta({ title, description, canonical }: SEOProps) {
     setMeta('og:site_name', 'CertiPrepAI', 'property')
 
     // Open Graph image
-    setMeta('og:image', 'https://certiprepai.com/og-image.svg', 'property')
+    setMeta('og:image', 'https://certiprepai.com/og-image.png', 'property')
 
     // Twitter
     setMeta('twitter:card', 'summary_large_image')
     setMeta('twitter:title', t)
     setMeta('twitter:description', d)
-    setMeta('twitter:image', 'https://certiprepai.com/og-image.svg')
+    setMeta('twitter:image', 'https://certiprepai.com/og-image.png')
 
     // Canonical
     let canon = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null
