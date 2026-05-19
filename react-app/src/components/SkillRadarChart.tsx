@@ -174,39 +174,73 @@ export default function SkillRadarChart({ certOptions, progressMap, domainScores
         {hasRealDomainData
           ? `Real per-domain scores from your practice · blue = exam focus`
           : hasPracticed
-            ? `Overall score: ${overallPct}% · Take more exams to see per-domain scores`
+            ? `Overall score: ${overallPct}% · Answer more questions to see per-domain breakdown`
             : 'No practice yet · blue = what the exam tests'}
       </p>
 
-      <ResponsiveContainer width="100%" height={320}>
-        <RadarChart data={data} margin={{ top: 10, right: 30, bottom: 10, left: 30 }}>
-          <PolarGrid stroke="#e5e7eb" />
-          <PolarAngleAxis dataKey="domain" tick={{ fill: '#374151', fontSize: 12, fontWeight: 600 }} />
-          <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: '#9ca3af', fontSize: 10 }} tickCount={5} />
-          <Radar name="Exam Weight" dataKey="examWeight" stroke="#2563eb" fill="#2563eb" fillOpacity={0.12} strokeWidth={2} />
-          <Radar name="Your Score"  dataKey="userScore"  stroke="#dc2626" fill="#dc2626" fillOpacity={0.15} strokeWidth={2} strokeDasharray="5 3" />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend formatter={value => <span style={{ fontSize: '0.78rem', color: '#374151', fontWeight: 600 }}>{value}</span>} />
-        </RadarChart>
-      </ResponsiveContainer>
+      {/* Empty state — no practice at all */}
+      {!hasPracticed ? (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 280, gap: '1rem' }}>
+          <div style={{ fontSize: '3rem' }}>🕸️</div>
+          <p style={{ fontSize: '0.95rem', fontWeight: 700, color: '#374151', margin: 0, textAlign: 'center' }}>
+            Your radar is empty
+          </p>
+          <p style={{ fontSize: '0.82rem', color: '#6b7280', margin: 0, textAlign: 'center', maxWidth: 280 }}>
+            Complete your first practice session to see exactly where you're strong and where you're falling behind.
+          </p>
+          <a
+            href={`/cert/${selectedId}`}
+            style={{ background: '#2563eb', color: '#fff', fontWeight: 700, fontSize: '0.85rem', padding: '0.55rem 1.4rem', borderRadius: '999px', textDecoration: 'none', marginTop: '0.25rem' }}
+          >
+            Start Practicing →
+          </a>
+        </div>
+      ) : (
+        <ResponsiveContainer width="100%" height={320}>
+          <RadarChart data={data} margin={{ top: 10, right: 30, bottom: 10, left: 30 }}>
+            <PolarGrid stroke="#e5e7eb" />
+            <PolarAngleAxis dataKey="domain" tick={{ fill: '#374151', fontSize: 12, fontWeight: 600 }} />
+            <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: '#9ca3af', fontSize: 10 }} tickCount={5} />
+            <Radar name="Exam Weight" dataKey="examWeight" stroke="#2563eb" fill="#2563eb" fillOpacity={0.12} strokeWidth={2} />
+            <Radar name="Your Score"  dataKey="userScore"  stroke="#dc2626" fill="#dc2626" fillOpacity={0.15} strokeWidth={2} strokeDasharray="5 3" />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend formatter={value => <span style={{ fontSize: '0.78rem', color: '#374151', fontWeight: 600 }}>{value}</span>} />
+          </RadarChart>
+        </ResponsiveContainer>
+      )}
 
-      {/* Domain score table */}
-      <div style={{ marginTop: '0.75rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.5rem' }}>
-        {data.map(d => {
-          const gap = d.userScore - d.examWeight
-          const gapColor = gap >= 0 ? '#16a34a' : gap >= -15 ? '#d97706' : '#dc2626'
-          const gapLabel = hasPracticed ? (gap >= 0 ? `+${gap}%` : `${gap}%`) : '—'
-          return (
-            <div key={d.domain} style={{ background: '#f9fafb', border: '1px solid #f3f4f6', borderRadius: '0.65rem', padding: '0.6rem 0.85rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#374151' }}>{d.domain}</span>
-              <span style={{ fontSize: '0.72rem', fontWeight: 800, color: hasPracticed ? gapColor : '#9ca3af' }}>{gapLabel}</span>
-            </div>
-          )
-        })}
-      </div>
-      <p style={{ fontSize: '0.7rem', color: '#6b7280', marginTop: '0.75rem', textAlign: 'right' }}>
-        {hasPracticed ? 'Gap = Your Score − Exam Weight · 🟢 above · 🔴 below' : 'Practice this cert to see your gap score'}
-      </p>
+      {/* Domain score table — only when practiced */}
+      {hasPracticed && (
+        <>
+          <div style={{ marginTop: '0.75rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))', gap: '0.5rem' }}>
+            {data.map(d => {
+              const gap = d.userScore - d.examWeight
+              const gapColor = gap >= 0 ? '#16a34a' : gap >= -15 ? '#d97706' : '#dc2626'
+              const gapLabel = gap >= 0 ? `+${gap}%` : `${gap}%`
+              const ds = certDomainScores[domains.find(x => x.label === d.domain)?.catKey ?? '']
+              const attempted = ds?.attempted ?? 0
+              return (
+                <div key={d.domain} style={{ background: '#f9fafb', border: '1px solid #f3f4f6', borderRadius: '0.65rem', padding: '0.6rem 0.85rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#374151' }}>{d.domain}</span>
+                    <span style={{ fontSize: '0.72rem', fontWeight: 800, color: d.hasRealData ? gapColor : '#9ca3af' }}>
+                      {d.hasRealData ? gapLabel : `${overallPct > 0 ? `~${gap > 0 ? '+' : ''}${gap}%` : '—'}`}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '0.68rem', color: '#9ca3af' }}>
+                    {d.hasRealData
+                      ? `${attempted} question${attempted !== 1 ? 's' : ''} · ${d.userScore}% correct`
+                      : 'No domain data yet'}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          <p style={{ fontSize: '0.7rem', color: '#6b7280', marginTop: '0.75rem', textAlign: 'right' }}>
+            Gap = Your Score − Exam Weight · 🟢 above · 🔴 below
+          </p>
+        </>
+      )}
     </div>
   )
 }
