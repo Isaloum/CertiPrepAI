@@ -32,7 +32,8 @@ const certMeta: Record<string, { name: string; code: string; icon: string; domai
   'ans-c01': { name: 'Advanced Networking Specialty', code: 'ANS-C01', icon: '🌐', domains: { 'network-design': 'Design', 'network-implementation': 'Implementation', 'network-management': 'Management', 'network-security': 'Security' } },
 }
 
-const FREE_LIMIT = 20
+const FREE_LIMIT = 50
+const TEASER_AT = 20
 
 export default function CertDetail() {
   const { certId } = useParams<{ certId: string }>()
@@ -50,6 +51,9 @@ export default function CertDetail() {
   const [domainFilter, setDomainFilter] = useState(searchParams.get('domain') || 'all')
   const [showResults, setShowResults] = useState(false)
   const [showPaywall, setShowPaywall] = useState(false)
+  const [showTeaser, setShowTeaser] = useState(false)
+  const [teaserShown, setTeaserShown] = useState(false)
+  const [domainStats, setDomainStats] = useState<Record<string, { correct: number; total: number }>>({})
   const [wrongQuestions, setWrongQuestions] = useState<Question[]>([])
 
   // Bookmarks — persisted to localStorage per cert
@@ -186,11 +190,26 @@ export default function CertDetail() {
     else setWrongQuestions(w => [...w, filtered[current]])
     trackQuestionAnswered(certId || '', filtered[current].cat || '', isCorrect, tier || 'free')
 
+    // Track per-domain performance
+    const cat = filtered[current].cat || 'other'
+    setDomainStats(prev => ({
+      ...prev,
+      [cat]: {
+        correct: (prev[cat]?.correct || 0) + (isCorrect ? 1 : 0),
+        total: (prev[cat]?.total || 0) + 1,
+      }
+    }))
+
     // Persist free usage
     if (tier === 'free' && user) {
       const newCount = usedCount + 1
       setUsedCount(newCount)
       await updateFreeUsage(certId || '', newCount, user.accessToken)
+      // Show teaser at TEASER_AT questions
+      if (newCount === TEASER_AT && !teaserShown) {
+        setShowTeaser(true)
+        setTeaserShown(true)
+      }
     }
 
     // Track progress for all authenticated users
@@ -482,6 +501,55 @@ export default function CertDetail() {
   return (
     <Layout>
       {showPaywall && <Paywall reason="free-user" onClose={() => setShowPaywall(false)} />}
+
+      {/* Teaser modal — shown at question 20, soft nudge before hard paywall at 50 */}
+      {showTeaser && (() => {
+        const domains = certId ? certMeta[certId]?.domains ?? {} : {}
+        const domainEntries = Object.entries(domains).map(([key, label]) => {
+          const s = domainStats[key] || { correct: 0, total: 0 }
+          return { key, label, ...s, pct: s.total > 0 ? Math.round((s.correct / s.total) * 100) : null }
+        }).filter(d => d.total > 0)
+        const weakest = domainEntries.sort((a, b) => (a.pct ?? 100) - (b.pct ?? 100))[0]
+        return (
+          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }} onClick={() => setShowTeaser(false)}>
+            <div style={{ background: '#fff', borderRadius: '1.5rem', padding: '2rem', maxWidth: '420px', width: '100%', textAlign: 'center', boxShadow: '0 25px 60px rgba(0,0,0,0.3)' }} onClick={e => e.stopPropagation()}>
+              <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🕸️</div>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#111827', marginBottom: '0.4rem' }}>Your skill radar is building</h2>
+              <p style={{ color: '#6b7280', fontSize: '0.88rem', marginBottom: '1.25rem' }}>
+                You've answered 20 questions. Here's what your data is showing so far:
+              </p>
+
+              {/* Domain score cards */}
+              {domainEntries.length > 0 && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.25rem', textAlign: 'left' }}>
+                  {domainEntries.map(d => {
+                    const color = d.pct === null ? '#9ca3af' : d.pct >= 70 ? '#16a34a' : d.pct >= 50 ? '#d97706' : '#dc2626'
+                    return (
+                      <div key={d.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f9fafb', borderRadius: '0.65rem', padding: '0.55rem 0.85rem' }}>
+                        <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#374151' }}>{d.label}</span>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 800, color }}>{d.pct !== null ? `${d.pct}%` : '—'} <span style={{ color: '#9ca3af', fontWeight: 400 }}>({d.total}q)</span></span>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+
+              {weakest && weakest.pct !== null && weakest.pct < 70 && (
+                <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: '0.75rem', padding: '0.75rem 1rem', marginBottom: '1.25rem', fontSize: '0.85rem', color: '#991b1b', textAlign: 'left' }}>
+                  ⚠️ <strong>{weakest.label}</strong> is your weakest area at {weakest.pct}%. Unlock full practice to target it directly.
+                </div>
+              )}
+
+              <button onClick={() => navigate('/pricing')} style={{ width: '100%', padding: '0.875rem', background: '#2563eb', color: '#fff', fontWeight: 800, borderRadius: '0.875rem', border: 'none', cursor: 'pointer', fontSize: '0.95rem', marginBottom: '0.75rem' }}>
+                Unlock Full Practice — From $7/mo
+              </button>
+              <button onClick={() => setShowTeaser(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280', fontSize: '0.82rem' }}>
+                Continue free — {FREE_LIMIT - TEASER_AT} questions left
+              </button>
+            </div>
+          </div>
+        )
+      })()}
 
       {/* Header bar */}
       <div style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', padding: '0.875rem 2rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
