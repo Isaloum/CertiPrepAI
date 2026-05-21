@@ -161,7 +161,7 @@ export default function Home() {
             <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
               {isPaid
                 ? <span style={{ color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>✅ Full access unlocked</span>
-                : <span style={{ color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>✅ 20 questions free</span>}
+                : <span style={{ color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>✅ 50 questions free</span>}
               <span style={{ color: '#64748b', fontSize: '0.85rem' }}>No credit card needed</span>
               <span style={{ color: '#64748b', fontSize: '0.85rem' }}>Cancel anytime</span>
             </div>
@@ -242,7 +242,7 @@ export default function Home() {
             {[
               { n: '1', title: 'Create a free account', desc: 'Sign up in seconds — no credit card required' },
               { n: '2', title: 'Pick your cert', desc: 'Choose from 12 active AWS certifications' },
-              { n: '3', title: 'Practice free', desc: '20 questions per cert included with every account' },
+              { n: '3', title: 'Practice free', desc: '50 questions per cert included with every account' },
               { n: '4', title: 'Upgrade for full access', desc: 'Unlock all 3,910 questions + mock exams' },
             ].map(s => (
               <div key={s.n} style={{ textAlign: 'center' }}>
@@ -355,7 +355,7 @@ export default function Home() {
                 id: 'free', label: 'Free', price: '$0', period: '/forever',
                 badge: null,
                 bg: 'rgba(186,230,253,0.08)', border: 'rgba(186,230,253,0.18)',
-                features: ['20 free questions', 'No sign-up needed', 'Instant explanations'],
+                features: ['50 free questions', 'No sign-up needed', 'Instant explanations'],
               },
               {
                 id: 'monthly', label: 'Monthly', price: '$7', period: '/mo',
@@ -475,7 +475,7 @@ export default function Home() {
         ) : (
           <>
             <h2 style={{ fontSize: '2.25rem', fontWeight: 900, marginBottom: '0.75rem' }}>Ready to start?</h2>
-            <p style={{ color: '#bfdbfe', marginBottom: '2rem', fontSize: '1.1rem' }}>Free account — 20 questions per cert, no credit card required.</p>
+            <p style={{ color: '#bfdbfe', marginBottom: '2rem', fontSize: '1.1rem' }}>Free account — 50 questions per cert, no credit card required.</p>
             <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button onClick={() => navigate('/sample-questions')} style={{ padding: '0.875rem 2rem', background: '#fff', color: '#1d4ed8', fontWeight: 800, borderRadius: '0.875rem', border: 'none', cursor: 'pointer', fontSize: '1rem', boxShadow: '0 4px 14px rgba(0,0,0,0.2)' }}>
                 Start Practicing Free →

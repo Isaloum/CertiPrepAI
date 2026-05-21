@@ -30,7 +30,7 @@ const plans = [
     badgeColor: '',
     highlight: false,
     features: [
-      '20 free sample questions',
+      '50 free sample questions',
       'No sign-up required',
       'Instant explanations included',
       'Browse all 12 certifications',
@@ -518,7 +518,7 @@ export default function Pricing() {
               },
               {
                 q: 'Do I need a credit card for the free plan?',
-                a: 'No. The free plan gives you 20 questions across any certification with zero sign-up or payment required.',
+                a: 'No. The free plan gives you 50 questions across any certification with zero sign-up or payment required.',
               },
             ].map(({ q, a }) => (
               <div key={q} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '0.875rem', padding: '1.25rem 1.5rem' }}>
@@ -554,7 +554,7 @@ export default function Pricing() {
                 Ready to pass your AWS cert?
               </h2>
               <p style={{ color: '#6b7280', margin: '0 0 1.5rem', fontSize: '0.95rem' }}>
-                20 free questions — no credit card, no sign-up.
+                50 free questions — no credit card, no sign-up.
               </p>
               <button
                 onClick={() => navigate('/sample-questions')}
