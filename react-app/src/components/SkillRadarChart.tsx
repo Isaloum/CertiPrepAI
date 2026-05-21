@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   RadarChart, Radar, PolarGrid, PolarAngleAxis,
   PolarRadiusAxis, Legend, ResponsiveContainer, Tooltip,
@@ -123,6 +123,14 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: { name
 
 export default function SkillRadarChart({ certOptions, progressMap, domainScoresMap }: Props) {
   const [selectedId, setSelectedId] = useState(certOptions[0]?.id ?? 'saa-c03')
+
+  // Auto-select the first cert with practice data once progressMap loads
+  useEffect(() => {
+    const practiced = certOptions.find(c => c.id in progressMap)
+    if (practiced && !(selectedId in progressMap)) {
+      setSelectedId(practiced.id)
+    }
+  }, [progressMap]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const hasPracticed = selectedId in progressMap
   const domains = CERT_DOMAINS[selectedId] ?? CERT_DOMAINS['saa-c03']
