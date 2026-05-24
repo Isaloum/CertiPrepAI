@@ -40,6 +40,7 @@ const SaaGuide            = lazy(() => import('./pages/SaaGuide'))
 const AifGuide            = lazy(() => import('./pages/AifGuide'))
 const ClfGuide            = lazy(() => import('./pages/ClfGuide'))
 const Unsubscribe         = lazy(() => import('./pages/Unsubscribe'))
+const QuickFire           = lazy(() => import('./pages/QuickFire'))
 
 import SEOMeta from './components/SEOMeta'
 
@@ -112,6 +113,7 @@ export default function App() {
             <Route path="/aif-guide" element={<AifGuide />} />
             <Route path="/clf-guide" element={<ClfGuide />} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
+            <Route path="/quick-fire" element={<QuickFire />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

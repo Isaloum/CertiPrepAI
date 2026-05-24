@@ -83,6 +83,7 @@ export default function Navbar() {
   const practiceItems = [
     { to: '/certifications', bg: '#eff6ff', icon: '📝', label: 'Practice Quiz', sub: '3,910 questions · 12 certs', badge: '' },
     { to: '/certifications?mode=mock', bg: '#f0fdf4', icon: '⏱️', label: 'Mock Exam', sub: 'Timed practice test · 65q · 130 min', badge: '' },
+    { to: '/quick-fire', bg: '#fffbeb', icon: '⚡', label: 'Quick Fire Drill', sub: 'Active recall · 115 questions · 4 modes', badge: 'NEW' },
     { to: '/architecture-builder', bg: '#f5f3ff', icon: '🏗️', label: 'Architecture Builder', sub: 'Drag & drop AWS services', badge: '' },
     { to: '/visual-exam', bg: '#fff0f0', icon: '🎯', label: 'Visual Exam', sub: 'Diagram-based questions', badge: '' },
     ...(!isPremium ? [{ to: '/sample-questions', bg: '#eff6ff', icon: '🆓', label: 'Sample Questions', sub: '20 free questions · no sign up', badge: '' }] : []),
