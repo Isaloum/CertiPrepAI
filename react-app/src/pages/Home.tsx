@@ -180,10 +180,10 @@ export default function Home() {
         <div style={{ maxWidth: '900px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', padding: '1.5rem 1rem', gap: '0.5rem' }}>
           {[
             { n: '12', label: 'Certifications' },
-            { n: '3,910', label: 'Questions' },
-            { n: '65', label: 'Questions / Mock Exam' },
-            { n: '130', label: 'Min Timer' },
-            { n: '72%', label: 'AWS Pass Mark' },
+            { n: '3,910', label: 'Practice Questions' },
+            { n: '277', label: 'Quick Fire Drills' },
+            { n: '65q / 130min', label: 'Mock Exam Format' },
+            { n: 'Free', label: 'To Start' },
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center', padding: '0.5rem' }}>
               <div style={{ fontSize: '1.5rem', fontWeight: 900, color: '#60a5fa' }}>{s.n}</div>

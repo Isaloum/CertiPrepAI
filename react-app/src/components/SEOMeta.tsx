@@ -113,12 +113,12 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
     description: 'Master prompt engineering for the AWS AI Practitioner exam. Zero-shot, few-shot, chain-of-thought, inference parameters, prompt injection defenses, and more.',
   },
   '/saa-guide': {
-    title: 'SAA-C03 Complete Study Guide — Decision Matrix, Traps & Deep Dives | CertiPrepAI',
-    description: 'The complete SAA-C03 encyclopedia: 39-row decision matrix, 12 exam traps, 16 deep dives, 30-day study plan, port numbers, and exam strategy.',
+    title: 'SAA-C03 Study Guide 2025 — 82 Scenarios, Exam Traps & Numbers | CertiPrepAI',
+    description: 'The ultimate SAA-C03 study guide: 82-row decision matrix, 20 exam traps, 57 critical numbers & limits, 10 deep dives, 30-day plan, Architect\'s Codex. Free to access.',
   },
   '/aif-guide': {
-    title: 'AIF-C01 Complete Study Guide — Decision Matrix, Traps & Deep Dives | CertiPrepAI',
-    description: 'The complete AIF-C01 encyclopedia: 30-row decision matrix, 12 exam traps, 16 deep dives covering Bedrock, RAG, Guardrails, Responsible AI, and a 30-day study plan.',
+    title: 'AIF-C01 Study Guide 2025 — Decision Matrix, Bedrock, RAG & Guardrails | CertiPrepAI',
+    description: 'Complete AIF-C01 study guide: AI service decision matrix, exam traps, 16 deep dives covering Bedrock, RAG, Fine-tuning, Guardrails, Responsible AI, and a 30-day study plan.',
   },
   '/about': {
     title: 'About CertiPrepAI — Built by an AWS Engineer',
@@ -153,8 +153,12 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
     description: 'Try 20 free AWS certification practice questions covering SAA-C03, CLF-C02, and AIF-C01. No account required.',
   },
   '/clf-guide': {
-    title: 'CLF-C02 Complete Study Guide — Decision Matrix, Traps & Deep Dives | CertiPrepAI',
-    description: 'The complete CLF-C02 encyclopedia: decision matrix, exam traps, 10 deep dives, 14-day study plan, and exam strategy for the AWS Cloud Practitioner exam.',
+    title: 'CLF-C02 Study Guide 2025 — Decision Matrix, Traps & Cloud Practitioner Tips | CertiPrepAI',
+    description: 'Complete AWS Cloud Practitioner CLF-C02 study guide: decision matrix, exam traps, 10 deep dives, 14-day study plan, shared responsibility model, billing, and support plans.',
+  },
+  '/quick-fire': {
+    title: 'Quick Fire Drill — AWS SAA-C03 Active Recall Quiz | CertiPrepAI',
+    description: '277 active recall questions for SAA-C03: Decision Matrix, Exam Traps, Numbers & Facts, Real Exam Scenarios, and Service Comparisons. Keyboard-driven drill mode.',
   },
 }
 
@@ -173,6 +177,30 @@ const CERT_LD: Record<string, { name: string; description: string; questions: nu
   '/cert/ans-c01': { name: 'AWS Advanced Networking Specialty (ANS-C01)', description: '260 practice questions for the ANS-C01 exam.', questions: 260 },
   '/cert/aif-c01': { name: 'AWS AI Practitioner (AIF-C01)', description: '260 practice questions for the AIF-C01 exam.', questions: 260 },
 }
+
+const SAA_FAQ = [
+  { q: 'How hard is the AWS SAA-C03 exam?', a: 'The SAA-C03 is considered intermediate difficulty. It tests 4 domains: Resilient Architectures (26%), High-Performing Architectures (24%), Secure Architectures (30%), and Cost-Optimized Architectures (20%). Most candidates take 1-3 months to prepare.' },
+  { q: 'What score do you need to pass SAA-C03?', a: 'You need a scaled score of 720 out of 1000 to pass the AWS Solutions Architect Associate exam. Questions are scored 100-1000.' },
+  { q: 'What is the difference between RDS Multi-AZ and Read Replicas?', a: 'RDS Multi-AZ creates a synchronous standby in another AZ for automatic failover (HA). Read Replicas are asynchronous copies used for read scaling. Multi-AZ standby cannot serve read traffic.' },
+  { q: 'When should you use SQS vs SNS on the SAA-C03 exam?', a: 'Use SQS to decouple components asynchronously (one consumer). Use SNS to fan-out one event to multiple subscribers simultaneously. The fan-out pattern uses SNS pushing to multiple SQS queues.' },
+  { q: 'What is the difference between Security Groups and NACLs?', a: 'Security Groups are stateful, instance-level firewalls with allow-only rules. NACLs are stateless, subnet-level firewalls that support both allow and deny rules. Only NACLs can explicitly block an IP address.' },
+]
+
+const CLF_FAQ = [
+  { q: 'How hard is the AWS CLF-C02 Cloud Practitioner exam?', a: 'CLF-C02 is the entry-level AWS certification. It covers cloud concepts, security, technology, and billing. Most candidates prepare in 2-6 weeks with no prior cloud experience required.' },
+  { q: 'What score do you need to pass CLF-C02?', a: 'You need a scaled score of 700 out of 1000 to pass the AWS Cloud Practitioner exam.' },
+  { q: 'What is the AWS shared responsibility model?', a: 'AWS is responsible for security OF the cloud (hardware, infrastructure, physical facilities). Customers are responsible for security IN the cloud (data, IAM, OS patching, application security).' },
+  { q: 'What are the 6 advantages of cloud computing on the CLF-C02?', a: 'The 6 advantages are: Trade capital expense for variable expense, benefit from massive economies of scale, stop guessing capacity, increase speed and agility, stop spending money on data centers, and go global in minutes.' },
+  { q: 'What is the difference between AWS support plans?', a: 'Basic (free), Developer ($29/month, business hours email), Business ($100/month, 24/7 phone/chat, 1-hour critical response), Enterprise On-Ramp ($5,500/month), Enterprise ($15,000/month, 15-min critical response, TAM).' },
+]
+
+const AIF_FAQ = [
+  { q: 'What does the AWS AIF-C01 exam cover?', a: 'The AIF-C01 AI Practitioner exam covers AI/ML fundamentals, AWS AI/ML services (Bedrock, SageMaker, Rekognition), generative AI concepts, RAG, fine-tuning, responsible AI, and AI security.' },
+  { q: 'What score do you need to pass AIF-C01?', a: 'You need a scaled score of 700 out of 1000 to pass the AWS AI Practitioner exam.' },
+  { q: 'What is Amazon Bedrock on the AIF-C01 exam?', a: 'Amazon Bedrock is a fully managed service for accessing foundation models (FMs) from AWS and third-party providers via API. It supports RAG with Knowledge Bases, agents for multi-step tasks, and Guardrails for safety.' },
+  { q: 'What is the difference between RAG and fine-tuning?', a: 'RAG (Retrieval Augmented Generation) adds external knowledge to a model at inference time without changing model weights. Fine-tuning updates model weights with new training data. RAG is cheaper and easier to update; fine-tuning creates a specialized model.' },
+  { q: 'What are Amazon Bedrock Guardrails?', a: 'Guardrails filter harmful content in AI applications. The 5 types are: content filters, denied topics, word filters, sensitive information redaction, and grounding checks (hallucination detection).' },
+]
 
 const HOME_FAQ = [
   { q: 'How many AWS certification practice questions does CertiPrepAI have?', a: 'CertiPrepAI has 3,910 practice questions covering all 12 active AWS certifications, including SAA-C03, CLF-C02, DVA-C02, and more.' },
@@ -256,12 +284,19 @@ export default function SEOMeta({ title, description, canonical }: SEOProps) {
       description: 'AWS certification practice exams — 3,910 questions across 12 certifications.',
     })
 
-    // JSON-LD: Home page FAQ
-    if (pathname === '/') {
+    // JSON-LD: FAQ pages
+    const faqMap: Record<string, typeof HOME_FAQ> = {
+      '/': HOME_FAQ,
+      '/saa-guide': SAA_FAQ,
+      '/clf-guide': CLF_FAQ,
+      '/aif-guide': AIF_FAQ,
+    }
+    const activeFaq = faqMap[pathname]
+    if (activeFaq) {
       injectJsonLd('ld-faq', {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
-        mainEntity: HOME_FAQ.map(f => ({
+        mainEntity: activeFaq.map(f => ({
           '@type': 'Question',
           name: f.q,
           acceptedAnswer: { '@type': 'Answer', text: f.a },
