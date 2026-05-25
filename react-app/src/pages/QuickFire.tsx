@@ -454,7 +454,7 @@ export default function QuickFire() {
         {/* Mode Cards */}
         <div style={{ maxWidth: '900px', margin: '0 auto', padding: '40px 20px' }}>
           <h2 style={{ textAlign: 'center', fontSize: '1.1rem', fontWeight: 700, color: '#374151', marginBottom: '24px' }}>Choose your drill mode</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '32px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '32px' }}>
             {(Object.keys(MODE_CONFIG) as QuizMode[]).map(m => {
               const cfg = MODE_CONFIG[m]
               const isSelected = selectedMode === m
@@ -610,6 +610,20 @@ export default function QuickFire() {
                 ❌ {wrongIds.size}
               </span>
             )}
+            <button
+              onClick={handleRestart}
+              title="Exit to mode selection"
+              style={{
+                background: 'transparent', border: '1.5px solid #e5e7eb', borderRadius: '8px',
+                padding: '4px 10px', fontSize: '0.78rem', fontWeight: 700, color: '#6b7280',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px',
+                transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#ef4444'; (e.currentTarget as HTMLButtonElement).style.color = '#ef4444' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = '#e5e7eb'; (e.currentTarget as HTMLButtonElement).style.color = '#6b7280' }}
+            >
+              ✕ Exit
+            </button>
           </div>
         </div>
 
