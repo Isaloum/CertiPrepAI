@@ -166,7 +166,7 @@ export default function Home() {
               {isPaid
                 ? <span style={{ color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>✅ Full access unlocked</span>
                 : <span style={{ color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>✅ 20 questions free — no signup needed</span>}
-              {!isPaid && <span style={{ color: '#60a5fa', fontSize: '0.85rem', cursor: 'pointer', textDecoration: 'underline' }} onClick={() => navigate('/signup')}>Or sign up free → get 50 questions per cert</span>}
+              {!isPaid && <span style={{ color: '#60a5fa', fontSize: '0.85rem', cursor: 'pointer', textDecoration: 'underline' }} onClick={() => navigate('/signup')}>Or sign up free → 50 questions + Skill Radar + bookmarks</span>}
               <span style={{ color: '#64748b', fontSize: '0.85rem' }}>No credit card needed</span>
               <span style={{ color: '#64748b', fontSize: '0.85rem' }}>Cancel anytime</span>
             </div>
