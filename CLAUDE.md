@@ -352,6 +352,38 @@ aws cognito-idp admin-update-user-attributes \
 
 ---
 
+## ✅ Built This Session (May 25, 2026) — SEO, Conversion & UX Clarity
+
+| # | Item | Details |
+|---|------|---------|
+| 1 | robots.txt fix | Removed all explicit Allow rules — was blocking new pages (/saa-guide, /clf-guide, /quick-fire) from Google indexing |
+| 2 | sitemap.xml expansion | Added all missing pages: 3 deep guides (priority 0.95), /quick-fire (0.85), /prompt-patterns, /sample-questions, /architecture-builder, /terms. Removed /login and /signup |
+| 3 | SEO meta descriptions | Updated SAA/CLF/AIF guide descriptions to reflect accurate content (82-row matrix, 57 numbers, etc.) |
+| 4 | FAQ JSON-LD schema | Added per-route FAQ schema to SEOMeta.tsx (SAA, CLF, AIF guides) for Google rich snippets |
+| 5 | QuickFire wired | Added lazy import + route in App.tsx. Added to Navbar Practice dropdown with NEW badge |
+| 6 | QuickFire expansion | 115 → 277 questions. 4 → 6 modes (added Scenarios + Compare). Same-mode distractor logic for plausible wrong answers |
+| 7 | QuickFire UX fixes | Symmetrical 3×2 grid (was 4+2). Exit button during drill so user doesn't have to finish all questions |
+| 8 | Homepage stats | Updated to: 12 certs, 3,910 questions, 277 Quick Fire Drills, 65q/130min mock format |
+| 9 | Social proof honesty | Removed fake "2,400+ learners" → "Hundreds of AWS candidates already drilling". Removed fake "4.9/5" rating |
+| 10 | Urgency callout | Added green box in hero: "Candidates who drill scenario questions consistently score 20–30 pts higher on exam day" |
+| 11 | Free tier clarity | Homepage: "20 questions free — no signup" + link "Or sign up free → 50 questions + Skill Radar + bookmarks" |
+| 12 | SampleQuestions nudge | Added inline: "Free account unlocks: 50 questions per cert · Skill Radar · Bookmarks · Retry wrong answers — Sign up free →" |
+| 13 | CLAUDE.md free tier fix | Corrected free tier from "20 sample questions" to "50 questions per cert" (FREE_LIMIT = 50 in CertDetail.tsx) |
+| 14 | Google Search Console | Diagnosed and fixed robots.txt issue blocking indexing. Validated fix. 17 pages now queued for indexing. /login redirect is non-critical |
+
+## 🧠 Lessons Learned (May 25, 2026)
+
+| # | Lesson | Detail |
+|---|--------|--------|
+| 1 | robots.txt explicit Allow = Google trap | Adding explicit Allow rules makes Google treat unlisted pages as blocked. Always use only Disallow for private pages — Google's default is allow-all |
+| 2 | Always trust code over docs | CLAUDE.md said "20 questions free" but CertDetail.tsx had `FREE_LIMIT = 50`. Code is always the source of truth |
+| 3 | Two different free experiences = confusion | `/sample-questions` (20q, no signup) and CertDetail free tier (50q, account needed) look contradictory without clear messaging. Always state both paths explicitly |
+| 4 | Fake numbers hurt trust | "2,400+ learners" on a brand-new site with 2 Google clicks in 3 months is obvious to any visitor. Honest vague language ("Hundreds") is more credible |
+| 5 | Google crawl ≠ Google index | Discovered ≠ Crawled ≠ Indexed. New sites get small crawl budgets. Backlinks are the fastest way to increase crawl priority |
+| 6 | Position 62 still generates impressions | 178 impressions in 3 months at position 62 means the keywords are right — just need time and authority to climb |
+
+---
+
 ## 🔲 Known Issues & Backlog
 
 | Priority | Item |
