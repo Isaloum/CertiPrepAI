@@ -428,7 +428,11 @@ export default function SampleQuestions() {
               FREE SAMPLE
             </div>
             <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0f172a', margin: '0 0 6px' }}>SAA-C03 Sample Questions</h1>
-            <p style={{ color: '#64748b', margin: 0 }}>20 curated questions · No sign-up required</p>
+            <p style={{ color: '#64748b', margin: '0 0 8px' }}>20 curated questions · No sign-up required</p>
+            <p style={{ color: '#2563eb', fontSize: '0.82rem', margin: 0 }}>
+              Want 50 questions per cert?{' '}
+              <span style={{ fontWeight: 700, cursor: 'pointer', textDecoration: 'underline' }} onClick={() => navigate('/signup')}>Create a free account →</span>
+            </p>
           </div>
 
           {/* Progress bar */}
