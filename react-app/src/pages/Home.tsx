@@ -122,9 +122,13 @@ export default function Home() {
               The sharpest prep for <br />
               <span style={{ color: '#60a5fa' }}>SAA-C03, CLF-C02 & AI Practitioner.</span>
             </h1>
-            <p style={{ color: '#64748b', fontSize: '1.1rem', lineHeight: 1.75, marginBottom: '2rem', maxWidth: '460px' }}>
+            <p style={{ color: '#94a3b8', fontSize: '1.1rem', lineHeight: 1.75, marginBottom: '1.25rem', maxWidth: '460px' }}>
               1,050 deep scenario questions for SAA-C03. Full prep for CLF-C02 and the trending AIF-C01. All 12 AWS certs included — mock exams, cheat sheets, and a skill radar that shows your exact weak spots.
             </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: '0.75rem', padding: '0.625rem 1rem', marginBottom: '1.5rem', maxWidth: '420px' }}>
+              <span style={{ fontSize: '1rem' }}>⚡</span>
+              <span style={{ color: '#86efac', fontSize: '0.85rem', fontWeight: 600 }}>Candidates who drill scenario questions consistently score 20–30 pts higher on exam day</span>
+            </div>
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
               {isPaid ? (
                 <>
@@ -161,7 +165,7 @@ export default function Home() {
             <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
               {isPaid
                 ? <span style={{ color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>✅ Full access unlocked</span>
-                : <span style={{ color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>✅ 50 questions free</span>}
+                : <span style={{ color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>✅ 20 questions free — no card needed</span>}
               <span style={{ color: '#64748b', fontSize: '0.85rem' }}>No credit card needed</span>
               <span style={{ color: '#64748b', fontSize: '0.85rem' }}>Cancel anytime</span>
             </div>
@@ -222,11 +226,11 @@ export default function Home() {
                 <div key={i} style={{ width: '28px', height: '28px', borderRadius: '50%', background: `hsl(${210 + i * 20}, 70%, 55%)`, border: '2px solid #fff', marginLeft: i === 0 ? 0 : '-8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>{e}</div>
               ))}
             </div>
-            <span style={{ fontSize: '0.85rem', color: '#374151', fontWeight: 600 }}>2,400+ learners preparing this month</span>
+            <span style={{ fontSize: '0.85rem', color: '#374151', fontWeight: 600 }}>Hundreds of AWS candidates already drilling</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             {'★★★★★'.split('').map((s, i) => <span key={i} style={{ color: '#f59e0b', fontSize: '0.95rem' }}>{s}</span>)}
-            <span style={{ fontSize: '0.85rem', color: '#374151', fontWeight: 600, marginLeft: '0.25rem' }}>4.9 / 5 — from early users</span>
+            <span style={{ fontSize: '0.85rem', color: '#374151', fontWeight: 600, marginLeft: '0.25rem' }}>Loved by early users</span>
           </div>
           <div style={{ fontSize: '0.85rem', color: '#374151', fontWeight: 600 }}>
             🏆 Built for serious AWS exam prep
@@ -242,7 +246,7 @@ export default function Home() {
             {[
               { n: '1', title: 'Create a free account', desc: 'Sign up in seconds — no credit card required' },
               { n: '2', title: 'Pick your cert', desc: 'Choose from 12 active AWS certifications' },
-              { n: '3', title: 'Practice free', desc: '50 questions per cert included with every account' },
+              { n: '3', title: 'Practice free', desc: '20 free questions to start — no credit card required' },
               { n: '4', title: 'Upgrade for full access', desc: 'Unlock all 3,910 questions + mock exams' },
             ].map(s => (
               <div key={s.n} style={{ textAlign: 'center' }}>
