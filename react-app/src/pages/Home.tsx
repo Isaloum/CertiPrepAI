@@ -182,12 +182,12 @@ export default function Home() {
 
       {/* ── Stats bar ── */}
       <section style={{ background: '#1e293b', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-        <div style={{ maxWidth: '900px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', padding: '1.5rem 1rem', gap: '0.5rem' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', padding: '1.5rem 1rem', gap: '0.5rem' }}>
           {[
             { n: '12', label: 'Certifications' },
             { n: '3,910', label: 'Practice Questions' },
             { n: '277', label: 'Quick Fire Drills' },
-            { n: '65q / 130min', label: 'Mock Exam Format' },
+            { n: '65q · 130min', label: 'Mock Exam Format' },
             { n: 'Free', label: 'To Start' },
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center', padding: '0.5rem' }}>
