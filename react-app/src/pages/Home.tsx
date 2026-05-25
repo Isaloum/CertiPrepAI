@@ -187,7 +187,7 @@ export default function Home() {
             { n: '12', label: 'Certifications' },
             { n: '3,910', label: 'Practice Questions' },
             { n: '277', label: 'Quick Fire Drills' },
-            { n: '65q · 130min', label: 'Mock Exam Format' },
+            { n: '65q / 130min', label: 'Mock Exam Format' },
             { n: 'Free', label: 'To Start' },
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center', padding: '0.5rem' }}>
