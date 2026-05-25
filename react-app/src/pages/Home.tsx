@@ -165,7 +165,7 @@ export default function Home() {
             <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
               {isPaid
                 ? <span style={{ color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>✅ Full access unlocked</span>
-                : <span style={{ color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>✅ 20 questions free — no card needed</span>}
+                : <span style={{ color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>✅ 50 questions free — no card needed</span>}
               <span style={{ color: '#64748b', fontSize: '0.85rem' }}>No credit card needed</span>
               <span style={{ color: '#64748b', fontSize: '0.85rem' }}>Cancel anytime</span>
             </div>
@@ -246,7 +246,7 @@ export default function Home() {
             {[
               { n: '1', title: 'Create a free account', desc: 'Sign up in seconds — no credit card required' },
               { n: '2', title: 'Pick your cert', desc: 'Choose from 12 active AWS certifications' },
-              { n: '3', title: 'Practice free', desc: '20 free questions to start — no credit card required' },
+              { n: '3', title: 'Practice free', desc: '50 questions free per cert — no credit card required' },
               { n: '4', title: 'Upgrade for full access', desc: 'Unlock all 3,910 questions + mock exams' },
             ].map(s => (
               <div key={s.n} style={{ textAlign: 'center' }}>

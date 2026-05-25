@@ -184,7 +184,7 @@ const isFullAccess = tier === 'yearly' || tier === 'lifetime'
 
 | Plan | Price | Access | AI Coach |
 |------|-------|--------|----------|
-| free | $0 | 20 sample questions | ❌ |
+| free | $0 | 50 questions per cert | ❌ |
 | monthly | $7/mo | 1 cert (pick from 12) | ❌ |
 | bundle | $17/mo | 3 certs (pick from 12) | ❌ |
 | yearly | $67/yr | All 12 certs | ❌ |
