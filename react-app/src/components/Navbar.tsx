@@ -138,11 +138,11 @@ export default function Navbar() {
         borderBottom: '1px solid #e5e7eb',
         boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
       }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
 
           {/* ── Logo ── */}
           <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
-            <img src="/logo.png" alt="CertiPrepAI" style={{ height: '64px', width: 'auto', display: 'block' }} />
+            <img src="/logo.png" alt="CertiPrepAI" style={{ height: '72px', width: 'auto', display: 'block' }} />
           </Link>
 
           {/* ── Desktop nav ── */}
