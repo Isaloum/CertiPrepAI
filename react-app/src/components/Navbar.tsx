@@ -138,11 +138,12 @@ export default function Navbar() {
         borderBottom: '1px solid #e5e7eb',
         boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
       }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', height: '90px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
 
           {/* ── Logo ── */}
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
-            <img src="/logo.png" alt="CertiPrepAI" style={{ height: '80px', width: 'auto', display: 'block' }} />
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', flexShrink: 0 }}>
+            <span style={{ fontSize: '20px' }}>☁️</span>
+            <span style={{ fontWeight: 800, fontSize: '16px', color: '#111827', letterSpacing: '-0.02em' }}>CertiPrepAI</span>
           </Link>
 
           {/* ── Desktop nav ── */}
