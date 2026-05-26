@@ -1,6 +1,6 @@
 /**
  * EmailCapture.tsx
- * Centered modal popup — appears after user scrolls 60% down.
+ * Centered modal popup — appears 2 seconds after page load (no scroll required).
  * Saves email to awsprepai-leads via awsprepai-db Lambda (no auth).
  */
 import { useState, useEffect } from 'react'
@@ -21,20 +21,9 @@ export default function EmailCapture() {
     if (user) return
     if (localStorage.getItem(STORAGE_KEY)) return
 
-    let timer: ReturnType<typeof setTimeout> | null = null
-
-    const onScroll = () => {
-      if (timer) return // already started countdown
-      if (window.scrollY < 50) return // ignore tiny accidental scrolls
-      timer = setTimeout(() => setVisible(true), 2000)
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      if (timer) clearTimeout(timer)
-    }
-  }, [])
+    const timer = setTimeout(() => setVisible(true), 2000)
+    return () => clearTimeout(timer)
+  }, [user])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
