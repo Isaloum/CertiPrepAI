@@ -401,6 +401,10 @@ aws cognito-idp admin-update-user-attributes \
 | 1 | Sitemap ≠ crawlable | A URL in the sitemap that redirects or shows a paywall creates validation failures in Search Console. Only include URLs Google can fully read without auth. |
 | 2 | "Discovered not indexed" ≠ bad robots.txt | It just means Google found the URL but hasn't prioritized crawling it. Requesting indexing via URL Inspection bumps priority. |
 | 3 | RAG LinkedIn post CTA must be honest | Post mentioned "decision matrices, service comparisons, scenario drills" — content must exist before posting. Built it same session. |
+| 4 | LinkedIn algorithm window is 60-90 minutes | Post gets shown to a small slice of network at publish time. No engagement in that window = algorithm kills distribution. One comment restarts it. |
+| 5 | Network size is the real LinkedIn ceiling | 19 impressions on a small network is ~6% reach — which is normal. Accounts hitting 200-500 impressions have 2,000+ targeted connections built over months. |
+| 6 | Comment > like for LinkedIn reach | A comment signals 10x more engagement signal than a like. One targeted person commenting in the first hour changes distribution completely. |
+| 7 | Post timing matters less than engagement history | 11:30 AM is fine timing. The real ranking factor is whether previous posts got engagement — LinkedIn rewards consistent creators with broader distribution. |
 
 ---
 
