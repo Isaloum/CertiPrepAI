@@ -1,5 +1,5 @@
 # CertiPrepAI — Claude Context
-_Last updated: 2026-05-18_
+_Last updated: 2026-05-29_
 
 ## What this project is
 AWS certification prep SaaS. React frontend on AWS Amplify, serverless backend on Lambda + DynamoDB + Cognito.
@@ -381,6 +381,26 @@ aws cognito-idp admin-update-user-attributes \
 | 4 | Fake numbers hurt trust | "2,400+ learners" on a brand-new site with 2 Google clicks in 3 months is obvious to any visitor. Honest vague language ("Hundreds") is more credible |
 | 5 | Google crawl ≠ Google index | Discovered ≠ Crawled ≠ Indexed. New sites get small crawl budgets. Backlinks are the fastest way to increase crawl priority |
 | 6 | Position 62 still generates impressions | 178 impressions in 3 months at position 62 means the keywords are right — just need time and authority to climb |
+
+---
+
+## ✅ Built This Session (May 29, 2026) — SEO Fix + RAG Deep Dive
+
+| # | Item | Details |
+|---|------|---------|
+| 1 | RAG deep dive expansion | `AifGuide.tsx` case 'rag' — added AWS vector store comparison table (Bedrock KB vs OpenSearch Serverless vs Aurora pgvector vs Pinecone vs Redis), security section (IAM, VPC endpoints, metadata filtering, Grounding Check), production architecture pattern, 5 exam-style scenario drills. Content now matches LinkedIn post CTA. |
+| 2 | Sitemap stripped to public-only | `docs/sitemap.xml` — removed all gated pages (cert pages, study guides, study tools). All showed paywall or hard redirect to /login. Google was marking them as redirect failures. Sitemap now has 6 public pages: home, pricing, about, sample-questions, certifications, terms. |
+| 3 | Google Search Console cleanup | Removed gated pages from sitemap to clear "Page with redirect — Failed" validation errors. /comparisons was hard-redirecting to /login (canonical saved as /login). /cheat-sheets was showing paywall (thin content). All gated pages will clear from errors on next Google crawl cycle (1-2 weeks). |
+| 4 | Git remote fixed | Switched from SSH (broken — no public key on GitHub) to HTTPS via `gh auth setup-git`. Git remote set to `https://github.com/Isaloum/CertiPrepAI.git`. |
+| 5 | Request indexing | Requested indexing via Search Console URL Inspection for all public pages not yet indexed (/terms, /about, /sample-questions, /certifications, /pricing). Homepage already indexed. |
+
+## 🧠 Lessons Learned (May 29, 2026)
+
+| # | Lesson | Detail |
+|---|--------|--------|
+| 1 | Sitemap ≠ crawlable | A URL in the sitemap that redirects or shows a paywall creates validation failures in Search Console. Only include URLs Google can fully read without auth. |
+| 2 | "Discovered not indexed" ≠ bad robots.txt | It just means Google found the URL but hasn't prioritized crawling it. Requesting indexing via URL Inspection bumps priority. |
+| 3 | RAG LinkedIn post CTA must be honest | Post mentioned "decision matrices, service comparisons, scenario drills" — content must exist before posting. Built it same session. |
 
 ---
 
