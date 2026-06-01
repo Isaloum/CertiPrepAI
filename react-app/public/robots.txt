@@ -1,28 +1,6 @@
 User-agent: *
-Allow: /
-Allow: /certifications
-Allow: /cert/
-Allow: /mock-exam/
-Allow: /pricing
-Allow: /about
-Allow: /cheat-sheets
-Allow: /study-guide
-Allow: /keywords
-Allow: /glossary
-Allow: /resources
-Allow: /service-groups
-Allow: /comparisons
-Allow: /service-comparison
-Allow: /sample-questions
-Allow: /diagrams
-Allow: /architecture-builder
-Allow: /terms
-
 Disallow: /dashboard
-Disallow: /login
-Disallow: /signup
-Disallow: /forgot-password
 Disallow: /payment-success
-Disallow: /visual-exam
+Disallow: /billing
 
 Sitemap: https://certiprepai.com/sitemap.xml
