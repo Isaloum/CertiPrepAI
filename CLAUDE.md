@@ -1,5 +1,5 @@
 # CertiPrepAI — Claude Context
-_Last updated: 2026-05-29_
+_Last updated: 2026-06-09_
 
 ## What this project is
 AWS certification prep SaaS. React frontend on AWS Amplify, serverless backend on Lambda + DynamoDB + Cognito.
@@ -410,10 +410,41 @@ aws cognito-idp admin-update-user-attributes \
 
 ---
 
+## ✅ Built This Session (June 9, 2026) — Live Sitemap Fix + Exam Logistics
+
+| # | Item | Details |
+|---|------|---------|
+| 1 | Live sitemap fixed | `react-app/public/sitemap.xml` was still the OLD 28-URL version with all gated pages — the May 29 fix only touched `docs/sitemap.xml` which is NOT deployed. Copied clean 6-page sitemap to the correct file, deployed, invalidated CloudFront, verified live with curl. |
+| 2 | CLAUDE.md docs/ warning | Frontend Structure section now marks `docs/` as NOT DEPLOYED. `react-app/public/` is the live source for ALL static files. Same mistake twice (robots.txt May, sitemap.xml June). |
+| 3 | Full site scan | Found root SEO blocker: SPA serves empty `<body>` — all content client-rendered. Google deprioritizes; Bing/DuckDuckGo/social previews/AI crawlers see only the title tag. SEOMeta.tsx per-route tags are JS-injected so most crawlers never see them. Fix = pre-render public routes (vite-ssg or static landing pages) — prerequisite for the PDF lead-magnet funnel. |
+| 4 | ESL +30 accommodation | Approved on AWS Certification account (certmetrics → Exam Registration → Exam accommodations → Request). Instant approval, expires Never. NOT applied to the existing July 29 booking — applying it requires cancel + rebook, and reschedule only offered 1 week earlier or 4 weeks later. Decision: keep July 29, 8AM, Montreal (140 min). |
+| 5 | SAA Exam Bible PDF | Reviewed 16-page exam bible (`~/Documents/CertiPrepAI/AWS_SAA-C03_Exam_Bible.pdf`). Plan: use as lead magnet once pre-rendering makes landing pages crawlable/shareable. |
+| 6 | Search Console status | robots.txt "Indexed though blocked" validation PASSED (June 2, 0 pages). Remaining "Page with redirect — Failed" (4 URLs): 3 are normal HTTP/www redirects, 1 is gated /comparisons — all will drain once Google re-reads the new sitemap. Do NOT click Validate Fix. |
+
+## 🧠 Lessons Learned (June 9, 2026)
+
+| # | Lesson | Detail |
+|---|--------|--------|
+| 1 | Fixing a file ≠ fixing the site | Verify live with `curl` after every static-file fix. The sitemap was "fixed" for 11 days while Google kept reading the stale one. |
+| 2 | SPA = invisible content | Client-rendered React serves an empty body. Per-route JS meta tags don't exist for most crawlers. Pre-rendering public pages is the single highest-leverage SEO fix. |
+| 3 | ESL +30 must be requested BEFORE scheduling | Adding it after requires cancel + rebook (risk losing the slot). Reschedule keeps the spot but can't add the accommodation. |
+| 4 | LinkedIn punishment loop | 354 → 7 impressions: consecutive low-engagement posts shrink reach. Recovery = engagement-bait formats (comment-for-PDF), commenting on big accounts, not posting more of the same. |
+
+---
+
+## 🎯 SAA-C03 Exam Plan
+- **Exam:** July 29, 2026, 8:00 AM, Pearson Professional Centres Montreal (800 René-Lévesque W), 140 minutes
+- **ESL +30 approved on account** but not applied to this booking (would require cancel/rebook)
+- IAM ✅ done → Compute (next) → Storage/DB → Networking → HA/DR → Cost → mocks from Jul 12
+- Study source: `StudyGuides/` PDFs + `~/Documents/CertiPrepAI/AWS_SAA-C03_Exam_Bible.pdf`
+
+---
+
 ## 🔲 Known Issues & Backlog
 
 | Priority | Item |
 |----------|------|
+| 🔴 High | Pre-render public routes (vite-ssg / static landing pages) — SPA empty body makes site invisible to crawlers and link previews. Blocks SEO + PDF lead-magnet funnel. |
 | 🟡 Medium | Downgrade flow (yearly → monthly) not built — buttons are disabled with "Contact support to downgrade" message. Build real flow when needed. |
 | 🟡 Medium | Billing.tsx: `navigate('/login')` called during render (not in useEffect) — React anti-pattern, causes warning |
 | 🟡 Medium | upgrade-subscription Lambda: Cognito updated before Stripe confirms payment — user could get free upgrade if card fails |
