@@ -92,8 +92,10 @@ Missing `COGNITO_USER_POOL_ID` = downgrades silently fail (users keep paid plan 
 ---
 
 ## Frontend Structure
-- `docs/` — Only CNAME, favicon, robots.txt, sitemap.xml remain (static HTML deleted April 2026)
+- `docs/` — ⚠️ NOT DEPLOYED. Stale copies of CNAME, favicon, robots.txt, sitemap.xml. Editing files here does NOTHING to the live site.
+- `react-app/public/` — THE live source for all static files (robots.txt, sitemap.xml, og-image, favicon). Edit HERE, then build + push + CloudFront invalidation.
 - `react-app/` — Vite + React + TypeScript → deployed via AWS Amplify. This is the ONLY frontend.
+- This mistake happened TWICE (robots.txt May 2026, sitemap.xml June 2026). Always verify live: `curl -s https://certiprepai.com/sitemap.xml`
 
 ---
 
