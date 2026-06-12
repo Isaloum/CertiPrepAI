@@ -5,6 +5,18 @@ customHeaders:
         value: 'no-store, no-cache, must-revalidate'
       - key: 'Pragma'
         value: 'no-cache'
+  - pattern: '/sitemap.xml'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600'
+  - pattern: '/robots.txt'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600'
+  - pattern: '/og-image.png'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=86400'
   - pattern: '**/*.js'
     headers:
       - key: 'Cache-Control'
