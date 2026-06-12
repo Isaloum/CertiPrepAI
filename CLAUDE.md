@@ -440,6 +440,19 @@ aws cognito-idp admin-update-user-attributes \
 
 ---
 
+## ✅ SEO Recovery Status (June 11-12, 2026 — two sessions, combined)
+
+**Session A (browser agent, June 11):** Root cause of zero Google visibility = auth redirect on /cert/* blocking Googlebot. Built public landing pages for all 12 certs (`CertLanding.tsx`, commit 2430c7d). Sitemap expanded 6 → 29 URLs. GSC: sitemap resubmitted (Success), bad entries cleaned, indexing requested for saa-c03, clf-c02, aif-c01.
+
+**Session B (this repo session, June 12):** Found the live sitemap was STILL serving the stale 6-URL version — CloudFront cached it. Root cause of all 3 stale-static-file incidents: sitemap/robots had `s-maxage=31536000`. ⚠️ KEY FACT: **Amplify ignores `_headers` files (Netlify convention) — custom headers ONLY work via `customHttp.yml` at repo root.** Fixed there: sitemap/robots = 1h cache, og-image = 1d. Also removed hardcoded homepage canonical from index.html that told non-JS crawlers every page was a duplicate of `/`.
+
+**Follow-ups:**
+1. Verify GAI-C01 + SCS-C03 exam facts and add to `CertLanding.tsx`
+2. **~June 25:** Check GSC → Indexing → Pages; expect "Discovered not indexed" (17 pages) shrinking. Then plan content + backlinks.
+3. Expect: requested pages recrawled in days, impressions climb 1-2 weeks, avg position improves from 69 in 4-8 weeks.
+
+---
+
 ## 🔐 Security Status (assessed June 12, 2026)
 
 ### What's protected
