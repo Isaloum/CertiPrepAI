@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CertiPrepAI Architecture</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #f8fafc;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 48px 40px;
+    color: #1e293b;
+    min-width: 1100px;
+  }
+
+  /* ── Header ── */
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 36px;
+  }
+  .page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0f172a;
+  }
+  .page-header p {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-top: 4px;
+  }
+  .badge-solo {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 999px;
+  }
+
+  /* ── Grid layout ── */
+  .diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── Section (horizontal lane) ── */
+  .lane {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 6px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  .lane-label {
+    width: 130px;
+    min-width: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 16px 14px;
+    border-right: 1.5px solid #e2e8f0;
+  }
+  .lane-label .icon { font-size: 1.3rem; margin-bottom: 6px; }
+  .lane-label .title {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+  }
+  .lane-label .desc {
+    font-size: 0.6rem;
+    color: #94a3b8;
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  .lane-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 16px 20px;
+  }
+
+  /* ── Service card ── */
+  .svc {
+    border-radius: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid;
+    min-width: 140px;
+    flex: 1;
+    max-width: 200px;
+  }
+  .svc .svc-name {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .svc .svc-name .svc-icon { font-size: 0.9rem; }
+  .svc .svc-detail {
+    font-size: 0.65rem;
+    color: #64748b;
+    line-height: 1.6;
+  }
+  .svc .tag {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 0.58rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+  }
+
+  /* ── Arrow between lanes ── */
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 0 2px 150px;
+    margin-bottom: 4px;
+  }
+  .flow-arrow .line {
+    flex: 1;
+    height: 1.5px;
+    background: linear-gradient(to right, #cbd5e1, #94a3b8);
+    position: relative;
+    max-width: 600px;
+  }
+  .flow-arrow .line::after {
+    content: '▼';
+    position: absolute;
+    right: -2px;
+    top: -8px;
+    font-size: 10px;
+    color: #94a3b8;
+  }
+  .flow-arrow .flow-label {
+    font-size: 0.62rem;
+    color: #94a3b8;
+    white-space: nowrap;
+  }
+
+  /* ── Bottom 3-col section ── */
+  .bottom-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 2px;
+  }
+  .bottom-col {
+    flex: 1;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .bottom-col .col-header {
+    padding: 10px 16px;
+    border-bottom: 1.5px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .bottom-col .col-body {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .mini-svc {
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 1.5px solid;
+  }
+  .mini-svc .ms-name {
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .mini-svc .ms-detail {
+    font-size: 0.63rem;
+    color: #64748b;
+    line-height: 1.5;
+  }
+
+  /* ── Color themes ── */
+  /* CDN */
+  .lane.cdn { border-color: #bfdbfe; }
+  .lane.cdn .lane-label { background: #eff6ff; }
+  .lane.cdn .lane-label .title { color: #1d4ed8; }
+  .lane.cdn .svc { background: #f0f7ff; border-color: #bfdbfe; }
+
+  /* Frontend */
+  .lane.fe { border-color: #c7d2fe; }
+  .lane.fe .lane-label { background: #eef2ff; }
+  .lane.fe .lane-label .title { color: #4338ca; }
+  .lane.fe .svc { background: #f5f3ff; border-color: #c4b5fd; }
+
+  /* Auth */
+  .lane.auth { border-color: #bbf7d0; }
+  .lane.auth .lane-label { background: #f0fdf4; }
+  .lane.auth .lane-label .title { color: #15803d; }
+  .lane.auth .svc { background: #f0fdf4; border-color: #86efac; }
+
+  /* API */
+  .lane.api { border-color: #fed7aa; }
+  .lane.api .lane-label { background: #fff7ed; }
+  .lane.api .lane-label .title { color: #c2410c; }
+  .lane.api .svc { background: #fff7ed; border-color: #fdba74; }
+
+  /* Lambda */
+  .lane.lambda { border-color: #fde68a; }
+  .lane.lambda .lane-label { background: #fffbeb; }
+  .lane.lambda .lane-label .title { color: #b45309; }
+  .lane.lambda .svc { background: #fffbeb; border-color: #fde68a; }
+
+  /* DB */
+  .bottom-col.db { border-color: #e9d5ff; }
+  .bottom-col.db .col-header { background: #faf5ff; color: #7e22ce; }
+  .bottom-col.db .mini-svc { background: #faf5ff; border-color: #d8b4fe; }
+
+  /* External */
+  .bottom-col.ext { border-color: #fecaca; }
+  .bottom-col.ext .col-header { background: #fff1f2; color: #be123c; }
+  .bottom-col.ext .mini-svc { background: #fff1f2; border-color: #fca5a5; }
+
+  /* Observability */
+  .bottom-col.obs { border-color: #99f6e4; }
+  .bottom-col.obs .col-header { background: #f0fdfa; color: #0f766e; }
+  .bottom-col.obs .mini-svc { background: #f0fdfa; border-color: #5eead4; }
+
+  /* Tag colors */
+  .tag-blue   { background: #dbeafe; color: #1d4ed8; }
+  .tag-green  { background: #dcfce7; color: #15803d; }
+  .tag-yellow { background: #fef9c3; color: #854d0e; }
+  .tag-red    { background: #fee2e2; color: #be123c; }
+  .tag-purple { background: #f3e8ff; color: #7e22ce; }
+  .tag-orange { background: #ffedd5; color: #c2410c; }
+
+  /* Footer */
+  footer {
+    margin-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #cbd5e1;
+    font-size: 0.68rem;
+  }
+  footer a { color: #93c5fd; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="page-header">
+  <div>
+    <h1>☁️ CertiPrepAI — System Architecture</h1>
+    <p>AWS Serverless · React + TypeScript · 8 Lambda functions · Stripe billing · Claude AI</p>
+  </div>
+  <div class="badge-solo">Built solo · May 2026</div>
+</div>
+
+<div class="diagram">
+
+  <!-- SEO Layer -->
+  <div class="lane" style="border-color:#bae6fd; margin-bottom:6px;">
+    <div class="lane-label" style="background:#f0f9ff;">
+      <div class="icon">🔍</div>
+      <div class="title" style="color:#0369a1;">SEO</div>
+      <div class="desc">Discoverability</div>
+    </div>
+    <div class="lane-content">
+      <div class="svc" style="background:#f0f9ff; border-color:#bae6fd;">
+        <div class="svc-name"><span class="svc-icon">🏷</span> SEOMeta Component</div>
+        <div class="svc-detail">Per-route meta tags<br>JSON-LD structured data<br>Dynamic canonical tags</div>
+        <span class="tag tag-blue">29 routes</span>
+      </div>
+      <div class="svc" style="background:#f0f9ff; border-color:#bae6fd;">
+        <div class="svc-name"><span class="svc-icon">🗺</span> Sitemap + Robots</div>
+        <div class="svc-detail">sitemap.xml<br>robots.txt<br>Served from /docs</div>
+      </div>
+      <div class="svc" style="background:#f0f9ff; border-color:#bae6fd;">
+        <div class="svc-name"><span class="svc-icon">⚡</span> Core Web Vitals</div>
+        <div class="svc-detail">LCP: 1.1s ✅<br>TBT: 0ms ✅<br>Lazy-loaded routes</div>
+        <span class="tag tag-green">Google: &lt;2.5s target</span>
+      </div>
+      <div class="svc" style="background:#f0f9ff; border-color:#bae6fd;">
+        <div class="svc-name"><span class="svc-icon">🔗</span> Domain & SSL</div>
+        <div class="svc-detail">certiprepai.com<br>HTTPS enforced<br>A+ SSL rating</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow"><div class="line"></div><div class="flow-label">cached at edge</div></div>
+
+  <!-- CDN Layer -->
+  <div class="lane cdn">
+    <div class="lane-label">
+      <div class="icon">🌐</div>
+      <div class="title">DNS & CDN</div>
+      <div class="desc">Edge layer</div>
+    </div>
+    <div class="lane-content">
+      <div class="svc">
+        <div class="svc-name"><span class="svc-icon">🗺</span> Route 53</div>
+        <div class="svc-detail">DNS routing<br>certiprepai.com</div>
+      </div>
+      <div class="svc">
+        <div class="svc-name"><span class="svc-icon">⚡</span> CloudFront CDN</div>
+        <div class="svc-detail">Global edge caching<br>Custom error pages → SPA</div>
+        <span class="tag tag-blue">dist: E149XOHRPMJ4D1</span>
+      </div>
+      <div class="svc">
+        <div class="svc-name"><span class="svc-icon">🛡</span> AWS WAF</div>
+        <div class="svc-detail">Rate limiting rules<br>AWS Managed Rule Sets</div>
+        <span class="tag tag-red">DDoS protection</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow"><div class="line"></div><div class="flow-label">HTTPS · cached assets</div></div>
+
+  <!-- Frontend + Auth -->
+  <div style="display:flex; gap:10px; margin-bottom:6px;">
+
+    <div class="lane fe" style="flex:2; margin-bottom:0;">
+      <div class="lane-label">
+        <div class="icon">⚛️</div>
+        <div class="title">Frontend</div>
+        <div class="desc">AWS Amplify</div>
+      </div>
+      <div class="lane-content">
+        <div class="svc">
+          <div class="svc-name"><span class="svc-icon">🖥</span> React + TypeScript</div>
+          <div class="svc-detail">Vite 8 · Single Page App<br>29 lazy-loaded routes<br>Sentry error tracking</div>
+          <span class="tag tag-purple">certiprepai.com</span>
+        </div>
+        <div class="svc">
+          <div class="svc-name"><span class="svc-icon">🔄</span> CI/CD Pipeline</div>
+          <div class="svc-detail">GitHub → main branch<br>Auto-build in ~90s<br>GitHub Actions checks</div>
+          <span class="tag tag-green">push to deploy</span>
+        </div>
+        <div class="svc">
+          <div class="svc-name"><span class="svc-icon">💳</span> Stripe.js</div>
+          <div class="svc-detail">Checkout redirect<br>Prorated upgrade modal<br>Cancel subscription UI</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lane auth" style="flex:1; margin-bottom:0;">
+      <div class="lane-label">
+        <div class="icon">🔐</div>
+        <div class="title">Auth</div>
+        <div class="desc">AWS Cognito</div>
+      </div>
+      <div class="lane-content">
+        <div class="svc" style="max-width:none; flex:1;">
+          <div class="svc-name"><span class="svc-icon">👤</span> Cognito User Pool</div>
+          <div class="svc-detail">
+            JWT access + ID tokens<br>
+            Email normalization enforced<br>
+            <strong>custom:plan</strong> attribute
+          </div>
+          <span class="tag tag-green">free · monthly · bundle · yearly · lifetime</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="flow-arrow"><div class="line"></div><div class="flow-label">API calls with JWT access token in Authorization header</div></div>
+
+  <!-- API Gateway -->
+  <div class="lane api">
+    <div class="lane-label">
+      <div class="icon">🔌</div>
+      <div class="title">API Gateway</div>
+      <div class="desc">HTTP API v2<br>6 endpoints</div>
+    </div>
+    <div class="lane-content">
+      <div class="svc"><div class="svc-name">DB API</div><div class="svc-detail">DynamoDB CRUD<br>+ Lead capture</div></div>
+      <div class="svc"><div class="svc-name">Checkout API</div><div class="svc-detail">Stripe session<br>creation</div></div>
+      <div class="svc"><div class="svc-name">Cancel API</div><div class="svc-detail">Subscription<br>cancellation</div></div>
+      <div class="svc"><div class="svc-name">AI Coach API</div><div class="svc-detail">Claude Haiku<br>proxy</div></div>
+      <div class="svc"><div class="svc-name">Upgrade API</div><div class="svc-detail">Prorated plan<br>upgrades</div></div>
+      <div class="svc"><div class="svc-name">Webhook API</div><div class="svc-detail">Stripe events<br>→ Cognito sync</div></div>
+    </div>
+  </div>
+
+  <div class="flow-arrow"><div class="line"></div><div class="flow-label">invokes</div></div>
+
+  <!-- Lambda -->
+  <div class="lane lambda">
+    <div class="lane-label">
+      <div class="icon">⚡</div>
+      <div class="title">Lambda</div>
+      <div class="desc">Node.js<br>Pay-per-call<br>8 functions</div>
+    </div>
+    <div class="lane-content">
+      <div class="svc">
+        <div class="svc-name">awsprepai-db</div>
+        <div class="svc-detail">DynamoDB CRUD<br>Lead capture (no auth)<br>Unsubscribe (no auth)</div>
+      </div>
+      <div class="svc">
+        <div class="svc-name">awsprepai-checkout</div>
+        <div class="svc-detail">Stripe session creator<br>Customer dedup by email</div>
+      </div>
+      <div class="svc">
+        <div class="svc-name">awsprepai-cancel</div>
+        <div class="svc-detail">Sets cancel_at_period_end<br>Keeps access till cycle end</div>
+      </div>
+      <div class="svc">
+        <div class="svc-name">awsprepai-ai-coach</div>
+        <div class="svc-detail">Claude Haiku via API<br>Markdown streaming</div>
+        <span class="tag tag-yellow">Lifetime plan only</span>
+      </div>
+      <div class="svc">
+        <div class="svc-name">awsprepai-upgrade</div>
+        <div class="svc-detail">Prorated preview + execute<br>error_if_incomplete guard</div>
+      </div>
+      <div class="svc">
+        <div class="svc-name">awsprepai-stripe-webhook</div>
+        <div class="svc-detail">Stripe events → Cognito<br>Plan sync at period end</div>
+      </div>
+      <div class="svc">
+        <div class="svc-name">awsprepai-email-drip</div>
+        <div class="svc-detail">Welcome + Day 3 + Day 7<br>Unsubscribe check before send</div>
+      </div>
+      <div class="svc">
+        <div class="svc-name">awsprepai-verify-session</div>
+        <div class="svc-detail">Post-checkout fallback<br>Cognito plan update</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow"><div class="line"></div><div class="flow-label">reads / writes</div></div>
+
+  <!-- Bottom 3 columns -->
+  <div class="bottom-row">
+
+    <!-- DynamoDB -->
+    <div class="bottom-col db" style="flex:2">
+      <div class="col-header">🗄 DynamoDB — 5 Tables · On-demand pricing · PITR enabled</div>
+      <div class="col-body" style="flex-direction:row; flex-wrap:wrap; gap:8px;">
+        <div class="mini-svc" style="flex:1; min-width:140px;">
+          <div class="ms-name">awsprepai-progress</div>
+          <div class="ms-detail">Per-domain exam scores<br>user_id PK · cert_id SK</div>
+        </div>
+        <div class="mini-svc" style="flex:1; min-width:140px;">
+          <div class="ms-name">awsprepai-monthly-cert</div>
+          <div class="ms-detail">Monthly cert selection<br>per user</div>
+        </div>
+        <div class="mini-svc" style="flex:1; min-width:140px;">
+          <div class="ms-name">awsprepai-free-usage</div>
+          <div class="ms-detail">20-question free gate<br>per cert per user</div>
+        </div>
+        <div class="mini-svc" style="flex:1; min-width:140px;">
+          <div class="ms-name">awsprepai-leads</div>
+          <div class="ms-detail">Email capture<br>Unsubscribe flag</div>
+        </div>
+        <div class="mini-svc" style="flex:1; min-width:140px;">
+          <div class="ms-name">awsprepai-bundle-certs</div>
+          <div class="ms-detail">3-cert bundle selection<br>user_id PK</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- External -->
+    <div class="bottom-col ext" style="flex:1">
+      <div class="col-header">🔗 External Services</div>
+      <div class="col-body">
+        <div class="mini-svc">
+          <div class="ms-name">💳 Stripe</div>
+          <div class="ms-detail">4 pricing tiers<br>Webhooks · Prorated billing<br>Customer deduplication</div>
+        </div>
+        <div class="mini-svc">
+          <div class="ms-name">🤖 Anthropic Claude</div>
+          <div class="ms-detail">Claude Haiku model<br>AI Coach feature</div>
+        </div>
+        <div class="mini-svc">
+          <div class="ms-name">📧 AWS SES</div>
+          <div class="ms-detail">hello@certiprepai.com<br>DMARC aligned · DKIM</div>
+        </div>
+        <div class="mini-svc">
+          <div class="ms-name">🗓 EventBridge Scheduler</div>
+          <div class="ms-detail">Day 3 + Day 7 email triggers<br>Auto-deletes after firing</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Observability -->
+    <div class="bottom-col obs" style="flex:1">
+      <div class="col-header">📊 Observability</div>
+      <div class="col-body">
+        <div class="mini-svc">
+          <div class="ms-name">📈 CloudWatch</div>
+          <div class="ms-detail">Lambda error alarms<br>ALARM action only</div>
+        </div>
+        <div class="mini-svc">
+          <div class="ms-name">🐛 Sentry</div>
+          <div class="ms-detail">Frontend error tracking<br>Production only · scrubs tokens</div>
+        </div>
+        <div class="mini-svc">
+          <div class="ms-name">🟢 UptimeRobot</div>
+          <div class="ms-detail">5-min uptime checks<br>certiprepai.com</div>
+        </div>
+        <div class="mini-svc">
+          <div class="ms-name">📬 WorkMail</div>
+          <div class="ms-detail">support@ · hello@<br>noreply@certiprepai.com</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <span>CertiPrepAI · Serverless AWS · Built solo · ~$0/mo infrastructure at current scale</span>
+  <span>certiprepai.com · May 2026</span>
+</footer>
+
+</body>
+</html>

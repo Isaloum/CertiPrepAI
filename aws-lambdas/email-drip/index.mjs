@@ -35,6 +35,7 @@ const SCHEDULER_ROLE_ARN = process.env.SCHEDULER_ROLE_ARN; // IAM role for Event
 // ─── Email Templates ────────────────────────────────────────────────────────
 
 function emailWelcome(email) {
+  const unsubLink = `https://certiprepai.com/unsubscribe?e=${Buffer.from(email).toString('base64')}`;
   return {
     subject: "You're in — your free AWS practice questions 🎓",
     html: `
@@ -101,7 +102,7 @@ function emailWelcome(email) {
       <p style="color:#9ca3af;font-size:0.75rem;margin:0;">
         CertiPrepAI · <a href="https://certiprepai.com" style="color:#9ca3af;">certiprepai.com</a><br>
         You're receiving this because you signed up at certiprepai.com.<br>
-        <a href="https://certiprepai.com" style="color:#9ca3af;">Unsubscribe</a>
+        <a href="${unsubLink}" style="color:#9ca3af;">Unsubscribe</a>
       </p>
     </div>
 
@@ -122,12 +123,13 @@ Pro tip: Don't just memorize answers. Read every explanation — that's where th
 I'll send you a study tip in 3 days.
 — Ihab, builder of CertiPrepAI
 
-Unsubscribe: https://certiprepai.com
+Unsubscribe: ${unsubLink}
 `,
   };
 }
 
 function emailDay3(email) {
+  const unsubLink = `https://certiprepai.com/unsubscribe?e=${Buffer.from(email).toString('base64')}`;
   return {
     subject: "The #1 mistake AWS exam candidates make 🚫",
     html: `
@@ -192,7 +194,7 @@ function emailDay3(email) {
     <div style="background:#f8fafc;border-top:1px solid #e5e7eb;padding:20px 40px;text-align:center;">
       <p style="color:#9ca3af;font-size:0.75rem;margin:0;">
         CertiPrepAI · <a href="https://certiprepai.com" style="color:#9ca3af;">certiprepai.com</a><br>
-        <a href="https://certiprepai.com" style="color:#9ca3af;">Unsubscribe</a>
+        <a href="${unsubLink}" style="color:#9ca3af;">Unsubscribe</a>
       </p>
     </div>
 
@@ -217,14 +219,15 @@ Practice with explanations: https://certiprepai.com/cert/saa-c03
 One more tip coming in 4 days.
 — Ihab
 
-Unsubscribe: https://certiprepai.com
+Unsubscribe: ${unsubLink}
 `,
   };
 }
 
 function emailDay7(email) {
+  const unsubLink = `https://certiprepai.com/unsubscribe?e=${Buffer.from(email).toString('base64')}`;
   return {
-    subject: "Your 7-day free trial is up — here's what you're missing",
+    subject: "You've been studying for a week — here's what you're missing",
     html: `
 <!DOCTYPE html>
 <html>
@@ -262,20 +265,20 @@ function emailDay7(email) {
         <!-- Monthly -->
         <div style="flex:1;border:1px solid #e5e7eb;border-radius:12px;padding:16px;text-align:center;">
           <p style="color:#6b7280;font-size:0.75rem;font-weight:600;margin:0 0 4px;text-transform:uppercase;">Monthly</p>
-          <p style="color:#0f172a;font-size:1.5rem;font-weight:800;margin:0 0 4px;">$9</p>
+          <p style="color:#0f172a;font-size:1.5rem;font-weight:800;margin:0 0 4px;">$7</p>
           <p style="color:#6b7280;font-size:0.75rem;margin:0;">Cancel anytime</p>
         </div>
         <!-- Yearly -->
         <div style="flex:1;border:2px solid #2563eb;border-radius:12px;padding:16px;text-align:center;position:relative;">
           <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#2563eb;color:#fff;font-size:0.65rem;font-weight:700;padding:2px 10px;border-radius:999px;white-space:nowrap;">BEST VALUE</div>
           <p style="color:#6b7280;font-size:0.75rem;font-weight:600;margin:0 0 4px;text-transform:uppercase;">Yearly</p>
-          <p style="color:#0f172a;font-size:1.5rem;font-weight:800;margin:0 0 4px;">$59</p>
-          <p style="color:#6b7280;font-size:0.75rem;margin:0;">$4.92/month</p>
+          <p style="color:#0f172a;font-size:1.5rem;font-weight:800;margin:0 0 4px;">$67</p>
+          <p style="color:#6b7280;font-size:0.75rem;margin:0;">$5.58/month</p>
         </div>
         <!-- Lifetime -->
         <div style="flex:1;border:1px solid #e5e7eb;border-radius:12px;padding:16px;text-align:center;">
           <p style="color:#6b7280;font-size:0.75rem;font-weight:600;margin:0 0 4px;text-transform:uppercase;">Lifetime</p>
-          <p style="color:#0f172a;font-size:1.5rem;font-weight:800;margin:0 0 4px;">$149</p>
+          <p style="color:#0f172a;font-size:1.5rem;font-weight:800;margin:0 0 4px;">$147</p>
           <p style="color:#6b7280;font-size:0.75rem;margin:0;">Pay once, forever</p>
         </div>
       </div>
@@ -298,7 +301,7 @@ function emailDay7(email) {
     <div style="background:#f8fafc;border-top:1px solid #e5e7eb;padding:20px 40px;text-align:center;">
       <p style="color:#9ca3af;font-size:0.75rem;margin:0;">
         CertiPrepAI · <a href="https://certiprepai.com" style="color:#9ca3af;">certiprepai.com</a><br>
-        <a href="https://certiprepai.com" style="color:#9ca3af;">Unsubscribe</a>
+        <a href="${unsubLink}" style="color:#9ca3af;">Unsubscribe</a>
       </p>
     </div>
 
@@ -317,16 +320,16 @@ Here's what's waiting beyond the free tier:
 🔥 AI Coach (lifetime) — ask anything about AWS
 
 Pricing:
-• Monthly: $9/month
-• Yearly: $59/year ($4.92/month) ← best value
-• Lifetime: $149 one-time
+• Monthly: $7/month
+• Yearly: $67/year ($5.58/month) ← best value
+• Lifetime: $147 one-time
 
 Unlock everything: https://certiprepai.com/pricing
 
 Questions? Just reply to this email.
 — Ihab
 
-Unsubscribe: https://certiprepai.com
+Unsubscribe: ${unsubLink}
 `,
   };
 }
@@ -357,6 +360,15 @@ async function markEmailSent(email, type) {
       ':empty': { L: [] },
     },
   }));
+}
+
+async function isUnsubscribed(email) {
+  const res = await dynamo.send(new GetItemCommand({
+    TableName: 'awsprepai-leads',
+    Key: { email: { S: email } },
+    ProjectionExpression: 'unsubscribed',
+  }));
+  return res.Item?.unsubscribed?.BOOL === true;
 }
 
 async function alreadySent(email, type) {
@@ -404,6 +416,12 @@ export const handler = async (event) => {
 
   const normalizedEmail = email.trim().toLowerCase();
   console.log(`[drip] Processing ${type} for ${normalizedEmail}`);
+
+  // Unsubscribe check
+  if (await isUnsubscribed(normalizedEmail)) {
+    console.log(`[drip] ${normalizedEmail} has unsubscribed — skipping`);
+    return { statusCode: 200, body: 'unsubscribed' };
+  }
 
   // Idempotency check
   if (await alreadySent(normalizedEmail, type)) {

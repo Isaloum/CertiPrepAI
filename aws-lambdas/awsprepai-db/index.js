@@ -4,7 +4,7 @@
  * DynamoDB CRUD for monthly_cert, free_usage, and progress.
  */
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-const { DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, UpdateCommand } = require('@aws-sdk/lib-dynamodb');
 const { CognitoIdentityProviderClient, GetUserCommand } = require('@aws-sdk/client-cognito-identity-provider');
 const { LambdaClient, InvokeCommand } = require('@aws-sdk/client-lambda');
 
@@ -30,9 +30,24 @@ exports.handler = async (event) => {
     return { statusCode: 200, headers: CORS, body: '' };
   }
 
-  // ── capture_lead — no auth required ─────────────────────────────
+  // ── unsubscribe + capture_lead — no auth required ───────────────
   try {
     const body = JSON.parse(event.body || '{}');
+
+    if (body.action === 'unsubscribe') {
+      const email = (body.data?.email || '').trim().toLowerCase();
+      if (!email || !email.includes('@')) {
+        return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid email' }) };
+      }
+      await dynamo.send(new UpdateCommand({
+        TableName: 'awsprepai-leads',
+        Key: { email },
+        UpdateExpression: 'SET unsubscribed = :t, unsubscribed_at = :ts',
+        ExpressionAttributeValues: { ':t': true, ':ts': new Date().toISOString() },
+      }));
+      return { statusCode: 200, headers: CORS, body: JSON.stringify({ ok: true }) };
+    }
+
     if (body.action === 'capture_lead') {
       const email = (body.data?.email || '').trim().toLowerCase();
       if (!email || !email.includes('@')) {

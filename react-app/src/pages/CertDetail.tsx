@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate, Link, useSearchParams } from 'react-router-dom'
 import Layout from '../components/Layout'
+import CertLanding from '../components/CertLanding'
 import Paywall from '../components/Paywall'
 import { useAuth } from '../contexts/AuthContext'
 import { getFreeUsage, updateFreeUsage, getMonthlyCert, setMonthlyCert, updateProgress, getBundleCerts } from '../lib/db'
@@ -95,10 +96,10 @@ export default function CertDetail() {
 
   const meta = certMeta[certId || ''] || { name: 'Unknown', code: '', icon: '❓', domains: {} }
 
-  // Redirect if not logged in
-  useEffect(() => {
-    if (!loading && !user) navigate('/signup')
-  }, [loading, user, navigate])
+  // NOTE: Logged-out visitors are NOT redirected — they get a public,
+  // crawlable landing view (CertLanding) on this same URL. SEO-critical:
+  // a navigate('/signup') here previously caused Google to index these
+  // pages as "Sign Up Free" and skip 17 pages entirely.
 
   // Load questions
   useEffect(() => {
@@ -244,10 +245,10 @@ export default function CertDetail() {
 
   // ── Loading state ──
   const isLoading = questions.length === 0
-    || (!loading && !user)
-    || (tier === 'free' && !usageLoaded)
-    || (tier === 'monthly' && !monthlyLoaded)
-    || (tier === 'bundle' && !bundleLoaded)
+    || loading
+    || (user && tier === 'free' && !usageLoaded)
+    || (user && tier === 'monthly' && !monthlyLoaded)
+    || (user && tier === 'bundle' && !bundleLoaded)
 
   if (isLoading) {
     return (
@@ -260,6 +261,11 @@ export default function CertDetail() {
         </div>
       </Layout>
     )
+  }
+
+  // ── Public SEO landing for logged-out visitors (same URL, crawlable) ──
+  if (!user) {
+    return <CertLanding certId={certId || ''} meta={meta} questions={questions} />
   }
 
   // ── Monthly: DB load failed — block access ──

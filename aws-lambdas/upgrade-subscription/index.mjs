@@ -122,12 +122,15 @@ export const handler = async (event) => {
 
     // ── UPGRADE: execute the swap + charge proration immediately ─────────────
     if (action === 'upgrade') {
+      // error_if_incomplete: Stripe throws if the card declines — subscription
+      // stays unchanged. Only update Cognito AFTER confirmed payment success.
       await stripe.subscriptions.update(sub.id, {
         items: [{ id: subItemId, price: newPriceId }],
         proration_behavior: 'always_invoice',
+        payment_behavior: 'error_if_incomplete',
       })
 
-      // Update Cognito immediately so the next token refresh reflects the new plan
+      // Only reached if Stripe payment succeeded
       await cognito.send(new AdminUpdateUserAttributesCommand({
         UserPoolId: USER_POOL_ID,
         Username:   username,

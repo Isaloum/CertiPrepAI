@@ -62,41 +62,58 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid email format' }) };
     }
 
-    // ── Duplicate protection: check for existing active Stripe subscription ──────
-    // Only applies when email is known (logged-in users). Skip for anonymous.
-    // Skip for lifetime — it's a one-time payment and a valid upgrade from any subscription.
-    if (email && PLAN_MODES[plan] === 'subscription') {
-      const customers = await stripe.customers.list({ email: email.toLowerCase().trim(), limit: 5 });
-      for (const customer of customers.data) {
-        const activeSubs = await stripe.subscriptions.list({
-          customer: customer.id,
-          status: 'active',
-          limit: 5,
-        });
-        if (activeSubs.data.length > 0) {
-          console.warn(`[checkout] Blocked duplicate checkout for ${email} — already has active subscription`);
-          return {
-            statusCode: 409,
-            headers: CORS,
-            body: JSON.stringify({ error: 'You already have an active subscription. Go to Billing to manage your plan.' }),
-          };
-        }
-      }
-    }
-
     const mode = PLAN_MODES[plan];
     const appUrl = process.env.APP_URL || 'https://certiprepai.com';
+
+    // ── Look up existing Stripe customer to avoid duplicates ─────────────────────
+    let existingCustomerId = null;
+    if (email) {
+      const customers = await stripe.customers.list({ email: email.toLowerCase().trim(), limit: 5 });
+
+      // Duplicate protection: block re-subscribing if already active (subscriptions only)
+      if (PLAN_MODES[plan] === 'subscription') {
+        for (const customer of customers.data) {
+          const activeSubs = await stripe.subscriptions.list({
+            customer: customer.id,
+            status: 'active',
+            limit: 5,
+          });
+          if (activeSubs.data.length > 0) {
+            console.warn(`[checkout] Blocked duplicate checkout for ${email} — already has active subscription`);
+            return {
+              statusCode: 409,
+              headers: CORS,
+              body: JSON.stringify({ error: 'You already have an active subscription. Go to Billing to manage your plan.' }),
+            };
+          }
+        }
+      }
+
+      // Reuse the most recent existing customer so Stripe never creates duplicates
+      if (customers.data.length > 0) {
+        existingCustomerId = customers.data[0].id;
+        console.log(`[checkout] Reusing existing Stripe customer ${existingCustomerId} for ${email}`);
+      }
+    }
 
     const sessionParams = {
       payment_method_types: ['card'],
       line_items: [{ price: PRICE_IDS[plan], quantity: 1 }],
       mode,
+      allow_promotion_codes: true,
       metadata: { product: 'awsprepai_premium', tier: plan },
       success_url: plan === 'bundle'
         ? `${appUrl}/dashboard?upgrade=bundle`
         : `${appUrl}/certifications?upgrade=success`,
       cancel_url: `${appUrl}/pricing?cancelled=1`,
     };
+
+    // Attach to existing customer or pre-fill email for new ones
+    if (existingCustomerId) {
+      sessionParams.customer = existingCustomerId;
+    } else if (email) {
+      sessionParams.customer_email = email.toLowerCase().trim();
+    }
 
     if (mode === 'subscription') {
       sessionParams.subscription_data = { trial_period_days: 3 };

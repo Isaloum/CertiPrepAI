@@ -43,8 +43,8 @@ exports.handler = async (event) => {
     const userInfo = await cognito.send(new GetUserCommand({ AccessToken: token }));
     const attrs = Object.fromEntries(userInfo.UserAttributes.map(a => [a.Name, a.Value]));
 
-    if (!['yearly', 'lifetime'].includes(attrs['custom:plan'])) {
-      return { statusCode: 403, headers: CORS, body: JSON.stringify({ error: 'AI Coach is exclusive to Yearly and Lifetime plan users.' }) };
+    if (attrs['custom:plan'] !== 'lifetime') {
+      return { statusCode: 403, headers: CORS, body: JSON.stringify({ error: 'AI Coach is exclusive to Lifetime plan members.' }) };
     }
 
     const { message, history = [] } = JSON.parse(event.body || '{}');

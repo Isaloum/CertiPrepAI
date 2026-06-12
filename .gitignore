@@ -1,26 +1,42 @@
 wget-log
+
+# Dependencies
 node_modules/
+**/node_modules/
+
+# Environment files
 .env
 **/.env
 **/.env.*
 **/.env.local
 **/.env.production
 
-# macOS
+# macOS junk
 .DS_Store
 **/.DS_Store
 
-# Lambda deployment zips
+# Lambda deployment zips (regenerate with npm install + zip)
 **/*.zip
-
-# Local Netlify folder
-.netlify
-
-# Lambda deployment artifacts
 **/*-lambda.zip
-aws-lambdas/cancel-subscription/package.json
-aws-lambdas/cancel-subscription/package-lock.json
+
+# Build artifacts
+react-app/dist/
+
+# Python virtualenv
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Old Netlify artifacts
+.netlify/
+
+# Archive folder (not for git)
+_archive/
+
+# Study materials (large files, not source code)
 docs/dojo_full.pdf
 docs/dojo_part_a*
-AWS_Certified_Solutions_Architect_Associate_SAA-C03_Slides_Tutorials_Dojo.pdf
-dojo_slides.txt
+project-docs/study-materials/*.pdf
+project-docs/study-materials/*.txt
+project-docs/study-materials/*.csv

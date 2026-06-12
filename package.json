@@ -1,9 +1,0 @@
-{
-  "name": "awsprepai",
-  "version": "1.0.0",
-  "description": "AWS SAA-C03 Practice Platform",
-  "dependencies": {
-    "@netlify/blobs": "^8.1.0",
-    "stripe": "^14.25.0"
-  }
-}

@@ -5,5 +5,5 @@
       <stop offset="100%" style="stop-color:#00A8E1;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <text x="10" y="45" font-size="40" font-weight="800" fill="url(#logoGradient)" font-family="'Inter', -apple-system, sans-serif">☁️ AWSPrepAI</text>
+  <text x="10" y="45" font-size="40" font-weight="800" fill="url(#logoGradient)" font-family="'Inter', -apple-system, sans-serif">⚡ CertiPrepAI</text>
 </svg>
