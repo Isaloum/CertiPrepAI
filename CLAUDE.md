@@ -440,6 +440,38 @@ aws cognito-idp admin-update-user-attributes \
 
 ---
 
+## 🔐 Security Status (assessed June 12, 2026)
+
+### What's protected
+| Layer | Status |
+|-------|--------|
+| CloudFront WAF | ✅ RateLimitRule + AWSManagedRulesCommonRuleSet |
+| HTTPS/TLS | ✅ A+ |
+| Auth | ✅ Cognito managed (not custom) |
+| Payments | ✅ Stripe-hosted checkout — no card data on our servers |
+| API | ✅ API Gateway + Lambda (no persistent server) |
+| XSS | ✅ React escapes by default, no dangerouslySetInnerHTML |
+| SQLi | ✅ DynamoDB only, no SQL |
+
+### Known vulnerabilities (not yet fixed)
+
+| Severity | Issue | Location | Fix |
+|----------|-------|----------|-----|
+| 🔴 High | Full `sk_live` Stripe key instead of restricted key | `awsprepai-cancel-subscription` + `awsprepai-verify-session` Lambda env vars | Rotate to restricted key with only the permissions each Lambda needs |
+| 🟡 Medium | Cognito account enumeration | Login/signup error messages reveal whether email exists | Custom error messages that don't distinguish "wrong password" from "no account" |
+| 🟡 Medium | No brute-force lockout beyond Cognito defaults | Auth endpoints | Enable Cognito advanced security / threat protection |
+| 🟡 Medium | Lambda env var leak risk | Any Lambda that logs `process.env` exposes Stripe keys to CloudWatch | Audit Lambda logs: `aws logs tail /aws/lambda/FUNCTION_NAME --since 1h` |
+| 🟡 Medium | Stripe webhook replay not verified in all paths | `awsprepai-stripe-webhook` | Confirm `stripe-signature` header verified on EVERY event, not just some |
+| 🟡 Medium | `capture_lead` endpoint is unauthenticated by design | `awsprepai-db` Lambda | Fine for now but add rate limiting at API Gateway level to prevent spam |
+| 🟢 Low | CAN-SPAM: unsubscribe link → homepage | `aws-lambdas/email-drip/index.mjs` | Build real unsubscribe endpoint writing to DynamoDB |
+
+### Priority fix order
+1. Rotate Stripe keys in cancel + verify-session to restricted keys (30 min task)
+2. Audit Lambda CloudWatch logs for env var leaks
+3. Verify Stripe webhook signature check is on every event handler
+
+---
+
 ## 🔲 Known Issues & Backlog
 
 | Priority | Item |

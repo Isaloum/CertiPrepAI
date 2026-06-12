@@ -43,6 +43,13 @@ export default function Login() {
       if (msg.includes('User is not confirmed') || msg.includes('UserNotConfirmedException')) {
         setUnconfirmed(true)
         setError('')
+      } else if (
+        msg.includes('User does not exist') ||
+        msg.includes('UserNotFoundException') ||
+        msg.includes('Incorrect username or password') ||
+        msg.includes('NotAuthorizedException')
+      ) {
+        setError('Incorrect email or password.')
       } else {
         setError(msg)
       }
