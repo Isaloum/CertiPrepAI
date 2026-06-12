@@ -85,7 +85,7 @@ The `AuthUser` type and `sessionToUser()` in `cognito.ts` MUST include `'bundle'
 ### 13. Stripe webhook Lambda env vars (ALL THREE required)
 `awsprepai-stripe-webhook` needs ALL THREE env vars or it crashes:
 - `STRIPE_SECRET_KEY` — the restricted API key
-- `STRIPE_WEBHOOK_SECRET` — `whsec_A1seLNW08cP1cUDmRGp82PNvPNcUOQ1W`
+- `STRIPE_WEBHOOK_SECRET` — `whsec_REDACTED_SEE_LAMBDA_ENV`
 - `COGNITO_USER_POOL_ID` — `us-east-1_bqEVRsi2b`
 Missing `COGNITO_USER_POOL_ID` = downgrades silently fail (users keep paid plan after canceling forever).
 
@@ -457,7 +457,7 @@ aws cognito-idp admin-update-user-attributes \
 
 | Severity | Issue | Location | Fix |
 |----------|-------|----------|-----|
-| 🔴 High | Full `sk_live` Stripe key instead of restricted key | `awsprepai-cancel-subscription` + `awsprepai-verify-session` Lambda env vars | Rotate to restricted key with only the permissions each Lambda needs |
+| ✅ Fixed | Full `sk_live` Stripe key → rotated to restricted keys (June 12, 2026) | `awsprepai-cancel-subscription` (Subscriptions R/W only) + `awsprepai-verify-session` (Checkout Sessions R + Customers R only). Old sk_live keys revoked. |
 | 🟡 Medium | Cognito account enumeration | Login/signup error messages reveal whether email exists | Custom error messages that don't distinguish "wrong password" from "no account" |
 | 🟡 Medium | No brute-force lockout beyond Cognito defaults | Auth endpoints | Enable Cognito advanced security / threat protection |
 | 🟡 Medium | Lambda env var leak risk | Any Lambda that logs `process.env` exposes Stripe keys to CloudWatch | Audit Lambda logs: `aws logs tail /aws/lambda/FUNCTION_NAME --since 1h` |
@@ -466,9 +466,9 @@ aws cognito-idp admin-update-user-attributes \
 | 🟢 Low | CAN-SPAM: unsubscribe link → homepage | `aws-lambdas/email-drip/index.mjs` | Build real unsubscribe endpoint writing to DynamoDB |
 
 ### Priority fix order
-1. Rotate Stripe keys in cancel + verify-session to restricted keys (30 min task)
-2. Audit Lambda CloudWatch logs for env var leaks
-3. Verify Stripe webhook signature check is on every event handler
+1. ✅ Rotate Stripe keys in cancel + verify-session to restricted keys — DONE June 12, 2026
+2. ✅ Audit Lambda CloudWatch logs for env var leaks — DONE, no leaks found
+3. ✅ Stripe webhook signature verified on every event handler — already correct
 
 ---
 
@@ -541,7 +541,7 @@ rm -f ~/Desktop/Projects/CertiPrepAI/.git/HEAD.lock
 # Fix webhook Lambda env vars (all 3 required)
 aws lambda update-function-configuration \
   --function-name awsprepai-stripe-webhook \
-  --environment "Variables={STRIPE_SECRET_KEY=YOUR_KEY,STRIPE_WEBHOOK_SECRET=whsec_A1seLNW08cP1cUDmRGp82PNvPNcUOQ1W,COGNITO_USER_POOL_ID=us-east-1_bqEVRsi2b}"
+  --environment "Variables={STRIPE_SECRET_KEY=YOUR_KEY,STRIPE_WEBHOOK_SECRET=whsec_REDACTED_SEE_LAMBDA_ENV,COGNITO_USER_POOL_ID=us-east-1_bqEVRsi2b}"
 ```
 
 ---

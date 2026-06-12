@@ -10,7 +10,7 @@
    - All 3 Lambda Function URLs confirmed working with `AuthType: NONE`
    - Fixed missing `AllowPublicAccess` permission on `awsprepai-db` Lambda
    - Stripe webhook configured in Stripe Dashboard
-   - Live webhook secret `whsec_zVo5j00za5nRqCutQfpEb10G7BmRBwhZ` set in Lambda env vars
+   - Live webhook secret `whsec_REDACTED_SEE_LAMBDA_ENV` set in Lambda env vars
 
 2. **Security Audit**
    - Added AWS Budgets alert at $40/month (80% of $50 cap) → email: ihabsaloum85@gmail.com

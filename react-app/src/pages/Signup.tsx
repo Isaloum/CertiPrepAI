@@ -65,23 +65,8 @@ export default function Signup() {
       return
     }
 
-    if (plan !== 'free' && PAID_PLANS.has(plan)) {
-      try {
-        const res = await fetch(CHECKOUT_API, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ plan, email }),
-        })
-        const data = await res.json()
-        if (data.url) { window.location.href = data.url; return }
-        setError(data.error || 'Checkout failed. Please try again.')
-      } catch {
-        setError('Network error. Please try again.')
-      }
-      return
-    }
-
-    // Always verify email first before any redirect (including paid plans)
+    // Always verify email first before any redirect — paid plans checkout
+    // happens in handleConfirm after the email is confirmed
     setLoading(false)
     setConfirmSent(true)
   }

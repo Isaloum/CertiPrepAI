@@ -72,7 +72,7 @@
 | `VITE_VERIFY_SESSION_URL` | `https://6ryf7eipwnxeus2xbekgvwykme0otufd.lambda-url.us-east-1.on.aws/` |
 
 ### Stripe
-- **Webhook secret:** `whsec_zVo5j00za5nRqCutQfpEb10G7BmRBwhZ` — set in Lambda env vars
+- **Webhook secret:** `whsec_REDACTED_SEE_LAMBDA_ENV` — set in Lambda env vars
 - **Webhook endpoint:** points to `awsprepai-stripe-webhook` Lambda URL
 - **Mode:** Live (production)
 
