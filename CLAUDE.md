@@ -85,7 +85,7 @@ The `AuthUser` type and `sessionToUser()` in `cognito.ts` MUST include `'bundle'
 ### 13. Stripe webhook Lambda env vars (ALL THREE required)
 `awsprepai-stripe-webhook` needs ALL THREE env vars or it crashes:
 - `STRIPE_SECRET_KEY` — the restricted API key
-- `STRIPE_WEBHOOK_SECRET` — `whsec_REDACTED_SEE_LAMBDA_ENV`
+- `STRIPE_WEBHOOK_SECRET` — see Lambda env var (NEVER write the actual value in this file — repo is PUBLIC; old secret leaked via this file and was rolled June 12, 2026)
 - `COGNITO_USER_POOL_ID` — `us-east-1_bqEVRsi2b`
 Missing `COGNITO_USER_POOL_ID` = downgrades silently fail (users keep paid plan after canceling forever).
 
@@ -453,22 +453,34 @@ aws cognito-idp admin-update-user-attributes \
 | XSS | ✅ React escapes by default, no dangerouslySetInnerHTML |
 | SQLi | ✅ DynamoDB only, no SQL |
 
-### Known vulnerabilities (not yet fixed)
+### Fixed June 12, 2026 (full-scan session)
+| Item | Detail |
+|------|--------|
+| ✅ Stripe sk_live keys → restricted | cancel-subscription (Subscriptions R/W only) + verify-session (Checkout Sessions R + Customers R). Old sk_live revoked. |
+| ✅ Webhook signing secret rolled | Old whsec_ was exposed in this file on the PUBLIC repo (and remains in git history) — rolled with 1h expiry. NEVER write secrets in this file. |
+| ✅ Cognito account enumeration | Login.tsx now returns generic "Incorrect email or password." for UserNotFound + NotAuthorized |
+| ✅ Signup paid-plan flow | Removed pre-confirmation checkout redirect — payment only AFTER email verification |
+| ✅ Hardcoded canonical removed | index.html canonical pointed every page at homepage for non-JS crawlers — deleted; SEOMeta.tsx creates per-route canonical at runtime |
+| ✅ _headers cache rules | sitemap.xml + robots.txt were cached 1 YEAR by `/*` immutable rule (root cause of 3 stale-sitemap incidents) — now 1h |
+| ✅ Lambda env var leak audit | No `console.log(process.env)` anywhere — clean |
+| ✅ Webhook signature verification | Confirmed `constructEvent()` on every event — was already correct |
+| ✅ Unsubscribe flow | Already fully built (Unsubscribe.tsx + DB Lambda action + drip check) — CAN-SPAM concern was stale |
+
+### Open items (from June 12 full scan)
 
 | Severity | Issue | Location | Fix |
 |----------|-------|----------|-----|
-| ✅ Fixed | Full `sk_live` Stripe key → rotated to restricted keys (June 12, 2026) | `awsprepai-cancel-subscription` (Subscriptions R/W only) + `awsprepai-verify-session` (Checkout Sessions R + Customers R only). Old sk_live keys revoked. |
-| 🟡 Medium | Cognito account enumeration | Login/signup error messages reveal whether email exists | Custom error messages that don't distinguish "wrong password" from "no account" |
-| 🟡 Medium | No brute-force lockout beyond Cognito defaults | Auth endpoints | Enable Cognito advanced security / threat protection |
-| 🟡 Medium | Lambda env var leak risk | Any Lambda that logs `process.env` exposes Stripe keys to CloudWatch | Audit Lambda logs: `aws logs tail /aws/lambda/FUNCTION_NAME --since 1h` |
-| 🟡 Medium | Stripe webhook replay not verified in all paths | `awsprepai-stripe-webhook` | Confirm `stripe-signature` header verified on EVERY event, not just some |
-| 🟡 Medium | `capture_lead` endpoint is unauthenticated by design | `awsprepai-db` Lambda | Fine for now but add rate limiting at API Gateway level to prevent spam |
-| 🟢 Low | CAN-SPAM: unsubscribe link → homepage | `aws-lambdas/email-drip/index.mjs` | Build real unsubscribe endpoint writing to DynamoDB |
-
-### Priority fix order
-1. ✅ Rotate Stripe keys in cancel + verify-session to restricted keys — DONE June 12, 2026
-2. ✅ Audit Lambda CloudWatch logs for env var leaks — DONE, no leaks found
-3. ✅ Stripe webhook signature verified on every event handler — already correct
+| 🟡 Medium | https://www.certiprepai.com serves 200 (no redirect to apex) | CloudFront E149XOHRPMJ4D1 | Add CloudFront Function viewer-request 301 www → apex |
+| 🟡 Medium | Stripe SDK versions inconsistent: webhook v17, upgrade-subscription v14, checkout v22 | `aws-lambdas/*/package.json` | Upgrade all to ^22, redeploy, test flows |
+| 🟡 Medium | 36+ Lambda deploy zips committed to git (repo bloat, old node_modules) | `aws-lambdas/*/*.zip` | `git rm --cached aws-lambdas/*/*.zip` |
+| 🟡 Medium | `capture_lead` unauthenticated + no rate limit (DynamoDB/SES spam vector) | `awsprepai-db` Lambda | Origin-header check or API Gateway throttle |
+| 🟡 Medium | Welcome email + SEOMeta FAQ say "20 free questions" — actual is 50 | `email-drip/index.mjs:60`, SEOMeta.tsx | Change to 50 |
+| 🟡 Medium | og-image.png is 656 KB — some platforms skip it | `react-app/public/og-image.png` | Compress to <300 KB |
+| 🟡 Medium | CI: no lint, no tests — build only | `.github/workflows/ci.yml` | Add `npm run lint` step |
+| 🟢 Low | Bundle price fallback is `price_BUNDLE_REPLACE_ME` (env var set in prod, so works today) | `checkout/index.js:13` | Put real price ID in fallback |
+| 🟢 Low | `/terms` missing ROUTE_META; JSON-LD Course schema uses numberOfCredits + Person instructor | SEOMeta.tsx | Add entry; fix schema |
+| 🟢 Low | No brute-force lockout beyond Cognito defaults | Cognito | Enable advanced security features |
+| 🟢 Low | Stale tracked dirs `_from-documents/`, `_marketing/` on public repo | repo root | Delete or move to private storage |
 
 ---
 
