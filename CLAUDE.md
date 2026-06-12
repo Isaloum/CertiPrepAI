@@ -1,5 +1,5 @@
 # CertiPrepAI — Claude Context
-_Last updated: 2026-06-09_
+_Last updated: 2026-06-12_
 
 ## What this project is
 AWS certification prep SaaS. React frontend on AWS Amplify, serverless backend on Lambda + DynamoDB + Cognito.
@@ -429,6 +429,33 @@ aws cognito-idp admin-update-user-attributes \
 | 2 | SPA = invisible content | Client-rendered React serves an empty body. Per-route JS meta tags don't exist for most crawlers. Pre-rendering public pages is the single highest-leverage SEO fix. |
 | 3 | ESL +30 must be requested BEFORE scheduling | Adding it after requires cancel + rebook (risk losing the slot). Reschedule keeps the spot but can't add the accommodation. |
 | 4 | LinkedIn punishment loop | 354 → 7 impressions: consecutive low-engagement posts shrink reach. Recovery = engagement-bait formats (comment-for-PDF), commenting on big accounts, not posting more of the same. |
+
+---
+
+## ✅ Built This Session (June 12, 2026) — Security Hardening + Full Scan
+
+| # | Item | Details |
+|---|------|---------|
+| 1 | Stripe key rotation | cancel-subscription + verify-session Lambdas moved from full `sk_live` to per-Lambda restricted keys (Subscriptions R/W; Checkout Sessions R + Customers R). Old sk_live keys revoked in Stripe. |
+| 2 | Webhook secret rolled | Old `whsec_` was committed in CLAUDE.md on the PUBLIC repo. Rolled with 1h expiry, Lambda updated, all 7 tracked files scrubbed. Secret remains in git history — treat as dead. |
+| 3 | Account enumeration fix | Login.tsx returns generic "Incorrect email or password." for UserNotFound + NotAuthorized. |
+| 4 | Signup flow fix | Removed pre-confirmation Stripe checkout redirect — paid plans now pay only AFTER email verification (handleConfirm path). |
+| 5 | Full 4-dimension scan | Parallel audits: frontend, all 8 Lambdas, SEO/live site, infra/repo. Results in Security Status section. Clean: no injection, no auth bypass, webhook sig verified, unsubscribe flow complete. |
+| 6 | Canonical bug fix | index.html hardcoded `canonical=/` on every page — non-JS crawlers saw all 29 URLs as homepage duplicates. Removed; SEOMeta.tsx creates per-route canonical at runtime. |
+| 7 | CDN cache root cause | sitemap.xml/robots.txt cached 1 YEAR. ⚠️ `_headers` is a Netlify file — **Amplify ignores it; only `customHttp.yml` at repo root works.** Dead `_headers` deleted, real rules added (sitemap/robots 1h, og-image 1d). |
+| 8 | Live sitemap verified | 29 URLs serving at certiprepai.com/sitemap.xml after CloudFront invalidation — the June 11 GSC fix is now actually live. |
+| 9 | Session merge | June 11 browser-agent GSC work (public /cert/* landings, sitemap resubmit, indexing requests) documented in SEO Recovery Status section. |
+
+## 🧠 Lessons Learned (June 12, 2026)
+
+| # | Lesson | Detail |
+|---|--------|--------|
+| 1 | Secrets never go in git-tracked files | This file leaked the webhook signing secret on the public repo. Redaction ≠ fix — git history keeps it forever. The only fix is rotation. |
+| 2 | Amplify ignores `_headers` | It's a Netlify convention. Custom headers on Amplify work ONLY via `customHttp.yml` at repo root. The dead `_headers` file caused three failed fixes of the same caching bug. Delete config files from platforms you don't use. |
+| 3 | Verify header fixes with `curl -sI`, not file edits | The `_headers` "fix" built, deployed, and did nothing. A fix isn't done until the live response header shows it. |
+| 4 | One restricted Stripe key per Lambda | Least privilege: a leaked key for cancel-subscription can only touch subscriptions, not refunds/payouts/customers. |
+| 5 | Agents share zero memory — CLAUDE.md is the only bridge | Chat/Fable/Code sessions each re-diagnose from scratch and contradict each other unless every session writes its findings here before ending. |
+| 6 | Identity before money | Signup redirected to Stripe before email confirmation — user could pay for an account they can't log into. Checkout belongs strictly post-verification. |
 
 ---
 
