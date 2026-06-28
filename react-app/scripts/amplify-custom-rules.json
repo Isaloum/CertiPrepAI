@@ -1,0 +1,217 @@
+[
+  {
+    "source": "/certifications",
+    "target": "/certifications/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cert/saa-c03",
+    "target": "/cert/saa-c03/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cert/clf-c02",
+    "target": "/cert/clf-c02/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cert/dva-c02",
+    "target": "/cert/dva-c02/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cert/soa-c02",
+    "target": "/cert/soa-c02/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cert/dea-c01",
+    "target": "/cert/dea-c01/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cert/mla-c01",
+    "target": "/cert/mla-c01/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cert/gai-c01",
+    "target": "/cert/gai-c01/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cert/sap-c02",
+    "target": "/cert/sap-c02/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cert/dop-c02",
+    "target": "/cert/dop-c02/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cert/scs-c03",
+    "target": "/cert/scs-c03/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cert/ans-c01",
+    "target": "/cert/ans-c01/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cert/aif-c01",
+    "target": "/cert/aif-c01/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/pricing",
+    "target": "/pricing/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/resources",
+    "target": "/resources/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/glossary",
+    "target": "/glossary/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/study-guide",
+    "target": "/study-guide/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/comparisons",
+    "target": "/comparisons/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/service-comparison",
+    "target": "/service-comparison/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/diagrams",
+    "target": "/diagrams/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/keywords",
+    "target": "/keywords/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/service-groups",
+    "target": "/service-groups/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/prompt-patterns",
+    "target": "/prompt-patterns/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/saa-guide",
+    "target": "/saa-guide/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/aif-guide",
+    "target": "/aif-guide/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/clf-guide",
+    "target": "/clf-guide/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/about",
+    "target": "/about/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/cheat-sheets",
+    "target": "/cheat-sheets/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/sample-questions",
+    "target": "/sample-questions/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/quick-fire",
+    "target": "/quick-fire/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/terms",
+    "target": "/terms/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/login",
+    "target": "/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/signup",
+    "target": "/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/forgot-password",
+    "target": "/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/dashboard",
+    "target": "/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/billing",
+    "target": "/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/ai-coach",
+    "target": "/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/payment-success",
+    "target": "/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/mock-exam/<*>",
+    "target": "/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/visual-exam",
+    "target": "/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/architecture-builder",
+    "target": "/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/unsubscribe",
+    "target": "/index.html",
+    "status": "200"
+  },
+  {
+    "source": "/api/checkout",
+    "target": "https://awsprepai.netlify.app/.netlify/functions/create-checkout-session",
+    "status": "200"
+  }
+]

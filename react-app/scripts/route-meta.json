@@ -1,0 +1,135 @@
+{
+  "base": "https://certiprepai.com",
+  "ogImage": "https://certiprepai.com/og-image.png",
+  "_note": "Single source of truth for build-time per-route <head> injection (scripts/prerender.mjs). Public/indexable routes only — auth and account pages (login, signup, dashboard, billing, ai-coach, payment-success) are intentionally excluded so we never create indexable login shells.",
+  "routes": {
+    "/": {
+      "title": "CertiPrepAI — AWS Certification Practice Exams | 3,910 Questions",
+      "description": "Pass any AWS certification with 3,910 practice questions across 12 exams. SAA-C03, CLF-C02, DVA-C02, and more. Free mock exams, study guide, glossary."
+    },
+    "/certifications": {
+      "title": "AWS Certifications — All 12 Exams | CertiPrepAI",
+      "description": "Browse all 12 AWS certification practice exams on CertiPrepAI. Foundational, Associate, Professional, and Specialty. 3,910 questions total."
+    },
+    "/cert/saa-c03": {
+      "title": "AWS Solutions Architect Associate (SAA-C03) Practice Exam | CertiPrepAI",
+      "description": "1,050 SAA-C03 practice questions covering resilient architecture, high performance, security, and cost optimization. Pass the AWS SAA-C03 exam."
+    },
+    "/cert/clf-c02": {
+      "title": "AWS Cloud Practitioner (CLF-C02) Practice Exam | CertiPrepAI",
+      "description": "260 CLF-C02 practice questions covering cloud concepts, security, technology, and billing. Pass the AWS Cloud Practitioner exam."
+    },
+    "/cert/dva-c02": {
+      "title": "AWS Developer Associate (DVA-C02) Practice Exam | CertiPrepAI",
+      "description": "260 DVA-C02 practice questions covering development, deployment, security, and troubleshooting. Pass the AWS Developer Associate exam."
+    },
+    "/cert/soa-c02": {
+      "title": "AWS SysOps Administrator Associate (SOA-C02) Practice Exam | CertiPrepAI",
+      "description": "260 SOA-C02 practice questions covering monitoring, reliability, deployment, and security. Pass the AWS SysOps Administrator exam."
+    },
+    "/cert/dea-c01": {
+      "title": "AWS Data Engineer Associate (DEA-C01) Practice Exam | CertiPrepAI",
+      "description": "260 DEA-C01 practice questions covering data ingestion, transformation, orchestration, and security. Pass the AWS Data Engineer Associate exam."
+    },
+    "/cert/mla-c01": {
+      "title": "AWS Machine Learning Engineer Associate (MLA-C01) Practice Exam | CertiPrepAI",
+      "description": "260 MLA-C01 practice questions covering ML model development, deployment, and monitoring on AWS. Pass the AWS ML Engineer Associate exam."
+    },
+    "/cert/gai-c01": {
+      "title": "AWS Generative AI Specialty (GAI-C01) Practice Exam | CertiPrepAI",
+      "description": "260 GAI-C01 practice questions covering generative AI concepts, foundation models, and responsible AI on AWS."
+    },
+    "/cert/sap-c02": {
+      "title": "AWS Solutions Architect Professional (SAP-C02) Practice Exam | CertiPrepAI",
+      "description": "260 SAP-C02 practice questions covering complex, multi-account architectures. Pass the AWS Solutions Architect Professional exam."
+    },
+    "/cert/dop-c02": {
+      "title": "AWS DevOps Engineer Professional (DOP-C02) Practice Exam | CertiPrepAI",
+      "description": "260 DOP-C02 practice questions covering CI/CD, monitoring, incident response, and configuration management. Pass the AWS DevOps Professional exam."
+    },
+    "/cert/scs-c03": {
+      "title": "AWS Security Specialty (SCS-C03) Practice Exam | CertiPrepAI",
+      "description": "260 SCS-C03 practice questions covering threat detection, identity management, data protection, and incident response on AWS."
+    },
+    "/cert/ans-c01": {
+      "title": "AWS Advanced Networking Specialty (ANS-C01) Practice Exam | CertiPrepAI",
+      "description": "260 ANS-C01 practice questions covering VPC, hybrid connectivity, routing, and network security. Pass the AWS Networking Specialty exam."
+    },
+    "/cert/aif-c01": {
+      "title": "AWS AI Practitioner (AIF-C01) Practice Exam | CertiPrepAI",
+      "description": "260 AIF-C01 practice questions covering AI/ML fundamentals, AWS AI services, and responsible AI. Pass the AWS AI Practitioner exam."
+    },
+    "/pricing": {
+      "title": "Pricing — CertiPrepAI | Unlock All 12 AWS Certs",
+      "description": "Unlock all 3,910 practice questions across 12 AWS certifications. Monthly and yearly plans available. Start free."
+    },
+    "/resources": {
+      "title": "AWS Study Resources — Courses, Cheat Sheets & Tools | CertiPrepAI",
+      "description": "The best AWS certification study resources: Stephane Maarek, Adrian Cantrill, AWS Skill Builder, cheat sheets, and hands-on labs — all in one place."
+    },
+    "/glossary": {
+      "title": "AWS Glossary — 70+ Terms Explained | CertiPrepAI",
+      "description": "Plain-English definitions for 70+ AWS services and concepts tested on certification exams. Built for exam prep."
+    },
+    "/study-guide": {
+      "title": "AWS Exam Strategy & Study Guide | CertiPrepAI",
+      "description": "Proven strategies for passing AWS certification exams: time management, question patterns, common traps, and a week-by-week study plan."
+    },
+    "/comparisons": {
+      "title": "AWS Service Comparisons — Exam Frequency | CertiPrepAI",
+      "description": "Which AWS services appear most on certification exams? Data-driven comparisons across all 12 AWS certs."
+    },
+    "/service-comparison": {
+      "title": "AWS Service Comparison Guide — S3 vs EFS, SQS vs SNS & More | CertiPrepAI",
+      "description": "20 side-by-side AWS service comparisons across 7 groups. Know exactly when to choose which service on exam day."
+    },
+    "/diagrams": {
+      "title": "AWS Architecture Diagrams | CertiPrepAI",
+      "description": "Visual AWS architecture diagrams for certification exam prep. Understand how services connect in real-world scenarios."
+    },
+    "/keywords": {
+      "title": "AWS Exam Keywords — Spot the Right Answer | CertiPrepAI",
+      "description": "Key phrases and trigger words that appear in AWS certification exam questions. Know what the question is really asking."
+    },
+    "/service-groups": {
+      "title": "AWS Service Groups — Organized by Category | CertiPrepAI",
+      "description": "All AWS services organized by category: compute, storage, database, networking, security, and more."
+    },
+    "/prompt-patterns": {
+      "title": "Prompt Patterns — AIF-C01 Techniques, Parameters & Security | CertiPrepAI",
+      "description": "Master prompt engineering for the AWS AI Practitioner exam. Zero-shot, few-shot, chain-of-thought, inference parameters, prompt injection defenses, and more."
+    },
+    "/saa-guide": {
+      "title": "SAA-C03 Study Guide 2025 — 82 Scenarios, Exam Traps & Numbers | CertiPrepAI",
+      "description": "The ultimate SAA-C03 study guide: 82-row decision matrix, 20 exam traps, 57 critical numbers & limits, 10 deep dives, 30-day plan, Architect's Codex. Free to access."
+    },
+    "/aif-guide": {
+      "title": "AIF-C01 Study Guide 2025 — Decision Matrix, Bedrock, RAG & Guardrails | CertiPrepAI",
+      "description": "Complete AIF-C01 study guide: AI service decision matrix, exam traps, 16 deep dives covering Bedrock, RAG, Fine-tuning, Guardrails, Responsible AI, and a 30-day study plan."
+    },
+    "/clf-guide": {
+      "title": "CLF-C02 Study Guide 2025 — Decision Matrix, Traps & Cloud Practitioner Tips | CertiPrepAI",
+      "description": "Complete AWS Cloud Practitioner CLF-C02 study guide: decision matrix, exam traps, 10 deep dives, 14-day study plan, shared responsibility model, billing, and support plans."
+    },
+    "/about": {
+      "title": "About CertiPrepAI — Built by an AWS Engineer",
+      "description": "CertiPrepAI is built by an AWS engineer who passed multiple certifications. 3,910 practice questions derived from official AWS documentation."
+    },
+    "/cheat-sheets": {
+      "title": "AWS Certification Cheat Sheets — Domains, Traps & Patterns | CertiPrepAI",
+      "description": "Exam domains, top tested services, choose-when patterns, and common traps for all 12 AWS certifications. Mined from 3,910 real practice questions."
+    },
+    "/sample-questions": {
+      "title": "Free AWS Certification Sample Questions | CertiPrepAI",
+      "description": "Try 20 free AWS certification practice questions covering SAA-C03, CLF-C02, and AIF-C01. No account required."
+    },
+    "/quick-fire": {
+      "title": "Quick Fire Drill — AWS SAA-C03 Active Recall Quiz | CertiPrepAI",
+      "description": "277 active recall questions for SAA-C03: Decision Matrix, Exam Traps, Numbers & Facts, Real Exam Scenarios, and Service Comparisons. Keyboard-driven drill mode."
+    },
+    "/terms": {
+      "title": "Terms of Service | CertiPrepAI",
+      "description": "CertiPrepAI terms of service and usage policy for AWS certification practice exams and study tools."
+    }
+  }
+}
