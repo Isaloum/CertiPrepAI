@@ -89,6 +89,13 @@ The `AuthUser` type and `sessionToUser()` in `cognito.ts` MUST include `'bundle'
 - `COGNITO_USER_POOL_ID` — `us-east-1_bqEVRsi2b`
 Missing `COGNITO_USER_POOL_ID` = downgrades silently fail (users keep paid plan after canceling forever).
 
+### 14. ⚠️ Per-route SEO prerendering + Amplify customRules are coupled
+`react-app/scripts/prerender.mjs` runs after `vite build` (wired into the `build` script) and writes `dist/<route>/index.html` with route-correct `<head>` for ~31 public routes, sourced from `react-app/scripts/route-meta.json`. Fixes the empty-SPA-body crawler/link-preview problem (added June 27, 2026).
+- **The prerendered files only serve if Amplify customRules point each route to its OWN file** (`/certifications → /certifications/index.html`, 200). The OLD rules rewrote every route to `/index.html`, which silently bypassed all prerendering. Rules live in `react-app/scripts/amplify-custom-rules.json`, applied via `aws amplify update-app --app-id d2pm3jfcsesli7 --custom-rules file://...`.
+- **NEVER add a bare `/<*> → /index.html` catch-all** — it hijacks `/assets/*.js` and breaks the app. Gated/client-only routes (login, signup, dashboard, billing, ai-coach, payment-success, mock-exam, visual-exam, architecture-builder, unsubscribe, forgot-password) target `/index.html`; everything public targets its own file.
+- **Adding a public route:** add to `route-meta.json` → regenerate `amplify-custom-rules.json` → push (build deploys files) → THEN `update-app --custom-rules` → CloudFront invalidate. Order matters: files first, rules second (rules pointing at undeployed files 404).
+- This is the cheap-win meta/canonical/preview layer only. Full body-content indexing still needs a Puppeteer snapshot (NOT built).
+
 ---
 
 ## Frontend Structure
