@@ -512,12 +512,12 @@ aws cognito-idp admin-update-user-attributes \
 | ✅ Lambda env var leak audit | No `console.log(process.env)` anywhere — clean |
 | ✅ Webhook signature verification | Confirmed `constructEvent()` on every event — was already correct |
 | ✅ Unsubscribe flow | Already fully built (Unsubscribe.tsx + DB Lambda action + drip check) — CAN-SPAM concern was stale |
+| ✅ www → apex 301 (June 27, 2026) | CloudFront Function `www-to-apex-redirect` (viewer-request on E149XOHRPMJ4D1 default behavior) 301s `www.certiprepai.com` → apex, preserving path + querystring. Apex untouched. Function only acts when Host=www, so blast radius is www-only. |
 
 ### Open items (from June 12 full scan)
 
 | Severity | Issue | Location | Fix |
 |----------|-------|----------|-----|
-| 🟡 Medium | https://www.certiprepai.com serves 200 (no redirect to apex) | CloudFront E149XOHRPMJ4D1 | Add CloudFront Function viewer-request 301 www → apex |
 | 🟡 Medium | Stripe SDK versions inconsistent: webhook v17, upgrade-subscription v14, checkout v22 | `aws-lambdas/*/package.json` | Upgrade all to ^22, redeploy, test flows |
 | 🟡 Medium | 36+ Lambda deploy zips committed to git (repo bloat, old node_modules) | `aws-lambdas/*/*.zip` | `git rm --cached aws-lambdas/*/*.zip` |
 | 🟡 Medium | `capture_lead` unauthenticated + no rate limit (DynamoDB/SES spam vector) | `awsprepai-db` Lambda | Origin-header check or API Gateway throttle |
