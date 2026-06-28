@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <!-- Public pages — confirmed accessible without login -->
+  <!-- Core pages -->
   <url><loc>https://certiprepai.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://certiprepai.com/certifications</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://certiprepai.com/pricing</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://certiprepai.com/about</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://certiprepai.com/sample-questions</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://certiprepai.com/certifications</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://certiprepai.com/about</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://certiprepai.com/terms</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
-
-  <!-- Gated pages removed — Google sees paywall, not content -->
-  <!-- Re-add when public landing sections are built -->
-
+  <!-- Cert landing pages — public content for logged-out visitors (June 2026) -->
+  <url><loc>https://certiprepai.com/cert/saa-c03</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://certiprepai.com/cert/clf-c02</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://certiprepai.com/cert/aif-c01</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://certiprepai.com/cert/dva-c02</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://certiprepai.com/cert/soa-c02</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://certiprepai.com/cert/dea-c01</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://certiprepai.com/cert/mla-c01</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://certiprepai.com/cert/gai-c01</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://certiprepai.com/cert/sap-c02</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://certiprepai.com/cert/dop-c02</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://certiprepai.com/cert/scs-c03</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://certiprepai.com/cert/ans-c01</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <!-- Free study content (public, no login) -->
+  <url><loc>https://certiprepai.com/resources</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://certiprepai.com/glossary</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://certiprepai.com/keywords</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://certiprepai.com/study-guide</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://certiprepai.com/cheat-sheets</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://certiprepai.com/quick-fire</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://certiprepai.com/service-comparison</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://certiprepai.com/service-groups</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://certiprepai.com/prompt-patterns</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://certiprepai.com/saa-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://certiprepai.com/clf-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://certiprepai.com/aif-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
