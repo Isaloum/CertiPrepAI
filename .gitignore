@@ -40,3 +40,11 @@ docs/dojo_part_a*
 project-docs/study-materials/*.pdf
 project-docs/study-materials/*.txt
 project-docs/study-materials/*.csv
+
+# graphify knowledge graph — ignore generated artifacts, keep only the exports scripts
+graphify-out/*
+!graphify-out/exports/
+graphify-out/exports/*
+!graphify-out/exports/refresh.sh
+!graphify-out/exports/_generate_exports.py
+!graphify-out/exports/rebuild.py

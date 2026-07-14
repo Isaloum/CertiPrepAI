@@ -13,6 +13,17 @@ AWS certification prep SaaS. React frontend on AWS Amplify, serverless backend o
 
 ---
 
+## 🕸️ Codebase Knowledge Graph (graphify)
+A graphify knowledge graph of this repo lives in `graphify-out/` (built from code via AST + docs/PDFs/images via LLM).
+- **Map first:** `graphify-out/exports/GRAPH_DIGEST.md` — readable map (top abstractions, communities, cross-links).
+- **Path tracing:** `graphify-out/exports/graph-slim.json` — every node/edge, trimmed. Use for "what connects to what".
+- **Reusable prompt:** `graphify-out/exports/GRAPH_PROMPT.md` — self-contained prompt for pasting into a plain Claude chat (no Project needed).
+- **Live query (Claude Code only):** `graphify query "<question>"` traverses `graphify-out/graph.json`.
+- **Refresh after code changes:** `./graphify-out/exports/refresh.sh` (re-extracts code + regenerates all exports). Full rebuild (docs + community labels) = run `/graphify .`.
+- Caveat: ~189 doc↔code edges were dropped at build; treat a missing cross-half link as possibly-missing, not confirmed-absent.
+
+---
+
 ## ⚠️ CRITICAL — READ BEFORE TOUCHING ANYTHING
 
 ### 1. Email normalization is MANDATORY
