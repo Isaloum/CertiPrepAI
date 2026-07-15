@@ -146,7 +146,7 @@ Missing `COGNITO_USER_POOL_ID` = downgrades silently fail (users keep paid plan 
 | `aws-lambdas/upgrade-subscription/index.mjs` | Handles preview + execute for plan upgrades with Stripe proration. USER_POOL_ID hardcoded inside. |
 | `aws-lambdas/awsprepai-db/index.js` | DynamoDB CRUD. `capture_lead` requires NO auth. All others require ACCESS token. |
 | `aws-lambdas/stripe-webhook/index.js` | Stripe events → Cognito + DynamoDB. Needs all 3 env vars (see critical note #13). |
-| `aws-lambdas/checkout/index.js` | Creates Stripe checkout session. Reuses existing Stripe customer by email (no duplicates). |
+| `aws-lambdas/checkout/index.js` | Creates Stripe checkout session. Reuses existing Stripe customer by email (no duplicates). ⚠️ ONLY checkout Lambda source — the stale `amplify/functions/checkout/` copy was deleted Jul 15 2026. |
 | `aws-lambdas/email-drip/index.mjs` | 3-email drip (welcome, day3, day7). Prices: $7/$67/$147. FROM: hello@certiprepai.com. Unsubscribe link = homepage (CAN-SPAM risk — known). |
 | `aws-lambdas/verify-session/index.js` | Called after checkout redirect. Upgrades Cognito tier. Redundant with webhook but kept as fallback while webhook is unstable. |
 
@@ -538,7 +538,7 @@ aws cognito-idp admin-update-user-attributes \
 | 🟢 Low | Bundle price fallback is `price_BUNDLE_REPLACE_ME` (env var set in prod, so works today) | `checkout/index.js:13` | Put real price ID in fallback |
 | 🟢 Low | `/terms` missing ROUTE_META; JSON-LD Course schema uses numberOfCredits + Person instructor | SEOMeta.tsx | Add entry; fix schema |
 | 🟢 Low | No brute-force lockout beyond Cognito defaults | Cognito | Enable advanced security features |
-| 🟢 Low | Stale tracked dirs `_from-documents/`, `_marketing/` on public repo | repo root | Delete or move to private storage |
+| ✅ Done (Jul 15 2026) | Deleted stale tracked dirs `_from-documents/`, `_marketing/` + dead `amplify/functions/checkout/` (orphaned Apr-16 copy, no backend wiring). Canonical docs = `project-docs/`; canonical checkout Lambda = `aws-lambdas/checkout/`. | repo root | — |
 
 ---
 
