@@ -1,6 +1,6 @@
 # CertiPrepAI
 
-**Last updated:** 2026-06-09
+**Last updated:** 2026-07-18
 **Status:** Live in production — https://certiprepai.com
 
 AWS certification prep SaaS: 3,910 practice questions across 12 certifications, mock exams, study guides, AI coach.
@@ -54,23 +54,29 @@ User → Route 53 → CloudFront (E149XOHRPMJ4D1) + WAF → Amplify (React SPA)
 ## Deploy
 
 ```bash
-cd react-app && npm run build          # ALWAYS test locally first (tsc -b runs too)
+cd react-app && npm run lint && npm test && npm run build   # ALWAYS pass locally first
 git push origin main                   # Amplify auto-builds (~90s)
 aws cloudfront create-invalidation --distribution-id E149XOHRPMJ4D1 --paths "/*"
 # verify in fresh incognito window
 ```
 
+## Testing & CI
+
+- **Unit tests:** `npm test` (vitest). Suite lives in `react-app/src/**/*.test.ts`;
+  `src/lib/tiers.ts` (plan-tier + per-cert paywall logic) is the tested source of truth.
+- **GitHub Actions CI** runs on every push/PR — **lint + tests + build, all blocking.**
+  A change that breaks the paywall logic or introduces a lint error fails CI (does not deploy).
+
 ## Monitoring
 
 - **Sentry** (production errors) · **PostHog** (analytics) · **UptimeRobot** (5-min checks)
-- **CloudWatch alarm** on awsprepai-db errors · **GitHub Actions CI** on every push
+- **CloudWatch alarm** on awsprepai-db errors
 
 ## Top Backlog
 
-1. 🔴 Pre-render public routes — SPA empty body is invisible to crawlers/link previews (blocks SEO + lead-magnet funnel)
+1. 🔴 Full-body pre-render for crawlers — per-route `<head>`/meta/canonical prerendering is done (`scripts/prerender.mjs`, ~31 routes), but body content is still client-rendered. Full-body indexing needs a Puppeteer snapshot (not built).
 2. 🟡 Real downgrade flow (yearly → monthly)
-3. 🟡 CAN-SPAM: real unsubscribe mechanism in email drip
-4. 🟢 Zoho Mail migration before WorkMail deprecation (March 2027)
+3. 🟢 Zoho Mail migration before WorkMail deprecation (March 2027)
 
 ## Git
 

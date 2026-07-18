@@ -1,5 +1,5 @@
 # CertiPrepAI — Claude Context
-_Last updated: 2026-06-12_
+_Last updated: 2026-07-18_
 
 ## What this project is
 AWS certification prep SaaS. React frontend on AWS Amplify, serverless backend on Lambda + DynamoDB + Cognito.
@@ -476,6 +476,30 @@ aws cognito-idp admin-update-user-attributes \
 | 4 | One restricted Stripe key per Lambda | Least privilege: a leaked key for cancel-subscription can only touch subscriptions, not refunds/payouts/customers. |
 | 5 | Agents share zero memory — CLAUDE.md is the only bridge | Chat/Fable/Code sessions each re-diagnose from scratch and contradict each other unless every session writes its findings here before ending. |
 | 6 | Identity before money | Signup redirected to Stripe before email confirmation — user could pay for an account they can't log into. Checkout belongs strictly post-verification. |
+
+---
+
+## ✅ Built This Session (July 17–18, 2026) — Paywall Refactor, Hardening, Tests & Lint Gate
+
+| # | Item | Details |
+|---|------|---------|
+| 1 | Shared `PremiumGate` component | New `react-app/src/components/PremiumGate.tsx` replaces ~150 lines of copy-pasted "any paid plan" lock cards across 9 pages (CheatSheets, StudyGuide, Glossary, Keywords, ServiceGroups, ServiceComparison, Diagrams, ArchitectureBuilder, VisualExam). Gating logic unchanged. Per-cert access still lives in `useCertAccess.ts`. |
+| 2 | Free-tier wording 20→50 | Welcome email (`email-drip`, redeployed) + SEOMeta FAQ/offer said "20 free questions"; actual is 50 for signed-up users. Fixed. Left `/sample-questions` "20, no account" copy (correct path). |
+| 3 | og-image compressed | `og-image.png` 656 KB → `og-image.jpg` 56 KB; refs updated in index.html + SEOMeta.tsx; old png deleted. |
+| 4 | `capture_lead` hardened | Origin allowlist gate (403 before any DynamoDB write / welcome-email fire) + strict email regex + 254-char cap. Fixed incomplete `awsprepai-db/package.json` (was missing 2 SDK packages index.js requires). API Gateway throttle (30 rps/50 burst) already existed. |
+| 5 | Tier logic extracted + tested | `react-app/src/lib/tiers.ts` = single source of truth (`isPremium`, `isFullAccess`, `hasCertAccess`, `TIER_RANK`). Wired into AuthContext + useCertAccess. `tiers.test.ts` (vitest) = 14 tests. |
+| 6 | CI is now a real gate | `.github/workflows/ci.yml` runs **lint + tests + build, all blocking**. `npm test` = vitest. |
+| 7 | Lint cleared to 0 errors | Real fixes: unused vars, empty catches, `any`→typed (incl. new `Comparison` interface + removed stray `b2` data key), ternary-as-statement→if/else, `Date.now()`-in-render→mount-captured `useState`. 3 React-Compiler/HMR advisory rules set to **warn** in `eslint.config.js` (19 warnings, non-blocking). |
+| 8 | Verified-already-fixed (stale notes) | `upgrade-subscription` uses `payment_behavior:'error_if_incomplete'` (Cognito only updated after confirmed payment — deployed Lambda confirmed). `Billing.tsx` login redirect is in a `useEffect`. Unsubscribe flow already built. All were stale backlog items. |
+
+## 🧠 Lessons Learned (July 17–18, 2026)
+
+| # | Lesson | Detail |
+|---|--------|--------|
+| 1 | Trust the deployed code, not the backlog | Three "open" items (upgrade payment timing, Billing render redirect, unsubscribe) were already fixed and live. Verify against the running Lambda / current source before "fixing" again. |
+| 2 | Lambda `package.json` can lie | `awsprepai-db` shipped fine for months with 2 required SDK packages missing from `package.json` (runtime + bundled node_modules masked it). A fresh `npm install` deploy would have broken it. Keep deps honest. |
+| 3 | Fixing one lint error can unmask others | ESLint's react-hooks rules bail out after certain errors; fixing the `purity` errors exposed 14 pre-existing `set-state-in-effect` warnings. Expect the count to move as you clean. |
+| 4 | Don't rewrite working code to satisfy a style rule | `set-state-in-effect` flags legitimate load-in-effect/reset-on-change patterns across auth/exam/payment code. Reclassifying the advisory rule to `warn` (documented in config) beats 14 risky refactors. |
 
 ---
 
