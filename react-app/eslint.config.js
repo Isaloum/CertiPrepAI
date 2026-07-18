@@ -19,5 +19,14 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // These flag legitimate, widespread patterns (load-in-effect + setState,
+      // reset-on-change, context files exporting a hook alongside the provider).
+      // They are advisory for a future React Compiler / Fast Refresh migration,
+      // not correctness bugs — kept as warnings so real errors stay the CI gate.
+      'react-hooks/set-state-in-effect': 'warn',
+      'react-hooks/preserve-manual-memoization': 'warn',
+      'react-refresh/only-export-components': 'warn',
+    },
   },
 ])

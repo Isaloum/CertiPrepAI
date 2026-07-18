@@ -41,6 +41,7 @@ export default function CertDetail() {
   const navigate = useNavigate()
   const { tier, user, loading } = useAuth()
 
+  const [now] = useState(() => Date.now()) // captured at mount → keeps render pure
   const [questions, setQuestions] = useState<Question[]>([])
   const [filtered, setFiltered] = useState<Question[]>([])
   const [current, setCurrent] = useState(0)
@@ -73,7 +74,7 @@ export default function CertDetail() {
         next.add(questionText)
         trackBookmark(certId || '')
       }
-      try { localStorage.setItem(`bookmarks-${certId}`, JSON.stringify([...next])) } catch {}
+      try { localStorage.setItem(`bookmarks-${certId}`, JSON.stringify([...next])) } catch { /* localStorage unavailable */ }
       return next
     })
   }
@@ -293,7 +294,7 @@ export default function CertDetail() {
     const canSwitch = canSwitchMonthly()
     const selectedAt = new Date(monthlySelection.selected_at)
     const nextSwitch = new Date(selectedAt.getTime() + 30 * 24 * 60 * 60 * 1000)
-    const daysLeft = Math.ceil((nextSwitch.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    const daysLeft = Math.ceil((nextSwitch.getTime() - now) / (1000 * 60 * 60 * 24))
 
     return (
       <Layout>

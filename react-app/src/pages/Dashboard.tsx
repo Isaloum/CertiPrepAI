@@ -70,6 +70,7 @@ export default function Dashboard() {
   const { user, isFullAccess, tier, loading, signOut } = useAuth()
   const navigate = useNavigate()
   const streak = getStreak()
+  const [now] = useState(() => Date.now()) // captured at mount → keeps render pure
   const [monthlyCert, setMonthlyCert] = useState<{ cert_id: string; selected_at: string } | null | undefined>(undefined)
   const [bundleCerts, setBundleCertsState] = useState<{ cert_ids: string[]; selected_at: string } | null | undefined>(undefined)
   const [bundleSelecting, setBundleSelecting] = useState<string[]>([])
@@ -341,7 +342,7 @@ export default function Dashboard() {
           const selectedAt = new Date(bundleCerts.selected_at)
           const nextChange = new Date(selectedAt.getTime() + 30 * 24 * 60 * 60 * 1000)
           const canChange = canChangeBundleCerts(bundleCerts.selected_at)
-          const daysLeft = Math.ceil((nextChange.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+          const daysLeft = Math.ceil((nextChange.getTime() - now) / (1000 * 60 * 60 * 24))
           return (
             <div style={{ background: '#f0fdfa', border: '1px solid #5eead4', borderRadius: '1rem', padding: '1.25rem 1.5rem', marginBottom: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>

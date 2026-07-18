@@ -4,7 +4,22 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
 // Comparison data derived from AWS official documentation, exam guide objectives, and AWS whitepapers
-const comparisons = [
+interface ComparisonRow { feature: string; a: string; b: string; c?: string }
+interface Comparison {
+  id: string
+  title: string
+  emoji: string
+  tag: string
+  examFreq: string
+  rows: ComparisonRow[]
+  hot?: boolean
+  colA?: string
+  colB?: string
+  colC?: string
+  threeWay?: boolean
+  tip?: string
+}
+const comparisons: Comparison[] = [
   {
     id: 'rds-multiaz-vs-replica',
     title: 'RDS Multi-AZ vs Read Replica',
@@ -63,7 +78,7 @@ const comparisons = [
     tag: 'Networking',
     examFreq: '6 questions across AWS certification exams',
     rows: [
-      { feature: 'Supports', a: 'S3 and DynamoDB only', b: 'Most AWS services', b2: '' },
+      { feature: 'Supports', a: 'S3 and DynamoDB only', b: 'Most AWS services' },
       { feature: 'Cost', a: 'FREE — no hourly charge, no data fee', b: 'Hourly charge + data processing fee' },
       { feature: 'How it works', a: 'Route table entry (prefix list)', b: 'Private IP in your subnet (ENI)' },
       { feature: 'Accessible from', a: 'Within VPC only', b: 'VPC, on-premises (via DX/VPN), peered VPCs' },
@@ -510,7 +525,7 @@ export default function Comparisons() {
                           fontWeight: 600,
                         }}>{comp.tag}</span>
                         <span style={{ fontSize: '0.72rem', color: '#64748b' }}>🎯 {comp.examFreq}</span>
-                        {(comp as any).hot && (
+                        {comp.hot && (
                           <span style={{
                             background: '#431407',
                             border: '1px solid #c2410c',
@@ -537,7 +552,7 @@ export default function Comparisons() {
                           <tr>
                             <th style={{ textAlign: 'left', padding: '0.5rem 0.75rem', color: '#64748b', fontWeight: 600, borderBottom: '1px solid #1e3a5f', width: '25%' }}>Feature</th>
                             <th style={{ textAlign: 'left', padding: '0.5rem 0.75rem', color: '#38bdf8', fontWeight: 700, borderBottom: '1px solid #1e3a5f', background: '#0c1a2e' }}>
-                              {(comp as any).colA ?? (
+                              {comp.colA ?? (
                                 comp.id.includes('spot') ? 'Spot' :
                                 comp.id.includes('geolocation') ? 'Geolocation' :
                                 comp.id.includes('sqs') ? 'SQS' :
@@ -551,7 +566,7 @@ export default function Comparisons() {
                               )}
                             </th>
                             <th style={{ textAlign: 'left', padding: '0.5rem 0.75rem', color: '#a78bfa', fontWeight: 700, borderBottom: '1px solid #1e3a5f', background: '#0c1a2e' }}>
-                              {(comp as any).colB ?? (
+                              {comp.colB ?? (
                                 comp.id.includes('spot') ? 'On-Demand' :
                                 comp.id.includes('geolocation') ? 'Geoproximity' :
                                 comp.id.includes('sqs') ? 'SNS' :
@@ -578,7 +593,7 @@ export default function Comparisons() {
                               <td style={{ padding: '0.5rem 0.75rem', color: '#e2e8f0' }}>{row.a}</td>
                               <td style={{ padding: '0.5rem 0.75rem', color: '#e2e8f0' }}>{row.b}</td>
                               {comp.threeWay && (
-                                <td style={{ padding: '0.5rem 0.75rem', color: '#e2e8f0' }}>{(row as any).c}</td>
+                                <td style={{ padding: '0.5rem 0.75rem', color: '#e2e8f0' }}>{row.c}</td>
                               )}
                             </tr>
                           ))}

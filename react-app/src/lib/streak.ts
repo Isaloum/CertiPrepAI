@@ -50,7 +50,7 @@ export function updateStreak(): number {
   const updated: StreakData = { count: newCount, lastDate: t }
   try {
     localStorage.setItem(KEY, JSON.stringify(updated))
-  } catch {}
+  } catch { /* localStorage unavailable (private mode) */ }
 
   return newCount
 }

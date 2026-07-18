@@ -631,7 +631,7 @@ export default function ClfGuide() {
   })
 
   useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...completedDays])) } catch {}
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...completedDays])) } catch { /* localStorage unavailable */ }
   }, [completedDays])
 
   // Gate: must be premium
@@ -684,7 +684,8 @@ export default function ClfGuide() {
   const toggleDay = (day: number) => {
     setCompletedDays(prev => {
       const next = new Set(prev)
-      next.has(day) ? next.delete(day) : next.add(day)
+      if (next.has(day)) next.delete(day)
+      else next.add(day)
       return next
     })
   }

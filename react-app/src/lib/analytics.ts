@@ -18,7 +18,7 @@ if (typeof window !== 'undefined') {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function track(name: string, props: Record<string, string | number | boolean> = {}) {
-  try { posthog.capture(name, props) } catch (_) { /* never crash the app */ }
+  try { posthog.capture(name, props) } catch { /* never crash the app */ }
 }
 
 // ── Identity — call after login or signup ─────────────────────────────────────
@@ -26,12 +26,12 @@ function track(name: string, props: Record<string, string | number | boolean> = 
 export function identifyUser(userId: string, email: string, plan: string) {
   try {
     posthog.identify(userId, { email, plan })
-  } catch (_) {}
+  } catch { /* analytics is best-effort */ }
 }
 
 /** Call on logout to disassociate the device from the user. */
 export function resetUser() {
-  try { posthog.reset() } catch (_) {}
+  try { posthog.reset() } catch { /* analytics is best-effort */ }
 }
 
 // ── Events ────────────────────────────────────────────────────────────────────

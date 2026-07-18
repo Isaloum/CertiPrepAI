@@ -1,6 +1,7 @@
 // Polyfill 'global' for AWS/Node.js libs — must be in bundle, not an inline script
-if (typeof (window as any).global === 'undefined') {
-  (window as any).global = window
+const _w = window as Window & { global?: typeof globalThis }
+if (typeof _w.global === 'undefined') {
+  _w.global = window as unknown as typeof globalThis
 }
 
 import { StrictMode } from 'react'

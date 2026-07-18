@@ -21,8 +21,8 @@ export default function ForgotPassword() {
     try {
       await forgotPassword(email.trim().toLowerCase())
       setStep('code')
-    } catch (err: any) {
-      setError(err.message || 'Failed to send reset code.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to send reset code.')
     } finally {
       setLoading(false)
     }
@@ -38,8 +38,8 @@ export default function ForgotPassword() {
     try {
       await confirmNewPassword(email.trim().toLowerCase(), code.trim(), password)
       setStep('done')
-    } catch (err: any) {
-      setError(err.message || 'Reset failed. Check your code and try again.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Reset failed. Check your code and try again.')
     } finally {
       setLoading(false)
     }

@@ -25,11 +25,10 @@ jobs:
       - name: Install dependencies
         run: cd react-app && npm install
 
-      # Non-blocking: surfaces existing lint debt without failing the build.
-      # Flip continue-on-error to false once the pre-existing warnings are cleared.
-      - name: Lint (non-blocking)
+      # Blocking: fails on any lint ERROR (advisory React-Compiler/HMR rules are
+      # configured as warnings in eslint.config.js and do not fail the build).
+      - name: Lint
         run: cd react-app && npm run lint
-        continue-on-error: true
 
       # Blocking: unit tests must pass. This is the regression gate.
       - name: Test
