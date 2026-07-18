@@ -11,6 +11,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { getMonthlyCert, getBundleCerts } from '../lib/db'
+import { hasCertAccess } from '../lib/tiers'
 
 export function useCertAccess(certId: string): { hasAccess: boolean; loading: boolean } {
   const { user, tier, loading: authLoading } = useAuth()
@@ -35,7 +36,7 @@ export function useCertAccess(certId: string): { hasAccess: boolean; loading: bo
     // Monthly → check which single cert they selected
     if (tier === 'monthly') {
       getMonthlyCert(user.accessToken)
-        .then(data => setHasAccess(data?.cert_id === certId))
+        .then(data => setHasAccess(hasCertAccess({ tier, certId, monthlyCertId: data?.cert_id })))
         .catch(() => setHasAccess(false))
       return
     }
@@ -43,7 +44,7 @@ export function useCertAccess(certId: string): { hasAccess: boolean; loading: bo
     // Bundle → check if certId is in their 3-cert selection
     if (tier === 'bundle') {
       getBundleCerts(user.accessToken)
-        .then(data => setHasAccess(data?.cert_ids?.includes(certId) ?? false))
+        .then(data => setHasAccess(hasCertAccess({ tier, certId, bundleCertIds: data?.cert_ids })))
         .catch(() => setHasAccess(false))
       return
     }

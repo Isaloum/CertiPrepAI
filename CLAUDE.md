@@ -124,6 +124,7 @@ Missing `COGNITO_USER_POOL_ID` = downgrades silently fail (users keep paid plan 
 | `react-app/src/lib/cognito.ts` | All auth functions. Email normalization MANDATORY. `bundle` MUST be in AuthUser type + sessionToUser. |
 | `react-app/src/lib/db.ts` | DynamoDB API wrapper. Uses ACCESS token. DB_API hardcoded. |
 | `react-app/src/lib/analytics.ts` | PostHog wrapper. Key: `phc_vQkqAhkS2zJBrqL5roLz8iquSgXWuucyBodeyNH99dsS`. Public key — safe in bundle. |
+| `react-app/src/lib/tiers.ts` | Pure tier logic — single source of truth (Jul 17 2026). `TIER_RANK`, `isPremium(tier)`, `isFullAccess(tier)`, `hasCertAccess({tier,certId,monthlyCertId,bundleCertIds})`. Used by AuthContext (isPremium/isFullAccess) + useCertAccess (per-cert decision). Unit-tested in `tiers.test.ts` (vitest). Change plan rules HERE. |
 | `react-app/src/contexts/AuthContext.tsx` | Auth state. Exposes: user, tier, isPremium, isFullAccess, loading. |
 | `react-app/src/components/Navbar.tsx` | Nav. Pricing hidden for paid. Billing shown for paid. AI Coach tab hidden (accessible only via /ai-coach). |
 | `react-app/src/pages/Login.tsx` | Email normalized on input onChange. |
@@ -532,10 +533,10 @@ aws cognito-idp admin-update-user-attributes \
 |----------|-------|----------|-----|
 | 🟡 Medium | Stripe SDK versions inconsistent: webhook v17, upgrade-subscription v14, checkout v22 | `aws-lambdas/*/package.json` | Upgrade all to ^22, redeploy, test flows |
 | 🟡 Medium | 36+ Lambda deploy zips committed to git (repo bloat, old node_modules) | `aws-lambdas/*/*.zip` | `git rm --cached aws-lambdas/*/*.zip` |
-| 🟡 Medium | `capture_lead` unauthenticated + no rate limit (DynamoDB/SES spam vector) | `awsprepai-db` Lambda | Origin-header check or API Gateway throttle |
+| ✅ Done (Jul 17 2026) | `capture_lead` hardened: origin allowlist gate (403 for non-site/scripted callers, blocks abuse BEFORE DynamoDB write + welcome-email fire) + strict email regex + 254-char cap. API Gateway stage `$default` already had throttle (30 rps / 50 burst). Also fixed incomplete `awsprepai-db/package.json` (was missing `@aws-sdk/client-cognito-identity-provider` + `@aws-sdk/client-lambda` that index.js requires — a fresh npm-install deploy would have broken). | `awsprepai-db` Lambda | — |
 | ✅ Done (Jul 17 2026) | Free-tier wording corrected to 50: welcome email (`email-drip/index.mjs` HTML+text, Lambda redeployed) + SEOMeta FAQ/offer schema. Left `/sample-questions` "20, no account" copy intact (correct path). | — | — |
 | ✅ Done (Jul 17 2026) | og-image compressed: `og-image.png` (656 KB) → `og-image.jpg` (56 KB), refs updated in index.html + SEOMeta.tsx, old png deleted. | — | — |
-| 🟡 Medium | CI: no lint, no tests — build only | `.github/workflows/ci.yml` | Add `npm run lint` step |
+| 🟢 Partly done (Jul 17 2026) | CI now runs **vitest (blocking)** + **lint (non-blocking, `continue-on-error`)** + build. Tests live in `react-app/src/**/*.test.ts` (vitest, `npm test`). First suite: `src/lib/tiers.test.ts` (14 tests over the tier/cert-access logic). Remaining: clear the 29 pre-existing lint errors (mostly `react-hooks/set-state-in-effect` in VisualExam/MockExam/Navbar/etc.), then flip lint to blocking. | `.github/workflows/ci.yml` | — |
 | 🟢 Low | Bundle price fallback is `price_BUNDLE_REPLACE_ME` (env var set in prod, so works today) | `checkout/index.js:13` | Put real price ID in fallback |
 | 🟢 Low | `/terms` missing ROUTE_META; JSON-LD Course schema uses numberOfCredits + Person instructor | SEOMeta.tsx | Add entry; fix schema |
 | 🟢 Low | No brute-force lockout beyond Cognito defaults | Cognito | Enable advanced security features |
@@ -550,7 +551,7 @@ aws cognito-idp admin-update-user-attributes \
 | 🔴 High | Pre-render public routes (vite-ssg / static landing pages) — SPA empty body makes site invisible to crawlers and link previews. Blocks SEO + PDF lead-magnet funnel. |
 | 🟡 Medium | Downgrade flow (yearly → monthly) not built — buttons are disabled with "Contact support to downgrade" message. Build real flow when needed. |
 | ~~🟡 Medium~~ | ~~Billing.tsx: `navigate('/login')` called during render~~ — VERIFIED ALREADY FIXED Jul 17 2026: the call is inside a `useEffect` (Billing.tsx:93-95). Stale note. |
-| 🟡 Medium | upgrade-subscription Lambda: Cognito updated before Stripe confirms payment — user could get free upgrade if card fails |
+| ~~🟡 Medium~~ | ~~upgrade-subscription: Cognito updated before Stripe confirms payment~~ — VERIFIED ALREADY FIXED & DEPLOYED Jul 17 2026: the upgrade path uses `payment_behavior: 'error_if_incomplete'` (index.mjs:130) so Stripe throws on decline and Cognito is only updated after confirmed payment (index.mjs:127-138). Deployed Lambda confirmed to match. Stale note. |
 | 🟡 Medium | CAN-SPAM: email drip "unsubscribe" link goes to homepage, not real unsubscribe mechanism |
 | 🟡 Medium | CLF-C02 study tools — Keywords + Service Groups for highest-volume entry cert |
 | 🟡 Medium | PostHog: Signup.tsx passes email as userId instead of Cognito sub — creates duplicate profiles |

@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: TypeScript + Vite Build
+    name: Build + Test
     runs-on: ubuntu-latest
 
     steps:
@@ -24,6 +24,16 @@ jobs:
 
       - name: Install dependencies
         run: cd react-app && npm install
+
+      # Non-blocking: surfaces existing lint debt without failing the build.
+      # Flip continue-on-error to false once the pre-existing warnings are cleared.
+      - name: Lint (non-blocking)
+        run: cd react-app && npm run lint
+        continue-on-error: true
+
+      # Blocking: unit tests must pass. This is the regression gate.
+      - name: Test
+        run: cd react-app && npm test
 
       - name: Build (tsc + vite)
         run: cd react-app && npm run build

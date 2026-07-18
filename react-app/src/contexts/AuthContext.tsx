@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import * as Sentry from '@sentry/react'
 import { getSession, signOut as cognitoSignOut, type AuthUser } from '../lib/cognito'
 import { identifyUser, resetUser as analyticsReset } from '../lib/analytics'
+import { isPremium as computeIsPremium, isFullAccess as computeIsFullAccess } from '../lib/tiers'
 
 const IDLE_TIMEOUT   = 30 * 60 * 1000  // 30 min → auto-logout
 const WARN_BEFORE    =      60 * 1000  // warn 60 s before logout
@@ -58,8 +59,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const tier = user?.tier ?? 'free'
-  const isPremium = tier !== 'free'
-  const isFullAccess = tier === 'yearly' || tier === 'lifetime'
+  const isPremium = computeIsPremium(tier)
+  const isFullAccess = computeIsFullAccess(tier)
 
   const signOut = async () => {
     clearAllTimers()
