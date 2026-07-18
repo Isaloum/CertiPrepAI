@@ -141,6 +141,7 @@ Missing `COGNITO_USER_POOL_ID` = downgrades silently fail (users keep paid plan 
 | `react-app/src/components/EmailCapture.tsx` | Centered modal popup at 60% scroll. Saves to awsprepai-leads. No auth required. Hidden for logged-in users. |
 | `react-app/src/components/MarkdownRenderer.tsx` | Lightweight markdown renderer for AI Coach. No deps. |
 | `react-app/src/components/Footer.tsx` | Auth-aware footer. Hides Sample Questions + shows Manage Subscription for paid users. |
+| `react-app/src/components/PremiumGate.tsx` | Shared full-page lock card for "any paid plan" features (Jul 17 2026). Used by CheatSheets, StudyGuide, Glossary, Keywords, ServiceGroups, ServiceComparison, Diagrams, ArchitectureBuilder, VisualExam via `if (!isPremium) return <PremiumGate message=... />`. Props: icon, title, message, subMessage, buttonLabel, showSignUp. Wraps in Layout + reads user/navigate internally. Change the "any paid plan" paywall in ONE place here. Does NOT change gating logic — per-cert access still lives in `useCertAccess.ts`. |
 | `aws-lambdas/ai-coach/index.js` | AI Coach Lambda. **Lifetime-only** (`custom:plan === 'lifetime'`). Fixed May 2026. |
 | `aws-lambdas/cancel-subscription/index.mjs` | Cancels Stripe sub (period end). Does NOT touch Cognito plan. Uses raw https (no SDK). |
 | `aws-lambdas/upgrade-subscription/index.mjs` | Handles preview + execute for plan upgrades with Stripe proration. USER_POOL_ID hardcoded inside. |
@@ -532,8 +533,8 @@ aws cognito-idp admin-update-user-attributes \
 | 🟡 Medium | Stripe SDK versions inconsistent: webhook v17, upgrade-subscription v14, checkout v22 | `aws-lambdas/*/package.json` | Upgrade all to ^22, redeploy, test flows |
 | 🟡 Medium | 36+ Lambda deploy zips committed to git (repo bloat, old node_modules) | `aws-lambdas/*/*.zip` | `git rm --cached aws-lambdas/*/*.zip` |
 | 🟡 Medium | `capture_lead` unauthenticated + no rate limit (DynamoDB/SES spam vector) | `awsprepai-db` Lambda | Origin-header check or API Gateway throttle |
-| 🟡 Medium | Welcome email + SEOMeta FAQ say "20 free questions" — actual is 50 | `email-drip/index.mjs:60`, SEOMeta.tsx | Change to 50 |
-| 🟡 Medium | og-image.png is 656 KB — some platforms skip it | `react-app/public/og-image.png` | Compress to <300 KB |
+| ✅ Done (Jul 17 2026) | Free-tier wording corrected to 50: welcome email (`email-drip/index.mjs` HTML+text, Lambda redeployed) + SEOMeta FAQ/offer schema. Left `/sample-questions` "20, no account" copy intact (correct path). | — | — |
+| ✅ Done (Jul 17 2026) | og-image compressed: `og-image.png` (656 KB) → `og-image.jpg` (56 KB), refs updated in index.html + SEOMeta.tsx, old png deleted. | — | — |
 | 🟡 Medium | CI: no lint, no tests — build only | `.github/workflows/ci.yml` | Add `npm run lint` step |
 | 🟢 Low | Bundle price fallback is `price_BUNDLE_REPLACE_ME` (env var set in prod, so works today) | `checkout/index.js:13` | Put real price ID in fallback |
 | 🟢 Low | `/terms` missing ROUTE_META; JSON-LD Course schema uses numberOfCredits + Person instructor | SEOMeta.tsx | Add entry; fix schema |
@@ -548,7 +549,7 @@ aws cognito-idp admin-update-user-attributes \
 |----------|------|
 | 🔴 High | Pre-render public routes (vite-ssg / static landing pages) — SPA empty body makes site invisible to crawlers and link previews. Blocks SEO + PDF lead-magnet funnel. |
 | 🟡 Medium | Downgrade flow (yearly → monthly) not built — buttons are disabled with "Contact support to downgrade" message. Build real flow when needed. |
-| 🟡 Medium | Billing.tsx: `navigate('/login')` called during render (not in useEffect) — React anti-pattern, causes warning |
+| ~~🟡 Medium~~ | ~~Billing.tsx: `navigate('/login')` called during render~~ — VERIFIED ALREADY FIXED Jul 17 2026: the call is inside a `useEffect` (Billing.tsx:93-95). Stale note. |
 | 🟡 Medium | upgrade-subscription Lambda: Cognito updated before Stripe confirms payment — user could get free upgrade if card fails |
 | 🟡 Medium | CAN-SPAM: email drip "unsubscribe" link goes to homepage, not real unsubscribe mechanism |
 | 🟡 Medium | CLF-C02 study tools — Keywords + Service Groups for highest-volume entry cert |
