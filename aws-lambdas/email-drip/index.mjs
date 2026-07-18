@@ -57,7 +57,7 @@ function emailWelcome(email) {
       <p style="color:#374151;font-size:1rem;line-height:1.6;margin:0 0 20px;">Hey there 👋</p>
 
       <p style="color:#374151;font-size:1rem;line-height:1.6;margin:0 0 20px;">
-        Thanks for signing up. You've got <strong>20 free practice questions per certification</strong> — no credit card needed, no time limit.
+        Thanks for signing up. You've got <strong>50 free practice questions per certification</strong> — no credit card needed, no time limit.
       </p>
 
       <!-- CTA box -->
@@ -111,7 +111,7 @@ function emailWelcome(email) {
 </html>`,
     text: `Welcome to CertiPrepAI!
 
-You've got 20 free practice questions per certification — no credit card needed.
+You've got 50 free practice questions per certification — no credit card needed.
 
 Start with the most popular certs:
 → SAA-C03: https://certiprepai.com/cert/saa-c03

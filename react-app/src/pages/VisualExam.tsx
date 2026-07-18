@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import Layout from '../components/Layout'
+import PremiumGate from '../components/PremiumGate'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -427,23 +428,11 @@ export default function VisualExam() {
   // ── Premium gate ──────────────────────────────────────────────────────────────
   if (!isPremium) {
     return (
-      <Layout>
-        <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '32px 16px' }}>
-          <div style={{ background: '#fff', borderRadius: '24px', padding: '48px 40px', maxWidth: '480px', width: '100%', textAlign: 'center', boxShadow: '0 20px 60px rgba(0,0,0,0.12)', border: '1px solid #e2e8f0' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🔒</div>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', margin: '0 0 12px' }}>Premium Feature</h2>
-            <p style={{ color: '#64748b', margin: '0 0 28px', lineHeight: '1.6' }}>
-              Visual Exam — drag-and-connect — is available on monthly, yearly, and lifetime plans.
-            </p>
-            <button
-              onClick={() => navigate('/pricing')}
-              style={{ background: 'linear-gradient(135deg,#2563eb,#1d4ed8)', color: '#fff', border: 'none', borderRadius: '14px', padding: '14px 32px', fontWeight: 700, fontSize: '1rem', cursor: 'pointer', width: '100%' }}
-            >
-              View Plans
-            </button>
-          </div>
-        </div>
-      </Layout>
+      <PremiumGate
+        title="Premium Feature"
+        message="Visual Exam — drag-and-connect — is available on monthly, yearly, and lifetime plans."
+        buttonLabel="View Plans"
+      />
     )
   }
 

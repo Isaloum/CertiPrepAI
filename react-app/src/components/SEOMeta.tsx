@@ -204,7 +204,7 @@ const AIF_FAQ = [
 
 const HOME_FAQ = [
   { q: 'How many AWS certification practice questions does CertiPrepAI have?', a: 'CertiPrepAI has 3,910 practice questions covering all 12 active AWS certifications, including SAA-C03, CLF-C02, DVA-C02, and more.' },
-  { q: 'Is CertiPrepAI free to use?', a: 'Yes. You can practice 20 questions for free with no credit card required. Paid plans unlock all 3,910 questions and timed mock exams starting at $7/month.' },
+  { q: 'Is CertiPrepAI free to use?', a: 'Yes. Sign up free to practice 50 questions per certification with no credit card required — or try 20 instantly with no account. Paid plans unlock all 3,910 questions and timed mock exams starting at $7/month.' },
   { q: 'Does CertiPrepAI include mock exams?', a: 'Yes. Each certification includes a timed mock exam with 65 questions and a 130-minute timer, matching the real AWS exam format.' },
   { q: 'Which AWS certifications are covered?', a: 'CertiPrepAI covers all 12 active AWS certifications: CLF-C02, AIF-C01, SAA-C03, DVA-C02, SOA-C02, DEA-C01, MLA-C01, GAI-C01, SAP-C02, DOP-C02, SCS-C03, and ANS-C01.' },
   { q: 'How is CertiPrepAI different from other AWS practice platforms?', a: 'CertiPrepAI is purpose-built for AWS exam prep. Every question includes a detailed explanation, domain filtering lets you focus on weak areas, and cheat sheets are mined directly from the question bank.' },
@@ -258,13 +258,13 @@ export default function SEOMeta({ title, description, canonical }: SEOProps) {
     setMeta('og:site_name', 'CertiPrepAI', 'property')
 
     // Open Graph image
-    setMeta('og:image', 'https://certiprepai.com/og-image.png', 'property')
+    setMeta('og:image', 'https://certiprepai.com/og-image.jpg', 'property')
 
     // Twitter
     setMeta('twitter:card', 'summary_large_image')
     setMeta('twitter:title', t)
     setMeta('twitter:description', d)
-    setMeta('twitter:image', 'https://certiprepai.com/og-image.png')
+    setMeta('twitter:image', 'https://certiprepai.com/og-image.jpg')
 
     // Canonical
     let canon = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null
@@ -327,7 +327,7 @@ export default function SEOMeta({ title, description, canonical }: SEOProps) {
           price: '0',
           priceCurrency: 'USD',
           availability: 'https://schema.org/InStock',
-          description: '20 questions free. Full access from $7/mo.',
+          description: '50 questions free per cert with a free account. Full access from $7/mo.',
         },
       })
     } else {

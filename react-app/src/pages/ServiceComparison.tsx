@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Layout from '../components/Layout'
+import PremiumGate from '../components/PremiumGate'
 import { useAuth } from '../contexts/AuthContext'
-import { useNavigate } from 'react-router-dom'
 
 interface Comparison {
   a: string
@@ -681,26 +681,12 @@ const AIF_GROUP_COLORS: Record<string, { border: string; bg: string; text: strin
 
 export default function ServiceComparison() {
   const { isPremium } = useAuth()
-  const navigate = useNavigate()
   const [activeGroup, setActiveGroup] = useState('All')
   const [expanded, setExpanded] = useState<string | null>(null)
   const [cert, setCert] = useState<'saa' | 'aif'>('saa')
 
   if (!isPremium) {
-    return (
-      <Layout>
-        <div style={{ minHeight: '70vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center' }}>
-          <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🔒</div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#111827', marginBottom: '0.5rem' }}>Study Tools are for members only</h2>
-          <p style={{ color: '#6b7280', maxWidth: '420px', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-            Upgrade to any paid plan to unlock Service Comparisons, Keywords, CheatSheets, and more.
-          </p>
-          <button onClick={() => navigate('/pricing')} style={{ padding: '12px 28px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '10px', fontWeight: 700, cursor: 'pointer', fontSize: '1rem' }}>
-            See Plans →
-          </button>
-        </div>
-      </Layout>
-    )
+    return <PremiumGate message="Upgrade to any paid plan to unlock Service Comparisons, Keywords, CheatSheets, and more." />
   }
 
   const activeData = cert === 'saa' ? DATA : AIF_DATA

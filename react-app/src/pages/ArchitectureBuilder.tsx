@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Layout from '../components/Layout'
-import { useNavigate } from 'react-router-dom'
+import PremiumGate from '../components/PremiumGate'
 import { useAuth } from '../contexts/AuthContext'
 
 // ── Service definitions ────────────────────────────────────────────────────────
@@ -160,8 +160,7 @@ const CAT_LABELS: Record<string, string> = {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function ArchitectureBuilder() {
-  const { user, isPremium } = useAuth()
-  const navigate = useNavigate()
+  const { isPremium } = useAuth()
 
   const [challengeIdx, setChallengeIdx] = useState(0)
   const [placed, setPlaced] = useState<string[]>([])
@@ -175,22 +174,14 @@ export default function ArchitectureBuilder() {
   // Paywall
   if (!isPremium) {
     return (
-      <Layout>
-        <div style={{ background: '#f8fafc', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
-          <div style={{ background: '#fff', borderRadius: '20px', padding: '48px', maxWidth: '480px', width: '100%', textAlign: 'center', boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
-            <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>🏗️</div>
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px' }}>Architecture Builder requires a subscription</h2>
-            <p style={{ color: '#64748b', marginBottom: '8px' }}>10 hands-on challenges · Drag AWS services to build real architectures · Instant feedback.</p>
-            <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '24px' }}>Available on Monthly ($7/mo), Yearly ($67/yr), and Lifetime ($147) plans.</p>
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-              {!user && <button onClick={() => navigate('/signup')} style={{ padding: '10px 24px', borderRadius: '10px', background: '#f1f5f9', color: '#475569', border: 'none', fontWeight: 700, cursor: 'pointer' }}>Sign Up Free</button>}
-              <button onClick={() => navigate('/pricing')} style={{ padding: '12px 28px', borderRadius: '10px', background: '#2563eb', color: '#fff', border: 'none', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
-                View Plans →
-              </button>
-            </div>
-          </div>
-        </div>
-      </Layout>
+      <PremiumGate
+        icon="🏗️"
+        title="Architecture Builder requires a subscription"
+        message="10 hands-on challenges · Drag AWS services to build real architectures · Instant feedback."
+        subMessage="Available on Monthly ($7/mo), Yearly ($67/yr), and Lifetime ($147) plans."
+        buttonLabel="View Plans →"
+        showSignUp
+      />
     )
   }
 

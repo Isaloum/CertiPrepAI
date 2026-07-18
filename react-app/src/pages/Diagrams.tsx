@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Layout from '../components/Layout'
-import { useNavigate } from 'react-router-dom'
+import PremiumGate from '../components/PremiumGate'
 import { useAuth } from '../contexts/AuthContext'
 
 interface DiagramNode {
@@ -593,8 +593,7 @@ function DiagramSVG({ nodes, edges }: { nodes: DiagramNode[]; edges: DiagramEdge
 }
 
 export default function Diagrams() {
-  const { user, isPremium } = useAuth()
-  const navigate = useNavigate()
+  const { isPremium } = useAuth()
 
   const [category, setCategory] = useState('all')
   const [selected, setSelected] = useState<string | null>(null)
@@ -602,22 +601,14 @@ export default function Diagrams() {
   // Paywall
   if (!isPremium) {
     return (
-      <Layout>
-        <div style={{ background: '#f8fafc', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
-          <div style={{ background: '#fff', borderRadius: '20px', padding: '48px', maxWidth: '480px', width: '100%', textAlign: 'center', boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
-            <div style={{ fontSize: '2.5rem', marginBottom: '16px' }}>🗺️</div>
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0f172a', margin: '0 0 8px' }}>Architecture Diagrams requires a subscription</h2>
-            <p style={{ color: '#64748b', marginBottom: '8px' }}>14 interactive SAA-C03 architecture diagrams with visual explanations and key exam points.</p>
-            <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '24px' }}>Available on Monthly ($7/mo), Yearly ($67/yr), and Lifetime ($147) plans.</p>
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-              {!user && <button onClick={() => navigate('/signup')} style={{ padding: '10px 24px', borderRadius: '10px', background: '#f1f5f9', color: '#475569', border: 'none', fontWeight: 700, cursor: 'pointer' }}>Sign Up Free</button>}
-              <button onClick={() => navigate('/pricing')} style={{ padding: '12px 28px', borderRadius: '10px', background: '#2563eb', color: '#fff', border: 'none', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}>
-                View Plans →
-              </button>
-            </div>
-          </div>
-        </div>
-      </Layout>
+      <PremiumGate
+        icon="🗺️"
+        title="Architecture Diagrams requires a subscription"
+        message="14 interactive SAA-C03 architecture diagrams with visual explanations and key exam points."
+        subMessage="Available on Monthly ($7/mo), Yearly ($67/yr), and Lifetime ($147) plans."
+        buttonLabel="View Plans →"
+        showSignUp
+      />
     )
   }
 
