@@ -124,7 +124,7 @@ Missing `COGNITO_USER_POOL_ID` = downgrades silently fail (users keep paid plan 
 | `react-app/src/lib/cognito.ts` | All auth functions. Email normalization MANDATORY. `bundle` MUST be in AuthUser type + sessionToUser. |
 | `react-app/src/lib/db.ts` | DynamoDB API wrapper. Uses ACCESS token. DB_API hardcoded. |
 | `react-app/src/lib/analytics.ts` | PostHog wrapper. Key: `phc_vQkqAhkS2zJBrqL5roLz8iquSgXWuucyBodeyNH99dsS`. Public key — safe in bundle. |
-| `react-app/src/lib/tiers.ts` | Pure tier logic — single source of truth (Jul 17 2026). `TIER_RANK`, `isPremium(tier)`, `isFullAccess(tier)`, `hasCertAccess({tier,certId,monthlyCertId,bundleCertIds})`. Used by AuthContext (isPremium/isFullAccess) + useCertAccess (per-cert decision). Unit-tested in `tiers.test.ts` (vitest). Change plan rules HERE. |
+| `react-app/src/lib/tiers.ts` | Pure tier logic — single source of truth (Jul 17-18 2026). `TIER_RANK`, `rankOf(plan)` (safe lookup, unknown→0), `isPremium(tier)`, `isFullAccess(tier)`, `hasCertAccess({tier,certId,monthlyCertId,bundleCertIds})`. Used by AuthContext (isPremium/isFullAccess), useCertAccess (per-cert decision), Pricing + Billing (rankOf for upgrade eligibility — local TIER_RANK copies removed Jul 18). Unit-tested in `tiers.test.ts` (17 tests, vitest). Change plan rules HERE. |
 | `react-app/src/contexts/AuthContext.tsx` | Auth state. Exposes: user, tier, isPremium, isFullAccess, loading. |
 | `react-app/src/components/Navbar.tsx` | Nav. Pricing hidden for paid. Billing shown for paid. AI Coach tab hidden (accessible only via /ai-coach). |
 | `react-app/src/pages/Login.tsx` | Email normalized on input onChange. |
