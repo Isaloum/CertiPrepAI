@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { TIER_RANK, isPremium, isFullAccess, hasCertAccess, type Tier } from './tiers'
+import { TIER_RANK, rankOf, isPremium, isFullAccess, hasCertAccess, type Tier } from './tiers'
 
 const ALL_TIERS: Tier[] = ['free', 'monthly', 'bundle', 'yearly', 'lifetime']
 
@@ -13,6 +13,23 @@ describe('TIER_RANK', () => {
 
   it('has a rank for every tier', () => {
     for (const t of ALL_TIERS) expect(typeof TIER_RANK[t]).toBe('number')
+  })
+})
+
+describe('rankOf', () => {
+  it('returns the TIER_RANK value for every known tier', () => {
+    for (const t of ALL_TIERS) expect(rankOf(t)).toBe(TIER_RANK[t])
+  })
+  it('treats a paid plan as outranking a lower one (drives upgrade eligibility)', () => {
+    expect(rankOf('yearly')).toBeGreaterThan(rankOf('monthly'))
+    expect(rankOf('bundle')).toBeGreaterThan(rankOf('monthly'))
+    expect(rankOf('lifetime')).toBeGreaterThan(rankOf('yearly'))
+  })
+  it('falls back to free (0) for unknown, null, or undefined', () => {
+    expect(rankOf('enterprise')).toBe(0)
+    expect(rankOf('')).toBe(0)
+    expect(rankOf(null)).toBe(0)
+    expect(rankOf(undefined)).toBe(0)
   })
 })
 

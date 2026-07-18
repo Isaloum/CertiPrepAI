@@ -19,6 +19,15 @@ export const TIER_RANK: Record<Tier, number> = {
   lifetime: 3,
 }
 
+/**
+ * Safe rank lookup for a plan name that may be any loose string
+ * (e.g. `plan.name.toLowerCase()`, a possibly-undefined tier). Unknown → 0 (free).
+ * Use this instead of re-declaring TIER_RANK in pages (Pricing, Billing).
+ */
+export function rankOf(plan: string | null | undefined): number {
+  return TIER_RANK[(plan ?? 'free') as Tier] ?? 0
+}
+
 /** Any paid plan (everything except free). */
 export function isPremium(tier: Tier): boolean {
   return tier !== 'free'

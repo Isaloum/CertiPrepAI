@@ -3,14 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
 import { trackUpgradeClicked, trackCheckoutStarted } from '../lib/analytics'
+import { rankOf } from '../lib/tiers'
 
 // Same constants + payload as Signup.tsx — proven to work
 const CHECKOUT_API = import.meta.env.VITE_CHECKOUT_API as string || 'https://34zglioc5a.execute-api.us-east-1.amazonaws.com/checkout'
 const UPGRADE_API  = 'https://d8bmltyjpe.execute-api.us-east-1.amazonaws.com'
 const PAID_PLANS   = new Set(['monthly', 'bundle', 'yearly', 'lifetime'])
 const SUB_TIERS    = new Set(['monthly', 'bundle', 'yearly']) // tiers with active Stripe subscriptions
-
-const TIER_RANK: Record<string, number> = { free: 0, monthly: 1, bundle: 1.5, yearly: 2, lifetime: 3 }
 
 
 const MOTIVATE_NOTE: Record<string, string> = {
@@ -127,7 +126,7 @@ export default function Pricing() {
     confirming: boolean
   } | null>(null)
 
-  const userRank = TIER_RANK[tier ?? 'free'] ?? 0
+  const userRank = rankOf(tier)
 
   // ── Upgrade flow (proration) ──────────────────────────────────────────────
   const handleUpgradeClick = async (targetPlan: string) => {
@@ -249,7 +248,7 @@ export default function Pricing() {
             const isHovered = hovered === plan.name
             const isYearly = plan.name === 'Yearly'
             const isPulsing = isYearly && pulseYearly
-            const planRank = TIER_RANK[plan.name.toLowerCase()] ?? 0
+            const planRank = rankOf(plan.name.toLowerCase())
             const isCurrent   = tier && planRank === userRank
             const isNextUp    = tier && planRank === userRank + 1
             const isDowngrade = tier && planRank < userRank

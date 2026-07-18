@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
+import { rankOf } from '../lib/tiers'
 
 const CANCELLED_KEY  = 'certiprepai-plan-cancelled'
 const EXPIRY_KEY     = 'certiprepai-plan-expiry'
@@ -14,8 +15,6 @@ const EXPIRY_KEY     = 'certiprepai-plan-expiry'
 const CHECKOUT_API = 'https://34zglioc5a.execute-api.us-east-1.amazonaws.com/checkout'
 const UPGRADE_API  = 'https://d8bmltyjpe.execute-api.us-east-1.amazonaws.com'
 const CANCEL_API   = 'https://hpcdl0ft8a.execute-api.us-east-1.amazonaws.com'
-
-const TIER_RANK: Record<string, number> = { free: 0, monthly: 1, bundle: 1.5, yearly: 2, lifetime: 3 }
 
 const PLAN_INFO: Record<string, { label: string; color: string; bg: string; icon: string; desc: string; price: string }> = {
   free:     { label: 'Free',     icon: '🆓', color: '#6b7280', bg: '#f9fafb', desc: '20 sample questions, no payment required', price: '$0/mo' },
@@ -108,7 +107,7 @@ export default function Billing() {
     )
   }
 
-  const userRank = TIER_RANK[tier] ?? 0
+  const userRank = rankOf(tier)
   const info = PLAN_INFO[tier] ?? PLAN_INFO.free
 
   const handleUpgradeClick = async (plan: typeof upgradePlans[0]) => {
@@ -233,7 +232,7 @@ export default function Billing() {
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '2rem' }}>
               {upgradePlans.map(plan => {
-                const planRank = TIER_RANK[plan.key] ?? 0
+                const planRank = rankOf(plan.key)
                 const isCurrent = plan.key === tier
                 const isDowngrade = planRank < userRank
 
