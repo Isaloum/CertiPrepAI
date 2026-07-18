@@ -21,10 +21,27 @@ const CORS = {
   'Content-Type': 'application/json',
 };
 
+// Spam protection for the unauthenticated capture_lead endpoint.
+// Real per-IP throttling is enforced at API Gateway (stage throttle);
+// these are application-level checks that block casual/cross-site abuse.
+const ALLOWED_ORIGINS = [
+  'https://certiprepai.com',
+  'https://www.certiprepai.com',
+  'https://main.d2pm3jfcsesli7.amplifyapp.com',
+];
+// Simple, standards-adjacent email shape check (stricter than includes('@')).
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MAX_EMAIL_LEN = 254; // RFC 5321 max
+
+function isValidEmail(email) {
+  return typeof email === 'string' && email.length <= MAX_EMAIL_LEN && EMAIL_RE.test(email);
+}
+
 exports.handler = async (event) => {
   const method = event.requestContext?.http?.method || 'UNKNOWN';
   const authHeader = event.headers?.authorization || event.headers?.Authorization || '';
   const token = authHeader.replace('Bearer ', '').trim();
+  const origin = event.headers?.origin || event.headers?.Origin || '';
 
   if (method === 'OPTIONS') {
     return { statusCode: 200, headers: CORS, body: '' };
@@ -36,7 +53,7 @@ exports.handler = async (event) => {
 
     if (body.action === 'unsubscribe') {
       const email = (body.data?.email || '').trim().toLowerCase();
-      if (!email || !email.includes('@')) {
+      if (!isValidEmail(email)) {
         return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid email' }) };
       }
       await dynamo.send(new UpdateCommand({
@@ -49,8 +66,13 @@ exports.handler = async (event) => {
     }
 
     if (body.action === 'capture_lead') {
+      // Origin gate: only accept lead capture from our own site (blocks
+      // cross-site abuse and scripted clients that omit/forge no valid Origin).
+      if (!ALLOWED_ORIGINS.includes(origin)) {
+        return { statusCode: 403, headers: CORS, body: JSON.stringify({ error: 'Forbidden' }) };
+      }
       const email = (body.data?.email || '').trim().toLowerCase();
-      if (!email || !email.includes('@')) {
+      if (!isValidEmail(email)) {
         return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid email' }) };
       }
       await dynamo.send(new PutCommand({
